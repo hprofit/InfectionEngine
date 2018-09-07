@@ -19,32 +19,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SOURCE\Event.cpp" />
+    <ClCompile Include="SOURCE\EventManager.cpp" />
     <ClCompile Include="SOURCE\main.cpp" />
-    <ClCompile Include="SOURCE\Math\Collisions.cpp" />
-    <ClCompile Include="SOURCE\Math\MathFunctions.cpp" />
-    <ClCompile Include="SOURCE\Math\Matrix2x2.cpp" />
-    <ClCompile Include="SOURCE\Math\Matrix3x3.cpp" />
-    <ClCompile Include="SOURCE\Math\Matrix4x4.cpp" />
-    <ClCompile Include="SOURCE\Math\Vector2D.cpp" />
-    <ClCompile Include="SOURCE\Math\Vector3D.cpp" />
+    <ClCompile Include="SOURCE\RenderManager.cpp" />
     <ClCompile Include="SOURCE\Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SOURCE\Subscriber.cpp" />
+    <ClCompile Include="SOURCE\SubscriberTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SOURCE\Math\Collisions.h" />
-    <ClInclude Include="SOURCE\Math\MathDefs.h" />
-    <ClInclude Include="SOURCE\Math\MathFunctions.h" />
-    <ClInclude Include="SOURCE\Math\MathLibs.h" />
-    <ClInclude Include="SOURCE\Math\Matrix2x2.h" />
-    <ClInclude Include="SOURCE\Math\Matrix3x3.h" />
-    <ClInclude Include="SOURCE\Math\Matrix4x4.h" />
-    <ClInclude Include="SOURCE\Math\Vector2D.h" />
-    <ClInclude Include="SOURCE\Math\Vector3D.h" />
+    <ClInclude Include="SOURCE\Event.h" />
+    <ClInclude Include="SOURCE\EventManager.h" />
+    <ClInclude Include="SOURCE\Global.h" />
+    <ClInclude Include="SOURCE\RenderManager.h" />
+    <ClInclude Include="SOURCE\Singleton.h" />
     <ClInclude Include="SOURCE\Stdafx.h" />
+    <ClInclude Include="SOURCE\Subscriber.h" />
+    <ClInclude Include="SOURCE\SubscriberTracker.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

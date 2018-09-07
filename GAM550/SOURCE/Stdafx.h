@@ -70,19 +70,19 @@ Author: <Holden Profit>
 #include <math.h>
 
 #pragma region Math
-#include <Math\MathDefs.h>
-#include <Math\Vector2D.h>
-#include <Math\Vector3D.h>
-#include <Math\Matrix2x2.h>
-#include <Math\Matrix3x3.h>
-#include <Math\Matrix4x4.h>
-#include <Math\LineSegment2D.h>
-#include <Math\MathFunctions.h>
-#include <Math\Collisions.h>
+//#include <Math\MathDefs.h>
+//#include <Math\Vector2D.h>
+//#include <Math\Vector3D.h>
+//#include <Math\Matrix2x2.h>
+//#include <Math\Matrix3x3.h>
+//#include <Math\Matrix4x4.h>
+//#include <Math\LineSegment2D.h>
+//#include <Math\MathFunctions.h>
+//#include <Math\Collisions.h>
 #pragma endregion
 
 #pragma region Resources
-//#include <Singleton.h>
+#include <Singleton.h>
 //#include <JsonReader.h>
 //using json = nlohmann::json;
 //using namespace JsonReader;
@@ -94,9 +94,9 @@ Author: <Holden Profit>
 //#include <ComponentTypes.h>
 //#include <AI_StateTypes.h>
 //#include <Layers.h>
-//#include <Event.h>
-//#include <SubscriberTracker.h>
-//#include <Subscriber.h>
+#include <Event.h>
+#include <SubscriberTracker.h>
+#include <Subscriber.h>
 //#include <SurfaceTextureBuffer.h>
 //#include <FontInfo.h>
 //#include <RoomNodeData.h>
@@ -249,10 +249,10 @@ Author: <Holden Profit>
 //#include <FrameRateManager.h>
 //#include <PostProcessing.h>
 //#include <GameObjectManager.h>
-//#include <RenderManager.h>
+#include <RenderManager.h>
 //#include <ResourceManager.h>
 //#include <PhysicsManager.h>
-//#include <EventManager.h>
+#include <EventManager.h>
 //#include <LevelManager.h>
 //#include <DebugManager.h>
 //#include <AudioManager.h>
@@ -265,7 +265,7 @@ Author: <Holden Profit>
 //#include <UIManager.h>
 //#include <PlayerStatsManager.h>
 //
-//#include <Global.h>
+#include <Global.h>
 //#include <TetraiderAPI.h>
 #pragma endregion 
 
