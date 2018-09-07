@@ -44,7 +44,17 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	// this struct holds Windows event messages
 	MSG msg;
-	INFECT_RENDERER.InitWindow(hInstance, nCmdShow);
+	//INFECT_RENDERER.InitWindow(hInstance, nCmdShow, true, 1920, 1080);
+	INFECT_RENDERER.InitWindow(hInstance, nCmdShow, false, 800, 600);
+	INFECT_RENDERER.LoadShader();
+
+
+	Mesh* pMesh = new Mesh();
+	//pMesh->AddVertex(0.0f, 0.5f, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	//pMesh->AddVertex(0.45f, -0.5, 0.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
+	//pMesh->AddVertex(-0.45f, -0.5f, 0.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->FinishMesh();
+
 
 	// wait for the next message in the queue, store the result in 'msg'
 	while (GetMessage(&msg, NULL, 0, 0))
@@ -55,7 +65,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		// send the message to the WindowProc function
 		DispatchMessage(&msg);
 
-		INFECT_RENDERER.RenderFrame();
+		INFECT_RENDERER.RenderFrame(pMesh);
 	}
 	INFECT_RENDERER.CleanD3D();
 	// return this part of the WM_QUIT message to Windows

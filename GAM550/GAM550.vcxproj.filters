@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{76c77d16-962f-4f1a-b563-be8484b61ce4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Rendering">
+      <UniqueIdentifier>{e272c770-a746-412f-b632-b3c82639aa53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\main.cpp">
@@ -44,6 +47,9 @@
     </ClCompile>
     <ClCompile Include="SOURCE\Event.cpp">
       <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Mesh.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +76,12 @@
     </ClInclude>
     <ClInclude Include="SOURCE\Event.h">
       <Filter>Source Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Mesh.h">
+      <Filter>Source Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Face.h">
+      <Filter>Source Files\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -22,6 +22,7 @@
     <ClCompile Include="SOURCE\Event.cpp" />
     <ClCompile Include="SOURCE\EventManager.cpp" />
     <ClCompile Include="SOURCE\main.cpp" />
+    <ClCompile Include="SOURCE\Mesh.cpp" />
     <ClCompile Include="SOURCE\RenderManager.cpp" />
     <ClCompile Include="SOURCE\Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -35,7 +36,9 @@
   <ItemGroup>
     <ClInclude Include="SOURCE\Event.h" />
     <ClInclude Include="SOURCE\EventManager.h" />
+    <ClInclude Include="SOURCE\Face.h" />
     <ClInclude Include="SOURCE\Global.h" />
+    <ClInclude Include="SOURCE\Mesh.h" />
     <ClInclude Include="SOURCE\RenderManager.h" />
     <ClInclude Include="SOURCE\Singleton.h" />
     <ClInclude Include="SOURCE\Stdafx.h" />

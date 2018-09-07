@@ -1,5 +1,4 @@
 #include "Stdafx.h"
-#include "RenderManager.h"
 
 // Temporarily putting this here - I believe it's a better fit for InputManager
 LRESULT CALLBACK WindowProc(HWND hWnd,
@@ -7,18 +6,28 @@ LRESULT CALLBACK WindowProc(HWND hWnd,
 	WPARAM wParam,
 	LPARAM lParam);
 
-RenderManager::RenderManager()
+RenderManager::RenderManager() : 
+	mp_SwapChain(nullptr),
+	mp_Device(nullptr),
+	mp_DeviceContext(nullptr),
+	mp_BackBuffer(nullptr),
+	m_ClearColor(D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f)),
+	m_ScreenWidth(800), m_ScreenHeight(600),
+	m_FullScreen(false)
 {
 }
-
 
 RenderManager::~RenderManager()
 {
 }
 
 
-void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow)
+void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, bool fullScreen, unsigned int screenWidth, unsigned int screenHeight)
 {
+	m_FullScreen = fullScreen;
+	m_ScreenWidth = screenWidth;
+	m_ScreenHeight = screenHeight;
+	
 	// the handle for the window, filled by a function
 	HWND hWnd;
 	// this struct holds information for the window class
@@ -33,7 +42,7 @@ void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow)
 	wc.lpfnWndProc = WindowProc;
 	wc.hInstance = hInstance;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
+	//wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
 	wc.lpszClassName = "WindowClass1";
 
 	// register the window class
@@ -46,8 +55,8 @@ void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow)
 		WS_OVERLAPPEDWINDOW,    // window style
 		CW_USEDEFAULT,    // x-position of the window
 		CW_USEDEFAULT,    // y-position of the window
-		800,    // width of the window
-		600,    // height of the window
+		m_ScreenWidth,    // width of the window
+		m_ScreenHeight,   // height of the window
 		NULL,    // we have no parent window, NULL
 		NULL,    // we aren't using menus, NULL
 		hInstance,    // application handle
@@ -70,10 +79,13 @@ void RenderManager::InitD3D(HWND hWnd) {
 	// fill the swap chain description struct
 	scd.BufferCount = 1;                                    // one back buffer
 	scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;     // use 32-bit color
+	scd.BufferDesc.Width = m_ScreenWidth;					// set the back buffer width
+	scd.BufferDesc.Width = m_ScreenHeight;					// set the back buffer height
 	scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;      // how swap chain is to be used
 	scd.OutputWindow = hWnd;                                // the window to be used
 	scd.SampleDesc.Count = 4;                               // how many multisamples
 	scd.Windowed = TRUE;                                    // windowed/full-screen mode
+	//scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;     // allow full-screen switching
 
 															// create a device, device context and swap chain using the information in the scd struct
 	D3D11CreateDeviceAndSwapChain(NULL,
@@ -94,6 +106,7 @@ void RenderManager::InitD3D(HWND hWnd) {
 	// get address of back buffer
 	ID3D11Texture2D *pBackBuffer;
 	mp_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+	mp_SwapChain->SetFullscreenState(m_FullScreen, NULL);
 
 	// use the back buffer address to create the render target
 	mp_Device->CreateRenderTargetView(pBackBuffer, NULL, &mp_BackBuffer);
@@ -107,8 +120,8 @@ void RenderManager::InitD3D(HWND hWnd) {
 	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
-	viewport.Width = 800;
-	viewport.Height = 600;
+	viewport.Width = FLOAT(m_ScreenWidth);
+	viewport.Height = FLOAT(m_ScreenHeight);
 
 	mp_DeviceContext->RSSetViewports(1, &viewport);
 }
@@ -116,18 +129,51 @@ void RenderManager::InitD3D(HWND hWnd) {
 // this is the function that cleans up Direct3D and COM
 void RenderManager::CleanD3D()
 {
+	// switch back to windowed mode, D3D will fail to close if it's still in fullscreen
+	mp_SwapChain->SetFullscreenState(FALSE, NULL);
+
 	// close and release all existing COM objects
+	mp_VS->Release();
+	mp_PS->Release();
+
 	mp_SwapChain->Release();
 	mp_BackBuffer->Release();
 	mp_Device->Release();
 	mp_DeviceContext->Release();
 }
 
-void RenderManager::RenderFrame(void) {
-	mp_DeviceContext->ClearRenderTargetView(mp_BackBuffer, D3DXCOLOR(0.0f, 0.2f, 0.4f, 1.0f));
+void RenderManager::RenderFrame(Mesh* const pMesh) {
+	mp_DeviceContext->ClearRenderTargetView(mp_BackBuffer, m_ClearColor);
 
 	// do 3D rendering on the back buffer here
+	RenderMesh(pMesh);
 
 	// switch the back buffer and the front buffer
 	mp_SwapChain->Present(0, 0);
+}
+
+void RenderManager::LoadShader()
+{
+	//D3DX11CompileFromFile(L"ASSETS/SHADERS/base3DShader.shader", )
+	// load and compile the shaders
+	D3DX11CompileFromFile("ASSETS/SHADERS/shader.shader", 0, 0, "VShader", "vs_4_0", 0, 0, 0, &mp_VSBlob, 0, 0);
+	D3DX11CompileFromFile("ASSETS/SHADERS/shader.shader", 0, 0, "PShader", "ps_4_0", 0, 0, 0, &mp_PSBlob, 0, 0);
+
+	// Encapsulate both shaders into shader objects
+	mp_Device->CreateVertexShader(mp_VSBlob->GetBufferPointer(), mp_VSBlob->GetBufferSize(), NULL, &mp_VS);
+	mp_Device->CreatePixelShader(mp_PSBlob->GetBufferPointer(), mp_PSBlob->GetBufferSize(), NULL, &mp_PS);
+
+	mp_DeviceContext->VSSetShader(mp_VS, 0, 0);
+	mp_DeviceContext->PSSetShader(mp_PS, 0, 0);
+}
+
+void RenderManager::RenderMesh(Mesh * pMesh)
+{
+	UINT stride = sizeof(Vertex);
+	UINT offset = 0;
+	ID3D11Buffer* buffers[] = { pMesh->VBuffer() };
+	mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
+
+	mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	mp_DeviceContext->Draw(3, 0);
 }

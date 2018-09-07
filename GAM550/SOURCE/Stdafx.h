@@ -89,7 +89,7 @@ Author: <Holden Profit>
 //
 //#include <Color.h>
 //#include <Debug.h>
-//#include <Face.h>
+#include <Face.h>
 //#include <GameObjectTags.h>
 //#include <ComponentTypes.h>
 //#include <AI_StateTypes.h>
@@ -101,7 +101,7 @@ Author: <Holden Profit>
 //#include <FontInfo.h>
 //#include <RoomNodeData.h>
 //#include <FrameBufferObject.h>
-//#include <Mesh.h>
+#include <Mesh.h>
 //#include <Plane.h>
 //#include <DebugLineMesh.h>
 //#include <Shader.h>
