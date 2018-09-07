@@ -45,10 +45,10 @@ void FrameRateManager::FrameEnd() {
 		m_tickEnd = Clock::now();
 	}
 
-	if (TETRA_GAME_STATE.IsDebugPause()) {
-		m_frameTime = GetMaxFrameRate();
-		m_totalElapsedTime += m_frameTime;
-	}
+	//if (TETRA_GAME_STATE.IsDebugPause()) {
+	//	m_frameTime = GetMaxFrameRate();
+	//	m_totalElapsedTime += m_frameTime;
+	//}
 	else {
 		auto dur = m_tickEnd - m_tickStart;
 		FloatSecond fsec = std::chrono::duration_cast<FloatSecond>(dur);
