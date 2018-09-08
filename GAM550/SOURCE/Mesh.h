@@ -83,7 +83,7 @@ protected:
 
 public:
 	Mesh();
-	//Mesh(const aiMesh* mesh);
+	Mesh(const aiMesh* mesh);
 	~Mesh();
 
 	void AddVertex(FLOAT x, FLOAT y, FLOAT z, D3DXCOLOR color);

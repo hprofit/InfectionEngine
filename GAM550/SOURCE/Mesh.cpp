@@ -20,11 +20,11 @@ Mesh::Mesh()
 	//std::fill(m_vboID, m_vboID + NUM_VBO_TYPES / sizeof(GLuint), 0);
 }
 
-//Mesh::Mesh(const aiMesh * mesh) : m_vaoID(0)
-//{
-//	std::fill(m_vboID, m_vboID + NUM_VBO_TYPES / sizeof(GLuint), 0);
-//	CreateFromAiMesh(mesh);
-//}
+Mesh::Mesh(const aiMesh * mesh)
+{
+	//std::fill(m_vboID, m_vboID + NUM_VBO_TYPES / sizeof(GLuint), 0);
+	//CreateFromAiMesh(mesh);
+}
 
 Mesh::~Mesh()
 {
