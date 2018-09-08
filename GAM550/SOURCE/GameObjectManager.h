@@ -7,12 +7,22 @@ Author: <Holden Profit>
 
 #pragma once
 
-#ifndef GLOBAL_DEFINES_H
-#define GLOBAL_DEFINES_H
+#ifndef GAME_OBJECT_MANAGER_H
+#define GAME_OBJECT_MANAGER_H
 
-#define INFECT_EVENTS Singleton<EventManager>::GetInstance()
-#define INFECT_GOM Singleton<GameObjectManager>::GetInstance()
-#define INFECT_RENDERER Singleton<RenderManager>::GetInstance()
+#define MAX_GAMEOBJECTS 2048
 
+class GameObjectManager : public Subscriber
+{
+private:
+	GameObject * mp_GameObjects[MAX_GAMEOBJECTS];
+
+public:
+	GameObjectManager();
+	~GameObjectManager();
+
+	GameObject* GetGameObject(unsigned int id) const { return mp_GameObjects[0]; }
+};
 
 #endif
+

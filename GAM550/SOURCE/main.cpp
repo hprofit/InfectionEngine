@@ -37,7 +37,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	LPSTR lpCmdLine,
 	int nCmdShow)
 {
-	
+	INFECT_EVENTS.Init();
 
 	// Main Loop
 	// TODO: Move this
@@ -54,6 +54,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	pMesh->AddVertex(0.45f, -0.5, 0.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
 	pMesh->AddVertex(-0.45f, -0.5f, 0.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
 	pMesh->FinishMesh();
+
+	GameObject* pGO = INFECT_GOM.GetGameObject(0);
 
 
 	// wait for the next message in the queue, store the result in 'msg'

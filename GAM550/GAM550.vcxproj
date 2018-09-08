@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="SOURCE\Event.cpp" />
     <ClCompile Include="SOURCE\EventManager.cpp" />
+    <ClCompile Include="SOURCE\GameObjectManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\CameraComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\ComponentFactory.cpp" />
     <ClCompile Include="SOURCE\GameObject\GameObject.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="SOURCE\Event.h" />
     <ClInclude Include="SOURCE\EventManager.h" />
     <ClInclude Include="SOURCE\Face.h" />
+    <ClInclude Include="SOURCE\GameObjectManager.h" />
     <ClInclude Include="SOURCE\GameObject\CameraComponent.h" />
     <ClInclude Include="SOURCE\GameObject\Component.h" />
     <ClInclude Include="SOURCE\GameObject\ComponentFactory.h" />
