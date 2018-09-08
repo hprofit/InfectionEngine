@@ -25,6 +25,24 @@
     <Filter Include="Source Files\Rendering">
       <UniqueIdentifier>{e272c770-a746-412f-b632-b3c82639aa53}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameObject">
+      <UniqueIdentifier>{6f2747a6-4dcb-4a89-9bc0-c6c83276deb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\Base">
+      <UniqueIdentifier>{e7748f05-a36b-43cb-9806-a23139118f25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\Components">
+      <UniqueIdentifier>{331061ae-a81c-4584-9b3d-6fa4099c1597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Math">
+      <UniqueIdentifier>{e850e1b0-3309-4133-89bc-7023b8d9d6c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Math\Matrix">
+      <UniqueIdentifier>{2f571e3e-2ca2-46fe-975f-1e40574e76de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Math\Vector">
+      <UniqueIdentifier>{88e6905c-7389-496a-b6c1-20816a0eb715}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\main.cpp">
@@ -50,6 +68,39 @@
     </ClCompile>
     <ClCompile Include="SOURCE\Mesh.cpp">
       <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\ComponentFactory.cpp">
+      <Filter>Source Files\GameObject\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\GameObject.cpp">
+      <Filter>Source Files\GameObject\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\MeshComponent.cpp">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\TransformComponent.cpp">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\CameraComponent.cpp">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Math\Matrix3x3.cpp">
+      <Filter>Source Files\Math\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Math\Matrix4x4.cpp">
+      <Filter>Source Files\Math\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Math\Matrix2x2.cpp">
+      <Filter>Source Files\Math\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Math\Vector3D.cpp">
+      <Filter>Source Files\Math\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Math\Vector2D.cpp">
+      <Filter>Source Files\Math\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Math\MathFunctions.cpp">
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +133,60 @@
     </ClInclude>
     <ClInclude Include="SOURCE\Face.h">
       <Filter>Source Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\Component.h">
+      <Filter>Source Files\GameObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\ComponentFactory.h">
+      <Filter>Source Files\GameObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\ComponentTypes.h">
+      <Filter>Source Files\GameObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\ComponentTypesNames.h">
+      <Filter>Source Files\GameObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\GameObjectTags.h">
+      <Filter>Source Files\GameObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\TagNames.h">
+      <Filter>Source Files\GameObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\GameObject.h">
+      <Filter>Source Files\GameObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\MeshComponent.h">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\CameraComponent.h">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\TransformComponent.h">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\RenderableComponent.h">
+      <Filter>Source Files\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Math\Matrix3x3.h">
+      <Filter>Source Files\Math\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Math\Matrix4x4.h">
+      <Filter>Source Files\Math\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Math\Matrix2x2.h">
+      <Filter>Source Files\Math\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Math\Vector2D.h">
+      <Filter>Source Files\Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Math\Vector3D.h">
+      <Filter>Source Files\Math\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Math\MathFunctions.h">
+      <Filter>Source Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Math\MathDefs.h">
+      <Filter>Source Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

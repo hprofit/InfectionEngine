@@ -70,15 +70,13 @@ Author: <Holden Profit>
 #include <math.h>
 
 #pragma region Math
-//#include <Math\MathDefs.h>
-//#include <Math\Vector2D.h>
-//#include <Math\Vector3D.h>
-//#include <Math\Matrix2x2.h>
-//#include <Math\Matrix3x3.h>
-//#include <Math\Matrix4x4.h>
-//#include <Math\LineSegment2D.h>
-//#include <Math\MathFunctions.h>
-//#include <Math\Collisions.h>
+#include <Math\MathDefs.h>
+#include <Math\Vector2D.h>
+#include <Math\Vector3D.h>
+#include <Math\Matrix2x2.h>
+#include <Math\Matrix3x3.h>
+#include <Math\Matrix4x4.h>
+#include <Math\MathFunctions.h>
 #pragma endregion
 
 #pragma region Resources
@@ -90,8 +88,8 @@ Author: <Holden Profit>
 //#include <Color.h>
 //#include <Debug.h>
 #include <Face.h>
-//#include <GameObjectTags.h>
-//#include <ComponentTypes.h>
+#include <GameObject\GameObjectTags.h>
+#include <GameObject\ComponentTypes.h>
 //#include <AI_StateTypes.h>
 //#include <Layers.h>
 #include <Event.h>
@@ -113,8 +111,8 @@ Author: <Holden Profit>
 #pragma endregion
 
 #pragma region Game Object
-//#include <Component.h>
-//#include <GameObject.h>
+#include <GameObject\Component.h>
+#include <GameObject\GameObject.h>
 #pragma endregion
 
 #pragma region AI
@@ -159,20 +157,20 @@ Author: <Holden Profit>
 #pragma endregion 
 
 #pragma region Components
-//#include <Transform.h>
-//
+#include <GameObject\TransformComponent.h>
+
 //#include <Body.h>
 //
-//// Components - Rendering
-//#include <Renderable.h>
-//#include <MeshComponent.h>
+// Components - Rendering
+#include <GameObject\RenderableComponent.h>
+#include <GameObject\MeshComponent.h>
 //#include <FBOSprite.h>
 //#include <Sprite.h>
 //#include <ParticleEmitter.h>
 //#include <ParticleEmitterResizer.h>
 //#include <Text.h>
 //#include <Animation.h>
-//#include <Camera.h>
+#include <GameObject\CameraComponent.h>
 //#include <LightBase.h>
 //#include <PointLight.h>
 //#include <LetterBox.h>
@@ -260,7 +258,7 @@ Author: <Holden Profit>
 //#include <FloorPlanGenerator.h>
 //#include <ImguiManager.h>
 //#include <LevelEditor.h>
-//#include <ComponentFactory.h>
+#include <GameObject\ComponentFactory.h>
 //#include <LuaScript.h>
 //#include <UIManager.h>
 //#include <PlayerStatsManager.h>

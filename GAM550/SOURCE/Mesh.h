@@ -26,14 +26,14 @@ struct TexCoords {
 
 class Material {
 protected:
-	//const aiMaterial * m_pMaterial;
+	const aiMaterial * m_pMaterial;
 
 public:
-	//Material(const aiMaterial * pAiMaterial) : m_pMaterial(pAiMaterial) {};
+	Material(const aiMaterial * pAiMaterial) : m_pMaterial(pAiMaterial) {};
 	Material() {};
 	~Material() {};
-	//inline const aiMaterial * GetMaterial() const { return m_pMaterial; }
-	//inline void SetMaterial(const aiMaterial * pAiMaterial) { m_pMaterial = pAiMaterial; }
+	inline const aiMaterial * GetMaterial() const { return m_pMaterial; }
+	inline void SetMaterial(const aiMaterial * pAiMaterial) { m_pMaterial = pAiMaterial; }
 };
 
 class Mesh;
@@ -74,7 +74,7 @@ protected:
 	};
 
 	std::vector<Vertex> m_vertices;
-	std::vector<D3DVECTOR> m_normals, m_tangents, m_bitangents;
+	std::vector<D3DXVECTOR3> m_normals, m_tangents, m_bitangents;
 	std::vector<FLOAT> m_texCoords;
 	std::vector<unsigned long> m_vertColors;
 	std::vector<Face> m_faces;

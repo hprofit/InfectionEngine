@@ -27,6 +27,7 @@ void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, bool fullScree
 	m_FullScreen = fullScreen;
 	m_ScreenWidth = screenWidth;
 	m_ScreenHeight = screenHeight;
+	m_AspectRatio = (float)m_ScreenWidth / (float)m_ScreenHeight;
 	
 	// the handle for the window, filled by a function
 	HWND hWnd;

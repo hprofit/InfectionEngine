@@ -19,6 +19,7 @@ private:
 	ID3D11RenderTargetView *mp_BackBuffer;
 	D3DXCOLOR m_ClearColor;
 	unsigned int m_ScreenWidth, m_ScreenHeight;
+	float m_AspectRatio;
 	bool m_FullScreen;
 
 
@@ -36,6 +37,9 @@ public:
 	inline ID3D11DeviceContext * const DeviceContext() { return mp_DeviceContext; }
 	inline ID3D11RenderTargetView * const BackBuffer() { return mp_BackBuffer; }
 
+	inline float AspectRatio() const { return m_AspectRatio; }
+	inline unsigned int ScreenWidth() const { return m_ScreenWidth; }
+	inline unsigned int ScreenHeight() const { return m_ScreenHeight; }
 
 	// Sets up and initializes window
 	void InitWindow(HINSTANCE hInstance, int nCmdShow, bool fullScreen, unsigned int screenWidth, unsigned int screenHeight);

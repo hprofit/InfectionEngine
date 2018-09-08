@@ -47,19 +47,11 @@ void Mesh::AddVertex(FLOAT x, FLOAT y, FLOAT z, D3DXCOLOR color)
 
 void Mesh::FinishMesh()
 {
-	Vertex OurVertices[] =
-	{
-		{ 0.0f, 0.5f, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f) },
-		{ 0.45f, -0.5, 0.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f) },
-		{ -0.45f, -0.5f, 0.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f) }
-	};
-
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));
 
 	bd.Usage = D3D11_USAGE_DYNAMIC;							// write access access by CPU and GPU
-	//bd.ByteWidth = sizeof(Vertex) * m_vertices.size();		// size is the VERTEX struct * m_vertices.size
-	bd.ByteWidth = sizeof(Vertex) * 3;		
+	bd.ByteWidth = sizeof(Vertex) * UINT(m_vertices.size());		// size is the VERTEX struct * m_vertices.size
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;				// use as a vertex buffer
 	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;				// allow CPU to write in buffer
 
@@ -67,8 +59,7 @@ void Mesh::FinishMesh()
 
 	D3D11_MAPPED_SUBRESOURCE ms;
 	INFECT_RENDERER.DeviceContext()->Map(mp_VBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);   // map the buffer
-	//memcpy(ms.pData, &(m_vertices[0]), m_vertices.size() * sizeof(Vertex));	// copy the data
-	memcpy(ms.pData, OurVertices, sizeof(OurVertices));	// copy the data
+	memcpy(ms.pData, &(m_vertices[0]), m_vertices.size() * sizeof(Vertex));	// copy the data
 	INFECT_RENDERER.DeviceContext()->Unmap(mp_VBuffer, NULL);				// unmap the buffer
 
 	ID3D11InputLayout *pLayout;
