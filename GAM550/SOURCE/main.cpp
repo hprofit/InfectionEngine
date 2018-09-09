@@ -61,10 +61,12 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	GameObject* pGO = INFECT_GOM.GetGameObject(0);
 	MeshComponent* pMeshComp = new MeshComponent();
-	pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
+	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
+	pMeshComp->SetScene(pScene);
 	
 	TransformComponent* pTransComp = new TransformComponent();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
+	pTransComp->SetScale(50.0f, 50.0f, 50.0f);
 
 	pGO->AddComponent(pMeshComp);
 	pGO->AddComponent(pTransComp);

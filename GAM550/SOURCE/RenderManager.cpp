@@ -156,8 +156,14 @@ void RenderManager::RenderFrame(const GameObject* pGOCamera, const GameObject* p
 void RenderManager::LoadShader()
 {
 	// load and compile the shaders
-	D3DX11CompileFromFile("ASSETS/SHADERS/shader.shader", 0, 0, "VShader", "vs_4_0", 0, 0, 0, &mp_VSBlob, 0, 0);
-	D3DX11CompileFromFile("ASSETS/SHADERS/shader.shader", 0, 0, "PShader", "ps_4_0", 0, 0, 0, &mp_PSBlob, 0, 0);
+	int flag = D3D10_SHADER_WARNINGS_ARE_ERRORS;// | D3D10_SHADER_OPTIMIZATION_LEVEL3;
+	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, 0, 0, &mp_VSBlob, &mp_Errors, 0);
+	if (mp_Errors)
+		MessageBox(NULL, "The vertex shader failed to compile.", "Error", MB_OK);
+
+	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, 0, 0, &mp_PSBlob, &mp_Errors, 0);
+	if (mp_Errors)
+		MessageBox(NULL, "The pixel shader failed to compile.", "Error", MB_OK);
 
 	// Encapsulate both shaders into shader objects
 	mp_Device->CreateVertexShader(mp_VSBlob->GetBufferPointer(), mp_VSBlob->GetBufferSize(), NULL, &mp_VS);
@@ -169,11 +175,14 @@ void RenderManager::LoadShader()
 
 void RenderManager::RenderScene(const Scene * pScene)
 {
-	//UINT stride = sizeof(Vertex);
-	//UINT offset = 0;
-	//ID3D11Buffer* buffers[] = { pMesh->VBuffer() };
-	//mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
+	for (int i = 0; i < pScene->NumMeshes(); ++i) {
+		const Mesh* pMesh = (*pScene)[i];
+		UINT stride = sizeof(Vertex);
+		UINT offset = 0;
+		ID3D11Buffer* buffers[] = { pMesh->VBuffer() };
+		mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
 
-	//mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//mp_DeviceContext->Draw(3, 0);
+		mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		mp_DeviceContext->Draw(3, 0);
+	}
 }

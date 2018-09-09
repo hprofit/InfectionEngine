@@ -26,7 +26,7 @@ private:
 
 	ID3D11VertexShader *mp_VS;    // the vertex shader
 	ID3D11PixelShader *mp_PS;     // the pixel shader
-	ID3D10Blob *mp_VSBlob, *mp_PSBlob;
+	ID3D10Blob *mp_VSBlob, *mp_PSBlob, *mp_Errors;
 
 public:
 	RenderManager();

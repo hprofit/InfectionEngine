@@ -6,7 +6,7 @@ struct VOut
 
 VOut VShader(
 	float4 position : POSITION, 
-	float4 position : NORMAL, 
+	float4 normal : NORMAL, 
 	float4 tangent : TANGENT, 
 	float4 bitangent : BITANGENT, 
 	float2 texCoords : TEXCOORDS, 
