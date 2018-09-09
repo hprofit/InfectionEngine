@@ -81,6 +81,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	pCamComp->LateInitialize();
 	pCamComp->LateUpdate(0);
 
+
+
 	// wait for the next message in the queue, store the result in 'msg'
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
@@ -91,6 +93,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		DispatchMessage(&msg);
 
 		INFECT_RENDERER.RenderFrame(pGOCamera, pGO);
+		
 	}
 	INFECT_RENDERER.CleanD3D();
 	// return this part of the WM_QUIT message to Windows

@@ -23,6 +23,9 @@ Author: <Holden Profit>
 //#include <fmod_studio.hpp>
 //#include <fmod.hpp>
 //#include <fmod_errors.h>
+#include <../FMOD Studio API Windows/api/studio/inc/fmod_studio.hpp>
+#include <../FMOD Studio API Windows/api/lowlevel/inc/fmod.hpp>
+#include <../FMOD Studio API Windows/api/lowlevel/inc/fmod_errors.h>
 //#include <External\Imgui\imgui.h>
 //#include <External\Imgui\imgui_impl_sdl_gl3.h>
 //#include <External\json.hpp>
@@ -253,7 +256,7 @@ Author: <Holden Profit>
 #include <EventManager.h>
 //#include <LevelManager.h>
 //#include <DebugManager.h>
-//#include <AudioManager.h>
+#include <AudioManager.h>
 //#include <MemoryManager.h>
 //#include <FloorPlanGenerator.h>
 //#include <ImguiManager.h>
