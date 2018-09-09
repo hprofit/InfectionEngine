@@ -39,8 +39,11 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 		v.u = mesh->mTextureCoords[0][i].x;
 		v.v = mesh->mTextureCoords[0][i].y;
 
-		aiColor4D color = mesh->mColors[0][i];
-		v.color = D3DXCOLOR(color.r, color.g, color.b, color.a);
+		//if (mesh->mColors[0][i]) {
+		//	aiColor4D color = mesh->mColors[0][i];
+		//	v.color = D3DXCOLOR(color.r, color.g, color.b, color.a);
+		//}
+		v.color = D3DXCOLOR(0,1,1,1);//D3DXCOLOR(color.r, color.g, color.b, color.a);
 
 		m_vertices.push_back(v);
 	}

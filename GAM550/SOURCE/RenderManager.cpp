@@ -156,8 +156,8 @@ void RenderManager::RenderFrame(const GameObject* pGOCamera, const GameObject* p
 void RenderManager::LoadShader()
 {
 	// load and compile the shaders
-	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", 0, 0, 0, &mp_VSBlob, 0, 0);
-	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", 0, 0, 0, &mp_PSBlob, 0, 0);
+	D3DX11CompileFromFile("ASSETS/SHADERS/shader.shader", 0, 0, "VShader", "vs_4_0", 0, 0, 0, &mp_VSBlob, 0, 0);
+	D3DX11CompileFromFile("ASSETS/SHADERS/shader.shader", 0, 0, "PShader", "ps_4_0", 0, 0, 0, &mp_PSBlob, 0, 0);
 
 	// Encapsulate both shaders into shader objects
 	mp_Device->CreateVertexShader(mp_VSBlob->GetBufferPointer(), mp_VSBlob->GetBufferSize(), NULL, &mp_VS);
