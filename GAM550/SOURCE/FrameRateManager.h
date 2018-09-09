@@ -4,10 +4,7 @@ Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
 File Name: FrameRateManager.h
 Purpose: Provides timer functionality to the engine. Singleton class.
-Language: C++
-Project: GAM541
-Author: Holden Profit, Hyoyup Chung
-Creation date: 1/17/18
+Author: Hyoyup Chung
 - End Header --------------------------------------------------------*/
 
 #pragma once

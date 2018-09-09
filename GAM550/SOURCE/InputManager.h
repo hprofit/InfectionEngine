@@ -2,12 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: InputManager.h
-Purpose: Provides all input related funcionality.
-Language: C++
-Project: GAM541
 Author: Hyoyup Chung
-Creation date: 1/17/18
 - End Header --------------------------------------------------------*/
 
 #pragma once

@@ -15,11 +15,11 @@ Author: <Holden Profit>
 //#include <Math\MathLibs.h>
 //#include <glew.h>
 //#include <GL\gl.h>
-//#include <SDL.h>
+#include <SDL.h>
 //#include <SDL_image.h>
 //#include <SDL_ttf.h>
-//#include <SDL_keycode.h>
-//#include <SDL_events.h>
+#include <SDL_keycode.h>
+#include <SDL_events.h>
 //#include <fmod_studio.hpp>
 //#include <fmod.hpp>
 //#include <fmod_errors.h>
@@ -42,7 +42,6 @@ Author: <Holden Profit>
 #pragma comment (lib, "d3dx11.lib")
 #pragma comment (lib, "d3dx10.lib")
 
-
 #include <xinput.h>
 
 #include <io.h>
@@ -50,6 +49,7 @@ Author: <Holden Profit>
 
 #include <ctime>
 #include <cstdlib>
+#include <cstdint>
 #include <cstdio>
 #include <fstream>
 #include <iostream>
@@ -65,7 +65,7 @@ Author: <Holden Profit>
 #include <chrono>
 #include <filesystem>
 #include <memory>
-//#include <stdlib.h>
+#include <stdlib.h>
 //#include <time.h>
 #include <math.h>
 
@@ -243,8 +243,8 @@ Author: <Holden Profit>
 #pragma region Globals + API
 //#include <GameConfig.h>
 //#include <GameStateManager.h>
-//#include <InputManager.h>
-//#include <FrameRateManager.h>
+#include <InputManager.h>
+#include <FrameRateManager.h>
 //#include <PostProcessing.h>
 //#include <GameObjectManager.h>
 #include <RenderManager.h>
