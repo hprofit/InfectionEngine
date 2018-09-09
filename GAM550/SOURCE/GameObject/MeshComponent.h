@@ -12,8 +12,7 @@ Author: <Holden Profit>
 class MeshComponent : public RenderableComponent
 {
 protected:	
-	std::shared_ptr<Mesh> m_pMesh;
-	std::shared_ptr<Scene> m_pScene;
+	Scene* mp_Scene;
 	//SurfaceTextureBuffer * m_pTexture;
 	//SurfaceTextureBuffer * m_pNormal;
 	//SurfaceTextureBuffer * m_pBump;
@@ -24,16 +23,11 @@ public:
 	static Component* CreateInstance() { return new MeshComponent(); }
 	virtual void Deactivate();
 	virtual void Update(float dt);
-	//virtual void Serialize(const json& j);
 	virtual void Serialize();
-	//void Override(const json& j);
 	void Override();
 
-	inline const std::shared_ptr<Mesh> GetMesh() const { return m_pMesh; }
-	inline void SetMesh(std::shared_ptr<Mesh> mesh) { m_pMesh = mesh; };
-
-	inline const std::shared_ptr<Scene> GetScene() const { return m_pScene; }
-	inline void SetScene(std::shared_ptr<Scene> scene) { m_pScene = scene; };
+	inline const Scene* GetScene() const { return mp_Scene; }
+	inline void SetScene(Scene* scene) { mp_Scene = scene; };
 
 	//inline const GLuint GetTextureBuffer() const { return m_pTexture ? m_pTexture->bufferId : 0; }
 	//inline const SurfaceTextureBuffer * GetTexture() const { return m_pTexture; }

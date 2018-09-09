@@ -248,7 +248,7 @@ Author: <Holden Profit>
 //#include <PostProcessing.h>
 #include <GameObjectManager.h>
 #include <RenderManager.h>
-//#include <ResourceManager.h>
+#include <ResourceManager.h>
 //#include <PhysicsManager.h>
 #include <EventManager.h>
 //#include <LevelManager.h>

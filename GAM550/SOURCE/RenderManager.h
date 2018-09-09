@@ -48,11 +48,11 @@ public:
 	// Closes Direct3D and releases memory
 	void CleanD3D(void);
 	// Renders a frame
-	void RenderFrame(Mesh* const pMesh);	
+	void RenderFrame(const GameObject* pGOCamera, const GameObject* pGO);
 
 	void LoadShader();
 
-	void RenderMesh(Mesh* const pMesh);
+	void RenderScene(const Scene * pScene);
 
 
 

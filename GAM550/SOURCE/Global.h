@@ -13,6 +13,7 @@ Author: <Holden Profit>
 #define INFECT_EVENTS Singleton<EventManager>::GetInstance()
 #define INFECT_GOM Singleton<GameObjectManager>::GetInstance()
 #define INFECT_RENDERER Singleton<RenderManager>::GetInstance()
+#define INFECT_RESOURCES Singleton<ResourceManager>::GetInstance()
 
 
 #endif

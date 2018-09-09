@@ -143,11 +143,11 @@ void RenderManager::CleanD3D()
 	mp_DeviceContext->Release();
 }
 
-void RenderManager::RenderFrame(Mesh* const pMesh) {
+void RenderManager::RenderFrame(const GameObject* pGOCamera, const GameObject* pGO) {
 	mp_DeviceContext->ClearRenderTargetView(mp_BackBuffer, m_ClearColor);
 
 	// do 3D rendering on the back buffer here
-	RenderMesh(pMesh);
+	RenderScene(pGO->GetComponent<MeshComponent>(C_Mesh)->GetScene());
 
 	// switch the back buffer and the front buffer
 	mp_SwapChain->Present(0, 0);
@@ -155,10 +155,9 @@ void RenderManager::RenderFrame(Mesh* const pMesh) {
 
 void RenderManager::LoadShader()
 {
-	//D3DX11CompileFromFile(L"ASSETS/SHADERS/base3DShader.shader", )
 	// load and compile the shaders
-	D3DX11CompileFromFile("ASSETS/SHADERS/shader.shader", 0, 0, "VShader", "vs_4_0", 0, 0, 0, &mp_VSBlob, 0, 0);
-	D3DX11CompileFromFile("ASSETS/SHADERS/shader.shader", 0, 0, "PShader", "ps_4_0", 0, 0, 0, &mp_PSBlob, 0, 0);
+	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", 0, 0, 0, &mp_VSBlob, 0, 0);
+	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", 0, 0, 0, &mp_PSBlob, 0, 0);
 
 	// Encapsulate both shaders into shader objects
 	mp_Device->CreateVertexShader(mp_VSBlob->GetBufferPointer(), mp_VSBlob->GetBufferSize(), NULL, &mp_VS);
@@ -168,13 +167,13 @@ void RenderManager::LoadShader()
 	mp_DeviceContext->PSSetShader(mp_PS, 0, 0);
 }
 
-void RenderManager::RenderMesh(Mesh * pMesh)
+void RenderManager::RenderScene(const Scene * pScene)
 {
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-	ID3D11Buffer* buffers[] = { pMesh->VBuffer() };
-	mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
+	//UINT stride = sizeof(Vertex);
+	//UINT offset = 0;
+	//ID3D11Buffer* buffers[] = { pMesh->VBuffer() };
+	//mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
 
-	mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	mp_DeviceContext->Draw(3, 0);
+	//mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//mp_DeviceContext->Draw(3, 0);
 }
