@@ -21,13 +21,12 @@
   <ItemGroup>
     <ClCompile Include="SOURCE\Event.cpp" />
     <ClCompile Include="SOURCE\EventManager.cpp" />
-    <ClCompile Include="SOURCE\FrameRateManager.cpp" />
+    <ClCompile Include="SOURCE\GameObjectManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\CameraComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\ComponentFactory.cpp" />
     <ClCompile Include="SOURCE\GameObject\GameObject.cpp" />
     <ClCompile Include="SOURCE\GameObject\MeshComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\TransformComponent.cpp" />
-    <ClCompile Include="SOURCE\InputManager.cpp" />
     <ClCompile Include="SOURCE\main.cpp" />
     <ClCompile Include="SOURCE\Math\MathFunctions.cpp" />
     <ClCompile Include="SOURCE\Math\Matrix2x2.cpp" />
@@ -37,6 +36,7 @@
     <ClCompile Include="SOURCE\Math\Vector3D.cpp" />
     <ClCompile Include="SOURCE\Mesh.cpp" />
     <ClCompile Include="SOURCE\RenderManager.cpp" />
+    <ClCompile Include="SOURCE\ResourceManager.cpp" />
     <ClCompile Include="SOURCE\Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -50,7 +50,7 @@
     <ClInclude Include="SOURCE\Event.h" />
     <ClInclude Include="SOURCE\EventManager.h" />
     <ClInclude Include="SOURCE\Face.h" />
-    <ClInclude Include="SOURCE\FrameRateManager.h" />
+    <ClInclude Include="SOURCE\GameObjectManager.h" />
     <ClInclude Include="SOURCE\GameObject\CameraComponent.h" />
     <ClInclude Include="SOURCE\GameObject\Component.h" />
     <ClInclude Include="SOURCE\GameObject\ComponentFactory.h" />
@@ -63,7 +63,6 @@
     <ClInclude Include="SOURCE\GameObject\TagNames.h" />
     <ClInclude Include="SOURCE\GameObject\TransformComponent.h" />
     <ClInclude Include="SOURCE\Global.h" />
-    <ClInclude Include="SOURCE\InputManager.h" />
     <ClInclude Include="SOURCE\Math\MathDefs.h" />
     <ClInclude Include="SOURCE\Math\MathFunctions.h" />
     <ClInclude Include="SOURCE\Math\Matrix2x2.h" />
@@ -73,6 +72,7 @@
     <ClInclude Include="SOURCE\Math\Vector3D.h" />
     <ClInclude Include="SOURCE\Mesh.h" />
     <ClInclude Include="SOURCE\RenderManager.h" />
+    <ClInclude Include="SOURCE\ResourceManager.h" />
     <ClInclude Include="SOURCE\Singleton.h" />
     <ClInclude Include="SOURCE\Stdafx.h" />
     <ClInclude Include="SOURCE\Subscriber.h" />
@@ -134,16 +134,16 @@
     <LibraryPath>$(DXSDK_DIR)Lib\x64\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Users\hman\Desktop\digipen\gam550\bit\infection\GAM550\SDL2\include;$(ProjectDir)SDL2\include;$(ProjectDir)SOURCE\;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)SDL2\lib\x64;$(DXSDK_DIR)Lib\x64\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)SOURCE\;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x64\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)SOURCE\;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(DXSDK_DIR)Lib\x64\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\hman\Desktop\digipen\gam550\bit\infection\GAM550\SDL2\include;$(ProjectDir)SDL2\include;$(ProjectDir)SOURCE\;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)SDL2\lib\x64;$(DXSDK_DIR)Lib\x64\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)SOURCE\;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x64\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -168,10 +168,10 @@
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)SDL2\include;$(ProjectDir)Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)SDL2\lib\x64;$(ProjectDir)Assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -185,14 +185,13 @@
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Assimp\include;$(ProjectDir)SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)Assimp\lib;$(ProjectDir)SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(ProjectDir)Assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -205,14 +204,13 @@
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)SDL2\include;$(ProjectDir)Assimp\include;$(ProjectDir)SDL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)Assimp\lib;$(ProjectDir)SDL2\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;SDL2.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>$(ProjectDir)Assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

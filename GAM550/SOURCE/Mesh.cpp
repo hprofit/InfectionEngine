@@ -10,28 +10,62 @@ Author: <Holden Profit>
 Scene::Scene(unsigned short numMeshes) : 
 	m_numMeshes(numMeshes)
 {
-	m_meshes = std::vector < std::shared_ptr<Mesh> >(m_numMeshes);
+	m_meshes = std::vector<Mesh*>(m_numMeshes);
 }
 
 Scene::~Scene() {}
 
+void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
+{
+	m_vertices.reserve(mesh->mNumVertices);
+	for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
+		Vertex v;
+		v.x = mesh->mVertices[i].x;
+		v.y = mesh->mVertices[i].y;
+		v.z = mesh->mVertices[i].z;
+
+		v.nX = mesh->mNormals[i].x;
+		v.nY = mesh->mNormals[i].y;
+		v.nZ = mesh->mNormals[i].z;
+
+		v.tX = mesh->mTangents[i].x;
+		v.tY = mesh->mTangents[i].y;
+		v.tZ = mesh->mTangents[i].z;
+
+		v.bX = mesh->mBitangents[i].x;
+		v.bY = mesh->mBitangents[i].y;
+		v.bZ = mesh->mBitangents[i].z;
+
+		v.u = mesh->mTextureCoords[0][i].x;
+		v.v = mesh->mTextureCoords[0][i].y;
+
+		//if (mesh->mColors[0][i]) {
+		//	aiColor4D color = mesh->mColors[0][i];
+		//	v.color = D3DXCOLOR(color.r, color.g, color.b, color.a);
+		//}
+		v.color = D3DXCOLOR(0,1,1,1);//D3DXCOLOR(color.r, color.g, color.b, color.a);
+
+		m_vertices.push_back(v);
+	}
+
+	m_faces.reserve(mesh->mNumFaces);
+	for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
+		m_faces.push_back(Face(mesh->mFaces[i]));
+	}
+}
+
 Mesh::Mesh()
 {
-	//std::fill(m_vboID, m_vboID + NUM_VBO_TYPES / sizeof(GLuint), 0);
 }
 
 Mesh::Mesh(const aiMesh * mesh)
 {
-	//std::fill(m_vboID, m_vboID + NUM_VBO_TYPES / sizeof(GLuint), 0);
-	//CreateFromAiMesh(mesh);
+	_CreateFromAiMesh(mesh);
 }
 
 Mesh::~Mesh()
 {
 	m_vertices.clear();
-	m_normals.clear();
-	m_tangents.clear();
-	m_bitangents.clear();
 	m_faces.clear();
 }
 
@@ -42,6 +76,22 @@ void Mesh::AddVertex(FLOAT x, FLOAT y, FLOAT z, D3DXCOLOR color)
 	vert.y = y;
 	vert.z = z;
 	vert.color = color;
+
+	vert.nX = 0;
+	vert.nY = 0;
+	vert.nZ = 0;
+
+	vert.tX = 0;
+	vert.tY = 0;
+	vert.tZ = 0;
+
+	vert.bX = 0;
+	vert.bY = 0;
+	vert.bZ = 0;
+
+	vert.u = 0;
+	vert.v = 0;
+
 	m_vertices.push_back(vert);
 }
 
@@ -66,7 +116,11 @@ void Mesh::FinishMesh()
 	D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "BITANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORDS", 0, DXGI_FORMAT_R16G16_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
 	ID3D10Blob * const vs = INFECT_RENDERER.VSBlob();

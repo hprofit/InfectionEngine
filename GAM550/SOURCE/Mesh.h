@@ -12,6 +12,10 @@ Author: <Holden Profit>
 
 struct Vertex {
 	FLOAT x, y, z;		// position
+	FLOAT nX, nY, nZ;	// normal
+	FLOAT tX, tY, tZ;	// tangent
+	FLOAT bX, bY, bZ;	// bitangent
+	FLOAT u, v;			// texture coords
 	D3DXCOLOR color;	// color
 };
 
@@ -40,21 +44,21 @@ class Mesh;
 class Scene {
 protected:
 	unsigned short m_numMeshes;
-	std::vector< std::shared_ptr<Mesh> > m_meshes;
+	std::vector< Mesh* > m_meshes;
 
 public:
 	Scene(unsigned short numMeshes);
 	~Scene();
 
 	unsigned short NumMeshes()	const { return m_numMeshes; }
-	std::shared_ptr<Mesh>	operator[](const int idx) const { return m_meshes[idx]; };
-	std::shared_ptr<Mesh>&	operator[](const int idx) { return m_meshes[idx]; };
+	Mesh*	operator[](const int idx) const { return m_meshes[idx]; };
+	Mesh*&	operator[](const int idx) { return m_meshes[idx]; };
 
-	std::shared_ptr<Mesh>	operator[](const unsigned int idx) const { return m_meshes[idx]; };
-	std::shared_ptr<Mesh>&	operator[](const unsigned int idx) { return m_meshes[idx]; };
+	Mesh*	operator[](const unsigned int idx) const { return m_meshes[idx]; };
+	Mesh*&	operator[](const unsigned int idx) { return m_meshes[idx]; };
 
-	std::vector< std::shared_ptr<Mesh> >::iterator begin() { return std::begin(m_meshes); }
-	std::vector< std::shared_ptr<Mesh> >::iterator end() { return std::end(m_meshes); }
+	std::vector< Mesh* >::iterator begin() { return std::begin(m_meshes); }
+	std::vector< Mesh* >::iterator end() { return std::end(m_meshes); }
 };
 
 class Mesh
@@ -62,24 +66,12 @@ class Mesh
 protected:
 	friend class Scene;
 
-	enum VBO_TYPE {
-		VBO_VERTICES = 0,
-		VBO_NORMALS,
-		VBO_TANGENTS,
-		VBO_BITANGENTS,
-		VBO_FACES,
-		VBO_TEX_COORDS,
-
-		NUM_VBO_TYPES
-	};
-
 	std::vector<Vertex> m_vertices;
-	std::vector<D3DXVECTOR3> m_normals, m_tangents, m_bitangents;
-	std::vector<FLOAT> m_texCoords;
-	std::vector<unsigned long> m_vertColors;
 	std::vector<Face> m_faces;
 
 	ID3D11Buffer *mp_VBuffer;
+
+	void _CreateFromAiMesh(const aiMesh* mesh);
 
 public:
 	Mesh();

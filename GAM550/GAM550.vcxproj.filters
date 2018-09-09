@@ -102,10 +102,10 @@
     <ClCompile Include="SOURCE\Math\MathFunctions.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\FrameRateManager.cpp">
+    <ClCompile Include="SOURCE\GameObjectManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\InputManager.cpp">
+    <ClCompile Include="SOURCE\ResourceManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -194,10 +194,10 @@
     <ClInclude Include="SOURCE\Math\MathDefs.h">
       <Filter>Source Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\FrameRateManager.h">
+    <ClInclude Include="SOURCE\GameObjectManager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\InputManager.h">
+    <ClInclude Include="SOURCE\ResourceManager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>

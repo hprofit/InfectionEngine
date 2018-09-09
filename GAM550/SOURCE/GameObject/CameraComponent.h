@@ -24,7 +24,6 @@ private:
 	Matrix4x4 m_viewMatrix, m_cameraMatrix;			// View matrix and perspective/orthographic matrix
 	bool m_primary;										// True if this camera is the game's primary camera
 	ProjectionType m_projectionType;					// True if this camera is Perspective, false if Orthographic
-	float m_zoomLevels[MAX_RESOLUTIONS];								// Holds the zoom amount for each resolution loaded into GameConfig
 
 	Matrix4x4 _MatrixFromCameraVectors(const Vector3D& right, const Vector3D& up, const Vector3D& forward);
 	void _CalcViewMatrix();

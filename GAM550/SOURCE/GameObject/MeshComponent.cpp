@@ -9,7 +9,7 @@ Author: <Holden Profit>
 
 MeshComponent::MeshComponent() :
 	RenderableComponent(ComponentType::C_Mesh),
-	m_pMesh(nullptr)
+	mp_Scene(nullptr)
 {
 }
 
