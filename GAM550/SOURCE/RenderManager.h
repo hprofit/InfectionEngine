@@ -10,6 +10,15 @@ Author: <Holden Profit>
 #ifndef RENDER_MANAGER_H
 #define RENDER_MANAGER_H
 
+// 272 bytes
+struct ConstantBuffer {
+	Matrix4x4 PerspectiveMatrix;
+	Matrix4x4 ViewMatrix;
+	Matrix4x4 ModelMatrix;
+	Matrix4x4 NormalMatrix;
+	Vector3D CameraPosition;
+};
+
 class RenderManager : public Subscriber
 {
 private:
@@ -23,9 +32,9 @@ private:
 	bool m_FullScreen;
 
 
-
-	ID3D11VertexShader *mp_VS;    // the vertex shader
-	ID3D11PixelShader *mp_PS;     // the pixel shader
+	ID3D11Buffer *mp_Cbuffer;		// the constant buffer
+	ID3D11VertexShader *mp_VS;		// the vertex shader
+	ID3D11PixelShader *mp_PS;		// the pixel shader
 	ID3D10Blob *mp_VSBlob, *mp_PSBlob, *mp_Errors;
 
 public:
@@ -50,9 +59,9 @@ public:
 	// Renders a frame
 	void RenderFrame(const GameObject* pGOCamera, const GameObject* pGO);
 
-	void LoadShader();
-
 	void RenderScene(const Scene * pScene);
+
+	void LoadShader();
 
 
 

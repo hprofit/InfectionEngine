@@ -146,11 +146,44 @@ void RenderManager::CleanD3D()
 void RenderManager::RenderFrame(const GameObject* pGOCamera, const GameObject* pGO) {
 	mp_DeviceContext->ClearRenderTargetView(mp_BackBuffer, m_ClearColor);
 
+	const CameraComponent * pCamComp = pGOCamera->GetComponent<CameraComponent>(C_Camera);
+	Matrix4x4 M = pGO->GetComponent<TransformComponent>(C_Transform)->GetTransform();
+	Matrix4x4 N = Matrix4x4::Transpose3x3(Matrix4x4::Inverse3x3(M));
+
+	ConstantBuffer cb;
+	cb.PerspectiveMatrix = pCamComp->GetCameraMatrix();
+	cb.ViewMatrix = pCamComp->GetViewMatrix();
+	cb.ModelMatrix = M;
+	cb.NormalMatrix = N;
+	cb.CameraPosition = pGOCamera->GetComponent<TransformComponent>(C_Transform)->GetPosition();
+
+
+	mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_Cbuffer);
+	// set the new values for the constant buffer
+	mp_DeviceContext->UpdateSubresource(mp_Cbuffer, 0, 0, &cb, 0, 0);
+
+
+
+
 	// do 3D rendering on the back buffer here
 	RenderScene(pGO->GetComponent<MeshComponent>(C_Mesh)->GetScene());
 
 	// switch the back buffer and the front buffer
 	mp_SwapChain->Present(0, 0);
+}
+
+void RenderManager::RenderScene(const Scene * pScene)
+{
+	for (int i = 0; i < pScene->NumMeshes(); ++i) {
+		const Mesh* pMesh = (*pScene)[i];
+		UINT stride = sizeof(Vertex);
+		UINT offset = 0;
+		ID3D11Buffer* buffers[] = { pMesh->VBuffer() };
+		mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
+
+		mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		mp_DeviceContext->Draw(3, 0);
+	}
 }
 
 void RenderManager::LoadShader()
@@ -171,18 +204,13 @@ void RenderManager::LoadShader()
 
 	mp_DeviceContext->VSSetShader(mp_VS, 0, 0);
 	mp_DeviceContext->PSSetShader(mp_PS, 0, 0);
-}
 
-void RenderManager::RenderScene(const Scene * pScene)
-{
-	for (int i = 0; i < pScene->NumMeshes(); ++i) {
-		const Mesh* pMesh = (*pScene)[i];
-		UINT stride = sizeof(Vertex);
-		UINT offset = 0;
-		ID3D11Buffer* buffers[] = { pMesh->VBuffer() };
-		mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
+	D3D11_BUFFER_DESC bd;
+	ZeroMemory(&bd, sizeof(bd));
 
-		mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		mp_DeviceContext->Draw(3, 0);
-	}
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = 272;
+	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+
+	mp_Device->CreateBuffer(&bd, NULL, &mp_Cbuffer);
 }

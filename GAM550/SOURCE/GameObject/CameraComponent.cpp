@@ -91,6 +91,7 @@ void CameraComponent::LateUpdate(float dt)
 			break;
 		}
 	}
+	m_finalMatrix = m_cameraMatrix * m_viewMatrix;
 }
 
 float CameraComponent::GetFOV() const
