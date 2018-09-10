@@ -6,6 +6,26 @@ LRESULT CALLBACK WindowProc(HWND hWnd,
 	WPARAM wParam,
 	LPARAM lParam);
 
+// this is the main message handler for the program
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	// sort through and find what code to run for the message given
+	switch (message)
+	{
+		// this message is read when the window is closed
+	case WM_DESTROY:
+	{
+		INFECT_GAME_STATE.SetGameState(GameState::QUIT);
+		// close the application entirely
+		PostQuitMessage(0);
+		return 0;
+	} break;
+	}
+
+	// Handle any messages the switch statement didn't
+	return DefWindowProc(hWnd, message, wParam, lParam);
+}
+
 RenderManager::RenderManager() : 
 	mp_SwapChain(nullptr),
 	mp_Device(nullptr),
@@ -22,11 +42,32 @@ RenderManager::~RenderManager()
 }
 
 
-void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, bool fullScreen, unsigned int screenWidth, unsigned int screenHeight)
+void RenderManager::InitConsole()
 {
-	m_FullScreen = fullScreen;
-	m_ScreenWidth = screenWidth;
-	m_ScreenHeight = screenHeight;
+	if (AllocConsole())
+	{
+		FILE* file;
+
+		freopen_s(&file, "CONOUT$", "wt", stdout);
+		freopen_s(&file, "CONOUT$", "wt", stderr);
+		freopen_s(&file, "CONOUT$", "wt", stdin);
+
+		SetConsoleTitle("Infect Engine");
+	}
+}
+
+void RenderManager::DestroyConsole() 
+{
+	if (FreeConsole()) {
+		
+	}
+}
+
+void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings)
+{
+	m_FullScreen = settings.FullScreen;
+	m_ScreenWidth = settings.Width;
+	m_ScreenHeight = settings.Height;
 	m_AspectRatio = (float)m_ScreenWidth / (float)m_ScreenHeight;
 	
 	// the handle for the window, filled by a function
@@ -52,7 +93,7 @@ void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, bool fullScree
 	// create the window and use the result as the handle
 	hWnd = CreateWindowEx(NULL,
 		"WindowClass1",    // name of the window class
-		"Our First Windowed Program",   // title of the window
+		settings.WindowTitle.c_str(),   // title of the window
 		WS_OVERLAPPEDWINDOW,    // window style
 		CW_USEDEFAULT,    // x-position of the window
 		CW_USEDEFAULT,    // y-position of the window
@@ -143,12 +184,15 @@ void RenderManager::CleanD3D()
 	mp_Device->Release();
 	mp_DeviceContext->Release();
 }
+
 void RenderManager::FrameStart(void)
 {
 }
+
 void RenderManager::FrameEnd(void)
 {
 }
+
 static float Time = 0.0f; 
 void RenderManager::RenderFrame(const GameObject* pGOCamera, const GameObject* pGO) {
 	mp_DeviceContext->ClearRenderTargetView(mp_BackBuffer, m_ClearColor);
@@ -157,7 +201,7 @@ void RenderManager::RenderFrame(const GameObject* pGOCamera, const GameObject* p
 	Matrix4x4 M = pGO->GetComponent<TransformComponent>(C_Transform)->GetTransform();
 	Matrix4x4 N = Matrix4x4::Transpose3x3(Matrix4x4::Inverse3x3(M));
 
-	ConstantBuffer cb;
+	//ConstantBuffer cb;
 	//cb.PerspectiveMatrix = pCamComp->GetCameraMatrix();
 	//cb.ViewMatrix = pCamComp->GetViewMatrix();
 	//cb.ModelMatrix = M;

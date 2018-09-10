@@ -13,11 +13,18 @@ namespace Infect {
 	//! int Initialize(std::string configFileName)
 	/*!
 	\param configFileName The config json file to use for setup, must include file path
+	\param hInstance
+	\param nCmdShow
 	\return Error code: 0 - everything went well, non-zero - something went wrong
 	*/
-	int Initialize(std::string configFileName);
+	int Initialize(std::string configFileName, HINSTANCE hInstance, int nCmdShow);
 
-	void StartGameLoop();
+	//! MSG StartGameLoop()
+	/*!
+	Calls the Game State to begin the engine game loop
+	\return MSG: Windows message
+	*/
+	MSG StartGameLoop();
 
 	float GetFrameTime();
 
@@ -40,12 +47,6 @@ namespace Infect {
 	*/
 	void FrameEnd();
 
-	//! void UnloadResources()
-	/*!
-	Calls to unload all currently loaded resources. Meshes, textures, game object archetypes, etc.
-	*/
-	void UnloadResources();
-
 	//! void LoadGameObjects(std::string fileName)
 	/*!
 	Parses a given json file which in turn should list other json files each containing a game object archetype.
@@ -53,6 +54,18 @@ namespace Infect {
 	\param fileName - The json file containing what game object archetypess to load, must include file path
 	*/
 	void LoadPrefabs(std::string filePath);
+
+	//! void UnloadResources()
+	/*!
+	Calls to unload all currently loaded resources. Meshes, textures, game object archetypes, etc.
+	*/
+	void UnloadResources();
+
+	//! void Cleanup()
+	/*!
+	Calls all appropriate cleanup functions for the engine's managers.
+	*/
+	void Cleanup();
 }
 
 #endif

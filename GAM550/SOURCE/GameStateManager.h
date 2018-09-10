@@ -27,16 +27,15 @@ private:
 	bool m_isGamePaused;
 	bool m_isLevelOver;
 
-	void SetGameState(GameState);
-	void ActivateCheats();
 public:
 	GameStateManager();
 	~GameStateManager();
 	GameStateManager(const GameStateManager &) = delete;
 	void operator=(const GameStateManager &) = delete;
 
-	void Update();
+	MSG Update();
 	virtual void HandleEvent(Event* p_event);
+	void SetGameState(GameState);
 
 	bool IsDebugPause() { return m_debugPause; }
 	void PauseGame(bool active) {  m_isGamePaused = active; }

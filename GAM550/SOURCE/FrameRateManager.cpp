@@ -49,7 +49,7 @@ void FrameRateManager::FrameEnd() {
 	//	m_frameTime = GetMaxFrameRate();
 	//	m_totalElapsedTime += m_frameTime;
 	//}
-	else {
+	//else {
 		auto dur = m_tickEnd - m_tickStart;
 		FloatSecond fsec = std::chrono::duration_cast<FloatSecond>(dur);
 		m_frameTime = float(fsec.count()); //  / 1000.0f;
@@ -57,10 +57,10 @@ void FrameRateManager::FrameEnd() {
 
 		m_secondCounter += m_frameTime;
 		float fps = 1.0f / m_frameTime;
-		if (fps < 40.0f) {
-			//std::cout << "FPS dropped to: " << fps << std::endl;
-		}
-	}
+		//if (fps < 40.0f) {
+		//	//std::cout << "FPS dropped to: " << fps << std::endl;
+		//}
+	//}
 
 	//if (m_secondCounter >= 0.1f) {
 	//	TETRA_EVENTS.BroadcastEventToSubscribers(&Event(EventType::EVENT_FPS_UPDATE, &FloatData(1/m_frameTime)));

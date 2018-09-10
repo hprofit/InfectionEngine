@@ -9,26 +9,33 @@ Author: <Holden Profit>
 
 namespace Infect {
 
-	int Initialize(std::string configFile)
+	int Initialize(std::string configFile, HINSTANCE hInstance, int nCmdShow)
 	{
+		INFECT_EVENTS.Init();
+		INFECT_GAME_CONFIG.LoadConfig(configFile);
 		INFECT_RESOURCES.Init();
-
+		INFECT_GOM.Init();
+		if (INFECT_GAME_CONFIG.IsConsoleEnabled())
+			INFECT_RENDERER.InitConsole();
+		INFECT_RENDERER.InitWindow(hInstance, nCmdShow, INFECT_GAME_CONFIG.WindowSettings());
+		INFECT_RENDERER.LoadShader();
+		
 		return 0;
 	}
 
-	void StartGameLoop()
+	MSG StartGameLoop()
 	{
-		INFECT_GAME_STATE.Update(); // Start game loop
+		return INFECT_GAME_STATE.Update(); // Start game loop
 	}
 
 	float GetFrameTime()
 	{
-		//return INFECT_FRAMERATE.GetFrameTime();
+		return INFECT_FRAMERATE.GetFrameTime();
 	}
 
 	void FrameStart()
 	{
-		//INFECT_FRAMERATE.FrameStart();
+		INFECT_FRAMERATE.FrameStart();
 		INFECT_RENDERER.FrameStart();
 	}
 
@@ -44,6 +51,9 @@ namespace Infect {
 		//INFECT_PHYSICS.ResolveCollisions();						// Resolve collisions on physics bodies
 		//INFECT_GAME_OBJECTS.LateUpdate(deltaTime);				// Update game logic that occurs after physics
 
+		//INFECT_RENDERER.RenderFrame(pGOCamera, pGO);
+
+
 		//INFECT_GAME_OBJECTS.RenderGameObjects();					// Render all game objects
 		//INFECT_IMGUI.Update();									// Update all Imgui commands
 	}
@@ -52,8 +62,12 @@ namespace Infect {
 	{
 		//INFECT_IMGUI.FrameEnd();									// Render Imgui commands
 		INFECT_RENDERER.FrameEnd();								// Swap window buffer
-		//INFECT_FRAMERATE.FrameEnd();								// Lock FPS 
-		// TODO: Clean up GameObjects
+		INFECT_FRAMERATE.FrameEnd();								// Lock FPS 
+	}
+
+	void LoadPrefabs(std::string fileName)
+	{
+
 	}
 
 	void UnloadResources()
@@ -61,8 +75,9 @@ namespace Infect {
 		INFECT_RESOURCES.UnloadAll();
 	}
 
-	void LoadPrefabs(std::string fileName)
+	void Cleanup()
 	{
-
+		INFECT_RENDERER.DestroyConsole();
+		INFECT_RENDERER.CleanD3D();
 	}
 }

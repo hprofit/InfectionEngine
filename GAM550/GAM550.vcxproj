@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClCompile Include="SOURCE\Event.cpp" />
     <ClCompile Include="SOURCE\EventManager.cpp" />
+    <ClCompile Include="SOURCE\FrameRateManager.cpp" />
+    <ClCompile Include="SOURCE\GameConfig.cpp" />
     <ClCompile Include="SOURCE\GameObjectManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\CameraComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\ComponentFactory.cpp" />
@@ -29,6 +31,7 @@
     <ClCompile Include="SOURCE\GameObject\TransformComponent.cpp" />
     <ClCompile Include="SOURCE\GameStateManager.cpp" />
     <ClCompile Include="SOURCE\InfectAPI.cpp" />
+    <ClCompile Include="SOURCE\JsonReader.cpp" />
     <ClCompile Include="SOURCE\main.cpp" />
     <ClCompile Include="SOURCE\Math\MathFunctions.cpp" />
     <ClCompile Include="SOURCE\Math\Matrix2x2.cpp" />
@@ -52,6 +55,8 @@
     <ClInclude Include="SOURCE\Event.h" />
     <ClInclude Include="SOURCE\EventManager.h" />
     <ClInclude Include="SOURCE\Face.h" />
+    <ClInclude Include="SOURCE\FrameRateManager.h" />
+    <ClInclude Include="SOURCE\GameConfig.h" />
     <ClInclude Include="SOURCE\GameObjectManager.h" />
     <ClInclude Include="SOURCE\GameObject\CameraComponent.h" />
     <ClInclude Include="SOURCE\GameObject\Component.h" />
@@ -67,6 +72,7 @@
     <ClInclude Include="SOURCE\GameStateManager.h" />
     <ClInclude Include="SOURCE\Global.h" />
     <ClInclude Include="SOURCE\InfectAPI.h" />
+    <ClInclude Include="SOURCE\JsonReader.h" />
     <ClInclude Include="SOURCE\Math\MathDefs.h" />
     <ClInclude Include="SOURCE\Math\MathFunctions.h" />
     <ClInclude Include="SOURCE\Math\Matrix2x2.h" />

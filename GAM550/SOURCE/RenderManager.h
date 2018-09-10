@@ -51,8 +51,12 @@ public:
 	inline unsigned int ScreenWidth() const { return m_ScreenWidth; }
 	inline unsigned int ScreenHeight() const { return m_ScreenHeight; }
 
+	// Creates a console for output
+	void InitConsole();
+	// Destroys the active console
+	void DestroyConsole();
 	// Sets up and initializes window
-	void InitWindow(HINSTANCE hInstance, int nCmdShow, bool fullScreen, unsigned int screenWidth, unsigned int screenHeight);
+	void InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings);
 	// Sets up and initializes Direct3D
 	void InitD3D(HWND hWnd);
 	// Closes Direct3D and releases memory
@@ -67,7 +71,7 @@ public:
 
 	void RenderScene(const Scene * pScene);
 
-	void LoadShader();
+	void LoadShader(void);
 
 
 
