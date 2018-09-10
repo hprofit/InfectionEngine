@@ -108,7 +108,7 @@
     <ClCompile Include="SOURCE\ResourceManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\Semester%27s\3rd sem\GAM 550\Temp\infection\GAM550\SOURCE\AudioManager.cpp">
+    <ClCompile Include="SOURCE\AudioManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -203,7 +203,7 @@
     <ClInclude Include="SOURCE\ResourceManager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\Semester%27s\3rd sem\GAM 550\Temp\infection\GAM550\SOURCE\AudioManager.h">
+    <ClInclude Include="SOURCE\AudioManager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
