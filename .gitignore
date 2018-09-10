@@ -304,6 +304,7 @@ __pycache__/
 # OpenCover UI analysis results
 OpenCover/
 
+!GAM550/SDL2/lib/*
 !GAM550/ASSETS/MESHES/*.obj
 GAM550/SOURCE/Math/*.o
 GAM550/SOURCE/Math/*.exe
