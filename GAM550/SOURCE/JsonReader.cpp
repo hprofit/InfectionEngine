@@ -317,22 +317,13 @@ namespace JsonReader {
 	{
 		try {
 			std::ifstream i(fileName);
-			if (i.is_open()) {
-				json j;
-				i >> j;
-				i.close();
-				return j;
-			}
-			else {
-				throw;
-			}
+			json j;
+			i >> j;
+			i.close();
+			return j;
 		}
 		catch (json::parse_error &e) {
 			std::cout << e.what() << " in" + fileName << std::endl;
-			return 0;
-		}
-		catch (std::exception& e) {
-			std::cerr << "Something went wrong." << std::endl;
 			return 0;
 		}
 	}

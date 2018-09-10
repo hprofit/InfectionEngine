@@ -8,16 +8,17 @@ Author: <Holden Profit>
 #include <Stdafx.h>
 
 CameraComponent::CameraComponent() :
-	Component(ComponentType::C_Camera),
+	//Component(ComponentType::C_Camera),
+	Component(),
 	m_fov(105.f), m_aspectRatio(1.f), m_Near(0.1f), m_Far(1000.0f),
-	m_viewMatrix(Matrix4x4()), m_cameraMatrix(Matrix4x4()), m_primary(false), m_projectionType(ProjectionType::PT_Perspective)
+	m_viewMatrix(Matrix4x4()), m_cameraMatrix(Matrix4x4()), m_projectionType(ProjectionType::PT_Perspective), m_Depth(0)
 {
 }
 
 CameraComponent::~CameraComponent(){}
 
 void CameraComponent::Deactivate() {
-	pGO = nullptr;
+	mp_Parent = nullptr;
 	m_pTransform = nullptr; 
 }
 
@@ -37,7 +38,7 @@ void CameraComponent::_CalcViewMatrix()
 	m_viewMatrix = rotationM * Matrix4x4::Translate(-1 * m_pTransform->GetPosition());
 }
 
-void CameraComponent::Serialize()
+void CameraComponent::Serialize(const json& j)
 {
 	//m_primary = ParseBool(j, "primary");
 	//m_isPersp = ParseBool(j, "perspective");
@@ -61,12 +62,22 @@ void CameraComponent::HandleEvent(Event * pEvent)
 	}
 }
 
+bool CameraComponent::LeftDepthGreaterThanRight(GameObject * left, GameObject * right)
+{
+	CameraComponent* cLeft = left->GetComponent<CameraComponent>();
+	CameraComponent* cRight = right->GetComponent<CameraComponent>();
+
+	return cLeft->m_Depth > cRight->m_Depth;
+}
+
 void CameraComponent::LateInitialize()
 {
 	if (!m_pTransform) {
-		assert(pGO && "No Game Object found. CameraComponent failed to operate.");
-		m_pTransform = pGO->GetComponent<TransformComponent>(ComponentType::C_Transform);
+		assert(mp_Parent && "No Game Object found. CameraComponent failed to operate.");
+		m_pTransform = mp_Parent->GetComponent<TransformComponent>();
 		assert(m_pTransform && "No TransformComponent found. CameraComponent requires a TransformComponent.");
+
+		INFECT_GOM.RegisterCamera(mp_Parent);
 	}
 }
 
@@ -76,32 +87,21 @@ void CameraComponent::Update(float dt)
 
 void CameraComponent::LateUpdate(float dt)
 {
-	float width = (float)INFECT_RENDERER.ScreenWidth();
-	float height = (float)INFECT_RENDERER.ScreenHeight();
-	m_aspectRatio = INFECT_RENDERER.AspectRatio();
 	_CalcViewMatrix();
 	switch (m_projectionType) {
 		case ProjectionType::PT_Orthographic: {
+			float width = (float)INFECT_RENDERER.ScreenWidth();
+			float height = (float)INFECT_RENDERER.ScreenHeight();
 			m_cameraMatrix = Matrix4x4::Orthographic(width, height, m_Near, m_Far);
 			break;
 		}
 		case ProjectionType::PT_Perspective:
 		default: {
-			m_cameraMatrix = Matrix4x4::Perspective(m_fov, m_aspectRatio, m_Near, m_Far);
+			m_cameraMatrix = Matrix4x4::Perspective(m_fov, INFECT_RENDERER.AspectRatio(), m_Near, m_Far);
 			break;
 		}
 	}
 	m_finalMatrix = m_cameraMatrix * m_viewMatrix;
-}
-
-float CameraComponent::GetFOV() const
-{
-	return m_fov;
-}
-
-float CameraComponent::GetAspect() const
-{
-	return m_aspectRatio;
 }
 
 Vector3D CameraComponent::TransformPointToScreenSpace(const Vector3D& worldCoordinates) {

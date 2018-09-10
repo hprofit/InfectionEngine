@@ -18,12 +18,15 @@ protected:
 	//SurfaceTextureBuffer * m_pBump;
 
 public:
+	static const ComponentType Type = ComponentType::C_Mesh;
+	virtual ComponentType GetType() const { return Type; }
+
 	MeshComponent();
 	~MeshComponent();
 	static Component* CreateInstance() { return new MeshComponent(); }
 	virtual void Deactivate();
 	virtual void Update(float dt);
-	virtual void Serialize();
+	virtual void Serialize(const json& j);
 	void Override();
 
 	inline const Scene* GetScene() const { return mp_Scene; }

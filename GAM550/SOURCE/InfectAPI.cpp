@@ -45,16 +45,16 @@ namespace Infect {
 		//INFECT_DEBUG.Update();									// Toggles debug drawing if needed
 		INFECT_EVENTS.Update(deltaTime);							// Pump the event manager
 		//INFECT_AUDIO.Update(deltaTime);
-		//INFECT_GAME_OBJECTS.Update(deltaTime);					// Update game logic
-		//INFECT_GAME_OBJECTS.UpdateStatus();						// Update status of game objects
+		//INFECT_GOM.Update(deltaTime);					// Update game logic
+		//INFECT_GOM.UpdateStatus();						// Update status of game objects
 		//INFECT_PHYSICS.Integrate(deltaTime);						// Move physics bodies
 		//INFECT_PHYSICS.ResolveCollisions();						// Resolve collisions on physics bodies
-		//INFECT_GAME_OBJECTS.LateUpdate(deltaTime);				// Update game logic that occurs after physics
+		//INFECT_GOM.LateUpdate(deltaTime);				// Update game logic that occurs after physics
 
 		//INFECT_RENDERER.RenderFrame(pGOCamera, pGO);
 
 
-		//INFECT_GAME_OBJECTS.RenderGameObjects();					// Render all game objects
+		INFECT_GOM.RenderCameras();					// Render all game objects
 		//INFECT_IMGUI.Update();									// Update all Imgui commands
 	}
 

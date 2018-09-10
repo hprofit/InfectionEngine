@@ -10,20 +10,28 @@ Author: <Holden Profit>
 #ifndef GAME_OBJECT_MANAGER_H
 #define GAME_OBJECT_MANAGER_H
 
-#define MAX_GAMEOBJECTS 2//2048
+#define MAX_GAMEOBJECTS 2048
 
 class GameObjectManager : public Subscriber
 {
 private:
-	GameObject * mp_GameObjects[MAX_GAMEOBJECTS];
+	std::vector<GameObject *> mp_GameObjects;
+	std::vector<GameObject *> mp_Cameras;
 
+	unsigned int m_GUID;
 public:
 	GameObjectManager();
 	~GameObjectManager();
 
 	void Init() {};
 
+	GameObject* SpawnGameObject();
+
 	GameObject* GetGameObject(unsigned int id) const { return mp_GameObjects[id]; }
+
+	void RegisterCamera(GameObject* cameraGO);
+
+	void RenderCameras();
 };
 
 #endif

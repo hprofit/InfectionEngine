@@ -236,5 +236,8 @@
     <ClInclude Include="SOURCE\JsonReader.h">
       <Filter>Source Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="SOURCE\Sorting.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

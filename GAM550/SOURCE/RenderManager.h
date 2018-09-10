@@ -66,8 +66,8 @@ public:
 
 	void FrameEnd(void);
 
-	// Renders a frame
-	void RenderFrame(const GameObject* pGOCamera, const GameObject* pGO);
+	// Renders an object given a specific camera
+	void RenderObject(const GameObject* pGOCamera, const GameObject* pGO);
 
 	void RenderScene(const Scene * pScene);
 

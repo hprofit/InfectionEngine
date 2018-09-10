@@ -91,8 +91,6 @@ using namespace JsonReader;
 #include <Face.h>
 #include <GameObject\GameObjectTags.h>
 #include <GameObject\ComponentTypes.h>
-//#include <AI_StateTypes.h>
-//#include <Layers.h>
 #include <Event.h>
 #include <SubscriberTracker.h>
 #include <Subscriber.h>
@@ -105,7 +103,7 @@ using namespace JsonReader;
 //#include <Shader.h>
 //#include <ShaderProgram.h>
 //#include <ImageRenderer.h>
-//#include <Sorting.h>
+#include <Sorting.h>
 //#include <Shape.h>
 #pragma endregion
 
@@ -147,13 +145,6 @@ using namespace JsonReader;
 //#include <AI_RockBossAttack.h>
 //#include <AI_StateFactory.h>
 #pragma endregion
-
-#pragma region Attacks
-//#include <Attack.h>
-//#include <AOEAttack.h>
-//#include <RangeAttack.h>
-//#include <MeleeAttack.h>
-#pragma endregion 
 
 #pragma region Components
 #include <GameObject\TransformComponent.h>

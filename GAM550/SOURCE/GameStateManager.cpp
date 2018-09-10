@@ -20,6 +20,66 @@ GameStateManager::~GameStateManager() {}
 MSG GameStateManager::Update() {
 	// this struct holds Windows event messages
 	MSG msg;
+
+
+
+
+
+
+
+
+
+
+	Mesh* pMesh = new Mesh();
+	pMesh->AddVertex(0.0f, 0.5f, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(0.45f, -0.5, 0.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(-0.45f, -0.5f, 0.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->FinishMesh();
+	Scene* pScene = new Scene(1);
+	(*pScene)[0] = pMesh;
+	
+	GameObject* pGO = INFECT_GOM.SpawnGameObject();
+	MeshComponent* pMeshComp = new MeshComponent();
+	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
+	pMeshComp->SetScene(pScene);
+	
+	TransformComponent* pTransComp = new TransformComponent();
+	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
+	pTransComp->SetScale(50.0f, 50.0f, 50.0f);
+	
+	pGO->AddComponent(pMeshComp);
+	pGO->AddComponent(pTransComp);
+	pGO->LateInitialize();
+	
+	pGO->Update(0);
+	pGO->LateUpdate(0);
+	
+	GameObject* pGOCamera = INFECT_GOM.SpawnGameObject();
+	TransformComponent* pTransComp2 = new TransformComponent();
+	pTransComp2->SetPosition(Vector3D(0, 0, 10, 1));
+	
+	CameraComponent * pCamComp = new CameraComponent();
+	pGOCamera->AddComponent(pTransComp2);
+	pGOCamera->AddComponent(pCamComp);
+	pGOCamera->LateInitialize();
+	
+	pGOCamera->Update(0);
+	pGOCamera->LateUpdate(0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	while (m_currentState != GameState::QUIT) {
 
 		m_currentState = GameState::CURRENT_LEVEL;
@@ -51,49 +111,6 @@ MSG GameStateManager::Update() {
 
 		m_currentState = m_nextState;
 	}
-
-
-
-
-	//Mesh* pMesh = new Mesh();
-	//pMesh->AddVertex(0.0f, 0.5f, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
-	//pMesh->AddVertex(0.45f, -0.5, 0.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
-	//pMesh->AddVertex(-0.45f, -0.5f, 0.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
-	//pMesh->FinishMesh();
-	//Scene* pScene = new Scene(1);
-	//(*pScene)[0] = pMesh;
-	//
-	//GameObject* pGO = INFECT_GOM.GetGameObject(0);
-	//MeshComponent* pMeshComp = new MeshComponent();
-	////pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
-	//pMeshComp->SetScene(pScene);
-	//
-	//TransformComponent* pTransComp = new TransformComponent();
-	//pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
-	//pTransComp->SetScale(50.0f, 50.0f, 50.0f);
-	//
-	//pGO->AddComponent(pMeshComp);
-	//pGO->AddComponent(pTransComp);
-	//pGO->LateInitialize();
-	//
-	//pGO->Update(0);
-	//pGO->LateUpdate(0);
-	//
-	//GameObject* pGOCamera = INFECT_GOM.GetGameObject(1);
-	//TransformComponent* pTransComp2 = new TransformComponent();
-	//pTransComp2->SetPosition(Vector3D(0, 0, 10, 1));
-	//
-	//CameraComponent * pCamComp = new CameraComponent();
-	//pGOCamera->AddComponent(pTransComp2);
-	//pGOCamera->AddComponent(pCamComp);
-	//pGOCamera->LateInitialize();
-	//
-	//pGOCamera->Update(0);
-	//pGOCamera->LateUpdate(0);
-
-
-
-
 
 	Infect::UnloadResources();	// Unloads all resources
 	Infect::Cleanup();

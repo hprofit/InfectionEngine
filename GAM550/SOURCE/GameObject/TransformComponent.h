@@ -26,6 +26,9 @@ private:
 
 	void _UpdateLookAt();
 public:
+	static const ComponentType Type = ComponentType::C_Transform;
+	virtual ComponentType GetType() const { return Type; }
+
 	TransformComponent();
 	~TransformComponent();
 
@@ -33,7 +36,7 @@ public:
 	virtual void Deactivate();
 	virtual void Update(float dt);
 	virtual void LateUpdate(float dt);
-	virtual void Serialize();
+	virtual void Serialize(const json& j);
 	virtual void Override();
 
 	virtual void HandleEvent(Event * p_event);

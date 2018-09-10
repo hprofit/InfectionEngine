@@ -20,7 +20,8 @@ void TransformComponent::_UpdateLookAt()
 #pragma endregion
 
 TransformComponent::TransformComponent() :
-	Component(ComponentType::C_Transform),
+	//Component(ComponentType::C_Transform),
+	Component(),
 	m_prevPosition(Vector3D()),
 	m_position(Vector3D()),
 	m_scale(Vector3D()), 
@@ -36,7 +37,7 @@ TransformComponent::~TransformComponent()
 }
 
 void TransformComponent::Deactivate() {
-	pGO = nullptr;
+	mp_Parent = nullptr;
 	m_parent = nullptr;
 }
 
@@ -72,7 +73,7 @@ void TransformComponent::LateUpdate(float dt) {
 	m_worldPosition = Vector3D(m_transform._03(), m_transform._13(), m_transform._23());
 }
 
-void TransformComponent::Serialize() {
+void TransformComponent::Serialize(const json& j) {
 	//m_is2d = ValueExists(j, "2D") ? ParseBool(j, "2D") : true;
 	//m_angleX = ParseFloat(j, "rotation", "x");
 	//m_angleY = ParseFloat(j, "rotation", "y");

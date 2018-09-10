@@ -96,9 +96,9 @@ void GameObject::LateInitialize() {
 }
 
 void GameObject::AddComponent(Component* pComponent) {
-	pComponent->pGO = this;
-	mComponents[pComponent->Type()] = pComponent;
-	m_activeComponents.push_back(pComponent->Type());
+	pComponent->SetParent(this);
+	mComponents[pComponent->GetType()] = pComponent;
+	m_activeComponents.push_back(pComponent->GetType());
 }
 
 bool GameObject::HasComponent(ComponentType type) const
@@ -113,9 +113,9 @@ void GameObject::HandleEvent(Event* pEvent) {
 }
 
 void GameObject::SetParent(GameObject* pParent) {
-	//Transform* myTransform = GetComponent<Transform>(ComponentType::C_Transform);
+	//Transform* myTransform = GetComponent<Transform>();
 	//if (myTransform) {
-	//	Transform* parentTransform = pParent->GetComponent<Transform>(ComponentType::C_Transform);
+	//	Transform* parentTransform = pParent->GetComponent<Transform>();
 	//	
 	//	myTransform->SetPosition(myTransform->GetPosition() - parentTransform->GetPosition());
 	//	float xDiv = parentTransform->GetScaleX();
@@ -138,7 +138,7 @@ void GameObject::SetParent(GameObject* pParent) {
 }
 
 bool GameObject::IsParented() {
-	//Transform* myTransform = GetComponent<Transform>(ComponentType::C_Transform);
+	//Transform* myTransform = GetComponent<Transform>();
 	//if (myTransform) {
 	//	return myTransform->IsParented();
 	//}

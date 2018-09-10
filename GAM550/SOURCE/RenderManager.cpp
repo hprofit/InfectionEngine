@@ -194,11 +194,11 @@ void RenderManager::FrameEnd(void)
 }
 
 static float Time = 0.0f; 
-void RenderManager::RenderFrame(const GameObject* pGOCamera, const GameObject* pGO) {
+void RenderManager::RenderObject(const GameObject* pGOCamera, const GameObject* pGO) {
 	mp_DeviceContext->ClearRenderTargetView(mp_BackBuffer, m_ClearColor);
 
-	const CameraComponent * pCamComp = pGOCamera->GetComponent<CameraComponent>(C_Camera);
-	Matrix4x4 M = pGO->GetComponent<TransformComponent>(C_Transform)->GetTransform();
+	const CameraComponent * pCamComp = pGOCamera->GetComponent<CameraComponent>();
+	Matrix4x4 M = pGO->GetComponent<TransformComponent>()->GetTransform();
 	Matrix4x4 N = Matrix4x4::Transpose3x3(Matrix4x4::Inverse3x3(M));
 
 	//ConstantBuffer cb;
@@ -241,7 +241,7 @@ void RenderManager::RenderFrame(const GameObject* pGOCamera, const GameObject* p
 
 
 	// do 3D rendering on the back buffer here
-	RenderScene(pGO->GetComponent<MeshComponent>(C_Mesh)->GetScene());
+	RenderScene(pGO->GetComponent<MeshComponent>()->GetScene());
 
 	// switch the back buffer and the front buffer
 	mp_SwapChain->Present(0, 0);
