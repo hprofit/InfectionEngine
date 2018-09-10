@@ -52,6 +52,8 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 	for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
 		m_faces.push_back(Face(mesh->mFaces[i]));
 	}
+
+	FinishMesh();
 }
 
 Mesh::Mesh()
@@ -67,6 +69,7 @@ Mesh::~Mesh()
 {
 	m_vertices.clear();
 	m_faces.clear();
+	mp_VBuffer->Release();
 }
 
 void Mesh::AddVertex(FLOAT x, FLOAT y, FLOAT z, D3DXCOLOR color)
@@ -119,11 +122,11 @@ void Mesh::FinishMesh()
 		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "BITANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORDS", 0, DXGI_FORMAT_R16G16_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORDS", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
 	ID3D10Blob * const vs = INFECT_RENDERER.VSBlob();
-	INFECT_RENDERER.Device()->CreateInputLayout(ied, 2, vs->GetBufferPointer(), vs->GetBufferSize(), &pLayout);
+	INFECT_RENDERER.Device()->CreateInputLayout(ied, 6, vs->GetBufferPointer(), vs->GetBufferSize(), &pLayout);
 	INFECT_RENDERER.DeviceContext()->IASetInputLayout(pLayout);
 }

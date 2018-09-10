@@ -1,0 +1,69 @@
+{
+	"GAME_SETTINGS": {
+		"assetDirectory": "ASSETS/",
+		
+		"levelFilesDir": "LEVELS/",
+		"prefabsDir": "PREFABS/",
+		"meshesDir": "MESHES/",
+		"audioDir": "AUDIO/",
+		"shadersDir": "SHADERS/",
+		"texturesDir": "TEXTURES/",
+		"fontsDir": "FONTS/",
+		
+		"debugMode": true,
+		"soundsMute": false
+	},
+	"RENDER_SETTINGS": {
+		"enableWindowsCursor": true,		
+		"consoleEnabled": true
+	},
+	"WINDOW_SETTINGS": {
+		"title" : "Infection",
+		"fullScreen": false,
+		"height": 600,
+		"width": 800
+	},
+		"isRandomGenerated": false,
+		"Statics": "StaticObjects",
+		"Start": 0,
+		"MainMenu": 1,
+		"Levels": [
+			{ "Name": "LVL_3D" }
+		],
+		"LevelParameters": [
+			{"cols": 3, "rows": 4, "difficulty": 1, "boss": false, "shop": false, "eggsToCollect": 3},
+			{"cols": 4, "rows": 4, "difficulty": 2, "boss": true, "shop": true, "eggsToCollect": 4},
+			{"cols": 4, "rows": 4, "difficulty": 3, "boss": false, "shop": true, "eggsToCollect": 3},
+			{"cols": 5, "rows": 4, "difficulty": 4, "boss": true, "shop": true, "eggsToCollect": 4}
+		],
+		"UseSeeds": true,
+		"Seeds": {
+			"1": [
+			1524087021,
+			1524087316,
+			1523909643,
+			1523910109,
+			1524199737
+			],
+			"2": [
+			1524085768,
+			1524087660,
+			1524200242
+			],
+			"3": [
+			1524086005,
+			1524200784,
+			1524202169,
+			1524202384
+			],
+			"4": [
+			1524086218,
+			1524201063,
+			1524202913
+			]
+		}
+	},
+	"INPUT_SETTINGS": [
+
+	]
+}

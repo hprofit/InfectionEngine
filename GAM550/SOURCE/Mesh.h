@@ -81,7 +81,7 @@ public:
 	void AddVertex(FLOAT x, FLOAT y, FLOAT z, D3DXCOLOR color);
 	void FinishMesh();
 
-	ID3D11Buffer * const VBuffer() { return mp_VBuffer; }
+	ID3D11Buffer * VBuffer() const { return mp_VBuffer; }
 };
 
 #endif

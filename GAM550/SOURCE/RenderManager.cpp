@@ -6,6 +6,26 @@ LRESULT CALLBACK WindowProc(HWND hWnd,
 	WPARAM wParam,
 	LPARAM lParam);
 
+// this is the main message handler for the program
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	// sort through and find what code to run for the message given
+	switch (message)
+	{
+		// this message is read when the window is closed
+	case WM_DESTROY:
+	{
+		INFECT_GAME_STATE.SetGameState(GameState::QUIT);
+		// close the application entirely
+		PostQuitMessage(0);
+		return 0;
+	} break;
+	}
+
+	// Handle any messages the switch statement didn't
+	return DefWindowProc(hWnd, message, wParam, lParam);
+}
+
 RenderManager::RenderManager() : 
 	mp_SwapChain(nullptr),
 	mp_Device(nullptr),
@@ -22,11 +42,32 @@ RenderManager::~RenderManager()
 }
 
 
-void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, bool fullScreen, unsigned int screenWidth, unsigned int screenHeight)
+void RenderManager::InitConsole()
 {
-	m_FullScreen = fullScreen;
-	m_ScreenWidth = screenWidth;
-	m_ScreenHeight = screenHeight;
+	if (AllocConsole())
+	{
+		FILE* file;
+
+		freopen_s(&file, "CONOUT$", "wt", stdout);
+		freopen_s(&file, "CONOUT$", "wt", stderr);
+		freopen_s(&file, "CONOUT$", "wt", stdin);
+
+		SetConsoleTitle("Infect Engine");
+	}
+}
+
+void RenderManager::DestroyConsole() 
+{
+	if (FreeConsole()) {
+		
+	}
+}
+
+void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings)
+{
+	m_FullScreen = settings.FullScreen;
+	m_ScreenWidth = settings.Width;
+	m_ScreenHeight = settings.Height;
 	m_AspectRatio = (float)m_ScreenWidth / (float)m_ScreenHeight;
 	
 	// the handle for the window, filled by a function
@@ -52,7 +93,7 @@ void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, bool fullScree
 	// create the window and use the result as the handle
 	hWnd = CreateWindowEx(NULL,
 		"WindowClass1",    // name of the window class
-		"Our First Windowed Program",   // title of the window
+		settings.WindowTitle.c_str(),   // title of the window
 		WS_OVERLAPPEDWINDOW,    // window style
 		CW_USEDEFAULT,    // x-position of the window
 		CW_USEDEFAULT,    // y-position of the window
@@ -136,6 +177,7 @@ void RenderManager::CleanD3D()
 	// close and release all existing COM objects
 	mp_VS->Release();
 	mp_PS->Release();
+	mp_Cbuffer->Release();
 
 	mp_SwapChain->Release();
 	mp_BackBuffer->Release();
@@ -143,8 +185,60 @@ void RenderManager::CleanD3D()
 	mp_DeviceContext->Release();
 }
 
+void RenderManager::FrameStart(void)
+{
+}
+
+void RenderManager::FrameEnd(void)
+{
+}
+
+static float Time = 0.0f; 
 void RenderManager::RenderFrame(const GameObject* pGOCamera, const GameObject* pGO) {
 	mp_DeviceContext->ClearRenderTargetView(mp_BackBuffer, m_ClearColor);
+
+	const CameraComponent * pCamComp = pGOCamera->GetComponent<CameraComponent>(C_Camera);
+	Matrix4x4 M = pGO->GetComponent<TransformComponent>(C_Transform)->GetTransform();
+	Matrix4x4 N = Matrix4x4::Transpose3x3(Matrix4x4::Inverse3x3(M));
+
+	//ConstantBuffer cb;
+	//cb.PerspectiveMatrix = pCamComp->GetCameraMatrix();
+	//cb.ViewMatrix = pCamComp->GetViewMatrix();
+	//cb.ModelMatrix = M;
+	//cb.NormalMatrix = N;
+	//cb.CameraPosition = pGOCamera->GetComponent<TransformComponent>(C_Transform)->GetPosition();
+
+
+	D3DXMATRIX matRotate, matView, matProjection, matFinal;
+
+	Time += 0.001f;
+
+	// create a rotation matrix
+	D3DXMatrixRotationY(&matRotate, Time);
+
+	// create a view matrix
+	D3DXMatrixLookAtLH(&matView,
+		&D3DXVECTOR3(0.f, 0.f, 10.f),    // the camera position
+		&D3DXVECTOR3(0.0f, 0.0f, 0.0f),    // the look-at position
+		&D3DXVECTOR3(0.0f, 1.0f, 0.0f));   // the up direction
+
+										   // create a projection matrix
+	D3DXMatrixPerspectiveFovLH(&matProjection,
+		(FLOAT)D3DXToRadian(45),                    // field of view
+		(FLOAT)m_ScreenWidth / (FLOAT)m_ScreenHeight, // aspect ratio
+		1.0f,                                       // near view-plane
+		100.0f);                                    // far view-plane
+	Matrix4x4 persp = Matrix4x4::Perspective(45, (FLOAT)m_ScreenWidth / (FLOAT)m_ScreenHeight, 1.0f, 100.0f);
+													// create the final transform
+	matFinal = matRotate * matView * matProjection;
+	//cb.PerspectiveMatrix = matFinal;
+	FLOAT ColorMul = Time;
+	mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_Cbuffer);
+	// set the new values for the constant buffer
+	mp_DeviceContext->UpdateSubresource(mp_Cbuffer, 0, 0, &ColorMul, 0, 0);
+
+
+
 
 	// do 3D rendering on the back buffer here
 	RenderScene(pGO->GetComponent<MeshComponent>(C_Mesh)->GetScene());
@@ -153,11 +247,31 @@ void RenderManager::RenderFrame(const GameObject* pGOCamera, const GameObject* p
 	mp_SwapChain->Present(0, 0);
 }
 
+void RenderManager::RenderScene(const Scene * pScene)
+{
+	for (int i = 0; i < pScene->NumMeshes(); ++i) {
+		const Mesh* pMesh = (*pScene)[i];
+		UINT stride = sizeof(Vertex);
+		UINT offset = 0;
+		ID3D11Buffer* buffers[] = { pMesh->VBuffer() };
+		mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
+
+		mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		mp_DeviceContext->Draw(3, 0);
+	}
+}
+
 void RenderManager::LoadShader()
 {
 	// load and compile the shaders
-	D3DX11CompileFromFile("ASSETS/SHADERS/shader.shader", 0, 0, "VShader", "vs_4_0", 0, 0, 0, &mp_VSBlob, 0, 0);
-	D3DX11CompileFromFile("ASSETS/SHADERS/shader.shader", 0, 0, "PShader", "ps_4_0", 0, 0, 0, &mp_PSBlob, 0, 0);
+	int flag = D3D10_SHADER_WARNINGS_ARE_ERRORS;// | D3D10_SHADER_OPTIMIZATION_LEVEL3;
+	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, 0, 0, &mp_VSBlob, &mp_Errors, 0);
+	if (mp_Errors)
+		MessageBox(NULL, "The vertex shader failed to compile.", "Error", MB_OK);
+
+	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, 0, 0, &mp_PSBlob, &mp_Errors, 0);
+	if (mp_Errors)
+		MessageBox(NULL, "The pixel shader failed to compile.", "Error", MB_OK);
 
 	// Encapsulate both shaders into shader objects
 	mp_Device->CreateVertexShader(mp_VSBlob->GetBufferPointer(), mp_VSBlob->GetBufferSize(), NULL, &mp_VS);
@@ -165,15 +279,13 @@ void RenderManager::LoadShader()
 
 	mp_DeviceContext->VSSetShader(mp_VS, 0, 0);
 	mp_DeviceContext->PSSetShader(mp_PS, 0, 0);
-}
 
-void RenderManager::RenderScene(const Scene * pScene)
-{
-	//UINT stride = sizeof(Vertex);
-	//UINT offset = 0;
-	//ID3D11Buffer* buffers[] = { pMesh->VBuffer() };
-	//mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
+	D3D11_BUFFER_DESC bd;
+	ZeroMemory(&bd, sizeof(bd));
 
-	//mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//mp_DeviceContext->Draw(3, 0);
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = 272;
+	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+
+	mp_Device->CreateBuffer(&bd, NULL, &mp_Cbuffer);
 }

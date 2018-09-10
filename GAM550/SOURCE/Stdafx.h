@@ -25,7 +25,7 @@ Author: <Holden Profit>
 //#include <fmod_errors.h>
 //#include <External\Imgui\imgui.h>
 //#include <External\Imgui\imgui_impl_sdl_gl3.h>
-//#include <External\json.hpp>
+#include <External\json.hpp>
 #include <assimp\Importer.hpp>
 #include <assimp\scene.h>
 #include <assimp\postprocess.h>
@@ -68,6 +68,7 @@ Author: <Holden Profit>
 #include <stdlib.h>
 //#include <time.h>
 #include <math.h>
+#include <exception>
 
 #pragma region Math
 #include <Math\MathDefs.h>
@@ -81,10 +82,10 @@ Author: <Holden Profit>
 
 #pragma region Resources
 #include <Singleton.h>
-//#include <JsonReader.h>
-//using json = nlohmann::json;
-//using namespace JsonReader;
-//
+using json = nlohmann::json;
+#include <JsonReader.h>
+using namespace JsonReader;
+
 //#include <Color.h>
 //#include <Debug.h>
 #include <Face.h>
@@ -97,7 +98,6 @@ Author: <Holden Profit>
 #include <Subscriber.h>
 //#include <SurfaceTextureBuffer.h>
 //#include <FontInfo.h>
-//#include <RoomNodeData.h>
 //#include <FrameBufferObject.h>
 #include <Mesh.h>
 //#include <Plane.h>
@@ -107,7 +107,6 @@ Author: <Holden Profit>
 //#include <ImageRenderer.h>
 //#include <Sorting.h>
 //#include <Shape.h>
-//#include <PowerUpData.h>
 #pragma endregion
 
 #pragma region Game Object
@@ -241,8 +240,8 @@ Author: <Holden Profit>
 #pragma endregion 
 
 #pragma region Globals + API
-//#include <GameConfig.h>
-//#include <GameStateManager.h>
+#include <GameConfig.h>
+#include <GameStateManager.h>
 #include <InputManager.h>
 #include <FrameRateManager.h>
 //#include <PostProcessing.h>
@@ -255,7 +254,6 @@ Author: <Holden Profit>
 //#include <DebugManager.h>
 //#include <AudioManager.h>
 //#include <MemoryManager.h>
-//#include <FloorPlanGenerator.h>
 //#include <ImguiManager.h>
 //#include <LevelEditor.h>
 #include <GameObject\ComponentFactory.h>
@@ -264,7 +262,7 @@ Author: <Holden Profit>
 //#include <PlayerStatsManager.h>
 //
 #include <Global.h>
-//#include <TetraiderAPI.h>
+#include <InfectAPI.h>
 #pragma endregion 
 
 #pragma warning(default: 4005)

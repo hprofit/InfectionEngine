@@ -58,9 +58,10 @@ public:
 	float GetParentScaleX();
 	float GetParentScaleY();
 
-	void SetPivotOffset(float x, float y) {
+	void SetPivotOffset(float x, float y, float z) {
 		m_pivotOffset.x = x;
 		m_pivotOffset.y = y;
+		m_pivotOffset.z = z;
 	}
 
 	float GetPivotOffsetX() { return m_pivotOffset.x; }

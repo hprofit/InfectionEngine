@@ -127,3 +127,8 @@ int Rand()
 	return rand();
 	//return (((holdrand = holdrand * 214012L + 2531011L) >> 16) & TETRA_RAND_MAX);
 }
+
+float cot(float val)
+{
+	return cos(val) / sin(val);
+}
