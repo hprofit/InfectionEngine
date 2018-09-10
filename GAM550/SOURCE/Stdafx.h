@@ -20,14 +20,9 @@ Author: <Holden Profit>
 //#include <SDL_ttf.h>
 //#include <SDL_keycode.h>
 //#include <SDL_events.h>
-//#include <fmod_studio.hpp>
-//#include <fmod.hpp>
-//#include <fmod_errors.h>
-
-//#include <../FMOD Studio API Windows/api/studio/inc/fmod_studio.hpp>
-//#include <../FMOD Studio API Windows/api/lowlevel/inc/fmod.hpp>
-//#include <../FMOD Studio API Windows/api/lowlevel/inc/fmod_errors.h>
-
+#include <fmod_studio.hpp>
+#include <fmod.hpp>
+#include <fmod_errors.h>
 //#include <External\Imgui\imgui.h>
 //#include <External\Imgui\imgui_impl_sdl_gl3.h>
 //#include <External\json.hpp>
