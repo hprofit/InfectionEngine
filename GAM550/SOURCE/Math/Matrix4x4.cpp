@@ -432,53 +432,41 @@ Matrix4x4 Matrix4x4::Scale(const float scaleX, const float scaleY, const float s
 
 Matrix4x4 Matrix4x4::Perspective(const float fov, const float aspect, const float nearVal, const float farVal)
 {
-	//float xymax = nearVal * tanf(fov * PI / 360.0f);
-	//float ymin = -xymax;
-	//float xmin = -xymax;
-	//
-	//float width = xymax - xmin;
-	//float height = xymax - ymin;
-	// 
-	//float depth = nearVal - farVal;
-	//float q = (nearVal + farVal) / depth;
-	//float qn = (2 * farVal * nearVal) / depth;
-	//
-	//float w = (2 * nearVal) / width;
-	//w = w / aspect;
-	//float h = (2 * nearVal) / height;
-	//
-	//return Matrix4x4(
-	//	w, 0,  0, 0,
-	//	0, h, 0,  0,
-	//	0, 0, q, qn,
-	//	0, 0, -1, 0
-	//);
+	float xymax = nearVal * tanf(fov * PI / 360.0f);
+	float ymin = -xymax;
+	float xmin = -xymax;
 	
-	/*
-	xScale     0          0               0
-		0        yScale       0               0
-		0          0       zf / (zf - zn)         1
-		0          0 - zn * zf / (zf - zn)     0
-		where:
-	yScale = cot(fovY / 2)
-
-		xScale = yScale / aspect ratio
-
-		cot(x) = cos(x)/sin(x)
-		*/
-
-	float yScale = cot((fov * DEG_TO_RAD) / 2.f);
-	float xScale = yScale / aspect;
-	float depth = farVal - nearVal;
-	float q = farVal / depth;
-	float qn = (-nearVal * farVal) / depth;
-
+	float width = xymax - xmin;
+	float height = xymax - ymin;
+	 
+	float depth = nearVal - farVal;
+	float q = (nearVal + farVal) / depth;
+	float qn = (2 * farVal * nearVal) / depth;
+	
+	float w = (2 * nearVal) / width;
+	w = w / aspect;
+	float h = (2 * nearVal) / height;
+	
 	return Matrix4x4(
-		xScale, 0, 0, 0,
-		0, yScale, 0, 0,
-		0, 0, q, 1,
-		0, 0, qn, 0
+		w, 0,  0, 0,
+		0, h, 0,  0,
+		0, 0, q, qn,
+		0, 0, -1, 0
 	);
+	
+
+	//float yScale = cot((fov * DEG_TO_RAD) / 2.f);
+	//float xScale = yScale / aspect;
+	//float depth = farVal - nearVal;
+	//float q = farVal / depth;
+	//float qn = (-nearVal * farVal) / depth;
+
+	//return Matrix4x4(
+	//	xScale, 0, 0, 0,
+	//	0, yScale, 0, 0,
+	//	0, 0, q, 1,
+	//	0, 0, qn, 0
+	//);
 }
 
 Matrix4x4 Matrix4x4::Perspective(const float fov, const float aspect, const float nearVal)

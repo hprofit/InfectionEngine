@@ -2,14 +2,11 @@
 
 GameObjectManager::GameObjectManager() : m_GUID(0)
 {
-	for (int i = 0; i < MAX_GAMEOBJECTS; ++i) {
-		mp_GameObjects[i] = new GameObject(i);
-	}
 }
 
 GameObjectManager::~GameObjectManager()
 {
-	for (int i = 0; i < MAX_GAMEOBJECTS; ++i) {
+	for (int i = 0; i < mp_GameObjects.size(); ++i) {
 		if (mp_GameObjects[i])
 			delete mp_GameObjects[i];
 	}
@@ -32,8 +29,8 @@ void GameObjectManager::RenderCameras()
 {
 	for (int camIdx = 0; camIdx < mp_Cameras.size(); ++camIdx) {
 		for (int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {
-			if (mp_GameObjects[objIdx]->IsActive())
-				INFECT_RENDERER.RenderObject(mp_Cameras[camIdx], mp_GameObjects[objIdx]);
+			if (mp_GameObjects[objIdx]->IsActive() && mp_Cameras[camIdx] != mp_GameObjects[objIdx])
+				INFECT_RENDERER.RenderObject((*mp_Cameras[camIdx]), (*mp_GameObjects[objIdx]));
 		}
 	}
 }

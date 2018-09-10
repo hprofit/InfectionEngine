@@ -26,7 +26,12 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
-RenderManager::RenderManager() : 
+bool RenderManager::_GameObjectHasRenderableComponent(const GameObject & gameObject)
+{
+	return gameObject.HasComponent(ComponentType::C_Mesh);
+}
+
+RenderManager::RenderManager() :
 	mp_SwapChain(nullptr),
 	mp_Device(nullptr),
 	mp_DeviceContext(nullptr),
@@ -187,64 +192,36 @@ void RenderManager::CleanD3D()
 
 void RenderManager::FrameStart(void)
 {
+	mp_DeviceContext->ClearRenderTargetView(mp_BackBuffer, m_ClearColor);
 }
 
 void RenderManager::FrameEnd(void)
 {
-}
-
-static float Time = 0.0f; 
-void RenderManager::RenderObject(const GameObject* pGOCamera, const GameObject* pGO) {
-	mp_DeviceContext->ClearRenderTargetView(mp_BackBuffer, m_ClearColor);
-
-	const CameraComponent * pCamComp = pGOCamera->GetComponent<CameraComponent>();
-	Matrix4x4 M = pGO->GetComponent<TransformComponent>()->GetTransform();
-	Matrix4x4 N = Matrix4x4::Transpose3x3(Matrix4x4::Inverse3x3(M));
-
-	//ConstantBuffer cb;
-	//cb.PerspectiveMatrix = pCamComp->GetCameraMatrix();
-	//cb.ViewMatrix = pCamComp->GetViewMatrix();
-	//cb.ModelMatrix = M;
-	//cb.NormalMatrix = N;
-	//cb.CameraPosition = pGOCamera->GetComponent<TransformComponent>(C_Transform)->GetPosition();
-
-
-	D3DXMATRIX matRotate, matView, matProjection, matFinal;
-
-	Time += 0.001f;
-
-	// create a rotation matrix
-	D3DXMatrixRotationY(&matRotate, Time);
-
-	// create a view matrix
-	D3DXMatrixLookAtLH(&matView,
-		&D3DXVECTOR3(0.f, 0.f, 10.f),    // the camera position
-		&D3DXVECTOR3(0.0f, 0.0f, 0.0f),    // the look-at position
-		&D3DXVECTOR3(0.0f, 1.0f, 0.0f));   // the up direction
-
-										   // create a projection matrix
-	D3DXMatrixPerspectiveFovLH(&matProjection,
-		(FLOAT)D3DXToRadian(45),                    // field of view
-		(FLOAT)m_ScreenWidth / (FLOAT)m_ScreenHeight, // aspect ratio
-		1.0f,                                       // near view-plane
-		100.0f);                                    // far view-plane
-	Matrix4x4 persp = Matrix4x4::Perspective(45, (FLOAT)m_ScreenWidth / (FLOAT)m_ScreenHeight, 1.0f, 100.0f);
-													// create the final transform
-	matFinal = matRotate * matView * matProjection;
-	//cb.PerspectiveMatrix = matFinal;
-	FLOAT ColorMul = Time;
-	mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_Cbuffer);
-	// set the new values for the constant buffer
-	mp_DeviceContext->UpdateSubresource(mp_Cbuffer, 0, 0, &ColorMul, 0, 0);
-
-
-
-
-	// do 3D rendering on the back buffer here
-	RenderScene(pGO->GetComponent<MeshComponent>()->GetScene());
-
 	// switch the back buffer and the front buffer
 	mp_SwapChain->Present(0, 0);
+}
+
+void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& pGO) 
+{
+	if (!_GameObjectHasRenderableComponent(pGO))
+		return;
+
+	const CameraComponent * pCamComp = pGOCamera.GetComponent<CameraComponent>();
+	Matrix4x4 M = pGO.GetComponent<TransformComponent>()->GetTransform();
+	Matrix4x4 N = Matrix4x4::Transpose3x3(Matrix4x4::Inverse3x3(M));
+
+	ConstantBuffer cb;
+	cb.MatFinal = pCamComp->GetCameraMatrix() * pCamComp->GetViewMatrix() * M;
+	cb.MatFinal.Transpose();
+	cb.NormalMatrix = N;
+	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->GetPosition();
+	
+	mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_Cbuffer);
+	// set the new values for the constant buffer
+	mp_DeviceContext->UpdateSubresource(mp_Cbuffer, 0, 0, &cb, 0, 0);
+
+	// do 3D rendering on the back buffer here
+	RenderScene(pGO.GetComponent<MeshComponent>()->GetScene());
 }
 
 void RenderManager::RenderScene(const Scene * pScene)
@@ -284,7 +261,7 @@ void RenderManager::LoadShader()
 	ZeroMemory(&bd, sizeof(bd));
 
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = 272;
+	bd.ByteWidth = 144;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
 	mp_Device->CreateBuffer(&bd, NULL, &mp_Cbuffer);

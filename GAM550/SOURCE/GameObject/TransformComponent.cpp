@@ -15,6 +15,7 @@ void TransformComponent::_UpdateLookAt()
 		Matrix4x4::Rotate(m_angleY, YAXIS) *
 		Matrix4x4::Rotate(m_angleX, XAXIS);
 	m_lookAt = Vector3D::Normalize(m_rotation * (Vector3D(0, 0, -1.0f, 0)));
+	m_lookAt.w = 0;
 }
 
 #pragma endregion
@@ -71,6 +72,7 @@ void TransformComponent::LateUpdate(float dt) {
 
 	m_transform = trans*rot*scale*pivotOffset;
 	m_worldPosition = Vector3D(m_transform._03(), m_transform._13(), m_transform._23());
+	_UpdateLookAt();
 }
 
 void TransformComponent::Serialize(const json& j) {
@@ -238,7 +240,7 @@ Vector3D TransformComponent::Right() const
 
 Vector3D TransformComponent::Up() const
 {
-	return Vector3D::Cross(Forward(), Right());
+	return Vector3D::Cross(Forward()*-1, Right());
 }
 
 Vector3D TransformComponent::LookAt() const

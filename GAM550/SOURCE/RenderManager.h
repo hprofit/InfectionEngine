@@ -10,14 +10,11 @@ Author: <Holden Profit>
 #ifndef RENDER_MANAGER_H
 #define RENDER_MANAGER_H
 
-// 272 bytes
+// 144 bytes
 struct ConstantBuffer {
-	//D3DXMATRIX PerspectiveMatrix;
-	//Matrix4x4 ViewMatrix;
-	//Matrix4x4 ModelMatrix;
-	//Matrix4x4 NormalMatrix;
-	//Vector3D CameraPosition;
-	FLOAT ColorMul;
+	Matrix4x4 MatFinal;
+	Matrix4x4 NormalMatrix;
+	Vector3D CameraPosition;
 };
 
 class RenderManager : public Subscriber
@@ -38,6 +35,7 @@ private:
 	ID3D11PixelShader *mp_PS;		// the pixel shader
 	ID3D10Blob *mp_VSBlob, *mp_PSBlob, *mp_Errors;
 
+	bool _GameObjectHasRenderableComponent(const GameObject& gameObject);
 public:
 	RenderManager();
 	~RenderManager();
@@ -67,7 +65,7 @@ public:
 	void FrameEnd(void);
 
 	// Renders an object given a specific camera
-	void RenderObject(const GameObject* pGOCamera, const GameObject* pGO);
+	void RenderObject(const GameObject& pGOCamera, const GameObject& pGO);
 
 	void RenderScene(const Scene * pScene);
 
