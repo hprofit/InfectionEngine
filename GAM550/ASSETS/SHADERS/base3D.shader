@@ -1,10 +1,11 @@
 cbuffer ConstantBuffer
 {
-	float4x4 PerspectiveMatrix;
-	float4x4 ViewMatrix;
-	float4x4 ModelMatrix;
-	float4x4 NormalMatrix;
-	float4 CameraPosition;
+	//float4x4 PerspectiveMatrix;
+	//float4x4 ViewMatrix;
+	//float4x4 ModelMatrix;
+	//float4x4 NormalMatrix;
+	//float4 CameraPosition;
+	float ColorMul;
 };
 
 struct VOut
@@ -22,9 +23,8 @@ VOut VShader(
 	float4 color : COLOR)
 {
 	VOut output;
-	float4 P = ModelMatrix * position;
-	output.position = PerspectiveMatrix * ViewMatrix * P;
-	output.color = color;
+	output.position = position;// mul(PerspectiveMatrix, position);
+	output.color = color * ColorMul;
 
 	return output;
 }

@@ -242,7 +242,7 @@ Author: <Holden Profit>
 
 #pragma region Globals + API
 //#include <GameConfig.h>
-//#include <GameStateManager.h>
+#include <GameStateManager.h>
 //#include <InputManager.h>
 //#include <FrameRateManager.h>
 //#include <PostProcessing.h>
@@ -264,7 +264,7 @@ Author: <Holden Profit>
 //#include <PlayerStatsManager.h>
 //
 #include <Global.h>
-//#include <TetraiderAPI.h>
+#include <InfectAPI.h>
 #pragma endregion 
 
 #pragma warning(default: 4005)

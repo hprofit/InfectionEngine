@@ -26,4 +26,6 @@ bool IsSimilar(float a, float b);
 
 void SeedRand(unsigned int seed);
 int Rand();
+
+float cot(float val);
 #endif

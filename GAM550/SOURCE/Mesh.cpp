@@ -69,6 +69,7 @@ Mesh::~Mesh()
 {
 	m_vertices.clear();
 	m_faces.clear();
+	mp_VBuffer->Release();
 }
 
 void Mesh::AddVertex(FLOAT x, FLOAT y, FLOAT z, D3DXCOLOR color)

@@ -12,11 +12,12 @@ Author: <Holden Profit>
 
 // 272 bytes
 struct ConstantBuffer {
-	Matrix4x4 PerspectiveMatrix;
-	Matrix4x4 ViewMatrix;
-	Matrix4x4 ModelMatrix;
-	Matrix4x4 NormalMatrix;
-	Vector3D CameraPosition;
+	//D3DXMATRIX PerspectiveMatrix;
+	//Matrix4x4 ViewMatrix;
+	//Matrix4x4 ModelMatrix;
+	//Matrix4x4 NormalMatrix;
+	//Vector3D CameraPosition;
+	FLOAT ColorMul;
 };
 
 class RenderManager : public Subscriber
@@ -56,6 +57,11 @@ public:
 	void InitD3D(HWND hWnd);
 	// Closes Direct3D and releases memory
 	void CleanD3D(void);
+
+	void FrameStart(void);
+
+	void FrameEnd(void);
+
 	// Renders a frame
 	void RenderFrame(const GameObject* pGOCamera, const GameObject* pGO);
 

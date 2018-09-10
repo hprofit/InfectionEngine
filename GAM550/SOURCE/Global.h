@@ -14,6 +14,7 @@ Author: <Holden Profit>
 #define INFECT_GOM Singleton<GameObjectManager>::GetInstance()
 #define INFECT_RENDERER Singleton<RenderManager>::GetInstance()
 #define INFECT_RESOURCES Singleton<ResourceManager>::GetInstance()
+#define INFECT_GAME_STATE Singleton<GameStateManager>::GetInstance()
 
 
 #endif

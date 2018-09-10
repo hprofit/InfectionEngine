@@ -136,13 +136,20 @@ void RenderManager::CleanD3D()
 	// close and release all existing COM objects
 	mp_VS->Release();
 	mp_PS->Release();
+	mp_Cbuffer->Release();
 
 	mp_SwapChain->Release();
 	mp_BackBuffer->Release();
 	mp_Device->Release();
 	mp_DeviceContext->Release();
 }
-
+void RenderManager::FrameStart(void)
+{
+}
+void RenderManager::FrameEnd(void)
+{
+}
+static float Time = 0.0f; 
 void RenderManager::RenderFrame(const GameObject* pGOCamera, const GameObject* pGO) {
 	mp_DeviceContext->ClearRenderTargetView(mp_BackBuffer, m_ClearColor);
 
@@ -151,16 +158,40 @@ void RenderManager::RenderFrame(const GameObject* pGOCamera, const GameObject* p
 	Matrix4x4 N = Matrix4x4::Transpose3x3(Matrix4x4::Inverse3x3(M));
 
 	ConstantBuffer cb;
-	cb.PerspectiveMatrix = pCamComp->GetCameraMatrix();
-	cb.ViewMatrix = pCamComp->GetViewMatrix();
-	cb.ModelMatrix = M;
-	cb.NormalMatrix = N;
-	cb.CameraPosition = pGOCamera->GetComponent<TransformComponent>(C_Transform)->GetPosition();
+	//cb.PerspectiveMatrix = pCamComp->GetCameraMatrix();
+	//cb.ViewMatrix = pCamComp->GetViewMatrix();
+	//cb.ModelMatrix = M;
+	//cb.NormalMatrix = N;
+	//cb.CameraPosition = pGOCamera->GetComponent<TransformComponent>(C_Transform)->GetPosition();
 
 
+	D3DXMATRIX matRotate, matView, matProjection, matFinal;
+
+	Time += 0.001f;
+
+	// create a rotation matrix
+	D3DXMatrixRotationY(&matRotate, Time);
+
+	// create a view matrix
+	D3DXMatrixLookAtLH(&matView,
+		&D3DXVECTOR3(0.f, 0.f, 10.f),    // the camera position
+		&D3DXVECTOR3(0.0f, 0.0f, 0.0f),    // the look-at position
+		&D3DXVECTOR3(0.0f, 1.0f, 0.0f));   // the up direction
+
+										   // create a projection matrix
+	D3DXMatrixPerspectiveFovLH(&matProjection,
+		(FLOAT)D3DXToRadian(45),                    // field of view
+		(FLOAT)m_ScreenWidth / (FLOAT)m_ScreenHeight, // aspect ratio
+		1.0f,                                       // near view-plane
+		100.0f);                                    // far view-plane
+	Matrix4x4 persp = Matrix4x4::Perspective(45, (FLOAT)m_ScreenWidth / (FLOAT)m_ScreenHeight, 1.0f, 100.0f);
+													// create the final transform
+	matFinal = matRotate * matView * matProjection;
+	//cb.PerspectiveMatrix = matFinal;
+	FLOAT ColorMul = Time;
 	mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_Cbuffer);
 	// set the new values for the constant buffer
-	mp_DeviceContext->UpdateSubresource(mp_Cbuffer, 0, 0, &cb, 0, 0);
+	mp_DeviceContext->UpdateSubresource(mp_Cbuffer, 0, 0, &ColorMul, 0, 0);
 
 
 

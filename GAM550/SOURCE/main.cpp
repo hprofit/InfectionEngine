@@ -38,6 +38,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	int nCmdShow)
 {
 	INFECT_EVENTS.Init();
+	INFECT_GOM.Init();
 
 	// Main Loop
 	// TODO: Move this
@@ -70,18 +71,23 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	pGO->AddComponent(pMeshComp);
 	pGO->AddComponent(pTransComp);
+	pGO->LateInitialize();
+
+	pGO->Update(0);
+	pGO->LateUpdate(0);
 
 
-
-	GameObject* pGOCamera = INFECT_GOM.GetGameObject(0);
-	pTransComp = new TransformComponent();
-	pTransComp->SetPosition(Vector3D(0, 0, 10, 1));
+	GameObject* pGOCamera = INFECT_GOM.GetGameObject(1);
+	TransformComponent* pTransComp2 = new TransformComponent();
+	pTransComp2->SetPosition(Vector3D(0, 0, 10, 1));
 
 	CameraComponent * pCamComp = new CameraComponent();
-	pGOCamera->AddComponent(pTransComp);
+	pGOCamera->AddComponent(pTransComp2);
 	pGOCamera->AddComponent(pCamComp);
-	pCamComp->LateInitialize();
-	pCamComp->LateUpdate(0);
+	pGOCamera->LateInitialize();
+
+	pGOCamera->Update(0);
+	pGOCamera->LateUpdate(0);
 
 	// wait for the next message in the queue, store the result in 'msg'
 	while (GetMessage(&msg, NULL, 0, 0))

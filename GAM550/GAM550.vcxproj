@@ -27,6 +27,8 @@
     <ClCompile Include="SOURCE\GameObject\GameObject.cpp" />
     <ClCompile Include="SOURCE\GameObject\MeshComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\TransformComponent.cpp" />
+    <ClCompile Include="SOURCE\GameStateManager.cpp" />
+    <ClCompile Include="SOURCE\InfectAPI.cpp" />
     <ClCompile Include="SOURCE\main.cpp" />
     <ClCompile Include="SOURCE\Math\MathFunctions.cpp" />
     <ClCompile Include="SOURCE\Math\Matrix2x2.cpp" />
@@ -62,7 +64,9 @@
     <ClInclude Include="SOURCE\GameObject\RenderableComponent.h" />
     <ClInclude Include="SOURCE\GameObject\TagNames.h" />
     <ClInclude Include="SOURCE\GameObject\TransformComponent.h" />
+    <ClInclude Include="SOURCE\GameStateManager.h" />
     <ClInclude Include="SOURCE\Global.h" />
+    <ClInclude Include="SOURCE\InfectAPI.h" />
     <ClInclude Include="SOURCE\Math\MathDefs.h" />
     <ClInclude Include="SOURCE\Math\MathFunctions.h" />
     <ClInclude Include="SOURCE\Math\Matrix2x2.h" />

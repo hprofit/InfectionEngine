@@ -2,7 +2,9 @@
 
 GameObjectManager::GameObjectManager()
 {
-	mp_GameObjects[0] = new GameObject(0);
+	for (int i = 0; i < MAX_GAMEOBJECTS; ++i) {
+		mp_GameObjects[i] = new GameObject(i);
+	}
 }
 
 GameObjectManager::~GameObjectManager()

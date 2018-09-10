@@ -10,7 +10,7 @@ Author: <Holden Profit>
 #ifndef GAME_OBJECT_MANAGER_H
 #define GAME_OBJECT_MANAGER_H
 
-#define MAX_GAMEOBJECTS 2048
+#define MAX_GAMEOBJECTS 2//2048
 
 class GameObjectManager : public Subscriber
 {
@@ -21,7 +21,9 @@ public:
 	GameObjectManager();
 	~GameObjectManager();
 
-	GameObject* GetGameObject(unsigned int id) const { return mp_GameObjects[0]; }
+	void Init() {};
+
+	GameObject* GetGameObject(unsigned int id) const { return mp_GameObjects[id]; }
 };
 
 #endif

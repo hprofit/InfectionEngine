@@ -82,12 +82,12 @@ void CameraComponent::LateUpdate(float dt)
 	_CalcViewMatrix();
 	switch (m_projectionType) {
 		case ProjectionType::PT_Orthographic: {
-			Matrix4x4::Orthographic(width, height, m_Near, m_Far);
+			m_cameraMatrix = Matrix4x4::Orthographic(width, height, m_Near, m_Far);
 			break;
 		}
 		case ProjectionType::PT_Perspective:
 		default: {
-			Matrix4x4::Perspective(m_fov, m_aspectRatio, m_Near, m_Far);
+			m_cameraMatrix = Matrix4x4::Perspective(m_fov, m_aspectRatio, m_Near, m_Far);
 			break;
 		}
 	}
