@@ -307,6 +307,7 @@ OpenCover/
 !TetraiderEngine/Assets/Meshes/*.obj
 !TetraiderEngine/SDL2/lib/*
 !TetraiderEngine/GL/lib/*
+!GAM550/SDL2/lib/*
 TetraiderEngine/Source/Math/*.o
 TetraiderEngine/Source/Math/*.exe
 TetraiderEngine/Shaders/*
