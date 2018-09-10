@@ -108,6 +108,12 @@
     <ClCompile Include="SOURCE\ResourceManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\FrameRateManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\InputManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOURCE\Stdafx.h">
@@ -198,6 +204,12 @@
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\ResourceManager.h">
+      <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\FrameRateManager.h">
+      <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\InputManager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>

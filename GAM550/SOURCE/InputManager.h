@@ -121,7 +121,7 @@ public:
 
 	void Update();
 	void HandleEvent(Event* pEvent);
-	void Initialize(const json& j);
+	//void Initialize(const json& j);
 	// Keyboard Input
 	bool IsKeyPressed(const SDL_Scancode);
 	bool IsKeyTriggered(const SDL_Scancode);
