@@ -1,6 +1,6 @@
 
-#ifndef CYCLONE_PRECISION_H
-#define CYCLONE_PRECISION_H
+#ifndef PRECISION_H
+#define PRECISION_H
 
 #include <float.h>
 

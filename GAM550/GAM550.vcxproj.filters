@@ -43,6 +43,9 @@
     <Filter Include="Source Files\Math\Vector">
       <UniqueIdentifier>{88e6905c-7389-496a-b6c1-20816a0eb715}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Physics">
+      <UniqueIdentifier>{9d4e021b-37c5-4f54-822d-10e0cdd8f496}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\main.cpp">
@@ -125,6 +128,12 @@
     </ClCompile>
     <ClCompile Include="SOURCE\JsonReader.cpp">
       <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Physics\particle.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Physics\physics_math.cpp">
+      <Filter>Source Files\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +247,15 @@
     </ClInclude>
     <ClInclude Include="SOURCE\Sorting.h">
       <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Physics\global.h">
+      <Filter>Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Physics\particle.h">
+      <Filter>Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Physics\physics_math.h">
+      <Filter>Source Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
