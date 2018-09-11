@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Moodie Ghaddar>
+Author: <Holden Profit>
 - End Header --------------------------------------------------------*/
 
 #ifndef MATH_FUNCTIONS_H
@@ -26,4 +26,6 @@ bool IsSimilar(float a, float b);
 
 void SeedRand(unsigned int seed);
 int Rand();
+
+float cot(float val);
 #endif

@@ -69,7 +69,8 @@ protected:
 	std::vector<Vertex> m_vertices;
 	std::vector<Face> m_faces;
 
-	ID3D11Buffer *mp_VBuffer;
+	ID3D11Buffer *mp_VBuffer;	// Vertex Buffer
+	ID3D11Buffer *mp_IBuffer;	// Index Buffer
 
 	void _CreateFromAiMesh(const aiMesh* mesh);
 
@@ -79,9 +80,19 @@ public:
 	~Mesh();
 
 	void AddVertex(FLOAT x, FLOAT y, FLOAT z, D3DXCOLOR color);
-	void FinishMesh();
+	void AddVertex(	FLOAT x, FLOAT y, FLOAT z, 
+					FLOAT nx, FLOAT ny, FLOAT nz,
+					FLOAT tx, FLOAT ty, FLOAT tz,
+					D3DXCOLOR color);
 
-	ID3D11Buffer * const VBuffer() { return mp_VBuffer; }
+	void AddFace(unsigned int i1, unsigned int i2, unsigned int i3);
+
+	void FinishMesh();
+	
+	ID3D11Buffer * VBuffer() const { return mp_VBuffer; }
+	inline int NumVerts() const { return int(m_vertices.size()); }
+	ID3D11Buffer * IBuffer() const { return mp_IBuffer; }
+	inline int NumFaces() const { return int(m_faces.size()); }
 };
 
 #endif

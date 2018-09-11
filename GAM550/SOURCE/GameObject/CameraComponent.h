@@ -21,13 +21,18 @@ private:
 
 	float m_fov, m_aspectRatio;
 	float m_Near, m_Far;
-	Matrix4x4 m_viewMatrix, m_cameraMatrix;			// View matrix and perspective/orthographic matrix
-	bool m_primary;										// True if this camera is the game's primary camera
-	ProjectionType m_projectionType;					// True if this camera is Perspective, false if Orthographic
+	Matrix4x4 m_viewMatrix,				// View, perspective / orthographic, and view*(persp or ortho) matrix
+		m_cameraMatrix, 
+		m_finalMatrix;			
+	int m_Depth;
+	ProjectionType m_projectionType;	// True if this camera is Perspective, false if Orthographic
 
 	Matrix4x4 _MatrixFromCameraVectors(const Vector3D& right, const Vector3D& up, const Vector3D& forward);
 	void _CalcViewMatrix();
 public:
+	static const ComponentType Type = ComponentType::C_Camera;
+	virtual ComponentType GetType() const { return Type; }
+
 	CameraComponent();
 	~CameraComponent();
 	static Component* CreateInstance() { return new CameraComponent(); }
@@ -35,15 +40,20 @@ public:
 	virtual void LateInitialize();
 	virtual void Update(float dt);
 	virtual void LateUpdate(float dt);
-	virtual void Serialize();
+	virtual void Serialize(const json& j);
 	virtual void HandleEvent(Event* pEvent);
+
+	static bool LeftDepthGreaterThanRight(GameObject* left, GameObject* right);
 
 	Vector3D TransformPointToScreenSpace(const Vector3D& worldCoordinates);
 
-	float GetFOV() const;
-	float GetAspect() const;
-	Matrix4x4 GetViewMatrix() const { return m_viewMatrix; };
-	Matrix4x4 GetCameraMatrix() const { return m_cameraMatrix; };
+	inline float CameraComponent::GetFOV() const { return m_fov; }
+	inline float CameraComponent::GetAspect() const	{ return m_aspectRatio;	}
+	inline Matrix4x4 GetViewMatrix() const { return m_viewMatrix; };
+	inline Matrix4x4 GetCameraMatrix() const { return m_cameraMatrix; }
+	inline Matrix4x4 GetFinalCamMatrix() const { return m_finalMatrix; }
+	inline int Depth() const { return m_Depth; }
+	inline ProjectionType ProjectionType() const { return m_projectionType; }
 };
 
 #endif

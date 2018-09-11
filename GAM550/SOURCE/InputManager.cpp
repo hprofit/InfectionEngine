@@ -30,7 +30,7 @@ InputManager::InputManager()
 		printf( "ERROR: SDL_Init() with SDL_INIT_JOYSTICK flag failed!\n");
 	}
 
-	TETRA_EVENTS.Subscribe(EVENT_INPUT_TOGGLEJOYSTICK, this);
+	//TETRA_EVENTS.Subscribe(EVENT_INPUT_TOGGLEJOYSTICK, this);
 }
 
 InputManager::~InputManager() {
@@ -48,41 +48,41 @@ InputManager::~InputManager() {
 	m_inputCommands.clear();
 }
 
-void InputManager::Initialize(const json& j) {
-	int size = j.size();
-	for (int i = 0; i < size; ++i) {
-		m_inputCommands.push_back(new InputCommandInfo(
-			static_cast<EventType>(ParseInt(j[i], "EventType")),
-			static_cast<InputType>(ParseInt(j[i], "InputType")),
-			ParseBool(j[i], "isMouse"),
-			ParseBool(j[i], "isJoystick"),
-			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKey")),
-			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKeyPosX")),
-			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKeyNegX")),
-			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKeyPosY")),
-			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKeyNegY")),
-			static_cast<JoystickAnalogueType>(ParseInt(j[i], "AnalogueStick")),
-			static_cast<MOUSEBTN>(ParseInt(j[i], "MouseBtn")),
-			static_cast<XBOX_SCANCODE>(ParseInt(j[i], "XboxKey"))
-		));
-	}
-}
+//void InputManager::Initialize(const json& j) {
+//	int size = j.size();
+//	for (int i = 0; i < size; ++i) {
+//		m_inputCommands.push_back(new InputCommandInfo(
+//			static_cast<EventType>(ParseInt(j[i], "EventType")),
+//			static_cast<InputType>(ParseInt(j[i], "InputType")),
+//			ParseBool(j[i], "isMouse"),
+//			ParseBool(j[i], "isJoystick"),
+//			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKey")),
+//			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKeyPosX")),
+//			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKeyNegX")),
+//			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKeyPosY")),
+//			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKeyNegY")),
+//			static_cast<JoystickAnalogueType>(ParseInt(j[i], "AnalogueStick")),
+//			static_cast<MOUSEBTN>(ParseInt(j[i], "MouseBtn")),
+//			static_cast<XBOX_SCANCODE>(ParseInt(j[i], "XboxKey"))
+//		));
+//	}
+//}
 
 void InputManager::Update() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event)) 
 	{
-		TETRA_IMGUI.HandleSDLEvents(event);
+		//TETRA_IMGUI.HandleSDLEvents(event);
 		switch (event.type) {
 			case SDL_QUIT:
-				TETRA_EVENTS.BroadcastEvent(&Event(EventType::EVENT_WINDOW_CLOSED));
+				//TETRA_EVENTS.BroadcastEvent(&Event(EventType::EVENT_WINDOW_CLOSED));
 				break;
 			case SDL_WINDOWEVENT:
 			{
 				switch (event.window.event) {
 					case SDL_WINDOWEVENT_RESIZED:
 					{
-						TETRA_RENDERER.SetWindowDimensions(event.window.data1, event.window.data2);
+						//TETRA_RENDERER.SetWindowDimensions(event.window.data1, event.window.data2);
 						break;
 					}
 					case SDL_WINDOWEVENT_HIDDEN:
@@ -90,8 +90,8 @@ void InputManager::Update() {
 					case SDL_WINDOWEVENT_FOCUS_LOST:
 					case SDL_WINDOWEVENT_MINIMIZED:
 					{
-						if(!TETRA_GAME_STATE.IsGamePaused())
-							TETRA_EVENTS.BroadcastEventToSubscribers(&Event(EVENT_INPUT_PAUSEGAME, &InputButtonData(false, true, false)));
+						//if(!TETRA_GAME_STATE.IsGamePaused())
+						//	TETRA_EVENTS.BroadcastEventToSubscribers(&Event(EVENT_INPUT_PAUSEGAME, &InputButtonData(false, true, false)));
 						break;
 					}
 				}
@@ -178,7 +178,7 @@ void InputManager::FireEvents() {
 					isPressed = IsKeyPressed(command->m_keyboardKey);
 				}
 				if (isTrigger || isRelease || isPressed) {
-					TETRA_EVENTS.BroadcastEventToSubscribers(&Event(command->m_event, &InputButtonData(isPressed, isTrigger, isRelease)));
+					//TETRA_EVENTS.BroadcastEventToSubscribers(&Event(command->m_event, &InputButtonData(isPressed, isTrigger, isRelease)));
 				}
 				break;
 			}
@@ -201,7 +201,7 @@ void InputManager::FireEvents() {
 
 				Vector3D axisDir(xAxis, yAxis, 0);
 				axisDir.Normalize();
-				TETRA_EVENTS.BroadcastEventToSubscribers(&Event(command->m_event, &InputAxisData(axisDir)));
+				//TETRA_EVENTS.BroadcastEventToSubscribers(&Event(command->m_event, &InputAxisData(axisDir)));
 				break;
 			}
 			// This case is unique for our game regarding mouse (Check else statement below)
@@ -220,12 +220,12 @@ void InputManager::FireEvents() {
 
 					Vector3D axisDir(xAxis, yAxis, 0);
 					axisDir.Normalize();
-					TETRA_EVENTS.BroadcastEventToSubscribers(&Event(command->m_event, &InputAxisData(axisDir)));
+					//TETRA_EVENTS.BroadcastEventToSubscribers(&Event(command->m_event, &InputAxisData(axisDir)));
 				}
 				else {
 					// This is the hardcoded part:
-					if(TETRA_GAME_OBJECTS.GetPlayer())
-						TETRA_EVENTS.BroadcastEventToSubscribers(&Event(command->m_event, &InputAxisData(Agent::GetDirectionFromPlayerToMouse())));
+					//if(TETRA_GAME_OBJECTS.GetPlayer())
+					//	TETRA_EVENTS.BroadcastEventToSubscribers(&Event(command->m_event, &InputAxisData(Agent::GetDirectionFromPlayerToMouse())));
 				}
 				break;
 			}

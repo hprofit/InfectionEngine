@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Moodie Ghaddar>
+Author: <Holden Profit>
 - End Header --------------------------------------------------------*/
 
 #include <Stdafx.h>
@@ -126,4 +126,9 @@ int Rand()
 {
 	return rand();
 	//return (((holdrand = holdrand * 214012L + 2531011L) >> 16) & TETRA_RAND_MAX);
+}
+
+float cot(float val)
+{
+	return cos(val) / sin(val);
 }

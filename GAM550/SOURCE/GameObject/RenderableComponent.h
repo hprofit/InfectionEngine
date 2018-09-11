@@ -9,7 +9,8 @@ protected:
 	//GLint m_shaderProgramID;
 
 public:
-	RenderableComponent(ComponentType _type) : Component(_type) {};
+	//RenderableComponent(ComponentType _type) : Component(_type) {};
+	RenderableComponent() {};
 	~RenderableComponent() {};
 
 	//inline GLint GetShaderProgramID() const { return m_shaderProgramID; }

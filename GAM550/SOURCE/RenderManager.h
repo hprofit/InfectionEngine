@@ -10,6 +10,14 @@ Author: <Holden Profit>
 #ifndef RENDER_MANAGER_H
 #define RENDER_MANAGER_H
 
+// 208 bytes
+struct ConstantBuffer {
+	Matrix4x4 MatFinal;
+	Matrix4x4 ModelMatrix;
+	Matrix4x4 NormalMatrix;
+	Vector3D CameraPosition;
+};
+
 class RenderManager : public Subscriber
 {
 private:
@@ -23,11 +31,12 @@ private:
 	bool m_FullScreen;
 
 
+	ID3D11Buffer *mp_Cbuffer;		// the constant buffer
+	ID3D11VertexShader *mp_VS;		// the vertex shader
+	ID3D11PixelShader *mp_PS;		// the pixel shader
+	ID3D10Blob *mp_VSBlob, *mp_PSBlob, *mp_Errors;
 
-	ID3D11VertexShader *mp_VS;    // the vertex shader
-	ID3D11PixelShader *mp_PS;     // the pixel shader
-	ID3D10Blob *mp_VSBlob, *mp_PSBlob;
-
+	bool _GameObjectHasRenderableComponent(const GameObject& gameObject);
 public:
 	RenderManager();
 	~RenderManager();
@@ -41,18 +50,27 @@ public:
 	inline unsigned int ScreenWidth() const { return m_ScreenWidth; }
 	inline unsigned int ScreenHeight() const { return m_ScreenHeight; }
 
+	// Creates a console for output
+	void InitConsole();
+	// Destroys the active console
+	void DestroyConsole();
 	// Sets up and initializes window
-	void InitWindow(HINSTANCE hInstance, int nCmdShow, bool fullScreen, unsigned int screenWidth, unsigned int screenHeight);
+	void InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings);
 	// Sets up and initializes Direct3D
 	void InitD3D(HWND hWnd);
 	// Closes Direct3D and releases memory
 	void CleanD3D(void);
-	// Renders a frame
-	void RenderFrame(const GameObject* pGOCamera, const GameObject* pGO);
 
-	void LoadShader();
+	void FrameStart(void);
+
+	void FrameEnd(void);
+
+	// Renders an object given a specific camera
+	void RenderObject(const GameObject& pGOCamera, const GameObject& pGO);
 
 	void RenderScene(const Scene * pScene);
+
+	void LoadShader(void);
 
 
 

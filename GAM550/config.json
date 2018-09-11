@@ -1,0 +1,29 @@
+{
+	"GAME_SETTINGS": {
+		"assetDirectory": "ASSETS/",
+		
+		"levelFilesDir": "LEVELS/",
+		"prefabsDir": "PREFABS/",
+		"meshesDir": "MESHES/",
+		"audioDir": "AUDIO/",
+		"shadersDir": "SHADERS/",
+		"texturesDir": "TEXTURES/",
+		"fontsDir": "FONTS/",
+		
+		"debugMode": true,
+		"soundsMute": false
+	},
+	"RENDER_SETTINGS": {
+		"enableWindowsCursor": true,		
+		"consoleEnabled": true
+	},
+	"WINDOW_SETTINGS": {
+		"title" : "Infection",
+		"fullScreen": false,
+		"height": 900,
+		"width": 900
+	},
+	"INPUT_SETTINGS": [
+
+	]
+}
