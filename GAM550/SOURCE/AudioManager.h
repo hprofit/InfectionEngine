@@ -1,10 +1,31 @@
 #pragma once
 
+
+#ifndef AUDIO_MANAGER_H
+#define AUDIO_MANAGER_H
+
+
 using namespace std;
+class Subscriber;
+
+struct Vector3
+{
+	float x;
+	float y;
+	float z;
+
+	Vector3(float n_X,float n_Y,float n_Z)
+	{
+		x = n_X;
+		y = n_Y;
+		z = n_Z;
+	}
+};
+
 
 struct Implementation {
 	Implementation();
-	~Implementation() {};
+	~Implementation();
 
 	void Update();
 
@@ -28,12 +49,42 @@ struct Implementation {
 };
 
 
-class AudioManager
+class AudioManager : public Subscriber
 {
 public:
 	AudioManager();
 	~AudioManager();
 
+	Implementation impl_;
+
+	static void Init();
+	static void Update();
 	static int ErrorCheck(FMOD_RESULT result);
+
+
+	//MANAGING SOUNDS
+	void LoadSound( const string &audio_name, bool is_audio_3D = true, bool is_audio_looping = false, bool is_audio_streaming = false);
+	void UnLoadSound(const string &audio_name);
+	int PlaySounds(const string& Sound_name, const Vector3& Position, float Volume_play);
+
+	//VECTOR CONVERSIONS
+	FMOD_VECTOR VectorToFmod(const Vector3 position);
+
+	//CONVERSIONS
+	float dbToVolume(float dB);
+	float VolumeTodB(float volume);
+	
+	//CHANNEL PROPERTIES
+	void SetChannel3dPosition(int channel_id, const Vector3 pos);
+	void SetChannelVolume(int channel_id, float volume_db);
+	
+	//EVENTS
+	void LoadEvent(const std::string& event_name);
+	void PlayEvent(const string &event_name);
+	void StopEvent(const string &event_name, bool immediate = false);
+
+
 };
 
+
+#endif
