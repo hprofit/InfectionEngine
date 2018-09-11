@@ -133,10 +133,22 @@ void Mesh::AddFace(unsigned int i1, unsigned int i2, unsigned int i3)
 
 void Mesh::FinishMesh()
 {
+	Vertex OurVertices[] =
+	{
+		{-1.0f, 1.0f, -1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f)},
+		{1.0f, 1.0f, -1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f)},
+		{-1.0f, -1.0f, -1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f)},
+		{1.0f, -1.0f, -1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f)},
+		{-1.0f, 1.0f, 1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f)},
+		{1.0f, 1.0f, 1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f)},
+		{-1.0f, -1.0f, 1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f)},
+		{1.0f, -1.0f, 1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)},
+	};
+
+
 	D3D11_BUFFER_DESC vertexbd;
 	ZeroMemory(&vertexbd, sizeof(vertexbd));
 	int vertSize = sizeof(Vertex) * UINT(m_vertices.size());
-
 	vertexbd.Usage = D3D11_USAGE_DYNAMIC;				// write access access by CPU and GPU
 	vertexbd.ByteWidth = vertSize;						// size is the Vertex struct * m_vertices.size
 	vertexbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;		// use as a vertex buffer
@@ -145,13 +157,31 @@ void Mesh::FinishMesh()
 	INFECT_RENDERER.Device()->CreateBuffer(&vertexbd, NULL, &mp_VBuffer);       // create the buffer
 
 	D3D11_MAPPED_SUBRESOURCE vMS;
-	INFECT_RENDERER.DeviceContext()->Map(mp_VBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &vMS);   // map the buffer
-	memcpy(vMS.pData, &(m_vertices[0]), vertSize);	// copy the data
-	INFECT_RENDERER.DeviceContext()->Unmap(mp_VBuffer, NULL);				// unmap the buffer
+	INFECT_RENDERER.DeviceContext()->Map(mp_VBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &vMS);	// map the buffer
+	memcpy(vMS.pData, &(m_vertices[0]), vertSize);													// copy the data
+	INFECT_RENDERER.DeviceContext()->Unmap(mp_VBuffer, NULL);										// unmap the buffer
+
+
+	//DWORD OurIndices[] =
+	//{
+	//	0, 1, 2,    // side 1
+	//	2, 1, 3,
+	//	4, 0, 6,    // side 2
+	//	6, 0, 2,
+	//	7, 5, 6,    // side 3
+	//	6, 5, 4,
+	//	3, 1, 7,    // side 4
+	//	7, 1, 5,
+	//	4, 5, 0,    // side 5
+	//	0, 5, 1,
+	//	3, 7, 2,    // side 6
+	//	2, 7, 6
+	//};
 
 	D3D11_BUFFER_DESC indexbd;
 	ZeroMemory(&indexbd, sizeof(indexbd));
 	int indexSize = sizeof(Face) * UINT(m_faces.size());
+	//int indexSize = sizeof(OurIndices);
 
 	indexbd.Usage = D3D11_USAGE_DYNAMIC;				// write access access by CPU and GPU
 	indexbd.ByteWidth = indexSize;						// size is the Face struct * m_faces.size

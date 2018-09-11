@@ -57,5 +57,5 @@ float4 PShader(
 ) : SV_TARGET
 {
 	float4 diffuse = max(dot(normal, light), 0) * color;
-	return diffuse;
+	return color;
 }

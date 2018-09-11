@@ -22,6 +22,7 @@ struct Face {
 	}
 	DWORD operator[](int i) const { return index[i]; }
 	DWORD& operator[](int i) { return index[i]; }
+	operator DWORD*() { return &(index[0]); }
 };
 
 #endif // ! FACE_H

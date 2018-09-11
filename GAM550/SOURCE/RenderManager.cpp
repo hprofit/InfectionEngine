@@ -235,7 +235,7 @@ void RenderManager::RenderScene(const Scene * pScene)
 		mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
 		mp_DeviceContext->IASetIndexBuffer(pMesh->IBuffer(), DXGI_FORMAT_R32_UINT, 0);
 
-		mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+		mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		//mp_DeviceContext->Draw(pMesh->NumVerts(), 0);
 		mp_DeviceContext->DrawIndexed(pMesh->NumFaces()*3, 0, 0);
 	}

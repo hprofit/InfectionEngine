@@ -271,6 +271,121 @@ Vector3D Vector3D::VectorFromAngleDegrees(float degrees)
 	return Vector3D(cosf(rad), sinf(rad), 0);
 }
 
+void Vector3D::operator*=(const real value)
+{
+  x *= value;
+  y *= value;
+  z *= value;
+}
+
+Vector3D Vector3D::componentProduct(const Vector3D &vector) const
+{
+  return Vector3D(x * vector.x, y * vector.y, z * vector.z);
+}
+
+void Vector3D::componentProductUpdate(const Vector3D &vector)
+{
+  x *= vector.x;
+  y *= vector.y;
+  z *= vector.z;
+}
+
+Vector3D Vector3D::vectorProduct(const Vector3D &vector) const
+{
+  return Vector3D(y*vector.z - z * vector.y,
+    z*vector.x - x * vector.z,
+    x*vector.y - y * vector.x);
+}
+
+void Vector3D::operator %=(const Vector3D &vector)
+{
+  *this = vectorProduct(vector);
+}
+
+/**
+ * Calculates and returns the vector product of this vector
+ * with the given vector.
+ */
+Vector3D Vector3D::operator%(const Vector3D &vector) const
+{
+  return Vector3D(y*vector.z - z * vector.y,
+    z*vector.x - x * vector.z,
+    x*vector.y - y * vector.x);
+}
+
+
+real Vector3D::scalarProduct(const Vector3D &vector) const
+{
+  return x * vector.x + y * vector.y + z * vector.z;
+}
+
+
+real Vector3D::operator *(const Vector3D &vector) const
+{
+  return x * vector.x + y * vector.y + z * vector.z;
+}
+
+
+void Vector3D::addScaledVector(const Vector3D& vector, real scale)
+{
+  x += vector.x * scale;
+  y += vector.y * scale;
+  z += vector.z * scale;
+}
+
+/** Limits the size of the vector to the given maximum. */
+void Vector3D::trim(real size)
+{
+  if (SquareLength() > size*size)
+  {
+    normalise();
+    x *= size;
+    y *= size;
+    z *= size;
+  }
+}
+
+/** Turns a non-zero vector into a vector of unit length. */
+void Vector3D::normalise()
+{
+  real l = Length();
+  if (l > 0)
+  {
+    (*this) *= ((real)1) / l;
+  }
+}
+
+/** Returns the normalised version of a vector. */
+Vector3D Vector3D::unit() const
+{
+  Vector3D result = *this;
+  result.normalise();
+  return result;
+}
+
+
+bool Vector3D::operator<(const Vector3D& other) const
+{
+  return x < other.x && y < other.y && z < other.z;
+}
+
+bool Vector3D::operator>(const Vector3D& other) const
+{
+  return x > other.x && y > other.y && z > other.z;
+}
+
+
+bool Vector3D::operator<=(const Vector3D& other) const
+{
+  return x <= other.x && y <= other.y && z <= other.z;
+}
+
+
+bool Vector3D::operator>=(const Vector3D& other) const
+{
+  return x >= other.x && y >= other.y && z >= other.z;
+}
+
 #pragma endregion
 
 Vector3D operator*(const float scalar, const Vector3D& other)
