@@ -16,8 +16,8 @@ Implementation::Implementation() {
 	AudioManager::ErrorCheck(FMOD::Studio::System::create(&studio_system_));
 	AudioManager::ErrorCheck(studio_system_->initialize(512, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_PROFILE_ENABLE, NULL));
 
-	system_ = NULL;
-	AudioManager::ErrorCheck(studio_system_->getLowLevelSystem(&system_));
+	/*system_ = NULL;
+	AudioManager::ErrorCheck(studio_system_->getLowLevelSystem(&system_));*/
 }
 
 Implementation::~Implementation()
