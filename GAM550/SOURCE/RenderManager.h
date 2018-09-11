@@ -29,7 +29,7 @@ private:
 	unsigned int m_ScreenWidth, m_ScreenHeight;
 	float m_AspectRatio;
 	bool m_FullScreen;
-
+	HWND m_hWnd; 	// the handle for the window, filled by a function
 
 	ID3D11Buffer *mp_Cbuffer;		// the constant buffer
 	ID3D11VertexShader *mp_VS;		// the vertex shader
@@ -72,7 +72,7 @@ public:
 
 	void LoadShader(void);
 
-
+	HWND GethWnd() { return m_hWnd; }
 
 	// TODO: Get rid of these in favor of selecting which VS/PS you want
 	ID3D11VertexShader * const VertexShader() { return mp_VS; }

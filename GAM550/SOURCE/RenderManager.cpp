@@ -75,8 +75,6 @@ void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 	m_ScreenHeight = settings.Height;
 	m_AspectRatio = (float)m_ScreenWidth / (float)m_ScreenHeight;
 	
-	// the handle for the window, filled by a function
-	HWND hWnd;
 	// this struct holds information for the window class
 	WNDCLASSEX wc;
 
@@ -96,7 +94,7 @@ void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 	RegisterClassEx(&wc);
 
 	// create the window and use the result as the handle
-	hWnd = CreateWindowEx(NULL,
+	m_hWnd = CreateWindowEx(NULL,
 		"WindowClass1",    // name of the window class
 		settings.WindowTitle.c_str(),   // title of the window
 		WS_OVERLAPPEDWINDOW,    // window style
@@ -110,9 +108,9 @@ void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 		NULL);    // used with multiple windows, NULL
 
 				  // display the window on the screen
-	ShowWindow(hWnd, nCmdShow);
+	ShowWindow(m_hWnd, nCmdShow);
 
-	InitD3D(hWnd);
+	InitD3D(m_hWnd);
 }
 
 void RenderManager::InitD3D(HWND hWnd) {

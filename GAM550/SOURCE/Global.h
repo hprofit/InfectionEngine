@@ -17,6 +17,7 @@ Author: <Holden Profit>
 #define INFECT_RESOURCES Singleton<ResourceManager>::GetInstance()
 #define INFECT_GAME_STATE Singleton<GameStateManager>::GetInstance()
 #define INFECT_FRAMERATE Singleton<FrameRateManager>::GetInstance()
+#define INFECT_INPUT Singleton<InputManager>::GetInstance()
 
 
 #endif

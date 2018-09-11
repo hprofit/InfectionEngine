@@ -106,6 +106,12 @@ MSG GameStateManager::Update() {
 
 					Infect::FrameStart();
 					pTransComp->RotateZ(Infect::GetFrameTime() * 100.0f);
+					if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
+						pTransComp2->Move(pTransComp2->Right());
+					}
+					if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
+						pTransComp2->Move(-1.0f*pTransComp2->Right());
+					}
 					Infect::Update(Infect::GetFrameTime());			// Game loop
 
 					Infect::FrameEnd();

@@ -19,7 +19,7 @@ namespace Infect {
 			INFECT_RENDERER.InitConsole();
 		INFECT_RENDERER.InitWindow(hInstance, nCmdShow, INFECT_GAME_CONFIG.WindowSettings());
 		INFECT_RENDERER.LoadShader();
-		
+		INFECT_INPUT.Init(hInstance);
 		return 0;
 	}
 
@@ -41,7 +41,7 @@ namespace Infect {
 
 	void Update(float deltaTime)
 	{
-		//INFECT_INPUT.Update();									// Update input keys
+		INFECT_INPUT.Update();									// Update input keys
 		//INFECT_DEBUG.Update();									// Toggles debug drawing if needed
 		INFECT_EVENTS.Update(deltaTime);							// Pump the event manager
 		//INFECT_AUDIO.Update(deltaTime);

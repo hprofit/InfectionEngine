@@ -94,6 +94,10 @@ struct InputCommandInfo {
 class InputManager: public Subscriber
 {
 private:
+	// DirectInput
+	LPDIRECTINPUT8 DIRX_Interface;		// Root DirectInput Interface
+	LPDIRECTINPUTDEVICE8 DIRX_Keyboard; // The keyboard device
+
 	// keyboard state
 	Uint8 *m_PreviousKeyStates;
 	Uint8 *m_CurrentKeyStates;
@@ -118,14 +122,16 @@ public:
 	~InputManager();
 	InputManager(const InputManager &) = delete;
 	void operator=(const InputManager &) = delete;
+	
+	void Init(HINSTANCE hInstance);
 
 	void Update();
 	void HandleEvent(Event* pEvent);
 	//void Initialize(const json& j);
 	// Keyboard Input
-	bool IsKeyPressed(const SDL_Scancode);
-	bool IsKeyTriggered(const SDL_Scancode);
-	bool IsKeyReleased(const SDL_Scancode);
+	bool IsKeyPressed(const UINT8);
+	bool IsKeyTriggered(const Uint8);
+	bool IsKeyReleased(const Uint8);
 	// Mouse Input
 	bool IsMouseButtonPressed(const MOUSEBTN);
 	bool IsMouseButtonTriggered(const MOUSEBTN);
