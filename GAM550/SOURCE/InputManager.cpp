@@ -77,58 +77,8 @@ void InputManager::Init(HINSTANCE hInstance) {
 	}
 }
 
-//void InputManager::Initialize(const json& j) {
-//	int size = j.size();
-//	for (int i = 0; i < size; ++i) {
-//		m_inputCommands.push_back(new InputCommandInfo(
-//			static_cast<EventType>(ParseInt(j[i], "EventType")),
-//			static_cast<InputType>(ParseInt(j[i], "InputType")),
-//			ParseBool(j[i], "isMouse"),
-//			ParseBool(j[i], "isJoystick"),
-//			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKey")),
-//			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKeyPosX")),
-//			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKeyNegX")),
-//			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKeyPosY")),
-//			static_cast<SDL_Scancode>(ParseInt(j[i], "KeyBoardKeyNegY")),
-//			static_cast<JoystickAnalogueType>(ParseInt(j[i], "AnalogueStick")),
-//			static_cast<MOUSEBTN>(ParseInt(j[i], "MouseBtn")),
-//			static_cast<XBOX_SCANCODE>(ParseInt(j[i], "XboxKey"))
-//		));
-//	}
-//}
-
 void InputManager::Update() {
-	//SDL_Event event;
-	//while (SDL_PollEvent(&event)) 
-	//{
-	//	//TETRA_IMGUI.HandleSDLEvents(event);
-	//	switch (event.type) {
-	//		case SDL_QUIT:
-	//			//TETRA_EVENTS.BroadcastEvent(&Event(EventType::EVENT_WINDOW_CLOSED));
-	//			break;
-	//		case SDL_WINDOWEVENT:
-	//		{
-	//			switch (event.window.event) {
-	//				case SDL_WINDOWEVENT_RESIZED:
-	//				{
-	//					//TETRA_RENDERER.SetWindowDimensions(event.window.data1, event.window.data2);
-	//					break;
-	//				}
-	//				case SDL_WINDOWEVENT_HIDDEN:
-	//				case SDL_WINDOWEVENT_LEAVE:
-	//				case SDL_WINDOWEVENT_FOCUS_LOST:
-	//				case SDL_WINDOWEVENT_MINIMIZED:
-	//				{
-	//					//if(!TETRA_GAME_STATE.IsGamePaused())
-	//					//	TETRA_EVENTS.BroadcastEventToSubscribers(&Event(EVENT_INPUT_PAUSEGAME, &InputButtonData(false, true, false)));
-	//					break;
-	//				}
-	//			}
-	//			break;
-	//		}
-	//	}
-	//}
-
+	
 	//// Update mouse position
 	//int mouseTempPosX = m_MousePosX;
 	//int mouseTempPosY = m_MousePosY;
