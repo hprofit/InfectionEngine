@@ -32,6 +32,10 @@ public:
 	void RegisterCamera(GameObject* cameraGO);
 
 	void RenderCameras();
+
+	void Update(float deltaTime);
+
+	void LateUpdate(float deltaTime);
 };
 
 #endif

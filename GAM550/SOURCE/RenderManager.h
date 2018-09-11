@@ -10,9 +10,10 @@ Author: <Holden Profit>
 #ifndef RENDER_MANAGER_H
 #define RENDER_MANAGER_H
 
-// 144 bytes
+// 208 bytes
 struct ConstantBuffer {
 	Matrix4x4 MatFinal;
+	Matrix4x4 ModelMatrix;
 	Matrix4x4 NormalMatrix;
 	Vector3D CameraPosition;
 };

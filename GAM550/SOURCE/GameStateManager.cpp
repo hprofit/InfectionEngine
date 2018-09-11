@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Moodie Ghaddar>
+Author: <Holden Profit>
 - End Header --------------------------------------------------------*/
 
 #include <Stdafx.h>
@@ -34,18 +34,21 @@ MSG GameStateManager::Update() {
 	pMesh->AddVertex(0.0f, 0.5f, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 	pMesh->AddVertex(0.45f, -0.5, 0.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
 	pMesh->AddVertex(-0.45f, -0.5f, 0.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->AddFace(0, 1, 2);
 	pMesh->FinishMesh();
 	Scene* pScene = new Scene(1);
 	(*pScene)[0] = pMesh;
 	
 	GameObject* pGO = INFECT_GOM.SpawnGameObject();
 	MeshComponent* pMeshComp = new MeshComponent();
-	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
-	pMeshComp->SetScene(pScene);
+	pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
+	//pMeshComp->SetScene(pScene);
 	
 	TransformComponent* pTransComp = new TransformComponent();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
-	pTransComp->SetScale(50.0f, 50.0f, 50.0f);
+	pTransComp->SetAngleX(-90);
+	pTransComp->SetAngleZ(45);
+	pTransComp->SetScale(10.0f, 10.0f, 10.0f);
 	
 	pGO->AddComponent(pMeshComp);
 	pGO->AddComponent(pTransComp);
@@ -56,7 +59,7 @@ MSG GameStateManager::Update() {
 	
 	GameObject* pGOCamera = INFECT_GOM.SpawnGameObject();
 	TransformComponent* pTransComp2 = new TransformComponent();
-	pTransComp2->SetPosition(Vector3D(0, 0, 10, 1));
+	pTransComp2->SetPosition(Vector3D(0, 0, 50, 1));
 	
 	CameraComponent * pCamComp = new CameraComponent();
 	pGOCamera->AddComponent(pTransComp2);
@@ -102,7 +105,7 @@ MSG GameStateManager::Update() {
 
 
 					Infect::FrameStart();
-
+					pTransComp->RotateZ(Infect::GetFrameTime() * 100.0f);
 					Infect::Update(Infect::GetFrameTime());			// Game loop
 
 					Infect::FrameEnd();

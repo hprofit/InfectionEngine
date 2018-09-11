@@ -213,7 +213,8 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	ConstantBuffer cb;
 	cb.MatFinal = pCamComp->GetCameraMatrix() * pCamComp->GetViewMatrix() * M;
 	cb.MatFinal.Transpose();
-	cb.NormalMatrix = N;
+	cb.ModelMatrix = Matrix4x4::Transpose(M);
+	cb.NormalMatrix = Matrix4x4::Transpose(N);
 	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->GetPosition();
 	
 	mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_Cbuffer);
@@ -232,9 +233,11 @@ void RenderManager::RenderScene(const Scene * pScene)
 		UINT offset = 0;
 		ID3D11Buffer* buffers[] = { pMesh->VBuffer() };
 		mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
+		mp_DeviceContext->IASetIndexBuffer(pMesh->IBuffer(), DXGI_FORMAT_R32_UINT, 0);
 
-		mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		mp_DeviceContext->Draw(3, 0);
+		mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+		//mp_DeviceContext->Draw(pMesh->NumVerts(), 0);
+		mp_DeviceContext->DrawIndexed(pMesh->NumFaces()*3, 0, 0);
 	}
 }
 
@@ -261,7 +264,7 @@ void RenderManager::LoadShader()
 	ZeroMemory(&bd, sizeof(bd));
 
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = 144;
+	bd.ByteWidth = 208;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
 	mp_Device->CreateBuffer(&bd, NULL, &mp_Cbuffer);
