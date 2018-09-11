@@ -38,10 +38,8 @@ struct Implementation {
 	typedef map<string, FMOD::Sound*> SoundMap;
 	typedef map<int, FMOD::Channel*> ChannelMap;
 	typedef map<string, FMOD::Studio::EventInstance*> EventMap;
-	typedef map<string, FMOD::Studio::Bank*> BankMap;
 	typedef map<int, float> FrequencyMap;
 
-	BankMap banks_;
 	EventMap events_;
 	SoundMap sound_map_;
 	ChannelMap channel_map_;
@@ -59,13 +57,13 @@ public:
 
 	static void Init();
 	static void Update();
-	static int ErrorCheck(FMOD_RESULT result);
+	static void ErrorCheck(FMOD_RESULT result);
 
 
 	//MANAGING SOUNDS
 	void LoadSound( const string &audio_name, bool is_audio_3D = true, bool is_audio_looping = false, bool is_audio_streaming = false);
 	void UnLoadSound(const string &audio_name);
-	int PlaySounds(const string& Sound_name, const Vector3& Position, float Volume_play);
+	 int PlaySounds(const string& Sound_name, const Vector3& Position, float Volume_play);
 
 	//VECTOR CONVERSIONS
 	FMOD_VECTOR VectorToFmod(const Vector3 position);
@@ -78,11 +76,6 @@ public:
 	void SetChannel3dPosition(int channel_id, const Vector3 pos);
 	void SetChannelVolume(int channel_id, float volume_db);
 	
-	//EVENTS
-	void LoadEvent(const std::string& event_name);
-	void PlayEvent(const string &event_name);
-	void StopEvent(const string &event_name, bool immediate = false);
-
 
 };
 

@@ -70,7 +70,7 @@ MSG GameStateManager::Update() {
 	pGOCamera->LateUpdate(0);
 
 
-
+	
 
 
 
@@ -91,6 +91,7 @@ MSG GameStateManager::Update() {
 		// Game loop
 		// wait for the next message in the queue, store the result in 'msg'
 		while (m_currentState == m_nextState) {
+			
 			//BOOL bRet;
 			GetMessage(&msg, NULL, 0, 0);
 			//while (bRet = GetMessage(&msg, NULL, 0, 0) != 0) {

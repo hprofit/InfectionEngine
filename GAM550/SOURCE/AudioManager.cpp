@@ -13,11 +13,12 @@ AudioManager::~AudioManager()
 Implementation::Implementation() {
 	studio_system_ = NULL;
 
+	int channel_size_ = 512;
 	AudioManager::ErrorCheck(FMOD::Studio::System::create(&studio_system_));
-	AudioManager::ErrorCheck(studio_system_->initialize(512, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_PROFILE_ENABLE, NULL));
+	AudioManager::ErrorCheck(studio_system_->initialize(channel_size_, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, NULL));
 
-	/*system_ = NULL;
-	AudioManager::ErrorCheck(studio_system_->getLowLevelSystem(&system_));*/
+	system_ = NULL;
+	AudioManager::ErrorCheck(studio_system_->getLowLevelSystem(&system_));
 }
 
 Implementation::~Implementation()
@@ -60,13 +61,15 @@ void AudioManager::Update()
 
 }
 
-int AudioManager::ErrorCheck(FMOD_RESULT result_) {
-	if (result_ != FMOD_OK)
+void AudioManager::ErrorCheck(FMOD_RESULT result_) {
+	/*if (result_ != FMOD_OK)
 	{
 		printf("FMOD ERROR %d", result_);
 		return 1;
 	}
-	return 0;
+	return 0;*/
+
+	assert(FMOD_OK == result_);
 }
 
 void AudioManager::LoadSound( const string & audio_name, bool is_audio_3D, bool is_audio_looping, bool is_audio_streaming)
@@ -80,7 +83,7 @@ void AudioManager::LoadSound( const string & audio_name, bool is_audio_3D, bool 
 	mode |= is_audio_looping ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF;
 	mode |= is_audio_streaming ? FMOD_CREATESTREAM : FMOD_CREATECOMPRESSEDSAMPLE;
 
-	FMOD::Sound* sound = nullptr;
+	FMOD::Sound *sound;
 	AudioManager::ErrorCheck(implementation->system_->createSound(audio_name.c_str(), mode, nullptr, &sound));
 
 
@@ -116,6 +119,7 @@ int AudioManager::PlaySounds(const string & Sound_name, const Vector3 & Position
 		LoadSound(Sound_name);
 		found_it = implementation->sound_map_.find(Sound_name);
 
+		//Check again if any error
 		if (found_it == implementation->sound_map_.end())
 		{
 			return channel_id;
@@ -183,46 +187,5 @@ void AudioManager::SetChannelVolume(int channel_id, float volume_db)
 	AudioManager::ErrorCheck(found_it->second->setVolume(dbToVolume(volume_db)));
 }
 
-void AudioManager::LoadEvent(const std::string & event_name)
-{
-	auto found_it = implementation->events_.find(event_name);
-	if (found_it != implementation->events_.end())
-		return;
-	FMOD::Studio::EventDescription* event_description = NULL;
-	AudioManager::ErrorCheck(implementation->studio_system_->getEvent(event_name.c_str(), &event_description));
-	if (event_description)
-	{
-		FMOD::Studio::EventInstance *event_instance = NULL;
-		AudioManager::ErrorCheck(event_description->createInstance(&event_instance));
-		if (event_instance)
-		{
-			implementation->events_[event_name] = event_instance;
-		}
-	}
-}
-
-void AudioManager::PlayEvent(const string & event_name)
-{
-	auto found_it = implementation->events_.find(event_name);
-	if (found_it == implementation->events_.end())
-	{
-		LoadEvent(event_name);
-		found_it = implementation->events_.find(event_name);
-		if (found_it == implementation->events_.end())
-			return;
-	}
-	found_it->second->start();
-}
-
-void AudioManager::StopEvent(const string & event_name, bool immediate)
-{
-	auto found_it = implementation->events_.find(event_name);
-	if (found_it == implementation->events_.end())
-		return;
-
-	FMOD_STUDIO_STOP_MODE mode;
-	mode = immediate ? FMOD_STUDIO_STOP_IMMEDIATE : FMOD_STUDIO_STOP_ALLOWFADEOUT;
-	AudioManager::ErrorCheck(found_it->second->stop(mode));
-}
-
-
+//Example to call audio 
+//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
