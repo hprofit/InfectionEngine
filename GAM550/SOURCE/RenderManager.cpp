@@ -237,7 +237,7 @@ void RenderManager::RenderScene(const Scene * pScene)
 
 		mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		//mp_DeviceContext->Draw(pMesh->NumVerts(), 0);
-		mp_DeviceContext->DrawIndexed(pMesh->NumFaces()*3, 0, 0);
+		mp_DeviceContext->DrawIndexed(/*pMesh->NumFaces()*/12*3, 0, 0);
 	}
 }
 

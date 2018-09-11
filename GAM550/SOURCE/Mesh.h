@@ -68,6 +68,7 @@ protected:
 
 	std::vector<Vertex> m_vertices;
 	std::vector<Face> m_faces;
+	std::vector<DWORD> m_faces2;
 
 	ID3D11Buffer *mp_VBuffer;	// Vertex Buffer
 	ID3D11Buffer *mp_IBuffer;	// Index Buffer

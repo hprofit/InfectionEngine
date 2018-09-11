@@ -149,12 +149,29 @@ void Mesh::FinishMesh()
 	memcpy(vMS.pData, &(m_vertices[0]), vertSize);	// copy the data
 	INFECT_RENDERER.DeviceContext()->Unmap(mp_VBuffer, NULL);				// unmap the buffer
 
+
+	DWORD OurIndices[] =
+	{
+		0, 1, 2,    // side 1
+		2, 1, 3,
+		4, 0, 6,    // side 2
+		6, 0, 2,
+		7, 5, 6,    // side 3
+		6, 5, 4,
+		3, 1, 7,    // side 4
+		7, 1, 5,
+		4, 5, 0,    // side 5
+		0, 5, 1,
+		3, 7, 2,    // side 6
+		2, 7, 6,
+	};
+
 	D3D11_BUFFER_DESC indexbd;
 	ZeroMemory(&indexbd, sizeof(indexbd));
 	int indexSize = sizeof(Face) * UINT(m_faces.size());
 
 	indexbd.Usage = D3D11_USAGE_DYNAMIC;				// write access access by CPU and GPU
-	indexbd.ByteWidth = indexSize;						// size is the Face struct * m_faces.size
+	indexbd.ByteWidth = sizeof(DWORD) * 3 * 12/*UINT(m_faces.size())*/;						// size is the Face struct * m_faces.size
 	indexbd.BindFlags = D3D11_BIND_INDEX_BUFFER;		// use as a vertex buffer
 	indexbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;	// allow CPU to write in buffer
 	indexbd.MiscFlags = 0;
@@ -163,7 +180,8 @@ void Mesh::FinishMesh()
 
 	D3D11_MAPPED_SUBRESOURCE iMS;
 	INFECT_RENDERER.DeviceContext()->Map(mp_IBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &iMS);   // map the buffer
-	memcpy(iMS.pData, &(m_faces[0]), indexSize);	// copy the data
+	//memcpy(iMS.pData, &(m_faces[0]), UINT(m_faces.size()) * sizeof(DWORD) * 3);	// copy the data
+	memcpy(iMS.pData, OurIndices, sizeof(OurIndices));	// copy the data
 	INFECT_RENDERER.DeviceContext()->Unmap(mp_IBuffer, NULL);					// unmap the buffer
 
 

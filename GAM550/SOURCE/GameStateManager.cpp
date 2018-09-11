@@ -31,18 +31,41 @@ MSG GameStateManager::Update() {
 
 
 	Mesh* pMesh = new Mesh();
-	pMesh->AddVertex(0.0f, 0.5f, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
-	pMesh->AddVertex(0.45f, -0.5, 0.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
-	pMesh->AddVertex(-0.45f, -0.5f, 0.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+
+	pMesh->AddVertex(-1.0f, 1.0f, -1.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(1.0f, 1.0f, -1.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(-1.0f, -1.0f, -1.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(1.0f, -1.0f, -1.0f, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(-1.0f, 1.0f, 1.0f, D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(1.0f, 1.0f, 1.0f, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(-1.0f, -1.0f, 1.0f, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(1.0f, -1.0f, 1.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
 	pMesh->AddFace(0, 1, 2);
+	pMesh->AddFace(2, 1, 3);
+	pMesh->AddFace(4, 0, 6);
+	pMesh->AddFace(6, 0, 2);
+	pMesh->AddFace(7, 5, 6);
+	pMesh->AddFace(6, 5, 4);
+	pMesh->AddFace(3, 1, 7);
+	pMesh->AddFace(7, 1, 5);
+	pMesh->AddFace(4, 5, 0);
+	pMesh->AddFace(0, 5, 1);
+	pMesh->AddFace(3, 7, 2);
+	pMesh->AddFace(2, 7, 6);
+
+	//pMesh->AddVertex(0.0f, 0.5f, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	//pMesh->AddVertex(0.45f, -0.5, 0.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
+	//pMesh->AddVertex(-0.45f, -0.5f, 0.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+	//pMesh->AddFace(0, 1, 2);
 	pMesh->FinishMesh();
 	Scene* pScene = new Scene(1);
 	(*pScene)[0] = pMesh;
 	
 	GameObject* pGO = INFECT_GOM.SpawnGameObject();
 	MeshComponent* pMeshComp = new MeshComponent();
-	pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
-	//pMeshComp->SetScene(pScene);
+	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
+	pMeshComp->SetScene(pScene);
 	
 	TransformComponent* pTransComp = new TransformComponent();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
@@ -105,7 +128,7 @@ MSG GameStateManager::Update() {
 
 
 					Infect::FrameStart();
-					pTransComp->RotateZ(Infect::GetFrameTime() * 100.0f);
+					pTransComp->RotateZ(Infect::GetFrameTime() * 10.0f);
 					Infect::Update(Infect::GetFrameTime());			// Game loop
 
 					Infect::FrameEnd();
