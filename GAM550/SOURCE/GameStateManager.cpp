@@ -69,8 +69,8 @@ MSG GameStateManager::Update() {
 	
 	TransformComponent* pTransComp = new TransformComponent();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
-	pTransComp->SetAngleX(-90);
-	pTransComp->SetAngleZ(45);
+	//pTransComp->SetAngleX(-90);
+	//pTransComp->SetAngleZ(45);
 	pTransComp->SetScale(10.0f, 10.0f, 10.0f);
 	
 	pGO->AddComponent(pMeshComp);
@@ -128,7 +128,7 @@ MSG GameStateManager::Update() {
 
 
 					Infect::FrameStart();
-					pTransComp->RotateZ(Infect::GetFrameTime() * 10.0f);
+					pTransComp->RotateY(Infect::GetFrameTime() * 10.0f);
 					Infect::Update(Infect::GetFrameTime());			// Game loop
 
 					Infect::FrameEnd();
