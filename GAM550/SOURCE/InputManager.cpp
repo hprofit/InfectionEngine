@@ -15,6 +15,10 @@ Author: <Hyoyup Chung>
 InputManager::InputManager()
 	:	m_PrevLeftMouse(false), m_LeftMouse(false), 
 		m_PrevRightMouse(false), m_RightMouse(false), m_isJoystickControlsActive(false) {
+	
+	// initialize mouse pos
+	m_MousePosX = 0;
+	m_MousePosY = 0;
 	// initialize keyboard states
 	m_PreviousKeyStates = new Uint8[256];
 	m_CurrentKeyStates = new Uint8[256];
@@ -111,9 +115,9 @@ void InputManager::Update() {
 	// Update previous mouse states
 	m_PrevLeftMouse = m_LeftMouse;
 	m_PrevRightMouse = m_RightMouse;
-	// Get mouse state
-	DIMOUSESTATE mouseState; 
-	hr = mDIRX_Mouse->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&mouseState);
+	m_PreviousMouseStates = m_CurrentMouseStates;
+	// Get mouse state 
+	hr = mDIRX_Mouse->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&m_CurrentMouseStates);
 	if (FAILED(hr)) {
 		mDIRX_Mouse->Acquire();
 	}
@@ -122,12 +126,12 @@ void InputManager::Update() {
 	m_MousePosRelY = m_MousePosY - mouseTempPosY;
 
 	// Update current mouse states
-	m_LeftMouse = mouseState.rgbButtons[(BYTE)MOUSEBTN::MOUSE_BTN_LEFT] & 0x80;
-	m_RightMouse = mouseState.rgbButtons[(BYTE)MOUSEBTN::MOUSE_BTN_RIGHT] & 0x80;
+	m_LeftMouse = m_CurrentMouseStates.rgbButtons[(BYTE)MOUSEBTN::MOUSE_BTN_LEFT] & 0x80;
+	m_RightMouse = m_CurrentMouseStates.rgbButtons[(BYTE)MOUSEBTN::MOUSE_BTN_RIGHT] & 0x80;
 	
 	// update PreviousKeyStates
 	memcpy(m_PreviousKeyStates, m_CurrentKeyStates, 256 * sizeof(Uint8));
-	memcpy(m_PreviousButtonStates, m_CurrentButtonStates, XBOX_NUM_SCANCODES * sizeof(Uint8));
+	//memcpy(m_PreviousButtonStates, m_CurrentButtonStates, XBOX_NUM_SCANCODES * sizeof(Uint8));
 
 	// get new KeyStates
 	Uint8 currentKeyStates[256];
@@ -254,11 +258,13 @@ bool InputManager::IsKeyPressed(const Uint8 scancode) {
 }
 
 bool InputManager::IsKeyTriggered(const Uint8 scancode) {
-	return (m_CurrentKeyStates[scancode] == 1 && m_PreviousKeyStates[scancode] == 0);
+	return ((m_CurrentKeyStates[scancode] & 0x80) 
+			&& !(m_PreviousKeyStates[scancode] & 0x80));
 }
 
 bool InputManager::IsKeyReleased(const Uint8 scancode) {
-	return (m_CurrentKeyStates[scancode] == 0 && m_PreviousKeyStates[scancode] == 1);
+	return (!(m_CurrentKeyStates[scancode] & 0x80) 
+		&& (m_PreviousKeyStates[scancode] & 0x80));
 }
 
 bool InputManager::IsMouseButtonPressed(MOUSEBTN btn) {
