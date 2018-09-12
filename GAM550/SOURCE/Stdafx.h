@@ -82,6 +82,7 @@ Author: <Holden Profit>
 
 #include <Physics/physics_math.h>
 #include <Physics/particle.h>
+#include <Physics/Quaternion.h>
 #pragma endregion
 
 #pragma region Resources
