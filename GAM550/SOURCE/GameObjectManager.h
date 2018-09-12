@@ -15,13 +15,27 @@ Author: <Holden Profit>
 class GameObjectManager : public Subscriber
 {
 private:
-	GameObject * mp_GameObjects[MAX_GAMEOBJECTS];
+	std::vector<GameObject *> mp_GameObjects;
+	std::vector<GameObject *> mp_Cameras;
 
+	unsigned int m_GUID;
 public:
 	GameObjectManager();
 	~GameObjectManager();
 
-	GameObject* GetGameObject(unsigned int id) const { return mp_GameObjects[0]; }
+	void Init() {};
+
+	GameObject* SpawnGameObject();
+
+	GameObject* GetGameObject(unsigned int id) const { return mp_GameObjects[id]; }
+
+	void RegisterCamera(GameObject* cameraGO);
+
+	void RenderCameras();
+
+	void Update(float deltaTime);
+
+	void LateUpdate(float deltaTime);
 };
 
 #endif

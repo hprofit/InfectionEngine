@@ -18,7 +18,6 @@ FrameRateManager::FrameRateManager(unsigned int maxFrameRate) :
 	}
 	else { m_maxFrameRate = maxFrameRate;  }
 	m_ticksPerFrame = 1.0f / (float)m_maxFrameRate;
-	//m_frameTime = MIN_FRAME_TIME;
 	m_totalElapsedTime = 0.0f;
 }
 
@@ -45,27 +44,29 @@ void FrameRateManager::FrameEnd() {
 		m_tickEnd = Clock::now();
 	}
 
-	//if (TETRA_GAME_STATE.IsDebugPause()) {
-	//	m_frameTime = GetMaxFrameRate();
-	//	m_totalElapsedTime += m_frameTime;
-	//}
+	if (false) { // if game pause , TODO: add this feat. 
+		m_frameTime = GetMaxFrameRate();
+		m_totalElapsedTime += m_frameTime;
+	}
 	else {
 		auto dur = m_tickEnd - m_tickStart;
 		FloatSecond fsec = std::chrono::duration_cast<FloatSecond>(dur);
-		m_frameTime = float(fsec.count()); //  / 1000.0f;
+		m_frameTime = float(fsec.count());
 		m_totalElapsedTime += m_frameTime;
 
 		m_secondCounter += m_frameTime;
 		float fps = 1.0f / m_frameTime;
-		if (fps < 40.0f) {
-			//std::cout << "FPS dropped to: " << fps << std::endl;
-		}
+		//if (fps < 40.0f) {
+		//	//std::cout << "FPS dropped to: " << fps << std::endl;
+		//}
 	}
 
 	//if (m_secondCounter >= 0.1f) {
 	//	TETRA_EVENTS.BroadcastEventToSubscribers(&Event(EventType::EVENT_FPS_UPDATE, &FloatData(1/m_frameTime)));
 	//	m_secondCounter = 0.f;
 	//}
+
+
 }
 
 void FrameRateManager::ResetElapsedTime() {

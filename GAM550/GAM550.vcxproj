@@ -19,15 +19,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SOURCE\AudioManager.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\Semester%27s\3rd sem\GAM 550\Temp\infection\GAM550\SOURCE\AudioManager.cpp" />
+    <ClCompile Include="SOURCE\D3DHandler.cpp" />
     <ClCompile Include="SOURCE\Event.cpp" />
     <ClCompile Include="SOURCE\EventManager.cpp" />
+    <ClCompile Include="SOURCE\FrameRateManager.cpp" />
+    <ClCompile Include="SOURCE\GameConfig.cpp" />
     <ClCompile Include="SOURCE\GameObjectManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\CameraComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\ComponentFactory.cpp" />
     <ClCompile Include="SOURCE\GameObject\GameObject.cpp" />
     <ClCompile Include="SOURCE\GameObject\MeshComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\TransformComponent.cpp" />
+    <ClCompile Include="SOURCE\InputManager.cpp" />
+    <ClCompile Include="SOURCE\GameStateManager.cpp" />
+    <ClCompile Include="SOURCE\InfectAPI.cpp" />
+    <ClCompile Include="SOURCE\JsonReader.cpp" />
     <ClCompile Include="SOURCE\main.cpp" />
     <ClCompile Include="SOURCE\Math\MathFunctions.cpp" />
     <ClCompile Include="SOURCE\Math\Matrix2x2.cpp" />
@@ -36,6 +43,8 @@
     <ClCompile Include="SOURCE\Math\Vector2D.cpp" />
     <ClCompile Include="SOURCE\Math\Vector3D.cpp" />
     <ClCompile Include="SOURCE\Mesh.cpp" />
+    <ClCompile Include="SOURCE\Physics\particle.cpp" />
+    <ClCompile Include="SOURCE\Physics\physics_math.cpp" />
     <ClCompile Include="SOURCE\RenderManager.cpp" />
     <ClCompile Include="SOURCE\ResourceManager.cpp" />
     <ClCompile Include="SOURCE\Stdafx.cpp">
@@ -48,10 +57,13 @@
     <ClCompile Include="SOURCE\SubscriberTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SOURCE\AudioManager.h" />
+    <ClInclude Include="..\..\..\..\..\..\Semester%27s\3rd sem\GAM 550\Temp\infection\GAM550\SOURCE\AudioManager.h" />
+    <ClInclude Include="SOURCE\D3DHandler.h" />
     <ClInclude Include="SOURCE\Event.h" />
     <ClInclude Include="SOURCE\EventManager.h" />
     <ClInclude Include="SOURCE\Face.h" />
+    <ClInclude Include="SOURCE\FrameRateManager.h" />
+    <ClInclude Include="SOURCE\GameConfig.h" />
     <ClInclude Include="SOURCE\GameObjectManager.h" />
     <ClInclude Include="SOURCE\GameObject\CameraComponent.h" />
     <ClInclude Include="SOURCE\GameObject\Component.h" />
@@ -64,7 +76,11 @@
     <ClInclude Include="SOURCE\GameObject\RenderableComponent.h" />
     <ClInclude Include="SOURCE\GameObject\TagNames.h" />
     <ClInclude Include="SOURCE\GameObject\TransformComponent.h" />
+    <ClInclude Include="SOURCE\GameStateManager.h" />
     <ClInclude Include="SOURCE\Global.h" />
+    <ClInclude Include="SOURCE\InputManager.h" />
+    <ClInclude Include="SOURCE\InfectAPI.h" />
+    <ClInclude Include="SOURCE\JsonReader.h" />
     <ClInclude Include="SOURCE\Math\MathDefs.h" />
     <ClInclude Include="SOURCE\Math\MathFunctions.h" />
     <ClInclude Include="SOURCE\Math\Matrix2x2.h" />
@@ -73,12 +89,17 @@
     <ClInclude Include="SOURCE\Math\Vector2D.h" />
     <ClInclude Include="SOURCE\Math\Vector3D.h" />
     <ClInclude Include="SOURCE\Mesh.h" />
+    <ClInclude Include="SOURCE\Physics\particle.h" />
+    <ClInclude Include="SOURCE\Physics\physics_math.h" />
     <ClInclude Include="SOURCE\RenderManager.h" />
     <ClInclude Include="SOURCE\ResourceManager.h" />
     <ClInclude Include="SOURCE\Singleton.h" />
+    <ClInclude Include="SOURCE\Sorting.h" />
     <ClInclude Include="SOURCE\Stdafx.h" />
     <ClInclude Include="SOURCE\Subscriber.h" />
     <ClInclude Include="SOURCE\SubscriberTracker.h" />
+    <ClInclude Include="SOURCE\WindowProc.h" />
+    <ClInclude Include="SOURCE\WindowSettings.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -132,20 +153,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)SOURCE\;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib\x64\;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)SOURCE\;$(DXSDK_DIR)Include;$(IncludePath);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x64\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)SOURCE\;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib\x64\;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)SOURCE\;$(DXSDK_DIR)Include;$(IncludePath);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x64\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)SOURCE\;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib\x64\;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)SOURCE\;$(DXSDK_DIR)Include;$(ProjectDIr)SDL2\include;$(IncludePath);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x64\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)SOURCE\;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib\x64\;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)SOURCE\;$(DXSDK_DIR)Include;$(IncludePath);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x64\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -155,11 +176,11 @@
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Assimp\include;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)FMOD Studio API Windows\api\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Assimp\include;%(AdditionalIncludeDirectories);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)FMOD Studio API Windows\api\studio\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)Assimp\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;fmod64_vc.lib;fmodstudio64_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Assimp\lib;%(AdditionalLibraryDirectories);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;%(AdditionalDependencies);fmod_vc.lib;fmodstudio_vc.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -170,11 +191,11 @@
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Assimp\include;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)FMOD Studio API Windows\api\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)SDL2\include;$(ProjectDir)Assimp\include;%(AdditionalIncludeDirectories);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)FMOD Studio API Windows\api\studio\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)Assimp\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;fmod64_vc.lib;fmodstudio64_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Assimp\lib;$(ProjectDir)SDL2\lib\x64;%(AdditionalLibraryDirectories);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;%(AdditionalDependencies);fmod_vc.lib;fmodstudio_vc.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -187,13 +208,13 @@
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Assimp\include;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)FMOD Studio API Windows\api\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Assimp\include;%(AdditionalIncludeDirectories);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)FMOD Studio API Windows\api\studio\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)Assimp\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;fmod64_vc.lib;fmodstudio64_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Assimp\lib;%(AdditionalLibraryDirectories);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;%(AdditionalDependencies);fmod_vc.lib;fmodstudio_vc.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -206,13 +227,13 @@
       <ConformanceMode>false</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Stdafx.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Assimp\include;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)FMOD Studio API Windows\api\studio\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Assimp\include;%(AdditionalIncludeDirectories);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)FMOD Studio API Windows\api\studio\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)Assimp\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;fmod64_vc.lib;fmodstudio64_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Assimp\lib;%(AdditionalLibraryDirectories);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;%(AdditionalDependencies);fmod_vc.lib;fmodstudio_vc.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

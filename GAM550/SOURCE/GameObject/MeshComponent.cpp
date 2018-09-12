@@ -8,7 +8,8 @@ Author: <Holden Profit>
 #include <Stdafx.h>
 
 MeshComponent::MeshComponent() :
-	RenderableComponent(ComponentType::C_Mesh),
+	/*RenderableComponent(ComponentType::C_Mesh),*/
+	RenderableComponent(),
 	mp_Scene(nullptr)
 {
 }
@@ -17,12 +18,12 @@ MeshComponent::~MeshComponent() {}
 
 void MeshComponent::Deactivate() 
 {
-	pGO = nullptr; 
+	mp_Parent = nullptr; 
 }
 
 void MeshComponent::Update(float dt) {}
 
-void MeshComponent::Serialize()
+void MeshComponent::Serialize(const json& j)
 {
 
 }

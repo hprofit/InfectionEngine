@@ -304,13 +304,12 @@ __pycache__/
 # OpenCover UI analysis results
 OpenCover/
 
-!TetraiderEngine/Assets/Meshes/*.obj
-!TetraiderEngine/SDL2/lib/*
-!TetraiderEngine/GL/lib/*
-TetraiderEngine/Source/Math/*.o
-TetraiderEngine/Source/Math/*.exe
-TetraiderEngine/Shaders/*
-TetraiderEngine/Images/*
+!GAM550/SDL2/lib/*
+!GAM550/ASSETS/MESHES/*.obj
+GAM550/SOURCE/Math/*.o
+GAM550/SOURCE/Math/*.exe
+GAM550/ASSETS/SHADERS/*
+GAM550/ASSETS/TEXTURES/*
 gliInterceptLog.txt
 gliLog.txt
 Eggnapped.exe

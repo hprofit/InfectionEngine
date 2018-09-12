@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Moodie Ghaddar>
+Author: <Holden Profit>
 - End Header --------------------------------------------------------*/
 
 #pragma once
@@ -16,23 +16,26 @@ class Component :
 	public Subscriber
 {
 protected:
-	ComponentType m_type;
+	
+	GameObject *mp_Parent;
 public:
-	Component(ComponentType _type) : m_type(_type) {};
+	static const ComponentType Type = ComponentType::NUM_COMPONENTS;
+
+	/*Component(ComponentType _type) : m_type(_type) {};*/
+	Component() {};
 	virtual ~Component() {};
 	virtual void LateInitialize() {};
 	virtual void Update(float dt) = 0;
 	virtual void LateUpdate(float dt) {};
-	//virtual void Serialize(const json& j) = 0;
-	virtual void Serialize() = 0;
+	virtual void Serialize(const json& j) = 0;
 	virtual void Deactivate() {};
 	//virtual void Override(const json& j) {};
 	virtual void Override() {};
 	virtual void HandleEvent(Event* pEvent) {}
-	ComponentType Type() const { return m_type; }
 
-	GameObject *pGO;
+	virtual ComponentType GetType() const { return Type; }
+	inline GameObject* Parent() { return mp_Parent; }
+	inline void SetParent(GameObject* parent) { mp_Parent = parent; }
 };
-
 
 #endif

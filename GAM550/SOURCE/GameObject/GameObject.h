@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Moodie Ghaddar>
+Author: <Holden Profit>
 - End Header --------------------------------------------------------*/
 
 #pragma once
@@ -63,14 +63,14 @@ public:
 	bool HasComponent(ComponentType type) const;
 
 	template <typename C>
-	C* GetComponent(ComponentType type) {
-		return static_cast<C*>(mComponents[type]);
+	C* GetComponent() {
+		return static_cast<C*>(mComponents[C::Type]);
 	}
 
 	template <typename C>
-	const C * GetComponent(ComponentType type) const
+	const C * GetComponent() const
 	{
-		return static_cast<C*>(mComponents[type]);
+		return static_cast<C*>(mComponents[C::Type]);
 	}
 };
 

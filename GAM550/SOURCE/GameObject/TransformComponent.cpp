@@ -15,12 +15,14 @@ void TransformComponent::_UpdateLookAt()
 		Matrix4x4::Rotate(m_angleY, YAXIS) *
 		Matrix4x4::Rotate(m_angleX, XAXIS);
 	m_lookAt = Vector3D::Normalize(m_rotation * (Vector3D(0, 0, -1.0f, 0)));
+	m_lookAt.w = 0;
 }
 
 #pragma endregion
 
 TransformComponent::TransformComponent() :
-	Component(ComponentType::C_Transform),
+	//Component(ComponentType::C_Transform),
+	Component(),
 	m_prevPosition(Vector3D()),
 	m_position(Vector3D()),
 	m_scale(Vector3D()), 
@@ -36,7 +38,7 @@ TransformComponent::~TransformComponent()
 }
 
 void TransformComponent::Deactivate() {
-	pGO = nullptr;
+	mp_Parent = nullptr;
 	m_parent = nullptr;
 }
 
@@ -45,34 +47,35 @@ void TransformComponent::Update(float dt)
 }
 
 void TransformComponent::LateUpdate(float dt) {
-	//m_prevPosition = Vector3D(m_transform._03(), m_transform._13(), m_transform._23());
+	m_prevPosition = Vector3D(m_transform._03(), m_transform._13(), m_transform._23());
 
-	//// TODO: optimization if game object is static save m_Transform somewhere and never calculate matrix again
-	//Matrix4x4 trans;
-	//Matrix4x4 scale;
-	//if (m_parent) {
-	//	trans = Matrix4x4::Translate(m_position + m_parent->GetPosition());
-	//	int xSign = 1, ySign = 1, zSign = 1;
-	//	if (m_scale.x < 0 && m_parent->GetScaleX() < 0) xSign = -1;
-	//	if (m_scale.y < 0 && m_parent->GetScaleY() < 0) ySign = -1;
-	//	if (m_scale.z < 0 && m_parent->GetScaleZ() < 0) zSign = -1;
-	//	scale = Matrix4x4::Scale(m_scale.x*m_parent->GetScaleX()*xSign, m_scale.y*m_parent->GetScaleY()*ySign, 1.f); //	NOTE: Z SCALE IS HARD CODED FOR INVERSE PURPOSES
-	//}
-	//else {
-	//	trans = Matrix4x4::Translate(m_position);
-	//	scale = Matrix4x4::Scale(m_scale.x, m_scale.y, m_scale.z); //	NOTE: Z SCALE IS HARD CODED FOR INVERSE PURPOSES
-	//}
-	//
-	//Matrix4x4 rot(Matrix4x4::Rotate(m_angleX, XAXIS) * Matrix4x4::Rotate(m_angleY, YAXIS) * Matrix4x4::Rotate(m_angleZ, ZAXIS));
+	// TODO: optimization if game object is static save m_Transform somewhere and never calculate matrix again
+	Matrix4x4 trans;
+	Matrix4x4 scale;
+	if (m_parent) {
+		trans = Matrix4x4::Translate(m_position + m_parent->GetPosition());
+		int xSign = 1, ySign = 1, zSign = 1;
+		if (m_scale.x < 0 && m_parent->GetScaleX() < 0) xSign = -1;
+		if (m_scale.y < 0 && m_parent->GetScaleY() < 0) ySign = -1;
+		if (m_scale.z < 0 && m_parent->GetScaleZ() < 0) zSign = -1;
+		scale = Matrix4x4::Scale(m_scale.x*m_parent->GetScaleX()*xSign, m_scale.y*m_parent->GetScaleY()*ySign, m_scale.z*m_parent->GetScaleZ()*zSign);
+	}
+	else {
+		trans = Matrix4x4::Translate(m_position);
+		scale = Matrix4x4::Scale(m_scale.x, m_scale.y, m_scale.z);
+	}
+	
+	Matrix4x4 rot(Matrix4x4::Rotate(m_angleX, XAXIS) * Matrix4x4::Rotate(m_angleY, YAXIS) * Matrix4x4::Rotate(m_angleZ, ZAXIS));
 
-	//// TODO: Optimization, if pivot offset is zero do not create or multiply this component
-	//Matrix4x4 pivotOffset(Matrix4x4::Translate(m_pivotOffset));
+	// TODO: Optimization, if pivot offset is zero do not create or multiply this component
+	Matrix4x4 pivotOffset(Matrix4x4::Translate(m_pivotOffset));
 
-	//m_transform = trans*rot*scale*pivotOffset;
-	//m_worldPosition = Vector3D(m_transform.Get(0, 3), m_transform.Get(1, 3), m_transform.Get(2, 3));
+	m_transform = trans*rot*scale*pivotOffset;
+	m_worldPosition = Vector3D(m_transform._03(), m_transform._13(), m_transform._23());
+	_UpdateLookAt();
 }
 
-void TransformComponent::Serialize() {
+void TransformComponent::Serialize(const json& j) {
 	//m_is2d = ValueExists(j, "2D") ? ParseBool(j, "2D") : true;
 	//m_angleX = ParseFloat(j, "rotation", "x");
 	//m_angleY = ParseFloat(j, "rotation", "y");
@@ -237,7 +240,7 @@ Vector3D TransformComponent::Right() const
 
 Vector3D TransformComponent::Up() const
 {
-	return Vector3D::Cross(Forward(), Right());
+	return Vector3D::Cross(Forward()*-1, Right());
 }
 
 Vector3D TransformComponent::LookAt() const
@@ -325,16 +328,21 @@ void TransformComponent::SetScale(const Vector3D& scale)
 
 void TransformComponent::ScaleUniform(float amount)
 {
-	m_scale += (Vector3D(1.f, 1.f, 1.f) * amount);
+	m_scale += Vector3D(amount, amount, amount);
 }
+
 Vector3D TransformComponent::GetScaleVector() const
 {
 	return m_scale;
 }
+
+#pragma endregion
+
 Matrix4x4 TransformComponent::GetTransform() const
 {
 	return m_transform;
 }
+
 Matrix4x4 TransformComponent::GetTransformAfterOffset(const Vector3D & offset) const
 {
 	//Matrix4x4 trans;
@@ -352,6 +360,7 @@ Matrix4x4 TransformComponent::GetTransformAfterOffset(const Vector3D & offset) c
 	//return trans*rot*scale*pivotOffset;
 	return m_transform;
 }
+
 Matrix4x4 TransformComponent::TransformWithOffsetAndScale(const Vector3D & offset, const float & scaleX, const float & scaleY, const float& scaleZ) const
 {
 	//Matrix4x4 trans;
@@ -368,4 +377,3 @@ Matrix4x4 TransformComponent::TransformWithOffsetAndScale(const Vector3D & offse
 	//return trans*rot*scale*pivotOffset;
 	return m_transform;
 }
-#pragma endregion

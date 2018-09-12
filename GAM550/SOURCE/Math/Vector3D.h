@@ -14,7 +14,7 @@ Creation date: 1/17/18
 
 #ifndef VECTOR3_H
 #define VECTOR3_H
-
+typedef float real;
 class Vector3D
 {
 public:
@@ -70,6 +70,62 @@ public:
 	static Vector3D VectorFromAngleDegrees(float degrees);
 	static Vector3D AngleRadians(float radians, Vector3D& axis);
 	static Vector3D AngleDegrees(float degrees, Vector3D& axis);
+
+
+  // physics
+
+  const static Vector3D GRAVITY;
+  const static Vector3D HIGH_GRAVITY;
+  const static Vector3D UP;
+  const static Vector3D RIGHT;
+  const static Vector3D OUT_OF_SCREEN;
+  const static Vector3D X;
+  const static Vector3D Y;
+  const static Vector3D Z;
+
+  void operator*=(const real value);
+
+  /**
+   * Calculates and returns a component-wise product of this
+   * vector with the given vector.
+   */
+  Vector3D componentProduct(const Vector3D &vector) const;
+
+  void componentProductUpdate(const Vector3D &vector);
+
+  Vector3D vectorProduct(const Vector3D &vector) const;
+
+  void operator %=(const Vector3D &vector);
+
+  /**
+   * Calculates and returns the vector product of this vector
+   * with the given vector.
+   */
+  Vector3D operator%(const Vector3D &vector) const;
+
+  real scalarProduct(const Vector3D &vector) const;
+
+  real operator *(const Vector3D &vector) const;
+
+  void addScaledVector(const Vector3D& vector, real scale);
+
+  /** Limits the size of the vector to the given maximum. */
+  void trim(real size);
+
+  /** Turns a non-zero vector into a vector of unit length. */
+  void normalise();
+
+  /** Returns the normalised version of a vector. */
+  Vector3D unit() const;
+
+  bool operator<(const Vector3D& other) const;
+
+  bool operator>(const Vector3D& other) const;
+
+  bool operator<=(const Vector3D& other) const;
+
+  bool operator>=(const Vector3D& other) const;
+
 };
 
 Vector3D operator*(const float scalar, const Vector3D& other);
