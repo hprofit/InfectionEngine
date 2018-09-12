@@ -105,24 +105,25 @@ void InputManager::Init(HINSTANCE hInstance) {
 
 void InputManager::Update() {
 	HRESULT hr;
-	//// Update mouse position
+	// Update mouse position
 	//int mouseTempPosX = m_MousePosX;
 	//int mouseTempPosY = m_MousePosY;
-	DIMOUSESTATE mouseState; 
-	hr = mDIRX_Mouse->GetDeviceState(sizeof(DIMOUSESTATE), &mouseState);
+	// Update previous mouse states
+	//m_PrevLeftMouse = m_LeftMouse;
+	//m_PrevRightMouse = m_RightMouse;
+	// Get mouse state
+	/*DIMOUSESTATE mouseState; 
+	hr = mDIRX_Mouse->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&mouseState);
 	if (FAILED(hr)) {
 		mDIRX_Mouse->Acquire();
-	}
+	}*/
+
 	//m_MousePosRelX = m_MousePosX - mouseTempPosX;
 	//m_MousePosRelY = m_MousePosY - mouseTempPosY;
 
-	//// Update previous mouse states
-	m_PrevLeftMouse = m_LeftMouse;
-	m_PrevRightMouse = m_RightMouse;
-
-	//// Update current mouse states
-	//m_LeftMouse = (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) == 1;
-	//m_RightMouse = (mouseState & SDL_BUTTON(SDL_BUTTON_RIGHT)) == 4;
+	// Update current mouse states
+	//m_LeftMouse = mouseState.rgbButtons[(BYTE)MOUSEBTN::MOUSE_BTN_LEFT] & 0x80;
+	//m_RightMouse = mouseState.rgbButtons[(BYTE)MOUSEBTN::MOUSE_BTN_RIGHT] & 0x80;
 	
 	// update PreviousKeyStates
 	memcpy(m_PreviousKeyStates, m_CurrentKeyStates, 256 * sizeof(Uint8));
@@ -162,10 +163,9 @@ void InputManager::Update() {
 	//m_StickRightY = SDL_GameControllerGetAxis(GameController, SDL_CONTROLLER_AXIS_RIGHTY);
 
 	//FireEvents();
-	
 	// alt+f4
-	if (IsKeyPressed(DIK_LALT) && IsKeyPressed(DIK_F4)) {
-		INFECT_GAME_STATE.SetGameState(GameState::QUIT);
+	if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {
+		//INFECT_GAME_STATE.SetGameState(GameState::QUIT);
 	}
 }
 
