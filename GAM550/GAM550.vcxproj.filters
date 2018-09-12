@@ -138,7 +138,7 @@
     <ClCompile Include="SOURCE\D3DHandler.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\Semester%27s\3rd sem\GAM 550\Temp\infection\GAM550\SOURCE\AudioManager.cpp">
+    <ClCompile Include="SOURCE\AudioManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -269,7 +269,7 @@
     <ClInclude Include="SOURCE\WindowSettings.h">
       <Filter>Source Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\Semester%27s\3rd sem\GAM 550\Temp\infection\GAM550\SOURCE\AudioManager.h">
+    <ClInclude Include="SOURCE\AudioManager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
