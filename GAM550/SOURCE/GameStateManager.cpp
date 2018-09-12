@@ -100,8 +100,6 @@ MSG GameStateManager::Update() {
 
 
 
-
-
 	while (m_currentState != GameState::QUIT) {
 
 		m_currentState = GameState::CURRENT_LEVEL;

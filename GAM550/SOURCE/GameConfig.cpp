@@ -46,6 +46,7 @@ void GameConfig::LoadConfig(std::string s) {
 	m_windowSettings.FullScreen = ParseBool(windowSettings, "fullScreen");
 	m_windowSettings.WindowTitle = ParseString(windowSettings, "title");
 	m_windowSettings.VSync = ParseBool(windowSettings, "vsync");
+	m_windowSettings.AspectRatio = (float)m_windowSettings.Width / (float)m_windowSettings.Height;
 
 	//if (ParseBool(renderSettings, "enableWindowsCursor"))
 	//	INFECT_RENDERER.EnableWindowsCursor();

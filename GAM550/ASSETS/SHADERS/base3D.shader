@@ -4,6 +4,7 @@ cbuffer ConstantBuffer
 	float4x4 ModelMatrix;
 	float4x4 NormalMatrix;
 	float4 CameraPosition;
+	float4 LightPosition;
 };
 
 struct VOut
@@ -40,7 +41,7 @@ VOut VShader(
 	output.normal = normal;
 	output.tbn = float3x3(T, B, N);
 	output.view = normalize(CameraPosition - P);
-	output.light = normalize(float4(0, 100, 50, 0) - P);
+	output.light = normalize(LightPosition - P);
 	output.color = color;
 
 	return output;
@@ -56,6 +57,7 @@ float4 PShader(
 	float4 color : COLOR
 ) : SV_TARGET
 {
+	float4 ambient = float4(0.5, 0.5, 0.5, 0);
 	float4 diffuse = max(dot(normal, light), 0) * color;
-	return color;
+	return diffuse + ambient;
 }
