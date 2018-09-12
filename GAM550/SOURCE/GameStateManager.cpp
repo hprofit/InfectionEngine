@@ -60,8 +60,8 @@ MSG GameStateManager::Update() {
 	
 	GameObject* pGO = INFECT_GOM.SpawnGameObject();
 	MeshComponent* pMeshComp = new MeshComponent();
-	pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
-	//pMeshComp->SetScene(pScene);
+	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
+	pMeshComp->SetScene(pScene);
 	
 	TransformComponent* pTransComp = new TransformComponent();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));

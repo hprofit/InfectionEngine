@@ -65,7 +65,7 @@ public:
 	// Destroys the active console
 	void DestroyConsole();
 	// Sets up and initializes window
-	void InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings);
+	bool InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings);
 	// Sets up and initializes Direct3D
 	bool InitD3D(HWND hWnd, WindowSettings settings);
 	// Closes Direct3D and releases memory

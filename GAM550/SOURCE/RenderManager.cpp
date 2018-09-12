@@ -64,7 +64,7 @@ void RenderManager::DestroyConsole()
 	}
 }
 
-void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings)
+bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings)
 {
 	m_FullScreen = settings.FullScreen;
 	m_ScreenWidth = settings.Width;
@@ -85,20 +85,27 @@ void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 	wc.hInstance = hInstance;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	//wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	wc.lpszClassName = "WindowClass1";
+	wc.lpszClassName = "Infect Window";
 
 	// register the window class
 	RegisterClassEx(&wc);
 
+	const DWORD uStyle = WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
+	const DWORD uExStyle = WS_EX_APPWINDOW;
+
+	RECT rect{ 0, 0, LONG(settings.Height), LONG(settings.Width) };
+	AdjustWindowRectEx(&rect, uStyle, FALSE, uExStyle);
+
 	// create the window and use the result as the handle
-	m_hWnd = CreateWindowEx(NULL,
-		"WindowClass1",    // name of the window class
+	m_hWnd = CreateWindowEx(
+		uExStyle,
+		"Infect Window",    // name of the window class
 		settings.WindowTitle.c_str(),   // title of the window
-		WS_OVERLAPPEDWINDOW,    // window style
+		uStyle,    // window style
 		CW_USEDEFAULT,    // x-position of the window
 		CW_USEDEFAULT,    // y-position of the window
-		m_ScreenWidth,    // width of the window
-		m_ScreenHeight,   // height of the window
+		settings.Width,    // width of the window
+		settings.Height,   // height of the window
 		NULL,    // we have no parent window, NULL
 		NULL,    // we aren't using menus, NULL
 		hInstance,    // application handle
@@ -107,7 +114,7 @@ void RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 				  // display the window on the screen
 	ShowWindow(m_hWnd, nCmdShow);
 
-	InitD3D(m_hWnd, settings);
+	return InitD3D(m_hWnd, settings);
 }
 
 bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings) 
@@ -367,12 +374,12 @@ bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings)
 	rasterDesc.SlopeScaledDepthBias = 0.0f;
 
 	// Create the rasterizer state from the description we just filled out.
-	//result = mp_Device->CreateRasterizerState(&rasterDesc, &mp_RasterState);
-	//if (FAILED(result))
-	//	return false;
+	result = mp_Device->CreateRasterizerState(&rasterDesc, &mp_RasterState);
+	if (FAILED(result))
+		return false;
 
 	//// Now set the rasterizer state.
-	//mp_DeviceContext->RSSetState(mp_RasterState);
+	mp_DeviceContext->RSSetState(mp_RasterState);
 #pragma endregion
 
 #pragma region Viewport
