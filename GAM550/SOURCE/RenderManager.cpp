@@ -1,10 +1,5 @@
 #include "Stdafx.h"
 
-#define DEPTH_BUFFER true
-#define DEPTH_STENCIL true
-#define DEPTH_STENCIL_VIEW true
-#define RASTERIZER true
-
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -326,7 +321,7 @@ bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings)
 	pBackBuffer->Release();
 #pragma endregion
 
-#if DEPTH_BUFFER
+#pragma region Depth Buffer
 	// Initialize the description of the depth buffer.
 	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
@@ -347,10 +342,9 @@ bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings)
 	result = mp_Device->CreateTexture2D(&depthBufferDesc, NULL, &mp_DepthStencilBuffer);
 	if (FAILED(result))
 		return false;
-#endif
+#pragma endregion
 
-
-#if DEPTH_STENCIL
+#pragma region Depth Stencil
 	// Initialize the description of the stencil state.
 	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
 
@@ -382,9 +376,9 @@ bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings)
 
 	// Set the depth stencil state.
 	mp_DeviceContext->OMSetDepthStencilState(mp_DepthStencilState, 1);
-#endif
+#pragma endregion
 
-#if DEPTH_STENCIL_VIEW
+#pragma region Depth Stencil View
 	// Initailze the depth stencil view.
 	ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
 
@@ -400,11 +394,10 @@ bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings)
 
 	// Bind the render target view and depth stencil buffer to the output render pipeline.
 	mp_DeviceContext->OMSetRenderTargets(1, &mp_BackBuffer, mp_DepthStencilView);
-#else
-	mp_DeviceContext->OMSetRenderTargets(1, &mp_BackBuffer, 0);
-#endif
+	mp_DeviceContext->RSSetState(mp_RasterState);
+#pragma endregion
 
-#if RASTERIZER
+#pragma region Rasterizer
 	// Setup the raster description which will determine how and what polygons will be drawn.
 	rasterDesc.AntialiasedLineEnable = false;
 	rasterDesc.CullMode = D3D11_CULL_BACK;
@@ -412,7 +405,7 @@ bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings)
 	rasterDesc.DepthBiasClamp = 0.0f;
 	rasterDesc.DepthClipEnable = true;
 	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.FrontCounterClockwise = false;
+	rasterDesc.FrontCounterClockwise = true;
 	rasterDesc.MultisampleEnable = false;
 	rasterDesc.ScissorEnable = false;
 	rasterDesc.SlopeScaledDepthBias = 0.0f;
@@ -424,7 +417,7 @@ bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings)
 
 	//// Now set the rasterizer state.
 	mp_DeviceContext->RSSetState(mp_RasterState);
-#endif
+#pragma endregion
 
 #pragma region Viewport
 	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
