@@ -54,22 +54,18 @@ MSG GameStateManager::Update() {
 	pMesh->AddFace(3, 7, 2);
 	pMesh->AddFace(2, 7, 6);
 
-	//pMesh->AddVertex(0.0f, 0.5f, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
-	//pMesh->AddVertex(0.45f, -0.5, 0.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
-	//pMesh->AddVertex(-0.45f, -0.5f, 0.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
-	//pMesh->AddFace(0, 1, 2);
 	pMesh->FinishMesh();
 	Scene* pScene = new Scene(1);
 	(*pScene)[0] = pMesh;
 	
 	GameObject* pGO = INFECT_GOM.SpawnGameObject();
 	MeshComponent* pMeshComp = new MeshComponent();
-	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
-	pMeshComp->SetScene(pScene);
+	pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
+	//pMeshComp->SetScene(pScene);
 	
 	TransformComponent* pTransComp = new TransformComponent();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
-	//pTransComp->SetAngleX(-90);
+	pTransComp->SetAngleX(-90);
 	//pTransComp->SetAngleZ(45);
 	pTransComp->SetScale(10.0f, 10.0f, 10.0f);
 	
@@ -128,7 +124,7 @@ MSG GameStateManager::Update() {
 
 
 					Infect::FrameStart();
-					pTransComp->RotateY(Infect::GetFrameTime() * 10.0f);
+					pTransComp->RotateZ(Infect::GetFrameTime() * 50.0f);
 					Infect::Update(Infect::GetFrameTime());			// Game loop
 
 					Infect::FrameEnd();

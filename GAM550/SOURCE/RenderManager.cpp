@@ -268,4 +268,24 @@ void RenderManager::LoadShader()
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
 	mp_Device->CreateBuffer(&bd, NULL, &mp_Cbuffer);
+
+
+
+	ID3D11RasterizerState* rasterizerState;
+	D3D11_RASTERIZER_DESC wfdesc;
+	ZeroMemory(&wfdesc, sizeof(D3D11_RASTERIZER_DESC));
+	wfdesc.FillMode = D3D11_FILL_SOLID;
+	wfdesc.CullMode = D3D11_CULL_BACK;
+	HRESULT hr = mp_Device->CreateRasterizerState(&wfdesc, &rasterizerState);
+	mp_DeviceContext->RSSetState(rasterizerState);
+
+	ID3D11DepthStencilState* depthStencilState;
+	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+	ZeroMemory(&depthStencilDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	depthStencilDesc.DepthEnable = false;
+	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	hr = mp_Device->CreateDepthStencilState(&depthStencilDesc, &depthStencilState);
+	mp_DeviceContext->OMSetDepthStencilState(depthStencilState, 0);
+
 }
