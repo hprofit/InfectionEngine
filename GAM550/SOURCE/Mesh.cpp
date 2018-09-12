@@ -43,7 +43,7 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 		//	aiColor4D color = mesh->mColors[0][i];
 		//	v.color = D3DXCOLOR(color.r, color.g, color.b, color.a);
 		//}
-		v.color = D3DXCOLOR(0,1,1,1);//D3DXCOLOR(color.r, color.g, color.b, color.a);
+		v.color = D3DXCOLOR(0,1,0,1);
 
 		m_vertices.push_back(v);
 	}
@@ -133,19 +133,6 @@ void Mesh::AddFace(unsigned int i1, unsigned int i2, unsigned int i3)
 
 void Mesh::FinishMesh()
 {
-	Vertex OurVertices[] =
-	{
-		{-1.0f, 1.0f, -1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f)},
-		{1.0f, 1.0f, -1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f)},
-		{-1.0f, -1.0f, -1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f)},
-		{1.0f, -1.0f, -1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f)},
-		{-1.0f, 1.0f, 1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f)},
-		{1.0f, 1.0f, 1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f)},
-		{-1.0f, -1.0f, 1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f)},
-		{1.0f, -1.0f, 1.0f, 0,0,0, 0,0,0, 0,0,0, 0,0, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)},
-	};
-
-
 	D3D11_BUFFER_DESC vertexbd;
 	ZeroMemory(&vertexbd, sizeof(vertexbd));
 	int vertSize = sizeof(Vertex) * UINT(m_vertices.size());
@@ -162,26 +149,9 @@ void Mesh::FinishMesh()
 	INFECT_RENDERER.DeviceContext()->Unmap(mp_VBuffer, NULL);										// unmap the buffer
 
 
-	//DWORD OurIndices[] =
-	//{
-	//	0, 1, 2,    // side 1
-	//	2, 1, 3,
-	//	4, 0, 6,    // side 2
-	//	6, 0, 2,
-	//	7, 5, 6,    // side 3
-	//	6, 5, 4,
-	//	3, 1, 7,    // side 4
-	//	7, 1, 5,
-	//	4, 5, 0,    // side 5
-	//	0, 5, 1,
-	//	3, 7, 2,    // side 6
-	//	2, 7, 6
-	//};
-
 	D3D11_BUFFER_DESC indexbd;
 	ZeroMemory(&indexbd, sizeof(indexbd));
 	int indexSize = sizeof(Face) * UINT(m_faces.size());
-	//int indexSize = sizeof(OurIndices);
 
 	indexbd.Usage = D3D11_USAGE_DYNAMIC;				// write access access by CPU and GPU
 	indexbd.ByteWidth = indexSize;						// size is the Face struct * m_faces.size

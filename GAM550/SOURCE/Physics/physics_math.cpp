@@ -1,6 +1,5 @@
 
-
-#include "physics_math.h"
+#include <Stdafx.h>
 
 using namespace physics;
 
@@ -31,6 +30,7 @@ real physics::getSleepEpsilon()
     return physics::sleepEpsilon;
 }
 
+/*
 real Matrix4::getDeterminant() const
 {
     return -data[8]*data[5]*data[2]+
@@ -87,4 +87,4 @@ Matrix3 Matrix3::linearInterpolate(const Matrix3& a, const Matrix3& b, real prop
         result.data[i] = a.data[i] * (1-prop) + b.data[i] * prop;
     }
     return result;
-}
+}*/

@@ -34,13 +34,23 @@ Author: <Holden Profit>
 #include <windows.h>
 #include <windowsx.h>
 
+#include <dxgi.h>
+#include <d3dcommon.h>
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <d3dx10.h>
+#include <dinput.h>
+//#include <d3dx10math.h>
 
+/// Linking ///
+#pragma comment(lib, "dxgi.lib")
 #pragma comment (lib, "d3d11.lib")
 #pragma comment (lib, "d3dx11.lib")
 #pragma comment (lib, "d3dx10.lib")
+
+// DirectInput
+#pragma comment (lib, "dinput8.lib")
+#pragma comment (lib, "dxguid.lib")
 
 #include <xinput.h>
 
@@ -66,6 +76,7 @@ Author: <Holden Profit>
 #include <filesystem>
 #include <memory>
 #include <stdlib.h>
+#include <float.h>
 //#include <time.h>
 #include <math.h>
 #include <exception>
@@ -78,6 +89,10 @@ Author: <Holden Profit>
 #include <Math\Matrix3x3.h>
 #include <Math\Matrix4x4.h>
 #include <Math\MathFunctions.h>
+
+#include <Physics/physics_math.h>
+#include <Physics/particle.h>
+#include <Physics/Quaternion.h>
 #pragma endregion
 
 #pragma region Resources
@@ -88,12 +103,15 @@ using namespace JsonReader;
 
 //#include <Color.h>
 //#include <Debug.h>
+#include <WindowProc.h>
+#include <WindowSettings.h>
 #include <Face.h>
 #include <GameObject\GameObjectTags.h>
 #include <GameObject\ComponentTypes.h>
 #include <Event.h>
 #include <SubscriberTracker.h>
 #include <Subscriber.h>
+#include <D3DHandler.h>
 //#include <SurfaceTextureBuffer.h>
 //#include <FontInfo.h>
 //#include <FrameBufferObject.h>

@@ -94,10 +94,18 @@ struct InputCommandInfo {
 class InputManager: public Subscriber
 {
 private:
+	// DirectInput
+	LPDIRECTINPUT8 DIRX_Interface = nullptr;		// Root DirectInput Interface
+	LPDIRECTINPUTDEVICE8 mDIRX_Keyboard = nullptr; // DirectInput keyboard device
+	LPDIRECTINPUTDEVICE8 mDIRX_Mouse = nullptr;	// DirectInput mouse device
+
 	// keyboard state
 	Uint8 *m_PreviousKeyStates;
 	Uint8 *m_CurrentKeyStates;
 	// mouse state
+	DIMOUSESTATE m_CurrentMouseStates;
+	DIMOUSESTATE m_PreviousMouseStates;
+
 	bool m_PrevLeftMouse, m_LeftMouse;
 	bool m_PrevRightMouse, m_RightMouse;
 	int m_MousePosX, m_MousePosY;
@@ -118,14 +126,17 @@ public:
 	~InputManager();
 	InputManager(const InputManager &) = delete;
 	void operator=(const InputManager &) = delete;
+	
+	void Init(HINSTANCE hInstance);
 
 	void Update();
 	void HandleEvent(Event* pEvent);
+	void FreeDirectInput();
 	//void Initialize(const json& j);
 	// Keyboard Input
-	bool IsKeyPressed(const SDL_Scancode);
-	bool IsKeyTriggered(const SDL_Scancode);
-	bool IsKeyReleased(const SDL_Scancode);
+	bool IsKeyPressed(const UINT8);
+	bool IsKeyTriggered(const Uint8);
+	bool IsKeyReleased(const Uint8);
 	// Mouse Input
 	bool IsMouseButtonPressed(const MOUSEBTN);
 	bool IsMouseButtonTriggered(const MOUSEBTN);

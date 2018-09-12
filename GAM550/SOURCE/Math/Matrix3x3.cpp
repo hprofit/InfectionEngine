@@ -27,6 +27,7 @@ Matrix3x3::Matrix3x3(
 	m_matrix[2][2] = z3;
 }
 
+
 Matrix3x3::Matrix3x3(const Matrix3x3 &other)
 {
 	m_matrix[0][0] = other.m_matrix[0][0];
@@ -40,6 +41,157 @@ Matrix3x3::Matrix3x3(const Matrix3x3 &other)
 	m_matrix[2][0] = other.m_matrix[2][0];
 	m_matrix[2][1] = other.m_matrix[2][1];
 	m_matrix[2][2] = other.m_matrix[2][2];
+}
+
+Matrix3x3::Matrix3x3(const Vector3D &compOne, const Vector3D &compTwo,
+  const Vector3D &compThree)
+{
+  setComponents(compOne, compTwo, compThree);
+}
+
+void Matrix3x3::setDiagonal(real a, real b, real c)
+{
+  setInertiaTensorCoeffs(a, b, c);
+}
+
+void Matrix3x3::setInertiaTensorCoeffs(real ix, real iy, real iz,
+  real ixy, real ixz, real iyz)
+{
+  m_matrix[0][0] = ix;
+  m_matrix[0][1] = m_matrix[1][0] = -ixy;
+  m_matrix[0][2] = m_matrix[2][0] = -ixz;
+  m_matrix[1][1] = iy;
+  m_matrix[1][2] = m_matrix[2][1] = -iyz;
+  m_matrix[2][2] = iz;
+}
+
+void Matrix3x3::setBlockInertiaTensor(const Vector3D &halfSizes, real mass)
+{
+  Vector3D squares = halfSizes.componentProduct(halfSizes);
+  setInertiaTensorCoeffs(0.3f*mass*(squares.y + squares.z),
+    0.3f*mass*(squares.x + squares.z),
+    0.3f*mass*(squares.x + squares.y));
+}
+
+void Matrix3x3::setSkewSymmetric(const Vector3D vector)
+{
+  m_matrix[0][0] = m_matrix[1][1] = m_matrix[2][2] = 0;
+  m_matrix[0][1] = -vector.z;
+  m_matrix[0][2] = vector.y;
+  m_matrix[1][0] = vector.z;
+  m_matrix[1][2] = -vector.x;
+  m_matrix[2][0] = -vector.y;
+  m_matrix[2][1] = vector.x;
+}
+
+void Matrix3x3::setComponents(const Vector3D &compOne, const Vector3D &compTwo,
+  const Vector3D &compThree)
+{
+  m_matrix[0][0] = compOne.x;
+  m_matrix[0][1] = compTwo.x;
+  m_matrix[0][2] = compThree.x;
+  m_matrix[1][0] = compOne.y;
+  m_matrix[1][1] = compTwo.y;
+  m_matrix[1][2] = compThree.y;
+  m_matrix[2][0] = compOne.z;
+  m_matrix[2][1] = compTwo.z;
+  m_matrix[2][2] = compThree.z;
+}
+
+Vector3D Matrix3x3::transform(const Vector3D &vector)
+{
+  return (*this) * vector;
+}
+
+Vector3D Matrix3x3::transformTranspose(const Vector3D &vector) const
+{
+  return Vector3D(
+    vector.x * m_matrix[0][0] + vector.y * m_matrix[1][0] + vector.z * m_matrix[2][0],
+    vector.x * m_matrix[0][1] + vector.y * m_matrix[1][1] + vector.z * m_matrix[2][1],
+    vector.x * m_matrix[0][2] + vector.y * m_matrix[1][2] + vector.z * m_matrix[2][2]
+  );
+}
+
+Vector3D Matrix3x3::getRowVector(int i) const
+{
+  return Vector3D(m_matrix[i][0], m_matrix[i][1], m_matrix[i][2]);
+}
+
+Vector3D Matrix3x3::getAxisVector(int i) const
+{
+  return Vector3D(m_matrix[0][i], m_matrix[1][i], m_matrix[2][i]);
+}
+
+void Matrix3x3::setInverse(const Matrix3x3 &m)
+{
+  real t4 = m.m_matrix[0][0] * m.m_matrix[1][1];
+  real t6 = m.m_matrix[0][0] * m.m_matrix[1][2];
+  real t8 = m.m_matrix[0][1] * m.m_matrix[1][0];
+  real t10 = m.m_matrix[0][2] * m.m_matrix[1][0];
+  real t12 = m.m_matrix[0][1] * m.m_matrix[2][0];
+  real t14 = m.m_matrix[0][2] * m.m_matrix[2][0];
+
+  // Calculate the determinant
+  real t16 = (t4*m.m_matrix[2][2] - t6 * m.m_matrix[2][1] - t8 * m.m_matrix[2][2] +
+    t10 * m.m_matrix[2][1] + t12 * m.m_matrix[1][2] - t14 * m.m_matrix[1][1]);
+
+  // Make sure the determinant is non-zero.
+  if (t16 == (real)0.0f) return;
+  real t17 = 1 / t16;
+
+  m_matrix[0][0] = (m.m_matrix[1][1] * m.m_matrix[2][2] - m.m_matrix[1][2] * m.m_matrix[2][1])*t17;
+  m_matrix[0][1] = -(m.m_matrix[0][1] * m.m_matrix[2][2] - m.m_matrix[0][2] * m.m_matrix[2][1])*t17;
+  m_matrix[0][2] = (m.m_matrix[0][1] * m.m_matrix[1][2] - m.m_matrix[0][2] * m.m_matrix[1][1])*t17;
+  m_matrix[1][0] = -(m.m_matrix[1][0] * m.m_matrix[2][2] - m.m_matrix[1][2] * m.m_matrix[2][0])*t17;
+  m_matrix[1][1] = (m.m_matrix[0][0] * m.m_matrix[2][2] - t14)*t17;
+  m_matrix[1][2] = -(t6 - t10)*t17;
+  m_matrix[2][0] = (m.m_matrix[1][0] * m.m_matrix[2][1] - m.m_matrix[1][1] * m.m_matrix[2][0])*t17;
+  m_matrix[2][1] = -(m.m_matrix[0][0] * m.m_matrix[2][1] - t12)*t17;
+  m_matrix[2][2] = (t4 - t8)*t17;
+}
+
+Matrix3x3 Matrix3x3::inverse() const
+{
+  Matrix3x3 result;
+  result.setInverse(*this);
+  return result;
+}
+
+void Matrix3x3::invert()
+{
+  setInverse(*this);
+}
+
+Matrix3x3 Matrix3x3::linearInterpolate(const Matrix3x3& a, const Matrix3x3& b, real prop)
+{
+  Matrix3x3 result;
+  for (unsigned i = 0; i < 3; i++) {
+    for (unsigned j = 0; j < 3; j++)
+    {
+      result.m_matrix[i][j] = a.m_matrix[i][j] * (1 - prop) + b.m_matrix[i][j] * prop;
+    }
+  }
+  return result;
+}
+
+void Matrix3x3::setTranspose(const Matrix3x3 &m)
+{
+  m_matrix[0][0] = m.m_matrix[0][0];
+  m_matrix[0][1] = m.m_matrix[1][0];
+  m_matrix[0][2] = m.m_matrix[2][0];
+  m_matrix[1][0] = m.m_matrix[0][1];
+  m_matrix[1][1] = m.m_matrix[1][1];
+  m_matrix[1][2] = m.m_matrix[2][1];
+  m_matrix[2][0] = m.m_matrix[0][2];
+  m_matrix[2][1] = m.m_matrix[1][2];
+  m_matrix[2][2] = m.m_matrix[2][2];
+}
+
+Matrix3x3 Matrix3x3::transpose() const
+{
+  Matrix3x3 result;
+  result.setTranspose(*this);
+  return result;
 }
 
 Matrix3x3& Matrix3x3::operator=(const Matrix3x3& other)
@@ -302,6 +454,63 @@ Vector3D Matrix3x3::operator*(const Vector3D& other)
 		m_matrix[1][0] * other.x + m_matrix[1][1] * other.y + m_matrix[1][2] * other.z,
 		m_matrix[2][0] * other.x + m_matrix[2][1] * other.y + m_matrix[2][2] * other.z
 	);
+}
+
+void Matrix3x3::operator*=(const Matrix3x3 &o)
+{
+  real t1;
+  real t2;
+  real t3;
+
+  t1 = m_matrix[0][0] * o.m_matrix[0][0] + m_matrix[0][1] * o.m_matrix[1][0] + m_matrix[0][2] * o.m_matrix[2][0];
+  t2 = m_matrix[0][0] * o.m_matrix[0][1] + m_matrix[0][1] * o.m_matrix[1][1] + m_matrix[0][2] * o.m_matrix[2][1];
+  t3 = m_matrix[0][0] * o.m_matrix[0][2] + m_matrix[0][1] * o.m_matrix[1][2] + m_matrix[0][2] * o.m_matrix[2][2];
+  m_matrix[0][0] = t1;
+  m_matrix[0][1] = t2;
+  m_matrix[0][2] = t3;
+
+  t1 = m_matrix[1][0] * o.m_matrix[0][0] + m_matrix[1][1] * o.m_matrix[1][0] + m_matrix[1][2] * o.m_matrix[2][0];
+  t2 = m_matrix[1][0] * o.m_matrix[0][1] + m_matrix[1][1] * o.m_matrix[1][1] + m_matrix[1][2] * o.m_matrix[2][1];
+  t3 = m_matrix[1][0] * o.m_matrix[0][2] + m_matrix[1][1] * o.m_matrix[1][2] + m_matrix[1][2] * o.m_matrix[2][2];
+  m_matrix[1][0] = t1;
+  m_matrix[1][1] = t2;
+  m_matrix[1][2] = t3;
+
+  t1 = m_matrix[2][0] * o.m_matrix[0][0] + m_matrix[2][1] * o.m_matrix[1][0] + m_matrix[2][2] * o.m_matrix[2][0];
+  t2 = m_matrix[2][0] * o.m_matrix[0][1] + m_matrix[2][1] * o.m_matrix[1][1] + m_matrix[2][2] * o.m_matrix[2][1];
+  t3 = m_matrix[2][0] * o.m_matrix[0][2] + m_matrix[2][1] * o.m_matrix[1][2] + m_matrix[2][2] * o.m_matrix[2][2];
+  m_matrix[2][0] = t1;
+  m_matrix[2][1] = t2;
+  m_matrix[2][2] = t3;
+}
+
+
+void Matrix3x3::operator*=(const real scalar)
+{
+  m_matrix[0][0] *= scalar; m_matrix[0][1] *= scalar; m_matrix[0][2] *= scalar;
+  m_matrix[1][0] *= scalar; m_matrix[1][1] *= scalar; m_matrix[1][2] *= scalar;
+  m_matrix[2][0] *= scalar; m_matrix[2][1] *= scalar; m_matrix[2][2] *= scalar;
+}
+
+
+void Matrix3x3::operator+=(const Matrix3x3 &o)
+{
+  m_matrix[0][0] += o.m_matrix[0][0]; m_matrix[0][1] += o.m_matrix[0][1]; m_matrix[0][2] += o.m_matrix[0][2];
+  m_matrix[1][0] += o.m_matrix[1][0]; m_matrix[1][1] += o.m_matrix[1][1]; m_matrix[1][2] += o.m_matrix[1][2];
+  m_matrix[2][0] += o.m_matrix[2][0]; m_matrix[2][1] += o.m_matrix[2][1]; m_matrix[2][2] += o.m_matrix[2][2];
+}
+
+void Matrix3x3::setOrientation(const Quaternion &q)
+{
+  m_matrix[0][0] = 1 - (2 * q.j*q.j + 2 * q.k*q.k);
+  m_matrix[0][1] = 2 * q.i*q.j + 2 * q.k*q.r;
+  m_matrix[0][2] = 2 * q.i*q.k - 2 * q.j*q.r;
+  m_matrix[1][0] = 2 * q.i*q.j - 2 * q.k*q.r;
+  m_matrix[1][1] = 1 - (2 * q.i*q.i + 2 * q.k*q.k);
+  m_matrix[1][2] = 2 * q.j*q.k + 2 * q.i*q.r;
+  m_matrix[2][0] = 2 * q.i*q.k + 2 * q.j*q.r;
+  m_matrix[2][1] = 2 * q.j*q.k - 2 * q.i*q.r;
+  m_matrix[2][2] = 1 - (2 * q.i*q.i + 2 * q.j*q.j);
 }
 #pragma endregion
 

@@ -20,8 +20,9 @@
 	"WINDOW_SETTINGS": {
 		"title" : "Infection",
 		"fullScreen": false,
-		"height": 900,
-		"width": 900
+		"height": 600,
+		"width": 800,
+		"vsync": true
 	},
 	"INPUT_SETTINGS": [
 

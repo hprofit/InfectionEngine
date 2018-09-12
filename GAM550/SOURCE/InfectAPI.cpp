@@ -17,13 +17,10 @@ namespace Infect {
 		INFECT_GOM.Init();
 		if (INFECT_GAME_CONFIG.IsConsoleEnabled())
 			INFECT_RENDERER.InitConsole();
-		INFECT_RENDERER.InitWindow(hInstance, nCmdShow, INFECT_GAME_CONFIG.WindowSettings());
+		if (!INFECT_RENDERER.InitWindow(hInstance, nCmdShow, INFECT_GAME_CONFIG.WindowSettings()))
+			std::cout << "RENDERER DID NOT PROPERLY INITIALIZE." << std::endl;
 		INFECT_RENDERER.LoadShader();
-
-		//Temp
-		INFECT_AUDIOMANAGER.Init();
-		INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/rosey.wav)", false, true, false);
-		
+		INFECT_INPUT.Init(hInstance);
 		return 0;
 	}
 
@@ -45,34 +42,27 @@ namespace Infect {
 
 	void Update(float deltaTime)
 	{
-		//INFECT_INPUT.Update();									// Update input keys
+		INFECT_INPUT.Update();									// Update input keys
 		//INFECT_DEBUG.Update();									// Toggles debug drawing if needed
 		INFECT_EVENTS.Update(deltaTime);							// Pump the event manager
 		//INFECT_AUDIO.Update(deltaTime);
-		INFECT_GOM.Update(deltaTime);								// Update game logic
-		//INFECT_GOM.UpdateStatus();								// Update status of game objects
+		INFECT_GOM.Update(deltaTime);					// Update game logic
+		//INFECT_GOM.UpdateStatus();						// Update status of game objects
 		//INFECT_PHYSICS.Integrate(deltaTime);						// Move physics bodies
 		//INFECT_PHYSICS.ResolveCollisions();						// Resolve collisions on physics bodies
-		INFECT_GOM.LateUpdate(deltaTime);							// Update game logic that occurs after physics
-		
-		//===========================================================
-		//Audio Testing
-	
-		//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/swish.wav)", Vector3(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
-		INFECT_AUDIOMANAGER.Update();
-		//===========================================================
+		INFECT_GOM.LateUpdate(deltaTime);				// Update game logic that occurs after physics
 
 		//INFECT_RENDERER.RenderFrame(pGOCamera, pGO);
 
 
-		INFECT_GOM.RenderCameras();									// Render all game objects
+		INFECT_GOM.RenderCameras();					// Render all game objects
 		//INFECT_IMGUI.Update();									// Update all Imgui commands
 	}
 
 	void FrameEnd()
 	{
 		//INFECT_IMGUI.FrameEnd();									// Render Imgui commands
-		INFECT_RENDERER.FrameEnd();									// Swap window buffer
+		INFECT_RENDERER.FrameEnd();								// Swap window buffer
 		INFECT_FRAMERATE.FrameEnd();								// Lock FPS 
 	}
 
@@ -89,6 +79,5 @@ namespace Infect {
 	void Cleanup()
 	{
 		INFECT_RENDERER.DestroyConsole();
-		INFECT_RENDERER.CleanD3D();
 	}
 }
