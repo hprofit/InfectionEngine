@@ -1,12 +1,5 @@
-
-
-#include <math.h>
-#include "Math/Vector3D.h"
-
 #ifndef CORE_H
 #define CORE_H
-
-#include "global.h"
 
 
 namespace physics {
@@ -19,7 +12,7 @@ namespace physics {
      * other forces are around that of gravity. It may need tweaking
      * if your simulation is drastically different to this.
      */
-    extern real sleepEpsilon;
+     extern real sleepEpsilon;
 
     /**
      * Sets the current sleep epsilon value: the kinetic energy under

@@ -1,6 +1,5 @@
 
-
-#include "physics_math.h"
+#include <Stdafx.h>
 
 using namespace physics;
 

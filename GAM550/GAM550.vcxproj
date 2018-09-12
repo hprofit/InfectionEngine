@@ -85,7 +85,6 @@
     <ClInclude Include="SOURCE\Math\Vector2D.h" />
     <ClInclude Include="SOURCE\Math\Vector3D.h" />
     <ClInclude Include="SOURCE\Mesh.h" />
-    <ClInclude Include="SOURCE\Physics\global.h" />
     <ClInclude Include="SOURCE\Physics\particle.h" />
     <ClInclude Include="SOURCE\Physics\physics_math.h" />
     <ClInclude Include="SOURCE\RenderManager.h" />

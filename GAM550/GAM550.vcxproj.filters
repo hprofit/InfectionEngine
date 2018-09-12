@@ -248,9 +248,6 @@
     <ClInclude Include="SOURCE\Sorting.h">
       <Filter>Source Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Physics\global.h">
-      <Filter>Source Files\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\Physics\particle.h">
       <Filter>Source Files\Physics</Filter>
     </ClInclude>

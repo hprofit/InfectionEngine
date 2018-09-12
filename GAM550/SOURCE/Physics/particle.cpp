@@ -1,6 +1,5 @@
 
-#include <assert.h>
-#include "particle.h"
+#include <Stdafx.h>
 
 using namespace physics;
 
