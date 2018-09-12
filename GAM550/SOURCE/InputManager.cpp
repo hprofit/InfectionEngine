@@ -106,34 +106,36 @@ void InputManager::Init(HINSTANCE hInstance) {
 void InputManager::Update() {
 	HRESULT hr;
 	// Update mouse position
-	//int mouseTempPosX = m_MousePosX;
-	//int mouseTempPosY = m_MousePosY;
+	int mouseTempPosX = m_MousePosX;
+	int mouseTempPosY = m_MousePosY;
 	// Update previous mouse states
-	//m_PrevLeftMouse = m_LeftMouse;
-	//m_PrevRightMouse = m_RightMouse;
+	m_PrevLeftMouse = m_LeftMouse;
+	m_PrevRightMouse = m_RightMouse;
 	// Get mouse state
-	/*DIMOUSESTATE mouseState; 
+	DIMOUSESTATE mouseState; 
 	hr = mDIRX_Mouse->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&mouseState);
 	if (FAILED(hr)) {
 		mDIRX_Mouse->Acquire();
-	}*/
+	}
 
-	//m_MousePosRelX = m_MousePosX - mouseTempPosX;
-	//m_MousePosRelY = m_MousePosY - mouseTempPosY;
+	m_MousePosRelX = m_MousePosX - mouseTempPosX;
+	m_MousePosRelY = m_MousePosY - mouseTempPosY;
 
 	// Update current mouse states
-	//m_LeftMouse = mouseState.rgbButtons[(BYTE)MOUSEBTN::MOUSE_BTN_LEFT] & 0x80;
-	//m_RightMouse = mouseState.rgbButtons[(BYTE)MOUSEBTN::MOUSE_BTN_RIGHT] & 0x80;
+	m_LeftMouse = mouseState.rgbButtons[(BYTE)MOUSEBTN::MOUSE_BTN_LEFT] & 0x80;
+	m_RightMouse = mouseState.rgbButtons[(BYTE)MOUSEBTN::MOUSE_BTN_RIGHT] & 0x80;
 	
 	// update PreviousKeyStates
 	memcpy(m_PreviousKeyStates, m_CurrentKeyStates, 256 * sizeof(Uint8));
-	//memcpy(m_PreviousButtonStates, m_CurrentButtonStates, XBOX_NUM_SCANCODES * sizeof(Uint8));
+	memcpy(m_PreviousButtonStates, m_CurrentButtonStates, XBOX_NUM_SCANCODES * sizeof(Uint8));
 
 	// get new KeyStates
 	Uint8 currentKeyStates[256];
 	hr = mDIRX_Keyboard->GetDeviceState(sizeof(currentKeyStates), (LPVOID)&currentKeyStates);
 	if (FAILED(hr)) {
 		mDIRX_Keyboard->Acquire();
+		memset(m_CurrentKeyStates, 0, 256 * sizeof(Uint8));
+		return;
 	}
 	// update CurrentKeyStates
 	memcpy(m_CurrentKeyStates, &currentKeyStates, 256 * sizeof(Uint8));
@@ -163,10 +165,7 @@ void InputManager::Update() {
 	//m_StickRightY = SDL_GameControllerGetAxis(GameController, SDL_CONTROLLER_AXIS_RIGHTY);
 
 	//FireEvents();
-	// alt+f4
-	if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {
-		//INFECT_GAME_STATE.SetGameState(GameState::QUIT);
-	}
+	
 }
 
 void InputManager::FireEvents() {
