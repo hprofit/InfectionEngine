@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\Semester%27s\3rd sem\GAM 550\Temp\infection\GAM550\SOURCE\AudioManager.cpp" />
     <ClCompile Include="SOURCE\D3DHandler.cpp" />
     <ClCompile Include="SOURCE\Event.cpp" />
     <ClCompile Include="SOURCE\EventManager.cpp" />
@@ -56,6 +57,7 @@
     <ClCompile Include="SOURCE\SubscriberTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\Semester%27s\3rd sem\GAM 550\Temp\infection\GAM550\SOURCE\AudioManager.h" />
     <ClInclude Include="SOURCE\D3DHandler.h" />
     <ClInclude Include="SOURCE\Event.h" />
     <ClInclude Include="SOURCE\EventManager.h" />
