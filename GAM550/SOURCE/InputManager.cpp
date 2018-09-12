@@ -112,7 +112,6 @@ void InputManager::Update() {
 	hr = mDIRX_Mouse->GetDeviceState(sizeof(DIMOUSESTATE), &mouseState);
 	if (FAILED(hr)) {
 		mDIRX_Mouse->Acquire();
-		return;
 	}
 	//m_MousePosRelX = m_MousePosX - mouseTempPosX;
 	//m_MousePosRelY = m_MousePosY - mouseTempPosY;
@@ -134,7 +133,6 @@ void InputManager::Update() {
 	hr = mDIRX_Keyboard->GetDeviceState(sizeof(currentKeyStates), (LPVOID)&currentKeyStates);
 	if (FAILED(hr)) {
 		mDIRX_Keyboard->Acquire();
-		return;
 	}
 	// update CurrentKeyStates
 	memcpy(m_CurrentKeyStates, &currentKeyStates, 256 * sizeof(Uint8));
@@ -164,6 +162,8 @@ void InputManager::Update() {
 	//m_StickRightY = SDL_GameControllerGetAxis(GameController, SDL_CONTROLLER_AXIS_RIGHTY);
 
 	//FireEvents();
+	
+	// alt+f4
 	if (IsKeyPressed(DIK_LALT) && IsKeyPressed(DIK_F4)) {
 		INFECT_GAME_STATE.SetGameState(GameState::QUIT);
 	}
