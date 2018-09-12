@@ -31,10 +31,29 @@ MSG GameStateManager::Update() {
 
 
 	Mesh* pMesh = new Mesh();
-	pMesh->AddVertex(0.0f, 0.5f, 0.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
-	pMesh->AddVertex(0.45f, -0.5, 0.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
-	pMesh->AddVertex(-0.45f, -0.5f, 0.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+
+	pMesh->AddVertex(-1.0f, 1.0f, -1.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(1.0f, 1.0f, -1.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(-1.0f, -1.0f, -1.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(1.0f, -1.0f, -1.0f, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(-1.0f, 1.0f, 1.0f, D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(1.0f, 1.0f, 1.0f, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(-1.0f, -1.0f, 1.0f, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(1.0f, -1.0f, 1.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+
 	pMesh->AddFace(0, 1, 2);
+	pMesh->AddFace(2, 1, 3);
+	pMesh->AddFace(4, 0, 6);
+	pMesh->AddFace(6, 0, 2);
+	pMesh->AddFace(7, 5, 6);
+	pMesh->AddFace(6, 5, 4);
+	pMesh->AddFace(3, 1, 7);
+	pMesh->AddFace(7, 1, 5);
+	pMesh->AddFace(4, 5, 0);
+	pMesh->AddFace(0, 5, 1);
+	pMesh->AddFace(3, 7, 2);
+	pMesh->AddFace(2, 7, 6);
+
 	pMesh->FinishMesh();
 	Scene* pScene = new Scene(1);
 	(*pScene)[0] = pMesh;
@@ -47,7 +66,7 @@ MSG GameStateManager::Update() {
 	TransformComponent* pTransComp = new TransformComponent();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
 	pTransComp->SetAngleX(-90);
-	pTransComp->SetAngleZ(45);
+	//pTransComp->SetAngleZ(45);
 	pTransComp->SetScale(10.0f, 10.0f, 10.0f);
 	
 	pGO->AddComponent(pMeshComp);
@@ -121,6 +140,7 @@ MSG GameStateManager::Update() {
 					if (INFECT_INPUT.IsKeyPressed(DIK_SPACE)) {
 						pTransComp2->SetPosition(Vector3D(0, 0, 50, 1));
 					}
+					pTransComp->RotateZ(Infect::GetFrameTime() * 50.0f);
 					Infect::Update(Infect::GetFrameTime());			// Game loop
 
 					Infect::FrameEnd();

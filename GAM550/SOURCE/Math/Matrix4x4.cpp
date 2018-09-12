@@ -500,6 +500,195 @@ Matrix4x4 Matrix4x4::Orthographic(const float width, const float height, const f
 {
 	return Orthographic(width, height, nearVal, 1000.0f);
 }
+
+//physics
+void Matrix4x4::physicsConstructor()
+{
+  m_matrix[0][1] = m_matrix[0][2] = m_matrix[0][3] = m_matrix[1][0] = m_matrix[1][2] =
+  m_matrix[1][3] = m_matrix[2][0] = m_matrix[2][1] = m_matrix[2][3] = 0;
+  m_matrix[0][0] = m_matrix[1][1] = m_matrix[2][2] = 1;
+}
+
+Vector3D Matrix4x4::transform(const Vector3D &vector) const
+{
+  return (*this) * vector;
+}
+
+real Matrix4x4::getDeterminant() const
+{
+  return -m_matrix[2][0] * m_matrix[1][1] * m_matrix[0][2] +
+    m_matrix[1][0] * m_matrix[2][1] * m_matrix[0][2] +
+    m_matrix[2][0] * m_matrix[0][1] * m_matrix[1][2] -
+    m_matrix[0][0] * m_matrix[2][1] * m_matrix[1][2] -
+    m_matrix[1][0] * m_matrix[0][1] * m_matrix[2][2] +
+    m_matrix[0][0] * m_matrix[1][1] * m_matrix[2][2];
+}
+
+void Matrix4x4::setDiagonal(real a, real b, real c)
+{
+  m_matrix[0][0] = a;
+  m_matrix[1][1] = b;
+  m_matrix[2][2] = c;
+}
+
+void Matrix4x4::setInverse(const Matrix4x4 &m)
+{
+  // Make sure the determinant is non-zero.
+  real det = getDeterminant();
+  if (det == 0) return;
+  det = ((real)1.0) / det;
+
+  m_matrix[0][0] = (-m.m_matrix[2][1] * m.m_matrix[1][2] + m.m_matrix[1][1] * m.m_matrix[2][2])*det;
+  m_matrix[1][0] = (m.m_matrix[2][0] * m.m_matrix[1][2] - m.m_matrix[1][0] * m.m_matrix[2][2])*det;
+  m_matrix[2][0] = (-m.m_matrix[2][0] * m.m_matrix[1][1] + m.m_matrix[1][0] * m.m_matrix[2][1])*det;
+
+  m_matrix[0][1] = (m.m_matrix[2][1] * m.m_matrix[0][2] - m.m_matrix[0][1] * m.m_matrix[2][2])*det;
+  m_matrix[1][1] = (-m.m_matrix[2][0] * m.m_matrix[0][2] + m.m_matrix[0][0] * m.m_matrix[2][2])*det;
+  m_matrix[2][1] = (m.m_matrix[2][0] * m.m_matrix[0][1] - m.m_matrix[0][0] * m.m_matrix[2][1])*det;
+
+  m_matrix[0][2] = (-m.m_matrix[1][1] * m.m_matrix[0][2] + m.m_matrix[0][1] * m.m_matrix[1][2])*det;
+  m_matrix[1][2] = (+m.m_matrix[1][0] * m.m_matrix[0][2] - m.m_matrix[0][0] * m.m_matrix[1][2])*det;
+  m_matrix[2][2] = (-m.m_matrix[1][0] * m.m_matrix[0][1] + m.m_matrix[0][0] * m.m_matrix[1][1])*det;
+
+  m_matrix[0][3] = (m.m_matrix[2][1] * m.m_matrix[1][2] * m.m_matrix[0][3]
+    - m.m_matrix[1][1] * m.m_matrix[2][2] * m.m_matrix[0][3]
+    - m.m_matrix[2][1] * m.m_matrix[0][2] * m.m_matrix[1][3]
+    + m.m_matrix[0][1] * m.m_matrix[2][2] * m.m_matrix[1][3]
+    + m.m_matrix[1][1] * m.m_matrix[0][2] * m.m_matrix[2][3]
+    - m.m_matrix[0][1] * m.m_matrix[1][2] * m.m_matrix[2][3])*det;
+  m_matrix[1][3] = (-m.m_matrix[2][0] * m.m_matrix[1][2] * m.m_matrix[0][3]
+    + m.m_matrix[1][0] * m.m_matrix[2][2] * m.m_matrix[0][3]
+    + m.m_matrix[2][0] * m.m_matrix[0][2] * m.m_matrix[1][3]
+    - m.m_matrix[0][0] * m.m_matrix[2][2] * m.m_matrix[1][3]
+    - m.m_matrix[1][0] * m.m_matrix[0][2] * m.m_matrix[2][3]
+    + m.m_matrix[0][0] * m.m_matrix[1][2] * m.m_matrix[2][3])*det;
+  m_matrix[2][3] = (m.m_matrix[2][0] * m.m_matrix[1][1] * m.m_matrix[0][3]
+    - m.m_matrix[1][0] * m.m_matrix[2][1] * m.m_matrix[0][3]
+    - m.m_matrix[2][0] * m.m_matrix[0][1] * m.m_matrix[1][3]
+    + m.m_matrix[0][0] * m.m_matrix[2][1] * m.m_matrix[1][3]
+    + m.m_matrix[1][0] * m.m_matrix[0][1] * m.m_matrix[2][3]
+    - m.m_matrix[0][0] * m.m_matrix[1][1] * m.m_matrix[2][3])*det;
+}
+
+
+Matrix4x4 Matrix4x4::inverse() const
+{
+  Matrix4x4 result;
+  result.setInverse(*this);
+  return result;
+}
+
+void Matrix4x4::invert()
+{
+  setInverse(*this);
+}
+
+Vector3D Matrix4x4::transformDirection(const Vector3D &vector) const
+{
+  return Vector3D(
+    vector.x * m_matrix[0][0] +
+    vector.y * m_matrix[0][1] +
+    vector.z * m_matrix[0][2],
+
+    vector.x * m_matrix[1][0] +
+    vector.y * m_matrix[1][1] +
+    vector.z * m_matrix[1][2],
+
+    vector.x * m_matrix[2][0] +
+    vector.y * m_matrix[2][1] +
+    vector.z * m_matrix[2][2]
+  );
+}
+
+
+Vector3D Matrix4x4::transformInverseDirection(const Vector3D &vector) const
+{
+  return Vector3D(
+    vector.x * m_matrix[0][0] +
+    vector.y * m_matrix[1][0] +
+    vector.z * m_matrix[2][0],
+
+    vector.x * m_matrix[0][1] +
+    vector.y * m_matrix[1][1] +
+    vector.z * m_matrix[2][1],
+
+    vector.x * m_matrix[0][2] +
+    vector.y * m_matrix[1][2] +
+    vector.z * m_matrix[2][2]
+  );
+}
+
+
+Vector3D Matrix4x4::transformInverse(const Vector3D &vector) const
+{
+  Vector3D tmp = vector;
+  tmp.x -= m_matrix[0][3];
+  tmp.y -= m_matrix[1][3];
+  tmp.z -= m_matrix[2][3];
+  return Vector3D(
+    tmp.x * m_matrix[0][0] +
+    tmp.y * m_matrix[1][0] +
+    tmp.z * m_matrix[2][0],
+
+    tmp.x * m_matrix[0][1] +
+    tmp.y * m_matrix[1][1] +
+    tmp.z * m_matrix[2][1],
+
+    tmp.x * m_matrix[0][2] +
+    tmp.y * m_matrix[1][2] +
+    tmp.z * m_matrix[2][2]
+  );
+}
+
+
+Vector3D Matrix4x4::getAxisVector(int i) const
+{
+  return Vector3D(m_matrix[0][i], m_matrix[1][i], m_matrix[2][i]);
+}
+
+
+void Matrix4x4::setOrientationAndPos(const Quaternion &q, const Vector3D &pos)
+{
+  m_matrix[0][0] = 1 - (2 * q.j*q.j + 2 * q.k*q.k);
+  m_matrix[0][1] = 2 * q.i*q.j + 2 * q.k*q.r;
+  m_matrix[0][2] = 2 * q.i*q.k - 2 * q.j*q.r;
+  m_matrix[0][3] = pos.x;
+
+  m_matrix[1][0] = 2 * q.i*q.j - 2 * q.k*q.r;
+  m_matrix[1][1] = 1 - (2 * q.i*q.i + 2 * q.k*q.k);
+  m_matrix[1][2] = 2 * q.j*q.k + 2 * q.i*q.r;
+  m_matrix[1][3] = pos.y;
+
+  m_matrix[2][0] = 2 * q.i*q.k + 2 * q.j*q.r;
+  m_matrix[2][1] = 2 * q.j*q.k - 2 * q.i*q.r;
+  m_matrix[2][2] = 1 - (2 * q.i*q.i + 2 * q.j*q.j);
+  m_matrix[2][3] = pos.z;
+}
+
+
+void Matrix4x4::fillGLArray(float array[16]) const
+{
+  array[0] = (float)m_matrix[0][0];
+  array[1] = (float)m_matrix[1][0];
+  array[2] = (float)m_matrix[2][0];
+  array[3] = (float)0;
+
+  array[4] = (float)m_matrix[0][1];
+  array[5] = (float)m_matrix[1][1];
+  array[6] = (float)m_matrix[2][1];
+  array[7] = (float)0;
+
+  array[8] = (float)m_matrix[0][2];
+  array[9] = (float)m_matrix[1][2];
+  array[10] = (float)m_matrix[2][2];
+  array[11] = (float)0;
+
+  array[12] = (float)m_matrix[0][3];
+  array[13] = (float)m_matrix[1][3];
+  array[14] = (float)m_matrix[2][3];
+  array[15] = (float)1;
+}
+
 #pragma endregion
 
 #pragma region Operation Overrides

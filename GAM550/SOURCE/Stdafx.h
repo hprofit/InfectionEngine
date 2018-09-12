@@ -71,6 +71,7 @@ Author: <Holden Profit>
 #include <filesystem>
 #include <memory>
 #include <stdlib.h>
+#include <float.h>
 //#include <time.h>
 #include <math.h>
 #include <exception>
@@ -83,6 +84,10 @@ Author: <Holden Profit>
 #include <Math\Matrix3x3.h>
 #include <Math\Matrix4x4.h>
 #include <Math\MathFunctions.h>
+
+#include <Physics/physics_math.h>
+#include <Physics/particle.h>
+#include <Physics/Quaternion.h>
 #pragma endregion
 
 #pragma region Resources

@@ -136,7 +136,6 @@ void Mesh::FinishMesh()
 	D3D11_BUFFER_DESC vertexbd;
 	ZeroMemory(&vertexbd, sizeof(vertexbd));
 	int vertSize = sizeof(Vertex) * UINT(m_vertices.size());
-
 	vertexbd.Usage = D3D11_USAGE_DYNAMIC;				// write access access by CPU and GPU
 	vertexbd.ByteWidth = vertSize;						// size is the Vertex struct * m_vertices.size
 	vertexbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;		// use as a vertex buffer
@@ -145,9 +144,10 @@ void Mesh::FinishMesh()
 	INFECT_RENDERER.Device()->CreateBuffer(&vertexbd, NULL, &mp_VBuffer);       // create the buffer
 
 	D3D11_MAPPED_SUBRESOURCE vMS;
-	INFECT_RENDERER.DeviceContext()->Map(mp_VBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &vMS);   // map the buffer
-	memcpy(vMS.pData, &(m_vertices[0]), vertSize);	// copy the data
-	INFECT_RENDERER.DeviceContext()->Unmap(mp_VBuffer, NULL);				// unmap the buffer
+	INFECT_RENDERER.DeviceContext()->Map(mp_VBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &vMS);	// map the buffer
+	memcpy(vMS.pData, &(m_vertices[0]), vertSize);													// copy the data
+	INFECT_RENDERER.DeviceContext()->Unmap(mp_VBuffer, NULL);										// unmap the buffer
+
 
 	D3D11_BUFFER_DESC indexbd;
 	ZeroMemory(&indexbd, sizeof(indexbd));

@@ -40,7 +40,7 @@ VOut VShader(
 	output.normal = normal;
 	output.tbn = float3x3(T, B, N);
 	output.view = normalize(CameraPosition - P);
-	output.light = normalize(float4(0, 100, 0, 0) - P);
+	output.light = normalize(float4(0, 100, -50, 0) - P);
 	output.color = color;
 
 	return output;
