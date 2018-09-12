@@ -1,5 +1,10 @@
 #include "Stdafx.h"
 
+#define DEPTH_BUFFER true
+#define DEPTH_STENCIL true
+#define DEPTH_STENCIL_VIEW true
+#define RASTERIZER true
+
 // this is the main message handler for the program
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -39,7 +44,10 @@ RenderManager::RenderManager() :
 
 RenderManager::~RenderManager()
 {
+	CleanD3D();
 
+	// Show the mouse cursor.
+	ShowCursor(true);
 }
 
 
@@ -75,6 +83,9 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 	// this struct holds information for the window class
 	WNDCLASSEX wc;
 
+	DEVMODE dmScreenSettings;
+	int posX, posY;
+
 	// clear out the window class for use
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
 
@@ -85,10 +96,39 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 	wc.hInstance = hInstance;
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	//wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-	wc.lpszClassName = "Infect Window";
+	wc.lpszClassName = settings.WindowTitle.c_str();
 
 	// register the window class
 	RegisterClassEx(&wc);
+
+	// Setup the screen settings depending on whether it is running in full screen or in windowed mode.
+	if (settings.FullScreen)
+	{
+		// Determine the resolution of the clients desktop screen.
+		unsigned long screenWidth = GetSystemMetrics(SM_CXSCREEN);
+		unsigned long screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
+		// If full screen set the screen to maximum size of the users desktop and 32bit.
+		memset(&dmScreenSettings, 0, sizeof(dmScreenSettings));
+		dmScreenSettings.dmSize = sizeof(dmScreenSettings);
+		dmScreenSettings.dmPelsWidth = screenWidth;
+		dmScreenSettings.dmPelsHeight = screenHeight;
+		dmScreenSettings.dmBitsPerPel = 32;
+		dmScreenSettings.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+
+		// Change the display settings to full screen.
+		ChangeDisplaySettings(&dmScreenSettings, CDS_FULLSCREEN);
+
+		// Set the position of the window to the top left corner.
+		posX = posY = 0;
+	}
+	else
+	{
+		// Place the window in the middle of the screen.
+		posX = (GetSystemMetrics(SM_CXSCREEN) - settings.Width) / 2;
+		posY = (GetSystemMetrics(SM_CYSCREEN) - settings.Height) / 2;
+	}
+
 
 	const DWORD uStyle = WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
 	const DWORD uExStyle = WS_EX_APPWINDOW;
@@ -99,20 +139,22 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 	// create the window and use the result as the handle
 	m_hWnd = CreateWindowEx(
 		uExStyle,
-		"Infect Window",    // name of the window class
+		settings.WindowTitle.c_str(),	// name of the window class
 		settings.WindowTitle.c_str(),   // title of the window
-		uStyle,    // window style
-		CW_USEDEFAULT,    // x-position of the window
-		CW_USEDEFAULT,    // y-position of the window
-		settings.Width,    // width of the window
-		settings.Height,   // height of the window
-		NULL,    // we have no parent window, NULL
-		NULL,    // we aren't using menus, NULL
-		hInstance,    // application handle
-		NULL);    // used with multiple windows, NULL
+		uStyle,							// window style
+		posX,							// x-position of the window
+		posY,							// y-position of the window
+		settings.Width,					// width of the window
+		settings.Height,				// height of the window
+		NULL,							// we have no parent window, NULL
+		NULL,							// we aren't using menus, NULL
+		hInstance,						// application handle
+		NULL);							// used with multiple windows, NULL
 
-				  // display the window on the screen
+	// display the window on the screen
 	ShowWindow(m_hWnd, nCmdShow);
+	SetForegroundWindow(m_hWnd);
+	SetFocus(m_hWnd);
 
 	return InitD3D(m_hWnd, settings);
 }
@@ -210,14 +252,14 @@ bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings)
 	ZeroMemory(&swapChainDesc, sizeof(DXGI_SWAP_CHAIN_DESC));
 
 	// fill the swap chain description struct
-	swapChainDesc.BufferCount = 1;                                    // one back buffer
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;     // use 32-bit color
+	swapChainDesc.BufferCount = 1;                                  // one back buffer
+	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;   // use 32-bit color
 	swapChainDesc.BufferDesc.Width = m_ScreenWidth;					// set the back buffer width
-	swapChainDesc.BufferDesc.Width = m_ScreenHeight;					// set the back buffer height
-	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;      // how swap chain is to be used
-	swapChainDesc.OutputWindow = hWnd;                                // the window to be used
-	swapChainDesc.SampleDesc.Count = 4;                               // how many multisamples
-	swapChainDesc.Windowed = settings.FullScreen;                     // windowed/full-screen mode
+	swapChainDesc.BufferDesc.Width = m_ScreenHeight;				// set the back buffer height
+	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;    // how swap chain is to be used
+	swapChainDesc.OutputWindow = hWnd;                              // the window to be used
+	swapChainDesc.SampleDesc.Count = 4;                             // how many multisamples
+	swapChainDesc.Windowed = !settings.FullScreen;                  // windowed/full-screen mode
 
 	// Set the refresh rate of the back buffer.
 	if (m_VSyncEnabled)
@@ -284,7 +326,7 @@ bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings)
 	pBackBuffer->Release();
 #pragma endregion
 
-#pragma region DepthBuffer
+#if DEPTH_BUFFER
 	// Initialize the description of the depth buffer.
 	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
@@ -305,10 +347,10 @@ bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings)
 	result = mp_Device->CreateTexture2D(&depthBufferDesc, NULL, &mp_DepthStencilBuffer);
 	if (FAILED(result))
 		return false;
-#pragma endregion
+#endif
 
-#pragma region DepthStencil
 
+#if DEPTH_STENCIL
 	// Initialize the description of the stencil state.
 	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
 
@@ -340,9 +382,9 @@ bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings)
 
 	// Set the depth stencil state.
 	mp_DeviceContext->OMSetDepthStencilState(mp_DepthStencilState, 1);
-#pragma endregion
+#endif
 
-#pragma region DepthStencilView
+#if DEPTH_STENCIL_VIEW
 	// Initailze the depth stencil view.
 	ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
 
@@ -357,10 +399,12 @@ bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings)
 		return false;
 
 	// Bind the render target view and depth stencil buffer to the output render pipeline.
-	mp_DeviceContext->OMSetRenderTargets(1, &mp_BackBuffer, 0);// mp_DepthStencilView);
-#pragma endregion
+	mp_DeviceContext->OMSetRenderTargets(1, &mp_BackBuffer, mp_DepthStencilView);
+#else
+	mp_DeviceContext->OMSetRenderTargets(1, &mp_BackBuffer, 0);
+#endif
 
-#pragma region Rasterizer State
+#if RASTERIZER
 	// Setup the raster description which will determine how and what polygons will be drawn.
 	rasterDesc.AntialiasedLineEnable = false;
 	rasterDesc.CullMode = D3D11_CULL_BACK;
@@ -380,7 +424,7 @@ bool RenderManager::InitD3D(HWND hWnd, WindowSettings settings)
 
 	//// Now set the rasterizer state.
 	mp_DeviceContext->RSSetState(mp_RasterState);
-#pragma endregion
+#endif
 
 #pragma region Viewport
 	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));

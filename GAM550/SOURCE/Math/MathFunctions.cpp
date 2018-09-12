@@ -114,18 +114,24 @@ bool IsSimilar(float a, float b)
 	return double(abs(a - b)) < EPSILON;
 }
 
-//long holdrand = 0;
+long holdrand = 0;
 
 void SeedRand(unsigned int seed)
 {
-	srand(seed);
-	//holdrand = (long)seed;
+	//srand(seed);
+	holdrand = (long)seed;
 }
 
 int Rand()
 {
-	return rand();
-	//return (((holdrand = holdrand * 214012L + 2531011L) >> 16) & TETRA_RAND_MAX);
+	//return rand();
+	return (((holdrand = holdrand * 214012L + 2531011L) >> 16) & INFECT_RAND_MAX);
+}
+
+float Rand_Zero_One()
+{
+	float val = (float)Rand();
+	return val / (float)INFECT_RAND_MAX;
 }
 
 float cot(float val)

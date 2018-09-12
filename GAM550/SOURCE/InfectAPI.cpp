@@ -79,6 +79,5 @@ namespace Infect {
 	void Cleanup()
 	{
 		INFECT_RENDERER.DestroyConsole();
-		INFECT_RENDERER.CleanD3D();
 	}
 }
