@@ -20,9 +20,9 @@ Author: <Holden Profit>
 //#include <SDL_ttf.h>
 #include <SDL_keycode.h>
 #include <SDL_events.h>
-//#include <fmod_studio.hpp>
-//#include <fmod.hpp>
-//#include <fmod_errors.h>
+#include <fmod_studio.hpp>
+#include <fmod.hpp>
+#include <fmod_errors.h>
 //#include <External\Imgui\imgui.h>
 //#include <External\Imgui\imgui_impl_sdl_gl3.h>
 #include <External\json.hpp>
@@ -261,7 +261,7 @@ using namespace JsonReader;
 #include <EventManager.h>
 //#include <LevelManager.h>
 //#include <DebugManager.h>
-//#include <AudioManager.h>
+#include <AudioManager.h>
 //#include <MemoryManager.h>
 //#include <ImguiManager.h>
 //#include <LevelEditor.h>

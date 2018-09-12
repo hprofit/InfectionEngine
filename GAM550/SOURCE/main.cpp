@@ -38,9 +38,10 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	int nCmdShow)
 {
 	std::string configFilePath = "config.json";
-	
+
 	Infect::Initialize(configFilePath, hInstance, nCmdShow);
 	MSG msg = Infect::StartGameLoop();
+
 	// return this part of the WM_QUIT message to Windows
 	return (int)msg.wParam;
 }
