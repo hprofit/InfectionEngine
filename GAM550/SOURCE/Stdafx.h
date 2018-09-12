@@ -34,11 +34,16 @@ Author: <Holden Profit>
 #include <windows.h>
 #include <windowsx.h>
 
+#include <dxgi.h>
+#include <d3dcommon.h>
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <d3dx10.h>
 #include <dinput.h>
+//#include <d3dx10math.h>
 
+/// Linking ///
+#pragma comment(lib, "dxgi.lib")
 #pragma comment (lib, "d3d11.lib")
 #pragma comment (lib, "d3dx11.lib")
 #pragma comment (lib, "d3dx10.lib")
@@ -98,12 +103,15 @@ using namespace JsonReader;
 
 //#include <Color.h>
 //#include <Debug.h>
+#include <WindowProc.h>
+#include <WindowSettings.h>
 #include <Face.h>
 #include <GameObject\GameObjectTags.h>
 #include <GameObject\ComponentTypes.h>
 #include <Event.h>
 #include <SubscriberTracker.h>
 #include <Subscriber.h>
+#include <D3DHandler.h>
 //#include <SurfaceTextureBuffer.h>
 //#include <FontInfo.h>
 //#include <FrameBufferObject.h>

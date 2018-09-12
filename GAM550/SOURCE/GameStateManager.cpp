@@ -28,7 +28,7 @@ MSG GameStateManager::Update() {
 
 
 
-
+	SeedRand(0);
 
 	Mesh* pMesh = new Mesh();
 
@@ -110,42 +110,33 @@ MSG GameStateManager::Update() {
 		// Game loop
 		// wait for the next message in the queue, store the result in 'msg'
 		while (m_currentState == m_nextState) {
-			//BOOL bRet;
-			GetMessage(&msg, NULL, 0, 0);
-			//while (bRet = GetMessage(&msg, NULL, 0, 0) != 0) {
-			//	if (bRet == -1) {
-			//		// handle errors
-			//	} 
-			//	else {
-			//		// translate keystroke messages into the right format
-			//		TranslateMessage(&msg);
-			//		// send the message to the WindowProc function
-			//		DispatchMessage(&msg);
+			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+				// translate keystroke messages into the right format
+				TranslateMessage(&msg);
+				// send the message to the WindowProc function
+				DispatchMessage(&msg);
+			}
 
+			Infect::FrameStart();
+			if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
+				pTransComp2->Move(0.3f*pTransComp2->Right());
+			}
+			if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
+				pTransComp2->Move(-0.3f*pTransComp2->Right());
+			}
+			if (INFECT_INPUT.IsKeyPressed(DIK_UP)) {
+				pTransComp2->Move(0.3f * pTransComp2->Up());
+			}
+			if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
+				pTransComp2->Move(-0.3f*pTransComp2->Up());
+			}
+			if (INFECT_INPUT.IsKeyPressed(DIK_SPACE)) {
+				pTransComp2->SetPosition(Vector3D(0, 0, 50, 1));
+			}
+			pTransComp->RotateZ(Infect::GetFrameTime() * 50.0f);
+			Infect::Update(Infect::GetFrameTime());			// Game loop
 
-					Infect::FrameStart();
-					pTransComp->RotateZ(Infect::GetFrameTime() * 100.0f);
-					if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
-						pTransComp2->Move(0.3f*pTransComp2->Right());
-					}
-					if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
-						pTransComp2->Move(-0.3f*pTransComp2->Right());
-					}
-					if (INFECT_INPUT.IsKeyPressed(DIK_UP)) {
-						pTransComp2->Move(0.3f * pTransComp2->Up());
-					}
-					if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
-						pTransComp2->Move(-0.3f*pTransComp2->Up());
-					}
-					if (INFECT_INPUT.IsKeyPressed(DIK_SPACE)) {
-						pTransComp2->SetPosition(Vector3D(0, 0, 50, 1));
-					}
-					
-					Infect::Update(Infect::GetFrameTime());			// Game loop
-
-					Infect::FrameEnd();
-				//}
-			//}
+			Infect::FrameEnd();
 		}
 
 		m_currentState = m_nextState;

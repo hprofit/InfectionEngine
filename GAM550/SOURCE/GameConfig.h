@@ -10,12 +10,6 @@ Author: <Holden Profit>
 #ifndef GAME_CONFIG_H
 #define GAME_CONFIG_H
 
-struct WindowSettings {
-	unsigned int Width, Height;
-	bool FullScreen;
-	std::string WindowTitle;
-};
-
 class GameConfig
 {
 protected:

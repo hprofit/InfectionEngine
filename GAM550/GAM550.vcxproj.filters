@@ -135,6 +135,9 @@
     <ClCompile Include="SOURCE\Physics\physics_math.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\D3DHandler.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOURCE\Stdafx.h">
@@ -253,6 +256,15 @@
     </ClInclude>
     <ClInclude Include="SOURCE\Physics\physics_math.h">
       <Filter>Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\D3DHandler.h">
+      <Filter>Source Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\WindowProc.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\WindowSettings.h">
+      <Filter>Source Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

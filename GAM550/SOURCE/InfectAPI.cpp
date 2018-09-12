@@ -17,7 +17,8 @@ namespace Infect {
 		INFECT_GOM.Init();
 		if (INFECT_GAME_CONFIG.IsConsoleEnabled())
 			INFECT_RENDERER.InitConsole();
-		INFECT_RENDERER.InitWindow(hInstance, nCmdShow, INFECT_GAME_CONFIG.WindowSettings());
+		if (!INFECT_RENDERER.InitWindow(hInstance, nCmdShow, INFECT_GAME_CONFIG.WindowSettings()))
+			std::cout << "RENDERER DID NOT PROPERLY INITIALIZE." << std::endl;
 		INFECT_RENDERER.LoadShader();
 		INFECT_INPUT.Init(hInstance);
 		return 0;
@@ -78,6 +79,5 @@ namespace Infect {
 	void Cleanup()
 	{
 		INFECT_RENDERER.DestroyConsole();
-		INFECT_RENDERER.CleanD3D();
 	}
 }
