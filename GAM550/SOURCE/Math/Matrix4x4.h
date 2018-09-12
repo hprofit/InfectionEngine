@@ -54,6 +54,20 @@ public:
 	static Matrix4x4 Perspective(const float fov, const float aspect, const float near);
 	static Matrix4x4 Orthographic(const float width, const float height, const float near, const float far);
 	static Matrix4x4 Orthographic(const float width, const float height, const float near);
+  //physics
+  void physicsConstructor();
+  void setDiagonal(real a, real b, real c);
+  Vector3D transform(const Vector3D &vector) const;
+  void setInverse(const Matrix4x4 &m);
+  Matrix4x4 inverse() const;
+  void invert();
+  Vector3D transformDirection(const Vector3D &vector) const;
+  Vector3D transformInverseDirection(const Vector3D &vector) const;
+  Vector3D transformInverse(const Vector3D &vector) const;
+  Vector3D getAxisVector(int i) const;
+  void setOrientationAndPos(const Quaternion &q, const Vector3D &pos);
+  void fillGLArray(float array[16]) const;
+  real getDeterminant() const;
 
 	operator float*();
 	bool operator== (const  Matrix4x4& other) const;
