@@ -9,6 +9,8 @@ Author: <Hyoyup Chung>
 #include <iostream>
 
 #define JoystickDeadZone 5500
+#define SAFERELEASE(p) {if(p) {(p)->Release(); (p)=nullptr;}}
+#define SAFEDELETE(p)  {if(p) {delete (p); (p)=nullptr;}}
 
 InputManager::InputManager()
 	:	m_PrevLeftMouse(false), m_LeftMouse(false), 
@@ -45,8 +47,20 @@ InputManager::~InputManager() {
 	for (auto command : m_inputCommands) {
 		delete command;
 	}
-
 	m_inputCommands.clear();
+	FreeDirectInput();
+}
+
+void InputManager::FreeDirectInput() {
+	// Un-acquire before release
+	if (mDIRX_Mouse) 
+		mDIRX_Mouse->Unacquire();
+	if (mDIRX_Keyboard) 
+		mDIRX_Keyboard->Unacquire();
+	// Release the main interface to direct input.
+	SAFERELEASE(mDIRX_Keyboard);
+	SAFERELEASE(mDIRX_Mouse);
+	SAFERELEASE(DIRX_Interface);
 }
 
 void InputManager::Init(HINSTANCE hInstance) {
@@ -64,31 +78,48 @@ void InputManager::Init(HINSTANCE hInstance) {
 		return;
 	}
 	// Creating Keyboard Device
-	DIRX_Interface->CreateDevice(GUID_SysKeyboard, &DIRX_Keyboard, NULL);
-	if (DIRX_Keyboard) {
-		DIRX_Keyboard->SetDataFormat(&c_dfDIKeyboard);
-		DIRX_Keyboard->SetCooperativeLevel(INFECT_RENDERER.GethWnd(), DISCL_FOREGROUND | DISCL_EXCLUSIVE);
-		DIRX_Keyboard->Acquire();
+	DIRX_Interface->CreateDevice(GUID_SysKeyboard, &mDIRX_Keyboard, NULL);
+	if (mDIRX_Keyboard) {
+		mDIRX_Keyboard->SetDataFormat(&c_dfDIKeyboard);
+		mDIRX_Keyboard->SetCooperativeLevel(INFECT_RENDERER.GethWnd(), DISCL_FOREGROUND | DISCL_EXCLUSIVE);
+		mDIRX_Keyboard->Acquire();
 	}
 	else {
-		MessageBox(NULL, TEXT("DirectInput Keyboard init Failed"),
+		MessageBox(NULL, TEXT("DirectInput keyboard init failed"),
 					TEXT("InputManager: Init()"), MB_ICONERROR | MB_OK);
+		return;
+	}
+	// Creating Mouse Device
+	DIRX_Interface->CreateDevice(GUID_SysMouse, &mDIRX_Mouse, NULL);
+	if (mDIRX_Mouse) {
+		mDIRX_Mouse->SetDataFormat(&c_dfDIMouse);
+		mDIRX_Mouse->SetCooperativeLevel(INFECT_RENDERER.GethWnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+		mDIRX_Mouse->Acquire();
+	}
+	else {
+		MessageBox(NULL, TEXT("DirectInput mouse init failed"),
+			TEXT("InputManager: Init()"), MB_ICONERROR | MB_OK);
 		return;
 	}
 }
 
 void InputManager::Update() {
-	
+	HRESULT hr;
 	//// Update mouse position
 	//int mouseTempPosX = m_MousePosX;
 	//int mouseTempPosY = m_MousePosY;
-	//Uint32 mouseState = SDL_GetMouseState(&m_MousePosX, &m_MousePosY);
+	DIMOUSESTATE mouseState; 
+	hr = mDIRX_Mouse->GetDeviceState(sizeof(DIMOUSESTATE), &mouseState);
+	if (FAILED(hr)) {
+		mDIRX_Mouse->Acquire();
+		return;
+	}
 	//m_MousePosRelX = m_MousePosX - mouseTempPosX;
 	//m_MousePosRelY = m_MousePosY - mouseTempPosY;
 
 	//// Update previous mouse states
-	//m_PrevLeftMouse = m_LeftMouse;
-	//m_PrevRightMouse = m_RightMouse;
+	m_PrevLeftMouse = m_LeftMouse;
+	m_PrevRightMouse = m_RightMouse;
 
 	//// Update current mouse states
 	//m_LeftMouse = (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) == 1;
@@ -100,12 +131,12 @@ void InputManager::Update() {
 
 	// get new KeyStates
 	Uint8 currentKeyStates[256];
-	HRESULT hr = DIRX_Keyboard->GetDeviceState(sizeof(currentKeyStates), (LPVOID)&currentKeyStates);
+	hr = mDIRX_Keyboard->GetDeviceState(sizeof(currentKeyStates), (LPVOID)&currentKeyStates);
 	if (FAILED(hr)) {
-		DIRX_Keyboard->Acquire();
+		mDIRX_Keyboard->Acquire();
 		return;
 	}
-	// update CurrentKeyStates (only copy what is fetched)
+	// update CurrentKeyStates
 	memcpy(m_CurrentKeyStates, &currentKeyStates, 256 * sizeof(Uint8));
 
 	//// update CurrentButtonStates // TODO Optimization: Ignore all this if joystick is not connected
@@ -133,7 +164,9 @@ void InputManager::Update() {
 	//m_StickRightY = SDL_GameControllerGetAxis(GameController, SDL_CONTROLLER_AXIS_RIGHTY);
 
 	//FireEvents();
-
+	if (IsKeyPressed(DIK_LALT) && IsKeyPressed(DIK_F4)) {
+		INFECT_GAME_STATE.SetGameState(GameState::QUIT);
+	}
 }
 
 void InputManager::FireEvents() {

@@ -95,13 +95,17 @@ class InputManager: public Subscriber
 {
 private:
 	// DirectInput
-	LPDIRECTINPUT8 DIRX_Interface;		// Root DirectInput Interface
-	LPDIRECTINPUTDEVICE8 DIRX_Keyboard; // The keyboard device
+	LPDIRECTINPUT8 DIRX_Interface = nullptr;		// Root DirectInput Interface
+	LPDIRECTINPUTDEVICE8 mDIRX_Keyboard = nullptr; // DirectInput keyboard device
+	LPDIRECTINPUTDEVICE8 mDIRX_Mouse = nullptr;	// DirectInput mouse device
 
 	// keyboard state
 	Uint8 *m_PreviousKeyStates;
 	Uint8 *m_CurrentKeyStates;
 	// mouse state
+	DIMOUSESTATE m_CurrentMouseStates;
+	DIMOUSESTATE m_PreviousMouseStates;
+
 	bool m_PrevLeftMouse, m_LeftMouse;
 	bool m_PrevRightMouse, m_RightMouse;
 	int m_MousePosX, m_MousePosY;
@@ -127,6 +131,7 @@ public:
 
 	void Update();
 	void HandleEvent(Event* pEvent);
+	void FreeDirectInput();
 	//void Initialize(const json& j);
 	// Keyboard Input
 	bool IsKeyPressed(const UINT8);
