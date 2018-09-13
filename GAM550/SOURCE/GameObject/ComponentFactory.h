@@ -49,7 +49,11 @@ public:
 	template <typename C>
 	C* CreateComponent()
 	{
-		return  static_cast<C*>(CreateComponent<C>(std::string(ComponentTypeText[C::Type])));
+		CreationFunction* Create = m_creationFunctions[C::Type];
+		if (Create)
+			return  static_cast<C*>(Create(_GetGUID()));
+		else
+			return nullptr;
 	}
 
 	void RegisterComponent(ComponentType cType, CreationFunction*) {};
