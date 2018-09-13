@@ -46,6 +46,12 @@
     <Filter Include="Source Files\Physics">
       <UniqueIdentifier>{9d4e021b-37c5-4f54-822d-10e0cdd8f496}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameObject\Components\Renderable">
+      <UniqueIdentifier>{3a610a1f-27e2-43c3-b708-08de40f38a76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\Components\Light">
+      <UniqueIdentifier>{aa49102a-6765-47e8-af79-477b42f42312}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\main.cpp">
@@ -77,9 +83,6 @@
     </ClCompile>
     <ClCompile Include="SOURCE\GameObject\GameObject.cpp">
       <Filter>Source Files\GameObject\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\MeshComponent.cpp">
-      <Filter>Source Files\GameObject\Components</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\GameObject\TransformComponent.cpp">
       <Filter>Source Files\GameObject\Components</Filter>
@@ -141,6 +144,15 @@
     <ClCompile Include="SOURCE\AudioManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\MeshComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\PointLightComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\LightBaseComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOURCE\RenderManager.h">
@@ -191,16 +203,10 @@
     <ClInclude Include="SOURCE\GameObject\GameObject.h">
       <Filter>Source Files\GameObject\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\MeshComponent.h">
-      <Filter>Source Files\GameObject\Components</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\GameObject\CameraComponent.h">
       <Filter>Source Files\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\TransformComponent.h">
-      <Filter>Source Files\GameObject\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\RenderableComponent.h">
       <Filter>Source Files\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Math\Matrix3x3.h">
@@ -268,6 +274,18 @@
     </ClInclude>
     <ClInclude Include="SOURCE\AudioManager.h">
       <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\MeshComponent.h">
+      <Filter>Source Files\GameObject\Components\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\RenderableComponent.h">
+      <Filter>Source Files\GameObject\Components\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\LightBaseComponent.h">
+      <Filter>Source Files\GameObject\Components\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\PointLightComponent.h">
+      <Filter>Source Files\GameObject\Components\Light</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

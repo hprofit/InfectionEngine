@@ -101,7 +101,8 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
 	cb.NormalMatrix = Matrix4x4::Transpose(N);
 	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->GetPosition();
-	cb.LightPosition = Vector3D(0, 100, 50, 1);
+	// TODO: THIS IS A HACK, REMOVE IT
+	cb.LightPosition = INFECT_GOM.GetGameObject(2)->GetComponent<TransformComponent>()->GetPosition(); 
 	
 	mp_D3D->mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_Cbuffer);
 

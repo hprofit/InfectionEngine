@@ -25,6 +25,19 @@ void GameObjectManager::RegisterCamera(GameObject * cameraGO)
 	Sorting::InsertionSort(mp_Cameras, &CameraComponent::LeftDepthGreaterThanRight);
 }
 
+void GameObjectManager::RegisterLight(GameObject * lightGO)
+{
+	mp_Lights.push_back(lightGO);
+}
+
+void GameObjectManager::UnregisterLight(GameObject * lightGO)
+{
+	mp_Lights.erase(
+		std::remove(mp_Lights.begin(), mp_Lights.end(), lightGO),
+		mp_Lights.end()
+	);
+}
+
 void GameObjectManager::RenderCameras()
 {
 	for (int camIdx = 0; camIdx < mp_Cameras.size(); ++camIdx) {

@@ -40,18 +40,7 @@ void CameraComponent::_CalcViewMatrix()
 
 void CameraComponent::Serialize(const json& j)
 {
-	//m_primary = ParseBool(j, "primary");
-	//m_isPersp = ParseBool(j, "perspective");
-	//m_fov = ValueExists(j, "fov") ? ParseFloat(j, "fov") : m_fov;
-	//std::vector<std::string> layers = j["layers"];
 
-	//for (std::string layer : layers) {
-	//	m_layersToRender[TETRA_GAME_OBJECTS.GetLayerFromString(layer)] = true;
-	//}
-
-	//for (unsigned int i = 0; i < MAX_RESOLUTIONS; ++i) {
-	//	m_zoomLevels[i] = j["zoomLevels"][i];
-	//}
 }
 
 void CameraComponent::HandleEvent(Event * pEvent)

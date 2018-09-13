@@ -174,8 +174,8 @@ using namespace JsonReader;
 //#include <Text.h>
 //#include <Animation.h>
 #include <GameObject\CameraComponent.h>
-#include <GameObject\LightBase.h>
-#include <GameObject\PointLight.h>
+#include <GameObject\LightBaseComponent.h>
+#include <GameObject\PointLightComponent.h>
 //#include <LetterBox.h>
 //#include <HeightMap.h>
 //

@@ -29,7 +29,9 @@
     <ClCompile Include="SOURCE\GameObject\CameraComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\ComponentFactory.cpp" />
     <ClCompile Include="SOURCE\GameObject\GameObject.cpp" />
+    <ClCompile Include="SOURCE\GameObject\LightBaseComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\MeshComponent.cpp" />
+    <ClCompile Include="SOURCE\GameObject\PointLightComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\TransformComponent.cpp" />
     <ClCompile Include="SOURCE\InputManager.cpp" />
     <ClCompile Include="SOURCE\GameStateManager.cpp" />
@@ -72,7 +74,9 @@
     <ClInclude Include="SOURCE\GameObject\ComponentTypesNames.h" />
     <ClInclude Include="SOURCE\GameObject\GameObject.h" />
     <ClInclude Include="SOURCE\GameObject\GameObjectTags.h" />
+    <ClInclude Include="SOURCE\GameObject\LightBaseComponent.h" />
     <ClInclude Include="SOURCE\GameObject\MeshComponent.h" />
+    <ClInclude Include="SOURCE\GameObject\PointLightComponent.h" />
     <ClInclude Include="SOURCE\GameObject\RenderableComponent.h" />
     <ClInclude Include="SOURCE\GameObject\TagNames.h" />
     <ClInclude Include="SOURCE\GameObject\TransformComponent.h" />

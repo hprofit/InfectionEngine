@@ -17,6 +17,7 @@ class GameObjectManager : public Subscriber
 private:
 	std::vector<GameObject *> mp_GameObjects;
 	std::vector<GameObject *> mp_Cameras;
+	std::vector<GameObject *> mp_Lights;
 
 	unsigned int m_GUID;
 public:
@@ -30,6 +31,10 @@ public:
 	GameObject* GetGameObject(unsigned int id) const { return mp_GameObjects[id]; }
 
 	void RegisterCamera(GameObject* cameraGO);
+
+	void RegisterLight(GameObject* lightGO);
+
+	void UnregisterLight(GameObject* lightGO);
 
 	void RenderCameras();
 
