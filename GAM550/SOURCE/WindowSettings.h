@@ -10,6 +10,7 @@ Author: <Holden Profit>
 
 struct WindowSettings {
 	unsigned int Width, Height;
+	float AspectRatio;
 	bool FullScreen;
 	std::string WindowTitle;
 	bool VSync;

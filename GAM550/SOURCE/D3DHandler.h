@@ -13,12 +13,22 @@ Author: <Holden Profit>
 class D3DHandler
 {
 protected:
-	IDXGISwapChain * mp_SwapChain;
+	IDXGISwapChain *mp_SwapChain;
 	ID3D11Device *mp_Device;
 	ID3D11DeviceContext *mp_DeviceContext;
-	ID3D11RenderTargetView *mp_BackBuffer, *mp_DepthBuffer;
+	ID3D11RenderTargetView *mp_BackBuffer;
+	ID3D11RenderTargetView *mp_DepthBuffer;
+
+	ID3D11Texture2D* mp_DepthStencilBuffer;
+	ID3D11DepthStencilState* mp_DepthStencilState;
+	ID3D11DepthStencilView* mp_DepthStencilView;
+	ID3D11RasterizerState* mp_RasterState;
+
+	int m_VideoCardMemory;
+	char m_VideoCardDescription[128];
 
 public:
+	friend class RenderManager;
 	D3DHandler();
 	~D3DHandler();
 
@@ -28,16 +38,18 @@ public:
 	inline ID3D11RenderTargetView * const BackBuffer() { return mp_BackBuffer; }
 	inline ID3D11RenderTargetView * const DepthBuffer() { return mp_DepthBuffer; }
 
-	// Creates a console for output
-	void InitConsole();
-	// Destroys the active console
-	void DestroyConsole();
 	// Sets up and initializes window
-	void InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings);
+	HWND InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings);
 	// Sets up and initializes Direct3D
-	void InitD3D(HWND hWnd, WindowSettings settings);
+	bool InitD3D(HWND hWnd, WindowSettings settings);
 	// Closes Direct3D and releases memory
 	void CleanD3D(void);
+
+	void ClearBackBuffer(const D3DXCOLOR color);
+
+	void ClearDepthBuffer(void);
+
+	void PresentBuffer(bool vSync);
 };
 
 #endif
