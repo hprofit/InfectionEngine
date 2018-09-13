@@ -38,10 +38,10 @@ VOut VShader(
 
 
 	output.position = mul(MatFinal, position);
-	output.normal = normal;
+	output.normal = normalize(normal);
 	output.tbn = float3x3(T, B, N);
-	output.view = normalize(CameraPosition - P);
-	output.light = normalize(LightPosition - P);
+	output.view = CameraPosition - P;
+	output.light = LightPosition - P;
 	output.color = color;
 
 	return output;
