@@ -1,6 +1,6 @@
 #include "Stdafx.h"
 
-GameObjectManager::GameObjectManager() : m_GUID(0)
+GameObjectManager::GameObjectManager()
 {
 }
 
@@ -14,7 +14,7 @@ GameObjectManager::~GameObjectManager()
 
 GameObject * GameObjectManager::SpawnGameObject()
 {
-	GameObject* newGO = new GameObject(m_GUID++);
+	GameObject* newGO = new GameObject( INFECT_GUID.GetGUID() );
 	mp_GameObjects.push_back(newGO);
 	return newGO;
 }

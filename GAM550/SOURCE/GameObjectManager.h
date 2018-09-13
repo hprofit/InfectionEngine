@@ -19,7 +19,6 @@ private:
 	std::vector<GameObject *> mp_Cameras;
 	std::vector<GameObject *> mp_Lights;
 
-	unsigned int m_GUID;
 public:
 	GameObjectManager();
 	~GameObjectManager();

@@ -10,99 +10,91 @@ Author: <Holden Profit>
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
-class TransformComponent : public Component {
-private:
-	Vector3D m_position;
-	Vector3D m_prevPosition;
-	Vector3D m_worldPosition;
-	Vector3D m_scale;
-	Vector3D m_pivotOffset;
-	Matrix4x4 m_transform;
-	Matrix4x4 m_rotation;
-	Vector3D m_lookAt;
-	TransformComponent* m_parent;
-	float m_angleX, m_angleY, m_angleZ;
-	bool m_is2d;
+class TransformComponentManager;
 
-	void _UpdateLookAt();
+class TransformComponent : public Component {
+protected:
+	friend TransformComponentManager;
+
+	Vector3D m_position;					// Current position this frame
+	Vector3D m_prevPosition;				// Position last frame
+
+	Vector3D m_pivotOffset;					// Translation away from Parent object's position
+	Vector3D m_worldPosition;				// Current position this frame + any offsets from Parent objects
+	float m_scaleX, m_scaleY, m_scaleZ;		// Scale in the X, Y, and Z directions
+
+	Matrix4x4 m_transform;					// Model Matrix (Pivot * T * R * S)
+
+	float m_angleX, m_angleY, m_angleZ;		// Angle of rotation along the X, Y, and Z axis
+	Matrix4x4 m_rotation;					// Rotation matrix (Zrot * Yrot * Xrot)
+	Vector3D m_lookAt;						// Direction the object is facing, default is -ZAXIS, this is calculated from the rotation matrix
+	Vector3D m_right;						// Right vector of this transform
+	Vector3D m_up;							// Up vector of this transform
+
 public:
 	static const ComponentType Type = ComponentType::C_Transform;
 	virtual ComponentType GetType() const { return Type; }
 
-	TransformComponent();
-	~TransformComponent();
+	TransformComponent(InfectGUID guid);
+	~TransformComponent() {};
 
-	static Component* CreateInstance() { return new TransformComponent();  }
+	static Component* CreateInstance(InfectGUID guid) { return new TransformComponent(guid);  }
 	virtual void Deactivate();
-	virtual void Update(float dt);
-	virtual void LateUpdate(float dt);
+	virtual void Update(float dt) {};
+	virtual void LateUpdate(float dt) {};
 	virtual void Serialize(const json& j);
 	virtual void Override();
 
 	virtual void HandleEvent(Event * p_event);
 
-	bool operator<(const TransformComponent& other) const;
-	bool IsParented() { return m_parent; }
-
 	void SetPosition(const Vector3D& pos);
-	Vector3D GetPosition() const;
-	Vector3D GetLocalPosition() const;
+	inline Vector3D LocalPosition() const { return m_position; }
+	inline Vector3D WorldPosition() const { return m_worldPosition; }
 	void Move(const Vector3D& amount);
 	void MoveAlongLookAt(Vector3D& amount);
 	Vector3D GetMovement() const { return m_worldPosition - m_prevPosition; }
 
 	void SetAngles(float angleX, float angleY, float angleZ);
-	float GetAngleX() const;
 	void SetAngleX(float angle);
-	float GetAngleY() const;
 	void SetAngleY(float angle);
-	float GetAngleZ() const;
 	void SetAngleZ(float angle);
-	float GetParentScaleX();
-	float GetParentScaleY();
+	inline float GetAngleX() const { return m_angleX; }
+	inline float GetAngleY() const { return m_angleY; }
+	inline float GetAngleZ() const { return m_angleZ; }
 
-	void SetPivotOffset(float x, float y, float z) {
-		m_pivotOffset.x = x;
-		m_pivotOffset.y = y;
-		m_pivotOffset.z = z;
-	}
-
-	float GetPivotOffsetX() { return m_pivotOffset.x; }
-	float GetPivotOffsetY() { return m_pivotOffset.y; }
+	void SetPivotOffset(Vector3D offset);
+	inline Vector3D GetPivotOffset() const { return m_pivotOffset; }
 
 	void RotateX(float amount);
 	void RotateY(float amount);
 	void RotateZ(float amount);
-	Vector3D GetRotVector() const;
+	inline Vector3D GetRotVector() const { return Vector3D(m_angleX, m_angleY, m_angleZ); }
 
-	Vector3D Forward() const;
-	Vector3D Right() const;
-	Vector3D Up() const;
+	inline Vector3D Forward() const { return m_lookAt; }
+	inline Vector3D Right() const { return m_right; }
+	inline Vector3D Up() const { return m_up; }
 
-	Vector3D LookAt() const;
+	inline Vector3D LookAt() const { return m_lookAt; }
 
-	float GetScaleX() const;
+	inline float GetScaleX() const { return m_scaleX; }
 	void SetScaleX(float scaleX);
 	void ScaleXby(float amount);
 
-	float GetScaleY() const;
+	inline float GetScaleY() const { return m_scaleY; }
 	void SetScaleY(float scaleY);
 	void ScaleYby(float amount);
 
-	float GetScaleZ() const;
+	inline float GetScaleZ() const { return m_scaleZ; }
 	void SetScaleZ(float scaleZ);
 	void ScaleZby(float amount);
-	void SetParent(TransformComponent* pParent) { m_parent = pParent; }
 
 	void SetScaleUniform(float amount);
 	void SetScale(float scaleX, float scaleY, float scaleZ);
 	void SetScale(const Vector3D& scale);
 	void ScaleUniform(float amount);
-	Vector3D GetScaleVector() const;
+	inline Vector3D GetScaleVector() const { return Vector3D(m_scaleX, m_scaleY, m_scaleZ, 0); }
 
-	Matrix4x4 GetTransform() const;
-	Matrix4x4 GetTransformAfterOffset(const Vector3D& offset) const;
-	Matrix4x4 TransformWithOffsetAndScale(const Vector3D& offset, const float& scaleX, const float& scaleY, const float& scaleZ = 1.0f) const;
+	inline Matrix4x4 GetTransform() const { return m_transform; }
 };
 
 #endif

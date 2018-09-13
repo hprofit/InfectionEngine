@@ -59,11 +59,11 @@ MSG GameStateManager::Update() {
 	(*pScene)[0] = pMesh;
 	
 	GameObject* pGO = INFECT_GOM.SpawnGameObject();
-	MeshComponent* pMeshComp = new MeshComponent();
+	MeshComponent* pMeshComp = INFECT_COMPONENT_FACTORY.CreateComponent<MeshComponent>();
 	pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
 	//pMeshComp->SetScene(pScene);
 	
-	TransformComponent* pTransComp = new TransformComponent();
+	TransformComponent* pTransComp = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
 	pTransComp->SetAngleX(-90);
 	//pTransComp->SetAngleZ(45);
@@ -77,10 +77,10 @@ MSG GameStateManager::Update() {
 	pGO->LateUpdate(0);
 	
 	GameObject* pGOCamera = INFECT_GOM.SpawnGameObject();
-	TransformComponent* pTransComp2 = new TransformComponent();
+	TransformComponent* pTransComp2 = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
 	pTransComp2->SetPosition(Vector3D(0, 0, 50, 1));
 	
-	CameraComponent * pCamComp = new CameraComponent();
+	CameraComponent * pCamComp = INFECT_COMPONENT_FACTORY.CreateComponent<CameraComponent>();
 	pGOCamera->AddComponent(pTransComp2);
 	pGOCamera->AddComponent(pCamComp);
 	pGOCamera->LateInitialize();
@@ -89,11 +89,11 @@ MSG GameStateManager::Update() {
 	pGOCamera->LateUpdate(0);
 
 	GameObject* pGOLight = INFECT_GOM.SpawnGameObject();
-	PointLightComopnent *pLight = new PointLightComopnent();
-	pTransComp = new TransformComponent();
-	pTransComp->SetPosition(Vector3D(100, 100, 0, 1));
+	PointLightComopnent *pLight = INFECT_COMPONENT_FACTORY.CreateComponent<PointLightComopnent>();
+	TransformComponent* pTransComp3 = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
+	pTransComp3->SetPosition(Vector3D(100, 100, 0, 1));
 	pGOLight->AddComponent(pLight);
-	pGOLight->AddComponent(pTransComp);
+	pGOLight->AddComponent(pTransComp3);
 	pGOLight->LateInitialize();
 
 

@@ -21,9 +21,9 @@ public:
 	static const ComponentType Type = ComponentType::C_Mesh;
 	virtual ComponentType GetType() const { return Type; }
 
-	MeshComponent();
+	MeshComponent(InfectGUID guid);
 	~MeshComponent();
-	static Component* CreateInstance() { return new MeshComponent(); }
+	static Component* CreateInstance(InfectGUID guid) { return new MeshComponent(guid); }
 	virtual void Deactivate();
 	virtual void Update(float dt);
 	virtual void Serialize(const json& j);

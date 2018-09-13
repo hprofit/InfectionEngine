@@ -95,6 +95,8 @@ Author: <Holden Profit>
 using json = nlohmann::json;
 #include <JsonReader.h>
 using namespace JsonReader;
+// TODO: This should probably be moved to a file
+typedef unsigned int InfectGUID;
 
 //#include <Color.h>
 //#include <Debug.h>
@@ -243,7 +245,13 @@ using namespace JsonReader;
 
 #pragma endregion 
 
+#pragma region Component Managers
+#include <GameObject/ComponentManager.h>
+#include <GameObject/TransformComponentManager.h>
+#pragma endregion
+
 #pragma region Globals + API
+#include <GUID.h>
 #include <GameConfig.h>
 #include <GameStateManager.h>
 #include <InputManager.h>

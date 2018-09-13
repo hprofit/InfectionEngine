@@ -33,6 +33,7 @@
     <ClCompile Include="SOURCE\GameObject\MeshComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\PointLightComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\TransformComponent.cpp" />
+    <ClCompile Include="SOURCE\GameObject\TransformComponentManager.cpp" />
     <ClCompile Include="SOURCE\InputManager.cpp" />
     <ClCompile Include="SOURCE\GameStateManager.cpp" />
     <ClCompile Include="SOURCE\InfectAPI.cpp" />
@@ -70,6 +71,7 @@
     <ClInclude Include="SOURCE\GameObject\CameraComponent.h" />
     <ClInclude Include="SOURCE\GameObject\Component.h" />
     <ClInclude Include="SOURCE\GameObject\ComponentFactory.h" />
+    <ClInclude Include="SOURCE\GameObject\ComponentManager.h" />
     <ClInclude Include="SOURCE\GameObject\ComponentTypes.h" />
     <ClInclude Include="SOURCE\GameObject\ComponentTypesNames.h" />
     <ClInclude Include="SOURCE\GameObject\GameObject.h" />
@@ -80,8 +82,10 @@
     <ClInclude Include="SOURCE\GameObject\RenderableComponent.h" />
     <ClInclude Include="SOURCE\GameObject\TagNames.h" />
     <ClInclude Include="SOURCE\GameObject\TransformComponent.h" />
+    <ClInclude Include="SOURCE\GameObject\TransformComponentManager.h" />
     <ClInclude Include="SOURCE\GameStateManager.h" />
     <ClInclude Include="SOURCE\Global.h" />
+    <ClInclude Include="SOURCE\GUID.h" />
     <ClInclude Include="SOURCE\InputManager.h" />
     <ClInclude Include="SOURCE\InfectAPI.h" />
     <ClInclude Include="SOURCE\JsonReader.h" />

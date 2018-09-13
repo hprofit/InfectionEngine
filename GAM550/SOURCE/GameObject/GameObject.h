@@ -15,13 +15,11 @@ class GameObject
 protected:
 	Component* mComponents[ComponentType::NUM_COMPONENTS];
 	std::vector<ComponentType> m_activeComponents;
-	unsigned int m_id;
+	InfectGUID m_GUID;
 	unsigned short m_layer;
 	bool m_isSetToDestroy;
 	float m_destroyTimer;
 	float m_destroySetTimeStamp;
-
-public:
 	bool m_isActive;
 	bool m_isRender;
 	bool m_isCollisionDisabled;
@@ -29,7 +27,12 @@ public:
 	bool m_isDestroy;
 	GameObjectTag m_tag;
 
-	GameObject(unsigned int id);
+	GameObject* mp_Parent;
+	std::vector<GameObject*> m_Children;
+
+public:
+
+	GameObject(InfectGUID id);
 	~GameObject();
 
 	bool operator==(const GameObject& rhs) const;
@@ -46,14 +49,16 @@ public:
 	//void OverrideComponents(const json & j);
 	void OverrideComponents();
 
-	unsigned int ID() const { return m_id; }
-	void SetID(unsigned int id) { m_id = id; }
+	InfectGUID ID() const { return m_GUID; }
+	void SetID(InfectGUID id) { m_GUID = id; }
 	
-	void SetParent(GameObject* pParent);
+	inline void SetParent(GameObject* parent) { mp_Parent = parent; }
+	inline bool HasParent() const { return mp_Parent; }
+	inline GameObject* Parent() const { return mp_Parent; }
+
 	void SetActive(bool active);
 	inline bool IsActive() { return m_isActive; }
 	inline bool ShouldRender() { return m_isRender; }
-	bool IsParented();
 	
 	void SwitchTag(GameObjectTag t) { m_tag = t; }
 	inline GameObjectTag Tag() const { return m_tag; }

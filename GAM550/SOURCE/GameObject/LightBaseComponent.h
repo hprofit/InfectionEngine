@@ -20,7 +20,7 @@ public:
 	static const ComponentType Type = ComponentType::C_Transform;
 	virtual ComponentType GetType() const { return Type; }
 
-	LightBaseComponent() {};
+	LightBaseComponent(InfectGUID guid) : Component(guid) {};
 	~LightBaseComponent() {};
 
 	virtual void LateInitialize();

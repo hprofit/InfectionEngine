@@ -7,22 +7,15 @@ Author: <Holden Profit>
 
 #include <Stdafx.h>
 
-ComponentFactory::ComponentFactory() {
-	m_creationFunctions["Transform"] = TransformComponent::CreateInstance;
-	m_creationFunctions["Mesh"] = MeshComponent::CreateInstance;
-	m_creationFunctions["Camera"] = CameraComponent::CreateInstance;
+InfectGUID ComponentFactory::_GetGUID() const
+{
+	return INFECT_GUID.GetGUID();
 }
 
-Component* ComponentFactory::CreateComponent(std::string component) {
-	// check if there's empty component stored in cache
-	//Component* cachedComp = INFECT_MEMORY.GetNewComponent(component);
-	//if (cachedComp) {
-	//	return cachedComp;
-	//}
-	// no empty component available, return create new comp
-	CreationFunction* Create = m_creationFunctions[component];
-	if (Create)
-		return Create();
-	else
-		return nullptr;
+ComponentFactory::ComponentFactory() {
+	m_creationFunctions[TransformComponent::Type] = TransformComponent::CreateInstance;
+	m_creationFunctions[MeshComponent::Type] = MeshComponent::CreateInstance;
+	m_creationFunctions[CameraComponent::Type] = CameraComponent::CreateInstance;
+	m_creationFunctions[PointLightComopnent::Type] = PointLightComopnent::CreateInstance;
 }
+

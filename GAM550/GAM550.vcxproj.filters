@@ -52,6 +52,9 @@
     <Filter Include="Source Files\GameObject\Components\Light">
       <UniqueIdentifier>{aa49102a-6765-47e8-af79-477b42f42312}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameObject\ComponentManagers">
+      <UniqueIdentifier>{ae8d1a54-03b0-4681-9c7b-03507d287d84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\main.cpp">
@@ -152,6 +155,9 @@
     </ClCompile>
     <ClCompile Include="SOURCE\GameObject\LightBaseComponent.cpp">
       <Filter>Source Files\GameObject\Components\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\TransformComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +292,15 @@
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\PointLightComponent.h">
       <Filter>Source Files\GameObject\Components\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\ComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GUID.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\TransformComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

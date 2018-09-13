@@ -15,10 +15,10 @@ public:
 	static const ComponentType Type = ComponentType::C_PointLight;
 	virtual ComponentType GetType() const { return Type; }
 
-	PointLightComopnent() {};
+	PointLightComopnent(InfectGUID guid) : LightBaseComponent(guid) {};
 	~PointLightComopnent() {};
 
-	static Component* CreateInstance() { return new PointLightComopnent(); }
+	static Component* CreateInstance(InfectGUID guid) { return new PointLightComopnent(guid); }
 	virtual void Deactivate();
 	virtual void Update(float dt) {};
 	virtual void Serialize(const json& j) {};

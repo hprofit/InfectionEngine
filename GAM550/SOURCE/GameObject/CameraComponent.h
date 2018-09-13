@@ -33,9 +33,9 @@ public:
 	static const ComponentType Type = ComponentType::C_Camera;
 	virtual ComponentType GetType() const { return Type; }
 
-	CameraComponent();
+	CameraComponent(InfectGUID guid);
 	~CameraComponent();
-	static Component* CreateInstance() { return new CameraComponent(); }
+	static Component* CreateInstance(InfectGUID guid) { return new CameraComponent(guid); }
 	virtual void Deactivate();
 	virtual void LateInitialize();
 	virtual void Update(float dt);

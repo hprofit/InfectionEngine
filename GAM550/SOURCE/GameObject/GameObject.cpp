@@ -7,9 +7,10 @@ Author: <Holden Profit>
 
 #include <Stdafx.h>
 
-GameObject::GameObject(unsigned int id) : 
-	m_id(id), 
-	m_isDestroy(false), m_isActive(true), 
+GameObject::GameObject(InfectGUID id) :
+	m_GUID(id), 
+	m_isDestroy(false), 
+	m_isActive(true), 
 	m_isCollisionDisabled(false), 
 	m_isRender(true),
 	m_isSetToDestroy(false),
@@ -30,12 +31,12 @@ GameObject::~GameObject() {
 
 bool GameObject::operator==(const GameObject& rhs) const
 {
-	return rhs.m_id == m_id;
+	return rhs.m_GUID == m_GUID;
 }
 
 bool GameObject::operator!=(const GameObject & rhs) const
 {
-	return rhs.m_id != m_id;
+	return rhs.m_GUID != m_GUID;
 }
 
 void GameObject::Destroy() {
@@ -110,41 +111,6 @@ void GameObject::HandleEvent(Event* pEvent) {
 	for (unsigned int i = 0; i < m_activeComponents.size(); ++i) {
 		mComponents[(int)m_activeComponents[i]]->HandleEvent(pEvent);
 	}
-}
-
-void GameObject::SetParent(GameObject* pParent) {
-	//Transform* myTransform = GetComponent<Transform>();
-	//if (myTransform) {
-	//	Transform* parentTransform = pParent->GetComponent<Transform>();
-	//	
-	//	myTransform->SetPosition(myTransform->GetPosition() - parentTransform->GetPosition());
-	//	float xDiv = parentTransform->GetScaleX();
-	//	float yDiv = parentTransform->GetScaleY();
-	//	if (fabsf(xDiv) < EPSILON)
-	//		xDiv = 1;
-	//	if (fabsf(yDiv) < EPSILON)
-	//		yDiv = 1;
-
-	//	myTransform->SetScale(Vector3D(myTransform->GetScaleX()/ xDiv, myTransform->GetScaleY()/ yDiv, 0));
-	//	if (myTransform->pGO->HasComponent(C_Text)) {
-	//		Text* pMyText = myTransform->pGO->GetComponent<Text>(C_Text);
-	//		pMyText->SetLetterWidth(pMyText->GetLetterWidth() / xDiv);
-	//		pMyText->SetLetterHeight(pMyText->GetLetterHeight() / yDiv);
-	//	}
-
-	//	if (parentTransform) 
-	//		myTransform->SetParent(parentTransform);
-	//}
-}
-
-bool GameObject::IsParented() {
-	//Transform* myTransform = GetComponent<Transform>();
-	//if (myTransform) {
-	//	return myTransform->IsParented();
-	//}
-	//else
-	//	return false;
-	return false;
 }
 
 void GameObject::SetActive(bool active) {

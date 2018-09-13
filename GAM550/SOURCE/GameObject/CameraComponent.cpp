@@ -7,9 +7,8 @@ Author: <Holden Profit>
 
 #include <Stdafx.h>
 
-CameraComponent::CameraComponent() :
-	//Component(ComponentType::C_Camera),
-	Component(),
+CameraComponent::CameraComponent(InfectGUID guid) :
+	Component(guid),
 	m_fov(105.f), m_aspectRatio(1.f), m_Near(0.1f), m_Far(1000.0f),
 	m_viewMatrix(Matrix4x4()), m_cameraMatrix(Matrix4x4()), m_projectionType(ProjectionType::PT_Perspective), m_Depth(0)
 {
@@ -35,7 +34,7 @@ Matrix4x4 CameraComponent::_MatrixFromCameraVectors(const Vector3D & right, cons
 void CameraComponent::_CalcViewMatrix()
 {
 	Matrix4x4 rotationM = _MatrixFromCameraVectors(m_pTransform->Right(), m_pTransform->Up(), m_pTransform->Forward());
-	m_viewMatrix = rotationM * Matrix4x4::Translate(-1 * m_pTransform->GetPosition());
+	m_viewMatrix = rotationM * Matrix4x4::Translate(-1 * m_pTransform->WorldPosition());
 }
 
 void CameraComponent::Serialize(const json& j)
