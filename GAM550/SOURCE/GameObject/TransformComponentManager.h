@@ -27,6 +27,12 @@ public:
 
 	virtual void Update(float dt);
 	virtual void HandleEvent(Event* pEvent);
+
+
+	// TODO: Get rid of this
+	void Register(TransformComponent* t) {
+		m_Components.push_back(t);
+	}
 };
 
 #endif

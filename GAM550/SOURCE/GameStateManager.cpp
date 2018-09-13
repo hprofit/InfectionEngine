@@ -97,11 +97,10 @@ MSG GameStateManager::Update() {
 	pGOLight->LateInitialize();
 
 
-
-
-
-
-
+	TransformComponentManager* tcm = static_cast<TransformComponentManager*>(INFECT_CMC.GetCM(0));
+	tcm->Register(pGO->GetComponent<TransformComponent>());
+	tcm->Register(pGOCamera->GetComponent<TransformComponent>());
+	tcm->Register(pGOLight->GetComponent<TransformComponent>());
 
 
 

@@ -21,6 +21,9 @@ namespace Infect {
 			std::cout << "DIRECTX DID NOT INITIALIZE PROPERLY." << std::endl;
 		INFECT_RENDERER.LoadShader(); // TODO: MOVE THIS
 		INFECT_INPUT.Init(hInstance);
+
+
+		INFECT_CMC.RegisterCompMngr(new TransformComponentManager());
 		return 0;
 	}
 
@@ -46,7 +49,12 @@ namespace Infect {
 		//INFECT_DEBUG.Update();									// Toggles debug drawing if needed
 		INFECT_EVENTS.Update(deltaTime);							// Pump the event manager
 		//INFECT_AUDIO.Update(deltaTime);
+
 		INFECT_GOM.Update(deltaTime);					// Update game logic
+		INFECT_CMC.Update(deltaTime);
+
+
+
 		//INFECT_GOM.UpdateStatus();						// Update status of game objects
 		//INFECT_PHYSICS.Integrate(deltaTime);						// Move physics bodies
 		//INFECT_PHYSICS.ResolveCollisions();						// Resolve collisions on physics bodies

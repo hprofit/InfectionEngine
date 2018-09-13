@@ -13,9 +13,20 @@ Author: <Holden Profit>
 class GameObject;
 class Component;
 
+class CM : public Subscriber 
+{
+
+public:
+	CM() {};
+	virtual ~CM() {};
+
+	virtual void Update(float dt) = 0;
+	virtual void HandleEvent(Event* pEvent) = 0;
+};
+
 template <typename CType>
 class ComponentManager :
-	public Subscriber
+	public CM
 {
 protected:
 	std::vector<CType*> m_Components;

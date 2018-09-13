@@ -247,6 +247,7 @@ typedef unsigned int InfectGUID;
 
 #pragma region Component Managers
 #include <GameObject/ComponentManager.h>
+#include <GameObject/ComponentManagerContainer.h>
 #include <GameObject/TransformComponentManager.h>
 #pragma endregion
 

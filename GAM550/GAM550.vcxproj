@@ -28,6 +28,7 @@
     <ClCompile Include="SOURCE\GameObjectManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\CameraComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\ComponentFactory.cpp" />
+    <ClCompile Include="SOURCE\GameObject\ComponentManagerContainer.cpp" />
     <ClCompile Include="SOURCE\GameObject\GameObject.cpp" />
     <ClCompile Include="SOURCE\GameObject\LightBaseComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\MeshComponent.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="SOURCE\GameObject\Component.h" />
     <ClInclude Include="SOURCE\GameObject\ComponentFactory.h" />
     <ClInclude Include="SOURCE\GameObject\ComponentManager.h" />
+    <ClInclude Include="SOURCE\GameObject\ComponentManagerContainer.h" />
     <ClInclude Include="SOURCE\GameObject\ComponentTypes.h" />
     <ClInclude Include="SOURCE\GameObject\ComponentTypesNames.h" />
     <ClInclude Include="SOURCE\GameObject\GameObject.h" />
