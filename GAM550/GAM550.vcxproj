@@ -95,7 +95,6 @@
     <ClInclude Include="SOURCE\ResourceManager.h" />
     <ClInclude Include="SOURCE\Singleton.h" />
     <ClInclude Include="SOURCE\Sorting.h" />
-    <ClInclude Include="SOURCE\Stdafx.h" />
     <ClInclude Include="SOURCE\Subscriber.h" />
     <ClInclude Include="SOURCE\SubscriberTracker.h" />
     <ClInclude Include="SOURCE\WindowProc.h" />

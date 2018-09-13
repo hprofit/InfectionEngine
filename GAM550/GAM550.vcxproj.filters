@@ -143,9 +143,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SOURCE\Stdafx.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\RenderManager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
