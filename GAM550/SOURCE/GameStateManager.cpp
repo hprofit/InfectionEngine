@@ -117,16 +117,16 @@ MSG GameStateManager::Update() {
 
 			Infect::FrameStart();
 			if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
-				pTransComp2->Move(0.3f*pTransComp2->Right());
+				pTransComp2->Move(Infect::GetFrameTime() *30.f*pTransComp2->Right());
 			}
 			if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
-				pTransComp2->Move(-0.3f*pTransComp2->Right());
+				pTransComp2->Move(Infect::GetFrameTime() *-30.f*pTransComp2->Right());
 			}
 			if (INFECT_INPUT.IsKeyPressed(DIK_UP)) {
-				pTransComp2->Move(0.3f * pTransComp2->Up());
+				pTransComp2->Move(Infect::GetFrameTime() *30.f * pTransComp2->Up());
 			}
 			if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
-				pTransComp2->Move(-0.3f*pTransComp2->Up());
+				pTransComp2->Move(Infect::GetFrameTime() *-30.f*pTransComp2->Up());
 			}
 			if (INFECT_INPUT.IsKeyPressed(DIK_SPACE)) {
 				pTransComp2->SetPosition(Vector3D(0, 0, 50, 1));

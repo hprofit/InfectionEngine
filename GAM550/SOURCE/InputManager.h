@@ -52,45 +52,6 @@ enum JoystickAnalogueType {
 	JoystickAnalogue_NUM
 };
 
-struct InputCommandInfo {
-	InputCommandInfo(EventType _event,
-		InputType _inputType,
-		bool _isMouse,
-		bool _isJoystick,
-		SDL_Scancode _keyboardKey,
-		SDL_Scancode _keyboardPosX,
-		SDL_Scancode _keyboardNegX,
-		SDL_Scancode _keyboardPosY,
-		SDL_Scancode _keyboardNegY,
-		JoystickAnalogueType _analogue,
-		MOUSEBTN _mouseBtn,
-		XBOX_SCANCODE _xboxKey) :
-		m_event(_event),
-		m_inputType(_inputType),
-		m_isMouse(_isMouse),
-		m_isJoystick(_isJoystick),
-		m_keyboardKey(_keyboardKey),
-		m_keyboardKeyPosX(_keyboardPosX),
-		m_keyboardKeyNegX(_keyboardNegX),
-		m_keyboardKeyPosY(_keyboardPosY),
-		m_keyboardKeyNegY(_keyboardNegY),
-		m_analogue(_analogue),
-		m_mouseBtn(_mouseBtn),
-		m_xboxKey(_xboxKey) {}
-	EventType m_event;
-	InputType m_inputType;
-	bool m_isMouse;
-	bool m_isJoystick;
-	SDL_Scancode m_keyboardKey;
-	SDL_Scancode m_keyboardKeyPosX;
-	SDL_Scancode m_keyboardKeyNegX;
-	SDL_Scancode m_keyboardKeyPosY;
-	SDL_Scancode m_keyboardKeyNegY;
-	JoystickAnalogueType m_analogue;
-	MOUSEBTN m_mouseBtn;
-	XBOX_SCANCODE m_xboxKey;
-};
-
 class InputManager: public Subscriber
 {
 private:
@@ -100,8 +61,8 @@ private:
 	LPDIRECTINPUTDEVICE8 mDIRX_Mouse = nullptr;	// DirectInput mouse device
 
 	// keyboard state
-	Uint8 *m_PreviousKeyStates;
-	Uint8 *m_CurrentKeyStates;
+	BYTE *m_PreviousKeyStates;
+	BYTE *m_CurrentKeyStates;
 	// mouse state
 	DIMOUSESTATE m_CurrentMouseStates;
 	DIMOUSESTATE m_PreviousMouseStates;
@@ -112,13 +73,11 @@ private:
 	int m_MousePosRelX, m_MousePosRelY;
 	bool m_isJoystickControlsActive;
 	// Game controller States
-	Uint8  *m_CurrentButtonStates;
-	Uint8  *m_PreviousButtonStates;
+	BYTE  *m_CurrentButtonStates;
+	BYTE  *m_PreviousButtonStates;
 	// Axis States
-	Sint16 m_StickRightX, m_StickLeftX;
-	Sint16 m_StickRightY, m_StickLeftY;
-
-	std::vector<InputCommandInfo*> m_inputCommands;
+	//Sint16 m_StickRightX, m_StickLeftX;
+	//Sint16 m_StickRightY, m_StickLeftY;
 
 	void FireEvents();
 public:
@@ -134,9 +93,9 @@ public:
 	void FreeDirectInput();
 	//void Initialize(const json& j);
 	// Keyboard Input
-	bool IsKeyPressed(const UINT8);
-	bool IsKeyTriggered(const Uint8);
-	bool IsKeyReleased(const Uint8);
+	bool IsKeyPressed(const BYTE);
+	bool IsKeyTriggered(const BYTE);
+	bool IsKeyReleased(const BYTE);
 	// Mouse Input
 	bool IsMouseButtonPressed(const MOUSEBTN);
 	bool IsMouseButtonTriggered(const MOUSEBTN);
@@ -149,10 +108,10 @@ public:
 	bool IsKeyPressed(const XBOX_SCANCODE);
 	bool IsKeyTriggered(const XBOX_SCANCODE);
 	bool IsKeyReleased(const XBOX_SCANCODE);
-	Sint16 GetLeftAxisX();
-	Sint16 GetLeftAxisY();
-	Sint16 GetRightAxisX();
-	Sint16 GetRightAxisY();
+	//Sint16 GetLeftAxisX();
+	//Sint16 GetLeftAxisY();
+	//Sint16 GetRightAxisX();
+	//Sint16 GetRightAxisY();
 };
 
 #endif

@@ -15,11 +15,6 @@ Author: <Holden Profit>
 //#include <Math\MathLibs.h>
 //#include <glew.h>
 //#include <GL\gl.h>
-#include <SDL.h>
-//#include <SDL_image.h>
-//#include <SDL_ttf.h>
-#include <SDL_keycode.h>
-#include <SDL_events.h>
 #include <fmod_studio.hpp>
 #include <fmod.hpp>
 #include <fmod_errors.h>
