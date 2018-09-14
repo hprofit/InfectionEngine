@@ -46,6 +46,7 @@ void TransformComponentManager::_UpdateTransform(TC tComp)
 void TransformComponentManager::Update(float dt)
 {
 	for each (TransformComponent * tComp in m_Components) {
+		tComp->m_UpdatedLastFrame = false;
 		if (tComp->IsDirty()) {
 			tComp->m_prevPosition = tComp->m_position;
 
@@ -54,6 +55,7 @@ void TransformComponentManager::Update(float dt)
 			_UpdateTransform(tComp);
 			
 			tComp->m_IsDirty = false;
+			tComp->m_UpdatedLastFrame = true;
 		}
 	}
 }

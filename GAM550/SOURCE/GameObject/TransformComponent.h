@@ -95,6 +95,7 @@ public:
 	inline Vector3D GetScaleVector() const { return Vector3D(m_scaleX, m_scaleY, m_scaleZ, 0); }
 
 	inline Matrix4x4 GetTransform() const { return m_transform; }
+	Matrix4x4 GetRotationMatrix() const;
 };
 
 #endif

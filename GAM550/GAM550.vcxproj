@@ -27,6 +27,7 @@
     <ClCompile Include="SOURCE\GameConfig.cpp" />
     <ClCompile Include="SOURCE\GameObjectManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\CameraComponent.cpp" />
+    <ClCompile Include="SOURCE\GameObject\CameraComponentManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\ComponentFactory.cpp" />
     <ClCompile Include="SOURCE\GameObject\ComponentManagerContainer.cpp" />
     <ClCompile Include="SOURCE\GameObject\GameObject.cpp" />
@@ -70,6 +71,7 @@
     <ClInclude Include="SOURCE\GameConfig.h" />
     <ClInclude Include="SOURCE\GameObjectManager.h" />
     <ClInclude Include="SOURCE\GameObject\CameraComponent.h" />
+    <ClInclude Include="SOURCE\GameObject\CameraComponentManager.h" />
     <ClInclude Include="SOURCE\GameObject\Component.h" />
     <ClInclude Include="SOURCE\GameObject\ComponentFactory.h" />
     <ClInclude Include="SOURCE\GameObject\ComponentManager.h" />

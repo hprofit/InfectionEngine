@@ -212,5 +212,15 @@ void TransformComponent::ScaleUniform(float amount)
 	m_IsDirty = true;
 }
 
+Matrix4x4 TransformComponent::GetRotationMatrix() const
+{
+	return Matrix4x4(
+		m_right.x, m_right.y, m_right.z, 0.0f,
+		m_up.x, m_up.y, m_up.z, 0.0f,
+		-m_lookAt.x, -m_lookAt.y, -m_lookAt.z, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f
+	);
+}
+
 
 #pragma endregion

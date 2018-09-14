@@ -249,6 +249,7 @@ typedef unsigned int InfectGUID;
 #include <GameObject/ComponentManager.h>
 #include <GameObject/ComponentManagerContainer.h>
 #include <GameObject/TransformComponentManager.h>
+#include <GameObject/CameraComponentManager.h>
 #pragma endregion
 
 #pragma region Globals + API

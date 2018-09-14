@@ -9,6 +9,7 @@ Author: <Holden Profit>
 #ifndef CAMERA_H
 #define CAMERA_H
 
+class CameraComponentManager;
 enum class ProjectionType {
 	PT_Perspective,
 	PT_Orthographic
@@ -17,7 +18,7 @@ enum class ProjectionType {
 class CameraComponent : public Component
 {
 private:
-	TransformComponent* m_pTransform;
+	friend CameraComponentManager;
 
 	float m_fov, m_aspectRatio;
 	float m_Near, m_Far;
@@ -27,8 +28,8 @@ private:
 	int m_Depth;
 	ProjectionType m_projectionType;	// True if this camera is Perspective, false if Orthographic
 
-	Matrix4x4 _MatrixFromCameraVectors(const Vector3D& right, const Vector3D& up, const Vector3D& forward);
-	void _CalcViewMatrix();
+	//Matrix4x4 _MatrixFromCameraVectors(const Vector3D& right, const Vector3D& up, const Vector3D& forward);
+	//void _CalcViewMatrix();
 public:
 	static const ComponentType Type = ComponentType::C_Camera;
 	virtual ComponentType GetType() const { return Type; }
@@ -38,22 +39,33 @@ public:
 	static Component* CreateInstance(InfectGUID guid) { return new CameraComponent(guid); }
 	virtual void Deactivate();
 	virtual void LateInitialize();
-	virtual void Update(float dt);
-	virtual void LateUpdate(float dt);
+	virtual void Update(float dt) {};
+	virtual void LateUpdate(float dt) {};
 	virtual void Serialize(const json& j);
 	virtual void HandleEvent(Event* pEvent);
 
 	static bool LeftDepthGreaterThanRight(GameObject* left, GameObject* right);
 
-	Vector3D TransformPointToScreenSpace(const Vector3D& worldCoordinates);
-
-	inline float CameraComponent::GetFOV() const { return m_fov; }
-	inline float CameraComponent::GetAspect() const	{ return m_aspectRatio;	}
 	inline Matrix4x4 GetViewMatrix() const { return m_viewMatrix; };
 	inline Matrix4x4 GetCameraMatrix() const { return m_cameraMatrix; }
 	inline Matrix4x4 GetFinalCamMatrix() const { return m_finalMatrix; }
+
+	inline float GetFOV() const { return m_fov; }
+	void SetFOV(float fov);
+
+	inline float GetAspect() const { return m_aspectRatio; }
+
+	inline float GetNear() const { return m_Near; }
+	void SetNear(float _near);
+
+	inline float GetFar() const { return m_Far; }
+	void SetFar(float _far);
+
 	inline int Depth() const { return m_Depth; }
-	inline ProjectionType ProjectionType() const { return m_projectionType; }
+	void SetDepth(int depth);
+
+	inline ProjectionType GetProjectionType() const { return m_projectionType; }
+	void SetProjectionType(ProjectionType pType);
 };
 
 #endif

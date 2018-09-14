@@ -24,6 +24,7 @@ namespace Infect {
 
 
 		INFECT_CMC.RegisterCompMngr(new TransformComponentManager());
+		INFECT_CMC.RegisterCompMngr(new CameraComponentManager());
 		return 0;
 	}
 

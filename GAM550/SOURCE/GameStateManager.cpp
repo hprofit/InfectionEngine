@@ -84,9 +84,6 @@ MSG GameStateManager::Update() {
 	pGOCamera->AddComponent(pTransComp2);
 	pGOCamera->AddComponent(pCamComp);
 	pGOCamera->LateInitialize();
-	
-	pGOCamera->Update(0);
-	pGOCamera->LateUpdate(0);
 
 	GameObject* pGOLight = INFECT_GOM.SpawnGameObject();
 	PointLightComopnent *pLight = INFECT_COMPONENT_FACTORY.CreateComponent<PointLightComopnent>();
@@ -101,6 +98,8 @@ MSG GameStateManager::Update() {
 	tcm->Register(pGO->GetComponent<TransformComponent>());
 	tcm->Register(pGOCamera->GetComponent<TransformComponent>());
 	tcm->Register(pGOLight->GetComponent<TransformComponent>());
+	CameraComponentManager* ccm = static_cast<CameraComponentManager*>(INFECT_CMC.GetCM(1));
+	ccm->Register(pGOCamera->GetComponent<CameraComponent>());
 
 
 
