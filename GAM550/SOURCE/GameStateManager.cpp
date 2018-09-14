@@ -89,17 +89,6 @@ MSG GameStateManager::Update() {
 	pGOCamera->LateUpdate(0);
 
 
-
-
-
-
-
-
-
-
-
-
-
 	while (m_currentState != GameState::QUIT) {
 
 		m_currentState = GameState::CURRENT_LEVEL;
