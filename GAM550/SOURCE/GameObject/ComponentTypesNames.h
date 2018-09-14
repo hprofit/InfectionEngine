@@ -15,3 +15,6 @@ REGISTER_COMPONENT_TYPE(C_Transform)
 // Rendering Components
 REGISTER_COMPONENT_TYPE(C_Mesh)
 REGISTER_COMPONENT_TYPE(C_Camera)
+
+// Light Components
+REGISTER_COMPONENT_TYPE(C_PointLight)

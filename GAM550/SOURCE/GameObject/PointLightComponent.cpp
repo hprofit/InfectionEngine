@@ -5,18 +5,9 @@ written consent of DigiPen Institute of Technology is prohibited.
 Author: <Holden Profit>
 - End Header --------------------------------------------------------*/
 
-#pragma once
+#include <Stdafx.h>
 
-#ifndef RENDERABLE_COMPONENT_H
-#define RENDERABLE_COMPONENT_H
-
-class RenderableComponent : public Component
+void PointLightComopnent::Deactivate()
 {
-protected:
-
-public:
-	RenderableComponent(InfectGUID guid) : Component(guid) {};
-	~RenderableComponent() {};
-};
-
-#endif
+	mp_Parent = nullptr;
+}

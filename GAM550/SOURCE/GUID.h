@@ -6,17 +6,18 @@ Author: <Holden Profit>
 - End Header --------------------------------------------------------*/
 
 #pragma once
+#ifndef GUID_GENERATOR_H
+#define GUID_GENERATOR_H
 
-#ifndef RENDERABLE_COMPONENT_H
-#define RENDERABLE_COMPONENT_H
-
-class RenderableComponent : public Component
-{
-protected:
+class GUID_Generator {
+private:
+	InfectGUID m_GUID;
 
 public:
-	RenderableComponent(InfectGUID guid) : Component(guid) {};
-	~RenderableComponent() {};
+	GUID_Generator() : m_GUID(0) {};
+	~GUID_Generator() {};
+
+	InfectGUID GetGUID() { return m_GUID++; }
 };
 
-#endif
+#endif 

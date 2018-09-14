@@ -16,13 +16,21 @@ class Component :
 	public Subscriber
 {
 protected:
-	
+	InfectGUID m_GUID;
 	GameObject *mp_Parent;
+	bool m_IsDirty;
+	bool m_UpdatedLastFrame;
 public:
 	static const ComponentType Type = ComponentType::NUM_COMPONENTS;
 
-	/*Component(ComponentType _type) : m_type(_type) {};*/
-	Component() {};
+	Component(InfectGUID guid) : 
+		m_GUID(guid),
+		mp_Parent(nullptr),
+		m_IsDirty(false),
+		m_UpdatedLastFrame(false)
+	{};
+
+
 	virtual ~Component() {};
 	virtual void LateInitialize() {};
 	virtual void Update(float dt) = 0;
@@ -35,7 +43,14 @@ public:
 
 	virtual ComponentType GetType() const { return Type; }
 	inline GameObject* Parent() { return mp_Parent; }
-	inline void SetParent(GameObject* parent) { mp_Parent = parent; }
+	inline void SetParent(GameObject* parent) { 
+		mp_Parent = parent; 
+		m_IsDirty = true;
+	}
+	inline InfectGUID ID() const { return m_GUID; }
+	inline void SetID(InfectGUID guid) { m_GUID = guid; }
+	inline bool IsDirty() const { return m_IsDirty; }
+	inline bool UpdatedLastFrame() const { return m_UpdatedLastFrame; }
 };
 
 #endif

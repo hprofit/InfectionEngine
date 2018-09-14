@@ -46,6 +46,15 @@
     <Filter Include="Source Files\Physics">
       <UniqueIdentifier>{9d4e021b-37c5-4f54-822d-10e0cdd8f496}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameObject\Components\Renderable">
+      <UniqueIdentifier>{3a610a1f-27e2-43c3-b708-08de40f38a76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\Components\Light">
+      <UniqueIdentifier>{aa49102a-6765-47e8-af79-477b42f42312}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\ComponentManagers">
+      <UniqueIdentifier>{ae8d1a54-03b0-4681-9c7b-03507d287d84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\main.cpp">
@@ -77,9 +86,6 @@
     </ClCompile>
     <ClCompile Include="SOURCE\GameObject\GameObject.cpp">
       <Filter>Source Files\GameObject\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\MeshComponent.cpp">
-      <Filter>Source Files\GameObject\Components</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\GameObject\TransformComponent.cpp">
       <Filter>Source Files\GameObject\Components</Filter>
@@ -141,11 +147,26 @@
     <ClCompile Include="SOURCE\AudioManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\MeshComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\PointLightComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\LightBaseComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\TransformComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\ComponentManagerContainer.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\CameraComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SOURCE\Stdafx.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\RenderManager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
@@ -194,16 +215,10 @@
     <ClInclude Include="SOURCE\GameObject\GameObject.h">
       <Filter>Source Files\GameObject\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\MeshComponent.h">
-      <Filter>Source Files\GameObject\Components</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\GameObject\CameraComponent.h">
       <Filter>Source Files\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\TransformComponent.h">
-      <Filter>Source Files\GameObject\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\RenderableComponent.h">
       <Filter>Source Files\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Math\Matrix3x3.h">
@@ -271,6 +286,33 @@
     </ClInclude>
     <ClInclude Include="SOURCE\AudioManager.h">
       <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\MeshComponent.h">
+      <Filter>Source Files\GameObject\Components\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\RenderableComponent.h">
+      <Filter>Source Files\GameObject\Components\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\LightBaseComponent.h">
+      <Filter>Source Files\GameObject\Components\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\PointLightComponent.h">
+      <Filter>Source Files\GameObject\Components\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\ComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GUID.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\TransformComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\ComponentManagerContainer.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\CameraComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

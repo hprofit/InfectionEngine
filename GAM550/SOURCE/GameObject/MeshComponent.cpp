@@ -7,9 +7,8 @@ Author: <Holden Profit>
 
 #include <Stdafx.h>
 
-MeshComponent::MeshComponent() :
-	/*RenderableComponent(ComponentType::C_Mesh),*/
-	RenderableComponent(),
+MeshComponent::MeshComponent(InfectGUID guid) :
+	RenderableComponent(guid),
 	mp_Scene(nullptr)
 {
 }

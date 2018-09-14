@@ -5,18 +5,23 @@ written consent of DigiPen Institute of Technology is prohibited.
 Author: <Holden Profit>
 - End Header --------------------------------------------------------*/
 
-#pragma once
+#include <Stdafx.h>
 
-#ifndef RENDERABLE_COMPONENT_H
-#define RENDERABLE_COMPONENT_H
-
-class RenderableComponent : public Component
+void ComponentManagerContainer::Update(float dt)
 {
-protected:
+	for each (CM* cm in m_CMngrs) {
+		cm->Update(dt);
+	}
+}
 
-public:
-	RenderableComponent(InfectGUID guid) : Component(guid) {};
-	~RenderableComponent() {};
-};
+void ComponentManagerContainer::HandleEvent(Event * pEvent)
+{
+	for each (CM* cm in m_CMngrs) {
+		cm->HandleEvent(pEvent);
+	}
+}
 
-#endif
+void ComponentManagerContainer::RegisterCompMngr(CM * cMngr)
+{
+	m_CMngrs.push_back(cMngr);
+}

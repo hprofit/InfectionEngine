@@ -10,9 +10,6 @@ Author: <Holden Profit>
 #ifndef SUBSCRIBER_H
 #define SUBSCRIBER_H
 
-//#include "Event.h"
-//#include <vector>
-
 class Subscriber
 {
 protected:

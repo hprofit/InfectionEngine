@@ -1,6 +1,6 @@
 #include "Stdafx.h"
 
-GameObjectManager::GameObjectManager() : m_GUID(0)
+GameObjectManager::GameObjectManager()
 {
 }
 
@@ -14,7 +14,7 @@ GameObjectManager::~GameObjectManager()
 
 GameObject * GameObjectManager::SpawnGameObject()
 {
-	GameObject* newGO = new GameObject(m_GUID++);
+	GameObject* newGO = new GameObject( INFECT_GUID.GetGUID() );
 	mp_GameObjects.push_back(newGO);
 	return newGO;
 }
@@ -23,6 +23,19 @@ void GameObjectManager::RegisterCamera(GameObject * cameraGO)
 {
 	mp_Cameras.push_back(cameraGO);
 	Sorting::InsertionSort(mp_Cameras, &CameraComponent::LeftDepthGreaterThanRight);
+}
+
+void GameObjectManager::RegisterLight(GameObject * lightGO)
+{
+	mp_Lights.push_back(lightGO);
+}
+
+void GameObjectManager::UnregisterLight(GameObject * lightGO)
+{
+	mp_Lights.erase(
+		std::remove(mp_Lights.begin(), mp_Lights.end(), lightGO),
+		mp_Lights.end()
+	);
 }
 
 void GameObjectManager::RenderCameras()

@@ -13,17 +13,17 @@ class MeshComponent : public RenderableComponent
 {
 protected:	
 	Scene* mp_Scene;
-	//SurfaceTextureBuffer * m_pTexture;
-	//SurfaceTextureBuffer * m_pNormal;
-	//SurfaceTextureBuffer * m_pBump;
+	//SurfaceTextureBuffer * mp_DiffuseMap;
+	//SurfaceTextureBuffer * mp_NormalMap;
+	//SurfaceTextureBuffer * mp_SpecMap;
 
 public:
 	static const ComponentType Type = ComponentType::C_Mesh;
 	virtual ComponentType GetType() const { return Type; }
 
-	MeshComponent();
+	MeshComponent(InfectGUID guid);
 	~MeshComponent();
-	static Component* CreateInstance() { return new MeshComponent(); }
+	static Component* CreateInstance(InfectGUID guid) { return new MeshComponent(guid); }
 	virtual void Deactivate();
 	virtual void Update(float dt);
 	virtual void Serialize(const json& j);
@@ -31,15 +31,6 @@ public:
 
 	inline const Scene* GetScene() const { return mp_Scene; }
 	inline void SetScene(Scene* scene) { mp_Scene = scene; };
-
-	//inline const GLuint GetTextureBuffer() const { return m_pTexture ? m_pTexture->bufferId : 0; }
-	//inline const SurfaceTextureBuffer * GetTexture() const { return m_pTexture; }
-
-	//inline const GLuint GetNormalTextureBuffer() const { return m_pNormal ? m_pNormal->bufferId : 0; }
-	//inline const SurfaceTextureBuffer * GetNormalTexture() const { return m_pNormal; }
-
-	//inline const GLuint GetBumpTextureBuffer() const { return m_pBump ? m_pBump->bufferId : 0; }
-	//inline const SurfaceTextureBuffer * GetBumpTexture() const { return m_pBump; }
 };
 
 #endif
