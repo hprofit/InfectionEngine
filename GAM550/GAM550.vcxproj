@@ -33,7 +33,9 @@
     <ClCompile Include="SOURCE\GameObject\GameObject.cpp" />
     <ClCompile Include="SOURCE\GameObject\LightBaseComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\MeshComponent.cpp" />
+    <ClCompile Include="SOURCE\GameObject\MeshComponentManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\PointLightComponent.cpp" />
+    <ClCompile Include="SOURCE\GameObject\PointLightComponentManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\TransformComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\TransformComponentManager.cpp" />
     <ClCompile Include="SOURCE\InputManager.cpp" />
@@ -82,7 +84,9 @@
     <ClInclude Include="SOURCE\GameObject\GameObjectTags.h" />
     <ClInclude Include="SOURCE\GameObject\LightBaseComponent.h" />
     <ClInclude Include="SOURCE\GameObject\MeshComponent.h" />
+    <ClInclude Include="SOURCE\GameObject\MeshComponentManager.h" />
     <ClInclude Include="SOURCE\GameObject\PointLightComponent.h" />
+    <ClInclude Include="SOURCE\GameObject\PointLightComponentManager.h" />
     <ClInclude Include="SOURCE\GameObject\RenderableComponent.h" />
     <ClInclude Include="SOURCE\GameObject\TagNames.h" />
     <ClInclude Include="SOURCE\GameObject\TransformComponent.h" />

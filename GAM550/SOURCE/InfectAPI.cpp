@@ -25,6 +25,8 @@ namespace Infect {
 
 		INFECT_CMC.RegisterCompMngr(new TransformComponentManager());
 		INFECT_CMC.RegisterCompMngr(new CameraComponentManager());
+		INFECT_CMC.RegisterCompMngr(new PointLightComponentManager());
+		INFECT_CMC.RegisterCompMngr(new MeshComponentManager());
 		return 0;
 	}
 

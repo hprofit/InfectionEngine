@@ -9,16 +9,23 @@ Author: <Holden Profit>
 #ifndef POINT_LIGHT_H
 #define POINT_LIGHT_H
 
-class PointLightComopnent : public LightBaseComponent
+class PointLightComponentManager;
+
+class PointLightComponent : public LightBaseComponent
 {
+protected:
+	// TODO: Add primitive Mesh member
+
 public:
+	friend PointLightComponentManager;
+
 	static const ComponentType Type = ComponentType::C_PointLight;
 	virtual ComponentType GetType() const { return Type; }
 
-	PointLightComopnent(InfectGUID guid) : LightBaseComponent(guid) {};
-	~PointLightComopnent() {};
+	PointLightComponent(InfectGUID guid) : LightBaseComponent(guid) {};
+	~PointLightComponent() {};
 
-	static Component* CreateInstance(InfectGUID guid) { return new PointLightComopnent(guid); }
+	static Component* CreateInstance(InfectGUID guid) { return new PointLightComponent(guid); }
 	virtual void Deactivate();
 	virtual void Update(float dt) {};
 	virtual void Serialize(const json& j) {};

@@ -7,7 +7,7 @@ Author: <Holden Profit>
 
 #include <Stdafx.h>
 
-void PointLightComopnent::Deactivate()
+void PointLightComponent::Deactivate()
 {
 	mp_Parent = nullptr;
 }
