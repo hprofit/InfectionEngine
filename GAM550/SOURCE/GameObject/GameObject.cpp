@@ -10,7 +10,7 @@ Author: <Holden Profit>
 GameObject::GameObject(InfectGUID id) :
 	m_GUID(id), 
 	m_isDestroy(false), 
-	m_isActive(true), 
+	m_isActive(false), // mem_mngr spits out active
 	m_isCollisionDisabled(false), 
 	m_isRender(true),
 	m_isSetToDestroy(false),

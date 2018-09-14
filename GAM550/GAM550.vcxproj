@@ -47,6 +47,7 @@
     <ClCompile Include="SOURCE\Math\Matrix4x4.cpp" />
     <ClCompile Include="SOURCE\Math\Vector2D.cpp" />
     <ClCompile Include="SOURCE\Math\Vector3D.cpp" />
+    <ClCompile Include="SOURCE\MemoryManager.cpp" />
     <ClCompile Include="SOURCE\Mesh.cpp" />
     <ClCompile Include="SOURCE\Physics\particle.cpp" />
     <ClCompile Include="SOURCE\Physics\physics_math.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="SOURCE\Math\Matrix4x4.h" />
     <ClInclude Include="SOURCE\Math\Vector2D.h" />
     <ClInclude Include="SOURCE\Math\Vector3D.h" />
+    <ClInclude Include="SOURCE\MemoryManager.h" />
     <ClInclude Include="SOURCE\Mesh.h" />
     <ClInclude Include="SOURCE\Physics\particle.h" />
     <ClInclude Include="SOURCE\Physics\physics_math.h" />

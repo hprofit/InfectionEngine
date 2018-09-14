@@ -165,6 +165,9 @@
     <ClCompile Include="SOURCE\GameObject\CameraComponentManager.cpp">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\MemoryManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOURCE\RenderManager.h">
@@ -313,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\CameraComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\MemoryManager.h">
+      <Filter>Source Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
