@@ -20,6 +20,12 @@ bool ResourceManager::Init()
 {
 	//LoadPrefabFiles();
 
+	Plane* plane = new Plane();
+	plane->FinishMesh();
+	Scene* pScene = new Scene(1);
+	(*pScene)[0] = plane;
+	m_scenes[PLANE_PRIMITIVE] = pScene;
+
 	return true;
 }
 

@@ -52,6 +52,7 @@
     <ClCompile Include="SOURCE\Mesh.cpp" />
     <ClCompile Include="SOURCE\Physics\particle.cpp" />
     <ClCompile Include="SOURCE\Physics\physics_math.cpp" />
+    <ClCompile Include="SOURCE\Plane.cpp" />
     <ClCompile Include="SOURCE\RenderManager.cpp" />
     <ClCompile Include="SOURCE\ResourceManager.cpp" />
     <ClCompile Include="SOURCE\Stdafx.cpp">
@@ -107,6 +108,7 @@
     <ClInclude Include="SOURCE\Mesh.h" />
     <ClInclude Include="SOURCE\Physics\particle.h" />
     <ClInclude Include="SOURCE\Physics\physics_math.h" />
+    <ClInclude Include="SOURCE\Plane.h" />
     <ClInclude Include="SOURCE\RenderManager.h" />
     <ClInclude Include="SOURCE\ResourceManager.h" />
     <ClInclude Include="SOURCE\Singleton.h" />

@@ -171,6 +171,9 @@
     <ClCompile Include="SOURCE\GameObject\PointLightComponentManager.cpp">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\Plane.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOURCE\RenderManager.h">
@@ -325,6 +328,9 @@
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\MeshComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Plane.h">
+      <Filter>Source Files\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

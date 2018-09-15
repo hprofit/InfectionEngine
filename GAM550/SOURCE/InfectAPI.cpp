@@ -13,7 +13,6 @@ namespace Infect {
 	{
 		INFECT_EVENTS.Init();
 		INFECT_GAME_CONFIG.LoadConfig(configFile);
-		INFECT_RESOURCES.Init();
 		INFECT_GOM.Init();
 		if (INFECT_GAME_CONFIG.IsConsoleEnabled())
 			INFECT_RENDERER.InitConsole();
@@ -21,6 +20,7 @@ namespace Infect {
 			std::cout << "DIRECTX DID NOT INITIALIZE PROPERLY." << std::endl;
 		INFECT_RENDERER.LoadShader(); // TODO: MOVE THIS
 		INFECT_INPUT.Init(hInstance);
+		INFECT_RESOURCES.Init();
 
 
 		INFECT_CMC.RegisterCompMngr(new TransformComponentManager());

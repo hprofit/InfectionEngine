@@ -60,13 +60,15 @@ MSG GameStateManager::Update() {
 	
 	GameObject* pGO = INFECT_GOM.SpawnGameObject();
 	MeshComponent* pMeshComp = INFECT_COMPONENT_FACTORY.CreateComponent<MeshComponent>();
-	pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
+	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
+	pMeshComp->SetScene(INFECT_RESOURCES.GetScene(PLANE_PRIMITIVE));
 	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("sphere.obj"));
 	//pMeshComp->SetScene(pScene);
+	(*pMeshComp->GetScene())[0]->SetVertColor(1, 0, 0, 1);
 	
 	TransformComponent* pTransComp = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
-	pTransComp->SetAngleX(-90);
+	//pTransComp->SetAngleX(-90);
 	//pTransComp->SetAngleZ(45);
 	pTransComp->SetScale(10.0f, 10.0f, 10.0f);
 	
@@ -141,10 +143,10 @@ MSG GameStateManager::Update() {
 
 			int xMove = -INFECT_INPUT.MousePosX() / 4;
 			int yMove = -INFECT_INPUT.MousePosY() / 4;
-			if (xMove != 0)
-				tcpCamera->RotateY(float(xMove));
-			if (yMove != 0)
-				tcpCamera->RotateX(float(yMove));
+			//if (xMove != 0)
+			//	tcpCamera->RotateY(float(xMove));
+			//if (yMove != 0)
+			//	tcpCamera->RotateX(float(yMove));
 			if (INFECT_INPUT.IsKeyPressed(DIK_D)) {
 				tcpCamera->Move(Infect::GetFrameTime() *30.f*tcpCamera->Right());
 			}
