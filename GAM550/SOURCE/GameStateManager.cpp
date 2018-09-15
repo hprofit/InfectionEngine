@@ -64,7 +64,6 @@ MSG GameStateManager::Update() {
 	pMeshComp->SetScene(INFECT_RESOURCES.GetScene(PLANE_PRIMITIVE));
 	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("sphere.obj"));
 	//pMeshComp->SetScene(pScene);
-	(*pMeshComp->GetScene())[0]->SetVertColor(1, 0, 0, 1);
 	
 	TransformComponent* pTransComp = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
