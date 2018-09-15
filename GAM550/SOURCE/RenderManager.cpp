@@ -26,7 +26,8 @@ bool RenderManager::_GameObjectHasRenderableComponent(const GameObject & gameObj
 }
 
 RenderManager::RenderManager() :
-	m_ClearColor(D3DXCOLOR(0.1f, 0.1f, 0.1f, 1.0f)),
+	m_ClearColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f)),
+	//m_ClearColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)),
 	mp_D3D(new D3DHandler())
 {
 }
@@ -94,7 +95,7 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	const CameraComponent * pCamComp = pGOCamera.GetComponent<CameraComponent>();
 	Matrix4x4 M = pGO.GetComponent<TransformComponent>()->GetTransform();
 	Matrix4x4 N = Matrix4x4::Transpose3x3(Matrix4x4::Inverse3x3(M));
-
+	Matrix4x4 I = Matrix4x4::Transpose(N) * M;
 	ConstantBuffer cb;
 	cb.MatFinal = pCamComp->GetCameraMatrix() * pCamComp->GetViewMatrix() * M;
 	cb.MatFinal.Transpose();
@@ -152,7 +153,7 @@ void RenderManager::LoadShader()
 	ZeroMemory(&bd, sizeof(bd));
 
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = 208;
+	bd.ByteWidth = sizeof(ConstantBuffer);
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
 	mp_D3D->mp_Device->CreateBuffer(&bd, NULL, &mp_Cbuffer);

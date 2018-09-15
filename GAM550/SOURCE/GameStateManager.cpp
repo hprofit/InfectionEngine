@@ -60,8 +60,8 @@ MSG GameStateManager::Update() {
 	
 	GameObject* pGO = INFECT_GOM.SpawnGameObject();
 	MeshComponent* pMeshComp = INFECT_COMPONENT_FACTORY.CreateComponent<MeshComponent>();
-	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
-	pMeshComp->SetScene(INFECT_RESOURCES.GetScene("sphere.obj"));
+	pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
+	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("sphere.obj"));
 	//pMeshComp->SetScene(pScene);
 	
 	TransformComponent* pTransComp = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
@@ -86,7 +86,7 @@ MSG GameStateManager::Update() {
 	GameObject* pGOLight = INFECT_GOM.SpawnGameObject();
 	PointLightComponent *pLight = INFECT_COMPONENT_FACTORY.CreateComponent<PointLightComponent>();
 	TransformComponent* pTransComp3 = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
-	pTransComp3->SetPosition(Vector3D(100, 100, 0, 1));
+	pTransComp3->SetPosition(Vector3D(0, 10, 10, 1));
 	pGOLight->AddComponent(pLight);
 	pGOLight->AddComponent(pTransComp3);
 	pGOLight->LateInitialize();
@@ -123,35 +123,42 @@ MSG GameStateManager::Update() {
 
 			Infect::FrameStart();
 
-			if (INFECT_INPUT.IsKeyPressed(DIK_D)) {
-				pGOLight->GetComponent<TransformComponent>()->Move(Infect::GetFrameTime() *30.f*pTransComp2->Right());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_A)) {
-				pGOLight->GetComponent<TransformComponent>()->Move(Infect::GetFrameTime() *-30.f*pTransComp2->Right());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_W)) {
-				pGOLight->GetComponent<TransformComponent>()->Move(Infect::GetFrameTime() *30.f * pTransComp2->Up());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_S)) {
-				pGOLight->GetComponent<TransformComponent>()->Move(Infect::GetFrameTime() *-30.f*pTransComp2->Up());
-			}
-
-
-
-			if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
-				pTransComp2->Move(Infect::GetFrameTime() *30.f*pTransComp2->Right());
+			TransformComponent* tcpCamera = pGOCamera->GetComponent<TransformComponent>();
+			TransformComponent* tcpLight = pGOLight->GetComponent<TransformComponent>();
+			if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT) || INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
+				tcpLight->Move(Infect::GetFrameTime() *30.f*tcpLight->Right());
 			}
 			if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
-				pTransComp2->Move(Infect::GetFrameTime() *-30.f*pTransComp2->Right());
+				tcpLight->Move(Infect::GetFrameTime() *-30.f*tcpLight->Right());
 			}
 			if (INFECT_INPUT.IsKeyPressed(DIK_UP)) {
-				pTransComp2->Move(Infect::GetFrameTime() *30.f * pTransComp2->Up());
+				tcpLight->Move(Infect::GetFrameTime() *30.f * tcpLight->Up());
 			}
 			if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
-				pTransComp2->Move(Infect::GetFrameTime() *-30.f*pTransComp2->Up());
+				tcpLight->Move(Infect::GetFrameTime() *-30.f*tcpLight->Up());
+			}
+
+
+			int xMove = -INFECT_INPUT.MousePosX() / 4;
+			int yMove = -INFECT_INPUT.MousePosY() / 4;
+			if (xMove != 0)
+				tcpCamera->RotateY(float(xMove));
+			if (yMove != 0)
+				tcpCamera->RotateX(float(yMove));
+			if (INFECT_INPUT.IsKeyPressed(DIK_D)) {
+				tcpCamera->Move(Infect::GetFrameTime() *30.f*tcpCamera->Right());
+			}
+			if (INFECT_INPUT.IsKeyPressed(DIK_A)) {
+				tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Right());
+			}
+			if (INFECT_INPUT.IsKeyPressed(DIK_W)) {
+				tcpCamera->Move(Infect::GetFrameTime() *30.f * tcpCamera->Forward());
+			}
+			if (INFECT_INPUT.IsKeyPressed(DIK_S)) {
+				tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Forward());
 			}
 			if (INFECT_INPUT.IsKeyPressed(DIK_SPACE)) {
-				pTransComp2->SetPosition(Vector3D(0, 0, 50, 1));
+				tcpCamera->SetPosition(Vector3D(0, 0, 50, 1));
 			}
 			// alt+f4
 			if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {

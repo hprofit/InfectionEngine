@@ -27,10 +27,16 @@ VOut VShader(
 	float4 color : COLOR)
 {
 	VOut output;
+	position.w = 1;
+	normal.w = 0;
+	tangent.w = 0;
+	bitangent.w = 0;
+
 	float4 P = mul(ModelMatrix, position);
+
 	float4 n = mul(NormalMatrix, normal);
-	float4 t = mul(NormalMatrix, tangent);
 	float4 b = mul(NormalMatrix, bitangent);
+	float4 t = mul(NormalMatrix, tangent);
 
 	float3 T = normalize(mul(ModelMatrix, tangent)).xyz;
 	float3 B = normalize(mul(ModelMatrix, bitangent)).xyz;
@@ -38,7 +44,7 @@ VOut VShader(
 
 
 	output.position = mul(MatFinal, position);
-	output.normal = normalize(normal);
+	output.normal = mul(NormalMatrix, normal);
 	output.tbn = float3x3(T, B, N);
 	output.view = CameraPosition - P;
 	output.light = LightPosition - P;
@@ -57,7 +63,19 @@ float4 PShader(
 	float4 color : COLOR
 ) : SV_TARGET
 {
-	float4 ambient = float4(0.2, 0.2, 0.2, 1);
-	float4 diffuse = max(dot(normal, light), 0) * color;
-	return diffuse + ambient;
+	float4 m = normalize(normal);
+	float4 L = normalize(light);
+	float4 v = normalize(view);
+	float4 H = normalize(v + L);
+	float specularCoef = 100;
+	float4 specularColor = float4(1, 1, 1, 1);
+	float4 lightColor = float4(1, 1, 1, 1);
+
+	float4 ambient = color * float4(0.1, 0.1, 0.1, 1);
+	float4 diffuse = max(dot(m, L), 0) * color * lightColor;
+	float4 specular = pow(max(dot(H, m), 0), specularCoef) * specularColor * lightColor;
+
+	float4 finalColor = diffuse + specular + ambient;
+	finalColor.w = 1;
+	return finalColor;
 }
