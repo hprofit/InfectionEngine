@@ -570,6 +570,10 @@ void Matrix4x4::setInverse(const Matrix4x4 &m)
     - m.m_matrix[0][0] * m.m_matrix[1][1] * m.m_matrix[2][3])*det;
 }
 
+/*float* Matrix4x4::physicsMatrix()
+{
+  return m_matrix;
+}*/
 
 Matrix4x4 Matrix4x4::inverse() const
 {

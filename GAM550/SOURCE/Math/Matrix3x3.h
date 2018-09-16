@@ -20,7 +20,7 @@ Creation date: 1/17/18
 class Quaternion;
 class Matrix3x3
 {
-private:
+public:
 	float m_matrix[3][3];
 
 public:
@@ -79,6 +79,7 @@ public:
   Matrix3x3 transpose() const;
   void setOrientation(const Quaternion &q);
   static Matrix3x3 linearInterpolate(const Matrix3x3& a, const Matrix3x3& b, real prop);
+  
 
 	bool operator== (const  Matrix3x3& other);
 	bool operator!= (const  Matrix3x3& other);

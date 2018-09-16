@@ -171,6 +171,12 @@
     <ClCompile Include="SOURCE\GameObject\PointLightComponentManager.cpp">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\Physics\RigidBody.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Physics\Quaternion.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
     <ClCompile Include="SOURCE\Plane.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
