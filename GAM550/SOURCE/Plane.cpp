@@ -11,9 +11,9 @@ Plane::Plane(unsigned int size)
 {
 	m_vertices.reserve((size + 1)*(size + 1));
 	float d = 2.0f / float(size);
-	for (int j = 0; j <= size; ++j) {
+	for (unsigned int j = 0; j <= size; ++j) {
 		float y = j * d - 1.0f;
-		for (int i = 0; i <= size; ++i) {
+		for (unsigned int i = 0; i <= size; ++i) {
 			float x = i * d - 1.0f;
 			//int index = (size + 1)*j + i;
 			Vertex v;
@@ -43,17 +43,14 @@ Plane::Plane(unsigned int size)
 	}
 
 	m_faces.reserve(2 * size*size);
-	for (int n = 0, j = 0; j < size; ++j) {
-		for (int i = 0; i < size; ++i) {
+	for (unsigned int n = 0, j = 0; j < size; ++j) {
+		for (unsigned int i = 0; i < size; ++i) {
 			Face f(
 				(size + 1)*j + i, 
 				(size + 1)*j + i + 1,
 				(size + 1)*(j + 1) + i + 1
 			);
 			m_faces.push_back(f);
-			//m_faces[n][0] = (size + 1)*j + i;
-			//m_faces[n][1] = (size + 1)*j + i + 1;
-			//m_faces[n][2] = (size + 1)*(j + 1) + i + 1;
 			++n;
 
 			Face f2(
@@ -62,9 +59,6 @@ Plane::Plane(unsigned int size)
 				(size + 1)*(j + 1) + i
 			);
 			m_faces.push_back(f2);
-			//m_faces[n][0] = (size + 1)*j + i;
-			//m_faces[n][1] = (size + 1)*(j + 1) + i + 1;
-			//m_faces[n][2] = (size + 1)*(j + 1) + i;
 			++n;
 		}
 	}

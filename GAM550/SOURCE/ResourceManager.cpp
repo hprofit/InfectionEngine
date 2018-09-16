@@ -22,12 +22,24 @@ bool ResourceManager::Init()
 
 	Plane* plane = new Plane();
 	plane->FinishMesh();
-	Scene* pScene = new Scene(1);
-	(*pScene)[0] = plane;
-	m_scenes[PLANE_PRIMITIVE] = pScene;
+	Scene* pScenePlane = new Scene(1);
+	(*pScenePlane)[0] = plane;
+	m_scenes[PLANE_PRIMITIVE] = pScenePlane;
 
 	Cube* pCube = new Cube();
-	m_scenes["Cube"] = pCube;
+	m_scenes[CUBE_PRIMITIVE] = pCube;
+
+	Sphere* pSphere = new Sphere(40);
+	pSphere->FinishMesh();
+	Scene* pSceneSphere = new Scene(1);
+	(*pSceneSphere)[0] = pSphere;
+	m_scenes[SPHERE_PRIMITIVE] = pSceneSphere;
+
+	PolarSphere* pPolarSphere = new PolarSphere();
+	pPolarSphere->FinishMesh();
+	Scene* pScenePolarSphere = new Scene(1);
+	(*pScenePolarSphere)[0] = pPolarSphere;
+	m_scenes[POLAR_SPHERE_PRIMITIVE] = pScenePolarSphere;
 
 	return true;
 }

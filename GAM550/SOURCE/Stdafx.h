@@ -114,6 +114,7 @@ typedef unsigned int InfectGUID;
 //#include <FrameBufferObject.h>
 #include <Mesh.h>
 #include <Plane.h>
+#include <Sphere.h>
 #include <Cube.h>
 //#include <DebugLineMesh.h>
 //#include <Shader.h>

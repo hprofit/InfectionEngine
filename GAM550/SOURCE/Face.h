@@ -23,6 +23,11 @@ struct Face {
 	DWORD operator[](int i) const { return index[i]; }
 	DWORD& operator[](int i) { return index[i]; }
 	operator DWORD*() { return &(index[0]); }
+	void Reverse() {
+		DWORD last = index[2];
+		index[2] = index[0];
+		index[0] = last;
+	}
 };
 
 #endif // ! FACE_H

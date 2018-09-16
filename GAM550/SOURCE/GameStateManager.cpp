@@ -57,29 +57,31 @@ MSG GameStateManager::Update() {
 	pMesh->FinishMesh();
 	Scene* pScene = new Scene(1);
 	(*pScene)[0] = pMesh;
-	
+
 	GameObject* pGO = INFECT_GOM.SpawnGameObject();
 	MeshComponent* pMeshComp = INFECT_COMPONENT_FACTORY.CreateComponent<MeshComponent>();
 	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
 	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene(PLANE_PRIMITIVE));
-	pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Cube"));
+	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene(CUBE_PRIMITIVE));
+	pMeshComp->SetScene(INFECT_RESOURCES.GetScene(SPHERE_PRIMITIVE));
+	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene(POLAR_SPHERE_PRIMITIVE));
 	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("sphere.obj"));
 	//pMeshComp->SetScene(pScene);
-	
+
 	TransformComponent* pTransComp = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
 	//pTransComp->SetAngleX(-90);
 	//pTransComp->SetAngleZ(45);
 	pTransComp->SetScale(10.0f, 10.0f, 10.0f);
-	
+
 	pGO->AddComponent(pMeshComp);
 	pGO->AddComponent(pTransComp);
 	pGO->LateInitialize();
-	
+
 	GameObject* pGOCamera = INFECT_GOM.SpawnGameObject();
 	TransformComponent* pTransComp2 = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
 	pTransComp2->SetPosition(Vector3D(0, 0, 50, 1));
-	
+
 	CameraComponent * pCamComp = INFECT_COMPONENT_FACTORY.CreateComponent<CameraComponent>();
 	pGOCamera->AddComponent(pTransComp2);
 	pGOCamera->AddComponent(pCamComp);
@@ -95,6 +97,9 @@ MSG GameStateManager::Update() {
 
 
 
+
+
+
 	TransformComponentManager* tcm = static_cast<TransformComponentManager*>(INFECT_CMC.GetCM(0));
 	tcm->Register(pGO->GetComponent<TransformComponent>());
 	tcm->Register(pGOCamera->GetComponent<TransformComponent>());
@@ -106,6 +111,39 @@ MSG GameStateManager::Update() {
 	MeshComponentManager* mcm = static_cast<MeshComponentManager*>(INFECT_CMC.GetCM(3));
 	mcm->Register(pGO->GetComponent<MeshComponent>());
 
+
+
+
+
+	GameObject* pGOFOR[8];
+	Vector3D pos[8] = {
+		Vector3D(25, 25, 25, 1),
+		Vector3D(-25, 25, 25, 1),
+		Vector3D(25, -25, 25, 1),
+		Vector3D(-25, -25, 25, 1),
+
+		Vector3D(25, 25, -25, 1),
+		Vector3D(-25, 25, -25, 1),
+		Vector3D(25, -25, -25, 1),
+		Vector3D(-25, -25, -25, 1)
+	};
+	for (int i = 0; i<8; ++i)
+	{
+		pGOFOR[i] = INFECT_GOM.SpawnGameObject();
+		pMeshComp = INFECT_COMPONENT_FACTORY.CreateComponent<MeshComponent>();
+		pMeshComp->SetScene(INFECT_RESOURCES.GetScene(CUBE_PRIMITIVE));
+
+		pTransComp = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
+		pTransComp->SetPosition(pos[i]);
+		pTransComp->SetScale(1.0f, 1.0f, 1.0f);
+
+		pGOFOR[i]->AddComponent(pMeshComp);
+		pGOFOR[i]->AddComponent(pTransComp);
+		pGOFOR[i]->LateInitialize();
+
+		tcm->Register(pGOFOR[i]->GetComponent<TransformComponent>());
+		mcm->Register(pGOFOR[i]->GetComponent<MeshComponent>());
+	}
 
 
 	while (m_currentState != GameState::QUIT) {
@@ -166,8 +204,8 @@ MSG GameStateManager::Update() {
 			if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {
 				INFECT_GAME_STATE.SetGameState(GameState::QUIT);
 			}
-			pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);
-			pGO->GetComponent<TransformComponent>()->RotateZ(Infect::GetFrameTime() * 25.0f);
+			//pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);
+			//pGO->GetComponent<TransformComponent>()->RotateZ(Infect::GetFrameTime() * 25.0f);
 			Infect::Update(Infect::GetFrameTime());			// Game loop
 
 			Infect::FrameEnd();
