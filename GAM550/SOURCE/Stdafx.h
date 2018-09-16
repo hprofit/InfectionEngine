@@ -120,6 +120,8 @@ typedef unsigned int InfectGUID;
 //#include <ImageRenderer.h>
 #include <Sorting.h>
 //#include <Shape.h>
+#include <Physics/RigidBody.h>
+
 #pragma endregion
 
 #pragma region Game Object
