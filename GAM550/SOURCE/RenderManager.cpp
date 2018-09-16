@@ -26,8 +26,8 @@ bool RenderManager::_GameObjectHasRenderableComponent(const GameObject & gameObj
 }
 
 RenderManager::RenderManager() :
-	m_ClearColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f)),
-	//m_ClearColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)),
+	//m_ClearColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f)),
+	m_ClearColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)),
 	mp_D3D(new D3DHandler())
 {
 }

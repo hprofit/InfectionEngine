@@ -7,24 +7,19 @@ Author: <Holden Profit>
 
 #pragma once
 
-#ifndef PLANE_MESH_H
-#define PLANE_MESH_H
+#ifndef CUBE_MESH_H
+#define CUBE_MESH_H
 
-#define DEFAULT_PLANE_SIZE 20
-#define PLANE_PRIMITIVE "Plane"
+#define CUBE_PRIMITIVE "Cube"
 
-class Plane : 
-	public Mesh
+class Cube :
+	public Scene
 {
 protected:
 
 public:
-	Plane(unsigned int size=DEFAULT_PLANE_SIZE);
-	~Plane();
-
-	void Rotate(const Vector3D& axis, float degrees);
-	void Translate(const Vector3D& amount);
+	Cube();
+	~Cube();
 };
 
-#undef DEFAULT_PLANE_SIZE
 #endif

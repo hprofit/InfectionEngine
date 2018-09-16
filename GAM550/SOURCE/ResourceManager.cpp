@@ -26,6 +26,9 @@ bool ResourceManager::Init()
 	(*pScene)[0] = plane;
 	m_scenes[PLANE_PRIMITIVE] = pScene;
 
+	Cube* pCube = new Cube();
+	m_scenes["Cube"] = pCube;
+
 	return true;
 }
 

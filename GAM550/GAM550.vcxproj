@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\AudioManager.cpp" />
+    <ClCompile Include="SOURCE\Cube.cpp" />
     <ClCompile Include="SOURCE\D3DHandler.cpp" />
     <ClCompile Include="SOURCE\Event.cpp" />
     <ClCompile Include="SOURCE\EventManager.cpp" />
@@ -52,8 +53,8 @@
     <ClCompile Include="SOURCE\Mesh.cpp" />
     <ClCompile Include="SOURCE\Physics\particle.cpp" />
     <ClCompile Include="SOURCE\Physics\physics_math.cpp" />
-	<ClCompile Include="SOURCE\Physics\Quaternion.cpp" />
-	<ClCompile Include="SOURCE\Physics\RigidBody.cpp" />
+    <ClCompile Include="SOURCE\Physics\Quaternion.cpp" />
+    <ClCompile Include="SOURCE\Physics\RigidBody.cpp" />
     <ClCompile Include="SOURCE\Plane.cpp" />
     <ClCompile Include="SOURCE\RenderManager.cpp" />
     <ClCompile Include="SOURCE\ResourceManager.cpp" />
@@ -68,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOURCE\AudioManager.h" />
+    <ClInclude Include="SOURCE\Cube.h" />
     <ClInclude Include="SOURCE\D3DHandler.h" />
     <ClInclude Include="SOURCE\Event.h" />
     <ClInclude Include="SOURCE\EventManager.h" />

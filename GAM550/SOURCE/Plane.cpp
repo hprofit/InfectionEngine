@@ -73,3 +73,73 @@ Plane::Plane(unsigned int size)
 Plane::~Plane()
 {
 }
+
+void Plane::Rotate(const Vector3D & axis, float degrees)
+{
+	Matrix4x4 r = Matrix4x4::Rotate(degrees, axis);
+
+	for (int i = 0; i < m_vertices.size(); ++i) {
+		Vertex v = m_vertices[i];
+		Vector3D vert(v.x, v.y, v.z, 1);
+		Vector3D normal(v.nX, v.nY, v.nZ, 0);
+		Vector3D tangent(v.tX, v.tY, v.tZ, 0);
+		Vector3D bitangent(v.bX, v.bY, v.bZ, 0);
+
+		vert = r * vert;
+		normal = r * normal;
+		tangent = r * tangent;
+		bitangent = r * bitangent;
+		
+		v.x = vert.x;
+		v.y = vert.y;
+		v.z = vert.z;
+
+		v.nX = normal.x;
+		v.nY = normal.y;
+		v.nZ = normal.z;
+
+		v.tX = tangent.x;
+		v.tY = tangent.y;
+		v.tZ = tangent.z;
+
+		v.bX = bitangent.x;
+		v.bY = bitangent.y;
+		v.bZ = bitangent.z;
+
+		m_vertices[i] = v;
+	}
+}
+
+void Plane::Translate(const Vector3D & amount)
+{
+	for (int i = 0; i < m_vertices.size(); ++i) {
+		Vertex v = m_vertices[i];
+		Vector3D vert(v.x, v.y, v.z, 1);
+		Vector3D normal(v.nX, v.nY, v.nZ, 0);
+		Vector3D tangent(v.tX, v.tY, v.tZ, 0);
+		Vector3D bitangent(v.bX, v.bY, v.bZ, 0);
+
+		vert = amount + vert;
+		normal = amount + normal;
+		tangent = amount + tangent;
+		bitangent = amount + bitangent;
+
+		v.x = vert.x;
+		v.y = vert.y;
+		v.z = vert.z;
+
+		v.nX = normal.x;
+		v.nY = normal.y;
+		v.nZ = normal.z;
+
+		v.tX = tangent.x;
+		v.tY = tangent.y;
+		v.tZ = tangent.z;
+
+		v.bX = bitangent.x;
+		v.bY = bitangent.y;
+		v.bZ = bitangent.z;
+
+		m_vertices[i] = v;
+	}
+}
