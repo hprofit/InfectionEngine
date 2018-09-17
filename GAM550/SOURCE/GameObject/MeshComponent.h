@@ -41,6 +41,15 @@ public:
 
 	inline ID3D11ShaderResourceView* GetDiffuseTexture() const { return mp_Diffuse; }
 	void SetDiffuseTexture(const std::string& textureName);
+
+	inline bool CastShadows() const { return m_CastShadows; }
+	void SetCastShadows(bool castShadows);
+
+	inline bool ReceiveShadows() const { return m_ReceiveShadows; }
+	void SetReceiveShadows(bool receiveShadows);
+
+	inline bool IsLit() const { return m_IsLit; }
+	void SetIsLit(bool isLit);
 };
 
 #endif

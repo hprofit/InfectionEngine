@@ -14,12 +14,11 @@ struct ConstantBuffer {
 	Matrix4x4 MatFinal;
 	Matrix4x4 ModelMatrix;
 	Matrix4x4 NormalMatrix;
+	//bool CastShadows;
+	//bool ReceiveShadows;
+	int IsLit;
 	Vector3D CameraPosition;
 	Vector3D LightPosition;
-};
-
-struct StandardCB : public ConstantBuffer {
-	Vector3D LightPosition2;
 };
 
 class RenderManager : public Subscriber

@@ -68,6 +68,7 @@ MSG GameStateManager::Update() {
 	//pMeshComp->SetScene(POLAR_SPHERE_PRIMITIVE);
 	////pMeshComp->SetScene(pScene);
 	pMeshComp->SetDiffuseTexture("worldTexture2.jpg");
+	pMeshComp->SetIsLit(false);
 
 	TransformComponent* pTransComp = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
@@ -133,6 +134,7 @@ MSG GameStateManager::Update() {
 		pGOFOR[i] = INFECT_GOM.SpawnGameObject();
 		pMeshComp = INFECT_COMPONENT_FACTORY.CreateComponent<MeshComponent>();
 		pMeshComp->SetScene(CUBE_PRIMITIVE);
+		pMeshComp->SetIsLit(false);
 
 		pTransComp = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
 		pTransComp->SetPosition(pos[i]);

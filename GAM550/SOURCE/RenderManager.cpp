@@ -93,6 +93,8 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 		return;
 
 	const CameraComponent * pCamComp = pGOCamera.GetComponent<CameraComponent>();
+	const MeshComponent * pMeshComp = pGO.GetComponent<MeshComponent>();
+
 	Matrix4x4 M = pGO.GetComponent<TransformComponent>()->GetTransform();
 	Matrix4x4 N = Matrix4x4::Transpose3x3(Matrix4x4::Inverse3x3(M));
 	Matrix4x4 I = Matrix4x4::Transpose(N) * M;
@@ -101,19 +103,22 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	cb.MatFinal.Transpose();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
 	cb.NormalMatrix = Matrix4x4::Transpose(N);
+	//cb.CastShadows = pMeshComp->CastShadows();
+	//cb.ReceiveShadows = pMeshComp->ReceiveShadows();
+	//cb.IsLit = false; pMeshComp->IsLit();
 	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
 	// TODO: THIS IS A HACK, REMOVE IT
 	cb.LightPosition = INFECT_GOM.GetGameObject(2)->GetComponent<TransformComponent>()->WorldPosition();
 	
 	mp_D3D->mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_Cbuffer);
-	ID3D11ShaderResourceView* ptex = pGO.GetComponent<MeshComponent>()->GetDiffuseTexture();
+	ID3D11ShaderResourceView* ptex = pMeshComp->GetDiffuseTexture();
 	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &ptex);
 
 	// set the new values for the constant buffer
 	mp_D3D->mp_DeviceContext->UpdateSubresource(mp_Cbuffer, 0, 0, &cb, 0, 0);
 
 	// do 3D rendering on the back buffer here
-	RenderScene(pGO.GetComponent<MeshComponent>()->GetScene());
+	RenderScene(pMeshComp->GetScene());
 }
 
 void RenderManager::RenderScene(const Scene * pScene)
@@ -127,7 +132,6 @@ void RenderManager::RenderScene(const Scene * pScene)
 		mp_D3D->mp_DeviceContext->IASetIndexBuffer(pMesh->IBuffer(), DXGI_FORMAT_R32_UINT, 0);
 
 		mp_D3D->mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		//mp_DeviceContext->Draw(pMesh->NumVerts(), 0);
 		mp_D3D->mp_DeviceContext->DrawIndexed(pMesh->NumFaces()*3, 0, 0);
 	}
 }
@@ -136,9 +140,11 @@ void RenderManager::LoadShader()
 {
 	// load and compile the shaders
 	int flag = D3D10_SHADER_WARNINGS_ARE_ERRORS;// | D3D10_SHADER_OPTIMIZATION_LEVEL3;
+	//HRESULT result = D3DCompileFromFile
 	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, 0, 0, &mp_VSBlob, &mp_Errors, 0);
-	if (mp_Errors)
+	if (mp_Errors) {
 		MessageBox(NULL, "The vertex shader failed to compile.", "Error", MB_OK);
+	}
 
 	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, 0, 0, &mp_PSBlob, &mp_Errors, 0);
 	if (mp_Errors)

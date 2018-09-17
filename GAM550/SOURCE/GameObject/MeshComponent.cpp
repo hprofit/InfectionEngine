@@ -10,7 +10,10 @@ Author: <Holden Profit>
 MeshComponent::MeshComponent(InfectGUID guid) :
 	RenderableComponent(guid),
 	mp_Scene(nullptr),
-	mp_Diffuse(nullptr)
+	mp_Diffuse(nullptr),
+	m_CastShadows(true),
+	m_ReceiveShadows(true),
+	m_IsLit(true)
 {
 }
 
@@ -42,5 +45,23 @@ void MeshComponent::SetScene(const std::string & sceneName)
 void MeshComponent::SetDiffuseTexture(const std::string & textureName)
 {
 	mp_Diffuse = INFECT_RESOURCES.GetTexture(textureName);
+	m_IsDirty = true;
+}
+
+void MeshComponent::SetCastShadows(bool castShadows)
+{
+	m_CastShadows = castShadows;
+	m_IsDirty = true;
+}
+
+void MeshComponent::SetReceiveShadows(bool receiveShadows)
+{
+	m_ReceiveShadows = receiveShadows;
+	m_IsDirty = true;
+}
+
+void MeshComponent::SetIsLit(bool isLit)
+{
+	m_IsLit = isLit;
 	m_IsDirty = true;
 }

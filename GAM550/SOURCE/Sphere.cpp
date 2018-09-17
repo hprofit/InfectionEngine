@@ -15,9 +15,9 @@ Sphere::Sphere(unsigned int size)
 {
 	m_vertices = std::vector<Vertex>(M*(N - 1) + 2);
 
-	for (int i = 1; i < N; ++i) {
+	for (unsigned int i = 1; i < N; ++i) {
 		float theta = PI * i / N;
-		for (int j = 0; j < M; ++j) {
+		for (unsigned int j = 0; j < M; ++j) {
 			int index = M * (i - 1) + j;
 			float phi = 2 * PI*j / M;
 			m_vertices[index].nX = sin(theta)*cos(phi);
@@ -49,8 +49,8 @@ Sphere::Sphere(unsigned int size)
 		m_vertices[index].color = D3DXCOLOR(1, 0, 0, 1);
 	}
 
-	for (int i = 2; i < N; ++i) {
-		for (int j = 0; j < M; ++j) {
+	for (unsigned int i = 2; i < N; ++i) {
+		for (unsigned int j = 0; j < M; ++j) {
 			int jp1 = (j + 1) % M;
 			Face face(
 				M * (i - 1) + jp1,
@@ -68,7 +68,7 @@ Sphere::Sphere(unsigned int size)
 		}
 	}
 
-	for (int j = 0; j < M; ++j) {
+	for (unsigned int j = 0; j < M; ++j) {
 		int jp1 = (j + 1) % M;
 		Face face(
 			j, 
@@ -88,7 +88,7 @@ Sphere::Sphere(unsigned int size)
 	Matrix4x4 Std2Unit = Matrix4x4::Scale(0.5f, 0.5f, 1)
 		* Matrix4x4::Translate(Vector3D(1, 1, 0, 0))
 		* Matrix4x4::Scale(1, -1, 1);
-	for (int i = 0; i < m_vertices.size(); ++i) {
+	for (unsigned int i = 0; i < m_vertices.size(); ++i) {
 		Vertex v = m_vertices[i];
 		Vector3D uv = Std2Unit * Vector3D(v.x, v.y, v.z, 1);
 		m_vertices[i].u = uv.x;
