@@ -48,7 +48,7 @@ protected:
 
 public:
 	Scene(unsigned short numMeshes);
-	~Scene();
+	virtual ~Scene();
 
 	unsigned short NumMeshes()	const { return m_numMeshes; }
 	Mesh*	operator[](const int idx) const { return m_meshes[idx]; };
@@ -77,7 +77,7 @@ protected:
 public:
 	Mesh();
 	Mesh(const aiMesh* mesh);
-	~Mesh();
+	virtual ~Mesh();
 
 	void AddVertex(FLOAT x, FLOAT y, FLOAT z, D3DXCOLOR color);
 	void AddVertex(	FLOAT x, FLOAT y, FLOAT z, 

@@ -29,6 +29,9 @@ bool ResourceManager::Init()
 	Cube* pCube = new Cube();
 	m_scenes[CUBE_PRIMITIVE] = pCube;
 
+	Skybox* pSkyBox = new Skybox();
+	m_scenes[SKYBOX_PRIMITIVE] = pSkyBox;
+
 	Sphere* pSphere = new Sphere(40);
 	pSphere->FinishMesh();
 	Scene* pSceneSphere = new Scene(1);
@@ -88,6 +91,39 @@ void ResourceManager::UnloadMesh(const std::string& meshName)
 }
 
 #pragma endregion
+
+ID3D11ShaderResourceView * ResourceManager::_LoadTexture(const std::string & textureName)
+{
+	ID3D11ShaderResourceView *pTexture;    // global
+
+	D3DX11CreateShaderResourceViewFromFile(INFECT_RENDERER.Device(),            // the Direct3D device
+		(INFECT_GAME_CONFIG.TexturesDir() + textureName).c_str(),    // load Wood.png in the local folder
+		NULL,           // no additional information
+		NULL,           // no multithreading
+		&pTexture,      // address of the shader-resource-view
+		NULL);          // no multithreading
+
+	m_textures[textureName] = pTexture;
+	return pTexture;
+}
+
+ID3D11ShaderResourceView * ResourceManager::GetTexture(const std::string & textureName)
+{
+	ID3D11ShaderResourceView* pTexture = m_textures[textureName];
+
+	if (pTexture)
+		return pTexture;
+	else
+		return _LoadTexture(textureName);
+}
+
+void ResourceManager::UnloadTexture(const std::string & textureName)
+{
+	if (m_textures[textureName]) {
+		delete m_textures[textureName];
+		m_textures.erase(textureName);
+	}
+}
 
 void ResourceManager::UnloadAll()
 {

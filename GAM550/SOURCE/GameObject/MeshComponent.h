@@ -16,10 +16,13 @@ class MeshComponent : public RenderableComponent
 protected:	
 	friend MeshComponentManager;
 
-	Scene* mp_Scene;
-	//SurfaceTextureBuffer * mp_DiffuseMap;
+	Scene* mp_Scene;		// Pointer to a Scene that contains meshes for rendering
+	ID3D11ShaderResourceView * mp_Diffuse;
 	//SurfaceTextureBuffer * mp_NormalMap;
 	//SurfaceTextureBuffer * mp_SpecMap;
+	bool m_CastShadows;
+	bool m_ReceiveShadows;
+	bool m_IsLit;
 
 public:
 	static const ComponentType Type = ComponentType::C_Mesh;
@@ -34,7 +37,10 @@ public:
 	void Override();
 
 	inline const Scene* GetScene() const { return mp_Scene; }
-	void SetScene(Scene* scene);
+	void SetScene(const std::string & sceneName);
+
+	inline ID3D11ShaderResourceView* GetDiffuseTexture() const { return mp_Diffuse; }
+	void SetDiffuseTexture(const std::string& textureName);
 };
 
 #endif

@@ -60,19 +60,20 @@ MSG GameStateManager::Update() {
 
 	GameObject* pGO = INFECT_GOM.SpawnGameObject();
 	MeshComponent* pMeshComp = INFECT_COMPONENT_FACTORY.CreateComponent<MeshComponent>();
-	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
-	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene(PLANE_PRIMITIVE));
-	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene(CUBE_PRIMITIVE));
-	pMeshComp->SetScene(INFECT_RESOURCES.GetScene(SPHERE_PRIMITIVE));
-	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene(POLAR_SPHERE_PRIMITIVE));
-	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("sphere.obj"));
-	//pMeshComp->SetScene(pScene);
+	//pMeshComp->SetScene("Suzy.fbx");
+	//pMeshComp->SetScene(PLANE_PRIMITIVE);
+	//pMeshComp->SetScene(CUBE_PRIMITIVE);
+	pMeshComp->SetScene(SKYBOX_PRIMITIVE);
+	//pMeshComp->SetScene(SPHERE_PRIMITIVE);
+	//pMeshComp->SetScene(POLAR_SPHERE_PRIMITIVE);
+	////pMeshComp->SetScene(pScene);
+	pMeshComp->SetDiffuseTexture("worldTexture2.jpg");
 
 	TransformComponent* pTransComp = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
 	//pTransComp->SetAngleX(-90);
 	//pTransComp->SetAngleZ(45);
-	pTransComp->SetScale(10.0f, 10.0f, 10.0f);
+	pTransComp->SetScale(500.0f, 500.0f, 500.0f);
 
 	pGO->AddComponent(pMeshComp);
 	pGO->AddComponent(pTransComp);
@@ -131,7 +132,7 @@ MSG GameStateManager::Update() {
 	{
 		pGOFOR[i] = INFECT_GOM.SpawnGameObject();
 		pMeshComp = INFECT_COMPONENT_FACTORY.CreateComponent<MeshComponent>();
-		pMeshComp->SetScene(INFECT_RESOURCES.GetScene(CUBE_PRIMITIVE));
+		pMeshComp->SetScene(CUBE_PRIMITIVE);
 
 		pTransComp = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
 		pTransComp->SetPosition(pos[i]);

@@ -11,15 +11,26 @@ Author: <Holden Profit>
 #define CUBE_MESH_H
 
 #define CUBE_PRIMITIVE "Cube"
+#define SKYBOX_PRIMITIVE "SkyBox"
+
+enum CubeFace {
+	LEFT = 0, FRONT, RIGHT, BACK, TOP, BOTTOM
+};
 
 class Cube :
 	public Scene
 {
-protected:
-
 public:
 	Cube();
-	~Cube();
+	virtual ~Cube();
+};
+
+class Skybox :
+	public Scene
+{
+public:
+	Skybox();
+	virtual ~Skybox();
 };
 
 #endif

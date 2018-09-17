@@ -106,6 +106,8 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	cb.LightPosition = INFECT_GOM.GetGameObject(2)->GetComponent<TransformComponent>()->WorldPosition();
 	
 	mp_D3D->mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_Cbuffer);
+	ID3D11ShaderResourceView* ptex = pGO.GetComponent<MeshComponent>()->GetDiffuseTexture();
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &ptex);
 
 	// set the new values for the constant buffer
 	mp_D3D->mp_DeviceContext->UpdateSubresource(mp_Cbuffer, 0, 0, &cb, 0, 0);

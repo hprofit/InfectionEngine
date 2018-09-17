@@ -15,7 +15,11 @@ struct VOut
 	float4 view : VIEW;
 	float4 light : LIGHT;
 	float4 color : COLOR;
+	float2 texCoords : TEXCOORDS;
 };
+
+Texture2D Texture;
+SamplerState ss;
 
 
 VOut VShader(
@@ -49,6 +53,7 @@ VOut VShader(
 	output.view = CameraPosition - P;
 	output.light = LightPosition - P;
 	output.color = color;
+	output.texCoords = texCoords;
 
 	return output;
 }
@@ -60,7 +65,8 @@ float4 PShader(
 	float3x3 tbn : TBN,
 	float4 view : VIEW,
 	float4 light : LIGHT,
-	float4 color : COLOR
+	float4 color : COLOR,
+	float2 texCoords : TEXCOORDS
 ) : SV_TARGET
 {
 	float4 m = normalize(normal);
@@ -72,7 +78,7 @@ float4 PShader(
 	float4 lightColor = float4(1, 1, 1, 1);
 
 	float4 ambient = color * float4(0.1, 0.1, 0.1, 1);
-	float4 diffuse = max(dot(m, L), 0) * color * lightColor;
+	float4 diffuse = max(dot(m, L), 0) * Texture.Sample(ss, texCoords) * lightColor;
 	float4 specular = pow(max(dot(H, m), 0), specularCoef) * specularColor * lightColor;
 
 	float4 finalColor = diffuse + specular + ambient;

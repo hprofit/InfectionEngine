@@ -9,7 +9,8 @@ Author: <Holden Profit>
 
 MeshComponent::MeshComponent(InfectGUID guid) :
 	RenderableComponent(guid),
-	mp_Scene(nullptr)
+	mp_Scene(nullptr),
+	mp_Diffuse(nullptr)
 {
 }
 
@@ -32,8 +33,14 @@ void MeshComponent::Override()
 
 }
 
-void MeshComponent::SetScene(Scene * scene)
+void MeshComponent::SetScene(const std::string & sceneName)
 {
-	mp_Scene = scene;
+	mp_Scene = INFECT_RESOURCES.GetScene(sceneName);
 	m_IsDirty = true;
-};
+}
+
+void MeshComponent::SetDiffuseTexture(const std::string & textureName)
+{
+	mp_Diffuse = INFECT_RESOURCES.GetTexture(textureName);
+	m_IsDirty = true;
+}
