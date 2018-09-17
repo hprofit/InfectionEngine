@@ -7,6 +7,18 @@ Author: <Holden Profit>
 
 #include <Stdafx.h>
 
+GameObject::GameObject() :
+	m_isDestroy(false),
+	m_isActive(false), // mem_mngr spits out active
+	m_isCollisionDisabled(false),
+	m_isRender(true),
+	m_isSetToDestroy(false),
+	m_destroyTimer(0),
+	m_destroySetTimeStamp(0)
+{
+	std::fill_n(mComponents, int(ComponentType::NUM_COMPONENTS), nullptr);
+}
+
 GameObject::GameObject(InfectGUID id) :
 	m_GUID(id), 
 	m_isDestroy(false), 

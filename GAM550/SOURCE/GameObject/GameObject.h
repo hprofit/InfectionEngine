@@ -31,7 +31,7 @@ protected:
 	std::vector<GameObject*> m_Children;
 
 public:
-
+	GameObject();
 	GameObject(InfectGUID id);
 	~GameObject();
 

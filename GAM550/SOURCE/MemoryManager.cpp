@@ -38,7 +38,7 @@ MemoryManager::MemoryManager():
 	m_NumCachedBlock = 0;
 	for (unsigned i = 0; i < MAX_CACHE_SIZE_NUM; i++) {
 		//TODO: Add GameObject Ctr w.o. ID
-		m_GameObjectCache[i] = new GameObject( INFECT_GUID.GetGUID() );
+		m_GameObjectCache[i] = new GameObject();
 	}
 }
 
