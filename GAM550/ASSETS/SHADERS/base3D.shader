@@ -3,9 +3,9 @@ cbuffer ConstantBuffer
 	float4x4 MatFinal;
 	float4x4 ModelMatrix;
 	float4x4 NormalMatrix;
-	//bool CastShadows;
-	//bool ReceiveShadows;
-	int IsLit;
+	bool CastShadows;
+	bool ReceiveShadows;
+	bool IsLit;
 	float4 CameraPosition;
 	float4 LightPosition;
 };
@@ -19,9 +19,6 @@ struct VOut
 	float4 light : LIGHT;
 	float4 color : COLOR;
 	float2 texCoords : TEXCOORDS;
-	//bool castShadows : CASTSHADOWS;
-	//bool receiveShadows : RECEIVESHADOWS;
-	//bool isLit : ISLIT;
 };
 
 Texture2D Texture;
@@ -61,9 +58,6 @@ VOut VShader(
 	output.light = LightPosition - P;
 	output.color = color;
 	output.texCoords = texCoords;
-	//output.castShadows = cb.CastShadows;
-	//output.receiveShadows = cb.ReceiveShadows;
-	//output.isLit = cb.IsLit;
 
 	return output;
 }
@@ -77,14 +71,10 @@ float4 PShader(
 	float4 light : LIGHT,
 	float4 color : COLOR,
 	float2 texCoords : TEXCOORDS
-	//bool castShadows : CASTSHADOWS,
-	//bool receiveShadows : RECEIVESHADOWS,
-	//bool isLit : ISLIT
 ) : SV_TARGET
 {
 	float4 finalColor;
-	bool isLit = true;
-	if (isLit) {
+	if (IsLit) {
 		float4 m = normalize(normal);
 		float4 L = normalize(light);
 		float4 v = normalize(view);

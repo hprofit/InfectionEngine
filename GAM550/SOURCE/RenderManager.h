@@ -14,9 +14,9 @@ struct ConstantBuffer {
 	Matrix4x4 MatFinal;
 	Matrix4x4 ModelMatrix;
 	Matrix4x4 NormalMatrix;
-	//bool CastShadows;
-	//bool ReceiveShadows;
-	int IsLit;
+	bool CastShadows;
+	bool ReceiveShadows;
+	bool IsLit;
 	Vector3D CameraPosition;
 	Vector3D LightPosition;
 };
@@ -68,7 +68,7 @@ public:
 
 	void RenderScene(const Scene * pScene);
 
-	void LoadShader(void);
+	bool LoadShader(void);
 
 	// TODO: Get rid of these in favor of selecting which VS/PS you want
 	ID3D11VertexShader * const VertexShader() { return mp_VS; }

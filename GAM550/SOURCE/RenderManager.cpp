@@ -103,14 +103,15 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	cb.MatFinal.Transpose();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
 	cb.NormalMatrix = Matrix4x4::Transpose(N);
-	//cb.CastShadows = pMeshComp->CastShadows();
-	//cb.ReceiveShadows = pMeshComp->ReceiveShadows();
-	//cb.IsLit = false; pMeshComp->IsLit();
+	cb.CastShadows = pMeshComp->CastShadows();
+	cb.ReceiveShadows = pMeshComp->ReceiveShadows();
+	cb.IsLit = false; pMeshComp->IsLit();
 	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
 	// TODO: THIS IS A HACK, REMOVE IT
 	cb.LightPosition = INFECT_GOM.GetGameObject(2)->GetComponent<TransformComponent>()->WorldPosition();
 	
 	mp_D3D->mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_Cbuffer);
+	mp_D3D->mp_DeviceContext->PSSetConstantBuffers(0, 1, &mp_Cbuffer);
 	ID3D11ShaderResourceView* ptex = pMeshComp->GetDiffuseTexture();
 	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &ptex);
 
@@ -136,19 +137,23 @@ void RenderManager::RenderScene(const Scene * pScene)
 	}
 }
 
-void RenderManager::LoadShader()
+bool RenderManager::LoadShader()
 {
 	// load and compile the shaders
 	int flag = D3D10_SHADER_WARNINGS_ARE_ERRORS;// | D3D10_SHADER_OPTIMIZATION_LEVEL3;
-	//HRESULT result = D3DCompileFromFile
+//HRESULT result = D3DCompileFromFile
+
 	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, 0, 0, &mp_VSBlob, &mp_Errors, 0);
 	if (mp_Errors) {
 		MessageBox(NULL, "The vertex shader failed to compile.", "Error", MB_OK);
+		return false;
 	}
 
 	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, 0, 0, &mp_PSBlob, &mp_Errors, 0);
-	if (mp_Errors)
+	if (mp_Errors) {
 		MessageBox(NULL, "The pixel shader failed to compile.", "Error", MB_OK);
+		return false;
+	}
 
 	// Encapsulate both shaders into shader objects
 	mp_D3D->mp_Device->CreateVertexShader(mp_VSBlob->GetBufferPointer(), mp_VSBlob->GetBufferSize(), NULL, &mp_VS);
@@ -161,8 +166,10 @@ void RenderManager::LoadShader()
 	ZeroMemory(&bd, sizeof(bd));
 
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(ConstantBuffer);
+	bd.ByteWidth = sizeof(ConstantBuffer) + (16 - (sizeof(ConstantBuffer) % 16));
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
 	mp_D3D->mp_Device->CreateBuffer(&bd, NULL, &mp_Cbuffer);
+
+	return true;
 }

@@ -207,6 +207,7 @@ MSG GameStateManager::Update() {
 			if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {
 				INFECT_GAME_STATE.SetGameState(GameState::QUIT);
 			}
+			pGO->GetComponent<TransformComponent>()->SetPosition(tcpCamera->WorldPosition());
 			//pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);
 			//pGO->GetComponent<TransformComponent>()->RotateZ(Infect::GetFrameTime() * 25.0f);
 			Infect::Update(Infect::GetFrameTime());			// Game loop
