@@ -33,7 +33,9 @@
     <ClCompile Include="SOURCE\GameObject\GameObject.cpp" />
     <ClCompile Include="SOURCE\GameObject\LightBaseComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\MeshComponent.cpp" />
+    <ClCompile Include="SOURCE\GameObject\MeshComponentManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\PointLightComponent.cpp" />
+    <ClCompile Include="SOURCE\GameObject\PointLightComponentManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\TransformComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\TransformComponentManager.cpp" />
     <ClCompile Include="SOURCE\InputManager.cpp" />
@@ -47,10 +49,11 @@
     <ClCompile Include="SOURCE\Math\Matrix4x4.cpp" />
     <ClCompile Include="SOURCE\Math\Vector2D.cpp" />
     <ClCompile Include="SOURCE\Math\Vector3D.cpp" />
-    <ClCompile Include="SOURCE\MemoryManager.cpp" />
     <ClCompile Include="SOURCE\Mesh.cpp" />
     <ClCompile Include="SOURCE\Physics\particle.cpp" />
     <ClCompile Include="SOURCE\Physics\physics_math.cpp" />
+    <ClCompile Include="SOURCE\Physics\Quaternion.cpp" />
+    <ClCompile Include="SOURCE\Physics\RigidBody.cpp" />
     <ClCompile Include="SOURCE\RenderManager.cpp" />
     <ClCompile Include="SOURCE\ResourceManager.cpp" />
     <ClCompile Include="SOURCE\Stdafx.cpp">
@@ -83,7 +86,9 @@
     <ClInclude Include="SOURCE\GameObject\GameObjectTags.h" />
     <ClInclude Include="SOURCE\GameObject\LightBaseComponent.h" />
     <ClInclude Include="SOURCE\GameObject\MeshComponent.h" />
+    <ClInclude Include="SOURCE\GameObject\MeshComponentManager.h" />
     <ClInclude Include="SOURCE\GameObject\PointLightComponent.h" />
+    <ClInclude Include="SOURCE\GameObject\PointLightComponentManager.h" />
     <ClInclude Include="SOURCE\GameObject\RenderableComponent.h" />
     <ClInclude Include="SOURCE\GameObject\TagNames.h" />
     <ClInclude Include="SOURCE\GameObject\TransformComponent.h" />
@@ -101,10 +106,11 @@
     <ClInclude Include="SOURCE\Math\Matrix4x4.h" />
     <ClInclude Include="SOURCE\Math\Vector2D.h" />
     <ClInclude Include="SOURCE\Math\Vector3D.h" />
-    <ClInclude Include="SOURCE\MemoryManager.h" />
     <ClInclude Include="SOURCE\Mesh.h" />
     <ClInclude Include="SOURCE\Physics\particle.h" />
     <ClInclude Include="SOURCE\Physics\physics_math.h" />
+    <ClInclude Include="SOURCE\Physics\Quaternion.h" />
+    <ClInclude Include="SOURCE\Physics\RigidBody.h" />
     <ClInclude Include="SOURCE\RenderManager.h" />
     <ClInclude Include="SOURCE\ResourceManager.h" />
     <ClInclude Include="SOURCE\Singleton.h" />

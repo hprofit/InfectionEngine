@@ -17,7 +17,7 @@ Creation date: 1/17/18
 
 class Matrix4x4
 {
-private:
+public:
 	float m_matrix[4][4];
 
 public:
@@ -68,6 +68,7 @@ public:
   void setOrientationAndPos(const Quaternion &q, const Vector3D &pos);
   void fillGLArray(float array[16]) const;
   real getDeterminant() const;
+  //float* physicsMatrix();
 
 	operator float*();
 	bool operator== (const  Matrix4x4& other) const;

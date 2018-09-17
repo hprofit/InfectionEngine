@@ -165,8 +165,17 @@
     <ClCompile Include="SOURCE\GameObject\CameraComponentManager.cpp">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\MemoryManager.cpp">
-      <Filter>Source Files\Managers</Filter>
+    <ClCompile Include="SOURCE\GameObject\MeshComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\PointLightComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Physics\RigidBody.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Physics\Quaternion.cpp">
+      <Filter>Source Files\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -317,8 +326,17 @@
     <ClInclude Include="SOURCE\GameObject\CameraComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\MemoryManager.h">
-      <Filter>Source Files\Managers</Filter>
+    <ClInclude Include="SOURCE\GameObject\PointLightComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\MeshComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Physics\RigidBody.h">
+      <Filter>Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Physics\Quaternion.h">
+      <Filter>Source Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

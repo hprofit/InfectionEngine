@@ -15,6 +15,7 @@ protected:
 	D3DXCOLOR m_color;
 	float m_distance;	// How far before the light falls off entirely
 	float m_a, m_b;		// Light fall off  (1 / (1 + a * d + b^2 * d) )
+	float m_intensity;	// Intensity of the light
 
 public:
 	static const ComponentType Type = ComponentType::C_Transform;
@@ -30,11 +31,17 @@ public:
 	inline FLOAT Blue() const { return m_color.b; }
 	inline FLOAT Alpha() const { return m_color.a; }
 	inline D3DXCOLOR GetColor() const { return m_color; }
-	inline void SetColor(const D3DXCOLOR& color) { m_color = color; }
+	void SetColor(const D3DXCOLOR& color);
+
 	inline float Distance() const { return m_distance; }
+	void SetDistance(float distance);
+
 	inline float LightA() const { return m_a; }
 	inline float LightB() const { return m_b; }
-	inline void SetFallOff(float a, float b) { m_a = a; m_b = b; }
+	void SetFallOff(float a, float b);
+
+	inline float Intensity() const { return m_intensity; }
+	void SetIntensity(float intensity);
 };
 
 #endif

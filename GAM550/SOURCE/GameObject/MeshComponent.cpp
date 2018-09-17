@@ -31,3 +31,9 @@ void MeshComponent::Override()
 {
 
 }
+
+void MeshComponent::SetScene(Scene * scene)
+{
+	mp_Scene = scene;
+	m_IsDirty = true;
+};

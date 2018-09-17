@@ -60,7 +60,8 @@ MSG GameStateManager::Update() {
 	
 	GameObject* pGO = INFECT_GOM.SpawnGameObject();
 	MeshComponent* pMeshComp = INFECT_COMPONENT_FACTORY.CreateComponent<MeshComponent>();
-	pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
+	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
+	pMeshComp->SetScene(INFECT_RESOURCES.GetScene("sphere.obj"));
 	//pMeshComp->SetScene(pScene);
 	
 	TransformComponent* pTransComp = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
@@ -73,9 +74,6 @@ MSG GameStateManager::Update() {
 	pGO->AddComponent(pTransComp);
 	pGO->LateInitialize();
 	
-	pGO->Update(0);
-	pGO->LateUpdate(0);
-	
 	GameObject* pGOCamera = INFECT_GOM.SpawnGameObject();
 	TransformComponent* pTransComp2 = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
 	pTransComp2->SetPosition(Vector3D(0, 0, 50, 1));
@@ -86,12 +84,13 @@ MSG GameStateManager::Update() {
 	pGOCamera->LateInitialize();
 
 	GameObject* pGOLight = INFECT_GOM.SpawnGameObject();
-	PointLightComopnent *pLight = INFECT_COMPONENT_FACTORY.CreateComponent<PointLightComopnent>();
+	PointLightComponent *pLight = INFECT_COMPONENT_FACTORY.CreateComponent<PointLightComponent>();
 	TransformComponent* pTransComp3 = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
 	pTransComp3->SetPosition(Vector3D(100, 100, 0, 1));
 	pGOLight->AddComponent(pLight);
 	pGOLight->AddComponent(pTransComp3);
 	pGOLight->LateInitialize();
+
 
 
 	TransformComponentManager* tcm = static_cast<TransformComponentManager*>(INFECT_CMC.GetCM(0));
@@ -100,6 +99,10 @@ MSG GameStateManager::Update() {
 	tcm->Register(pGOLight->GetComponent<TransformComponent>());
 	CameraComponentManager* ccm = static_cast<CameraComponentManager*>(INFECT_CMC.GetCM(1));
 	ccm->Register(pGOCamera->GetComponent<CameraComponent>());
+	PointLightComponentManager* plcm = static_cast<PointLightComponentManager*>(INFECT_CMC.GetCM(2));
+	plcm->Register(pGOLight->GetComponent<PointLightComponent>());
+	MeshComponentManager* mcm = static_cast<MeshComponentManager*>(INFECT_CMC.GetCM(3));
+	mcm->Register(pGO->GetComponent<MeshComponent>());
 
 
 

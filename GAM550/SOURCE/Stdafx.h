@@ -120,6 +120,8 @@ typedef unsigned int InfectGUID;
 //#include <ImageRenderer.h>
 #include <Sorting.h>
 //#include <Shape.h>
+#include <Physics/RigidBody.h>
+
 #pragma endregion
 
 #pragma region Game Object
@@ -250,6 +252,8 @@ typedef unsigned int InfectGUID;
 #include <GameObject/ComponentManagerContainer.h>
 #include <GameObject/TransformComponentManager.h>
 #include <GameObject/CameraComponentManager.h>
+#include <GameObject/MeshComponentManager.h>
+#include <GameObject/PointLightComponentManager.h>
 #pragma endregion
 
 #pragma region Globals + API

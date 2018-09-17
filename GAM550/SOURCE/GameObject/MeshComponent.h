@@ -9,9 +9,13 @@ Author: <Holden Profit>
 #ifndef MESH_COMPONENT_H
 #define MESH_COMPONENT_H
 
+class MeshComponentManager;
+
 class MeshComponent : public RenderableComponent
 {
 protected:	
+	friend MeshComponentManager;
+
 	Scene* mp_Scene;
 	//SurfaceTextureBuffer * mp_DiffuseMap;
 	//SurfaceTextureBuffer * mp_NormalMap;
@@ -30,7 +34,7 @@ public:
 	void Override();
 
 	inline const Scene* GetScene() const { return mp_Scene; }
-	inline void SetScene(Scene* scene) { mp_Scene = scene; };
+	void SetScene(Scene* scene);
 };
 
 #endif

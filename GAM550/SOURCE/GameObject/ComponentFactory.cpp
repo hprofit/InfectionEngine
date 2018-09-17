@@ -16,6 +16,6 @@ ComponentFactory::ComponentFactory() {
 	m_creationFunctions[TransformComponent::Type] = TransformComponent::CreateInstance;
 	m_creationFunctions[MeshComponent::Type] = MeshComponent::CreateInstance;
 	m_creationFunctions[CameraComponent::Type] = CameraComponent::CreateInstance;
-	m_creationFunctions[PointLightComopnent::Type] = PointLightComopnent::CreateInstance;
+	m_creationFunctions[PointLightComponent::Type] = PointLightComponent::CreateInstance;
 }
 
