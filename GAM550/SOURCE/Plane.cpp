@@ -36,7 +36,7 @@ Plane::Plane(unsigned int size)
 			v.u = float(i) / float(size);
 			v.v = float(j) / float(size);
 
-			v.color = D3DXCOLOR(0, 0, 0, 1);
+			v.r = v.g = v.b = v.a = 1;
 
 			m_vertices.push_back(v);
 		}

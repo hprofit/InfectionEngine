@@ -403,7 +403,7 @@ void D3DHandler::CleanD3D(void)
 		mp_RasterState->Release();
 }
 
-void D3DHandler::ClearBackBuffer(const D3DXCOLOR color)
+void D3DHandler::ClearBackBuffer(const Color& color)
 {
 	mp_DeviceContext->ClearRenderTargetView(mp_BackBuffer, color);
 }

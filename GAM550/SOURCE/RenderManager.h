@@ -26,14 +26,14 @@ class RenderManager : public Subscriber
 private:
 	D3DHandler *mp_D3D;
 
-	D3DXCOLOR m_ClearColor;
+	Color m_ClearColor;
 	WindowSettings m_WindowSettings;
 	HWND m_hWnd; 	// the handle for the window, filled by a function
 
 	ID3D11Buffer *mp_Cbuffer;		// the constant buffer
 	ID3D11VertexShader *mp_VS;		// the vertex shader
 	ID3D11PixelShader *mp_PS;		// the pixel shader
-	ID3D10Blob *mp_VSBlob, *mp_PSBlob, *mp_Errors;
+	ID3DBlob  *mp_VSBlob, *mp_PSBlob, *mp_Errors;
 
 	bool _GameObjectHasRenderableComponent(const GameObject& gameObject);
 public:

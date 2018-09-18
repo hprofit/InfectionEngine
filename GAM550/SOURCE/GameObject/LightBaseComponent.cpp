@@ -5,7 +5,7 @@ void LightBaseComponent::LateInitialize()
 	INFECT_GOM.RegisterLight(mp_Parent);
 }
 
-void LightBaseComponent::SetColor(const D3DXCOLOR & color)
+void LightBaseComponent::SetColor(const Color & color)
 {
 	m_color = color;
 	m_IsDirty = true;

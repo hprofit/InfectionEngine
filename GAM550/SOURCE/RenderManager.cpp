@@ -26,8 +26,7 @@ bool RenderManager::_GameObjectHasRenderableComponent(const GameObject & gameObj
 }
 
 RenderManager::RenderManager() :
-	//m_ClearColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f)),
-	m_ClearColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)),
+	m_ClearColor(Color(0,0,0,1)),
 	mp_D3D(new D3DHandler())
 {
 }
@@ -105,7 +104,7 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	cb.NormalMatrix = Matrix4x4::Transpose(N);
 	cb.CastShadows = pMeshComp->CastShadows();
 	cb.ReceiveShadows = pMeshComp->ReceiveShadows();
-	cb.IsLit = false; pMeshComp->IsLit();
+	cb.IsLit = pMeshComp->IsLit();
 	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
 	// TODO: THIS IS A HACK, REMOVE IT
 	cb.LightPosition = INFECT_GOM.GetGameObject(2)->GetComponent<TransformComponent>()->WorldPosition();
@@ -124,10 +123,10 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 
 void RenderManager::RenderScene(const Scene * pScene)
 {
+	UINT stride = sizeof(Vertex);
+	UINT offset = 0;
 	for (int i = 0; i < pScene->NumMeshes(); ++i) {
 		const Mesh* pMesh = (*pScene)[i];
-		UINT stride = sizeof(Vertex);
-		UINT offset = 0;
 		ID3D11Buffer* buffers[] = { pMesh->VBuffer() };
 		mp_D3D->mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
 		mp_D3D->mp_DeviceContext->IASetIndexBuffer(pMesh->IBuffer(), DXGI_FORMAT_R32_UINT, 0);
@@ -141,16 +140,17 @@ bool RenderManager::LoadShader()
 {
 	// load and compile the shaders
 	int flag = D3D10_SHADER_WARNINGS_ARE_ERRORS;// | D3D10_SHADER_OPTIMIZATION_LEVEL3;
-//HRESULT result = D3DCompileFromFile
 
-	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, 0, 0, &mp_VSBlob, &mp_Errors, 0);
-	if (mp_Errors) {
+	HRESULT result = D3DCompileFromFile(L"ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, 0, &mp_VSBlob, &mp_Errors);
+	//D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, 0, 0, &mp_VSBlob, &mp_Errors, 0);
+	if (FAILED(result)) {
 		MessageBox(NULL, "The vertex shader failed to compile.", "Error", MB_OK);
 		return false;
 	}
 
-	D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, 0, 0, &mp_PSBlob, &mp_Errors, 0);
-	if (mp_Errors) {
+	result = D3DCompileFromFile(L"ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, 0, &mp_PSBlob, &mp_Errors);
+	//D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, 0, 0, &mp_PSBlob, &mp_Errors, 0);
+	if (FAILED(result)) {
 		MessageBox(NULL, "The pixel shader failed to compile.", "Error", MB_OK);
 		return false;
 	}

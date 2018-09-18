@@ -32,14 +32,14 @@ MSG GameStateManager::Update() {
 
 	Mesh* pMesh = new Mesh();
 
-	pMesh->AddVertex(-1.0f, 1.0f, -1.0f, D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
-	pMesh->AddVertex(1.0f, 1.0f, -1.0f, D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
-	pMesh->AddVertex(-1.0f, -1.0f, -1.0f, D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
-	pMesh->AddVertex(1.0f, -1.0f, -1.0f, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
-	pMesh->AddVertex(-1.0f, 1.0f, 1.0f, D3DXCOLOR(0.0f, 1.0f, 1.0f, 1.0f));
-	pMesh->AddVertex(1.0f, 1.0f, 1.0f, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f));
-	pMesh->AddVertex(-1.0f, -1.0f, 1.0f, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
-	pMesh->AddVertex(1.0f, -1.0f, 1.0f, D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(-1.0f, 1.0f, -1.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(1.0f, 1.0f, -1.0f, Color(0.0f, 1.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(-1.0f, -1.0f, -1.0f, Color(0.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(1.0f, -1.0f, -1.0f, Color(1.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(-1.0f, 1.0f, 1.0f, Color(0.0f, 1.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(1.0f, 1.0f, 1.0f, Color(1.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(-1.0f, -1.0f, 1.0f, Color(1.0f, 1.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(1.0f, -1.0f, 1.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
 
 	pMesh->AddFace(0, 1, 2);
 	pMesh->AddFace(2, 1, 3);

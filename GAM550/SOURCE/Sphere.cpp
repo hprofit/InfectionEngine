@@ -46,7 +46,7 @@ Sphere::Sphere(unsigned int size)
 		m_vertices[index].y = m_vertices[index].nY;
 		m_vertices[index].z = m_vertices[index].nZ;
 
-		m_vertices[index].color = D3DXCOLOR(1, 0, 0, 1);
+		m_vertices[index].r = m_vertices[index].g = m_vertices[index].b = m_vertices[index].a;
 	}
 
 	for (unsigned int i = 2; i < N; ++i) {
@@ -128,7 +128,7 @@ PolarSphere::PolarSphere(unsigned int size) : Plane(size)
 		m_vertices[i].nX = m_vertices[i].x;
 		m_vertices[i].nY = m_vertices[i].y;
 		m_vertices[i].nZ = m_vertices[i].z;
-		m_vertices[i].color = D3DXCOLOR(1, 0, 0, 1);
+		m_vertices[i].r = m_vertices[i].g = m_vertices[i].b = m_vertices[i].a;
 	}
 }
 

@@ -32,10 +32,11 @@ Author: <Holden Profit>
 #include <dxgi.h>
 #include <d3dcommon.h>
 #include <d3d11.h>
-#include <d3dx11.h>
-#include <d3dx10.h>
+//#include <d3dx11.h>
+//#include <d3dx10.h>
 #include <dinput.h>
 #include <D3Dcompiler.h>
+#include <DDSTextureLoader.h>
 //#include <d3dx10math.h>
 
 /// Linking ///
@@ -100,7 +101,7 @@ using namespace JsonReader;
 // TODO: This should probably be moved to a file
 typedef unsigned int InfectGUID;
 
-//#include <Color.h>
+#include <Color.h>
 //#include <Debug.h>
 #include <WindowProc.h>
 #include <WindowSettings.h>

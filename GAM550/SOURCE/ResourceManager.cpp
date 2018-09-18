@@ -95,13 +95,16 @@ void ResourceManager::UnloadMesh(const std::string& meshName)
 ID3D11ShaderResourceView * ResourceManager::_LoadTexture(const std::string & textureName)
 {
 	ID3D11ShaderResourceView *pTexture;    // global
+	HRESULT result = DirectX::CreateDDSTextureFromFile(INFECT_RENDERER.Device(),            // the Direct3D device
+		(INFECT_GAME_CONFIG.TexturesDir() + textureName).c_str(),    // load texture from the local folder
+		nullptr, nullptr);
 
-	D3DX11CreateShaderResourceViewFromFile(INFECT_RENDERER.Device(),            // the Direct3D device
-		(INFECT_GAME_CONFIG.TexturesDir() + textureName).c_str(),    // load Wood.png in the local folder
-		NULL,           // no additional information
-		NULL,           // no multithreading
-		&pTexture,      // address of the shader-resource-view
-		NULL);          // no multithreading
+	//D3DX11CreateShaderResourceViewFromFile(INFECT_RENDERER.Device(),            // the Direct3D device
+	//	(INFECT_GAME_CONFIG.TexturesDir() + textureName).c_str(),    // load Wood.png in the local folder
+	//	NULL,           // no additional information
+	//	NULL,           // no multithreading
+	//	&pTexture,      // address of the shader-resource-view
+	//	NULL);          // no multithreading
 
 	m_textures[textureName] = pTexture;
 	return pTexture;

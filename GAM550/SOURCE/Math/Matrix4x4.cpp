@@ -56,28 +56,28 @@ Matrix4x4::Matrix4x4(
 	m_matrix[3][3] = w4;
 }
 
-Matrix4x4::Matrix4x4(const D3DXMATRIX & D3DMatrix)
-{
-	m_matrix[0][0] = D3DMatrix._11;
-	m_matrix[0][1] = D3DMatrix._12;
-	m_matrix[0][2] = D3DMatrix._13;
-	m_matrix[0][3] = D3DMatrix._14;
-
-	m_matrix[1][0] = D3DMatrix._21;
-	m_matrix[1][1] = D3DMatrix._22;
-	m_matrix[1][2] = D3DMatrix._23;
-	m_matrix[1][3] = D3DMatrix._24;
-
-	m_matrix[2][0] = D3DMatrix._31;
-	m_matrix[2][1] = D3DMatrix._32;
-	m_matrix[2][2] = D3DMatrix._33;
-	m_matrix[2][3] = D3DMatrix._34;
-
-	m_matrix[3][0] = D3DMatrix._41;
-	m_matrix[3][1] = D3DMatrix._42;
-	m_matrix[3][2] = D3DMatrix._43;
-	m_matrix[3][3] = D3DMatrix._44;
-}
+//Matrix4x4::Matrix4x4(const D3DXMATRIX & D3DMatrix)
+//{
+//	m_matrix[0][0] = D3DMatrix._11;
+//	m_matrix[0][1] = D3DMatrix._12;
+//	m_matrix[0][2] = D3DMatrix._13;
+//	m_matrix[0][3] = D3DMatrix._14;
+//
+//	m_matrix[1][0] = D3DMatrix._21;
+//	m_matrix[1][1] = D3DMatrix._22;
+//	m_matrix[1][2] = D3DMatrix._23;
+//	m_matrix[1][3] = D3DMatrix._24;
+//
+//	m_matrix[2][0] = D3DMatrix._31;
+//	m_matrix[2][1] = D3DMatrix._32;
+//	m_matrix[2][2] = D3DMatrix._33;
+//	m_matrix[2][3] = D3DMatrix._34;
+//
+//	m_matrix[3][0] = D3DMatrix._41;
+//	m_matrix[3][1] = D3DMatrix._42;
+//	m_matrix[3][2] = D3DMatrix._43;
+//	m_matrix[3][3] = D3DMatrix._44;
+//}
 
 Matrix4x4::Matrix4x4(const Matrix4x4 &other)
 {
@@ -258,15 +258,15 @@ void Matrix4x4::Print() const
 	std::cout << "[ " << m_matrix[3][0] << ", " << m_matrix[3][1] << ", " << m_matrix[3][2] << ", " << m_matrix[3][3] << "]" << std::endl;
 }
 
-D3DXMATRIX Matrix4x4::ToD3DXMATRIX()
-{
-	return D3DXMATRIX(
-		m_matrix[0][0], m_matrix[0][1], m_matrix[0][2], m_matrix[0][3],
-		m_matrix[1][0], m_matrix[1][1], m_matrix[1][2], m_matrix[1][3],
-		m_matrix[2][0], m_matrix[2][1], m_matrix[2][2], m_matrix[2][3],
-		m_matrix[3][0], m_matrix[3][1], m_matrix[3][2], m_matrix[3][3]
-	);
-}
+//D3DXMATRIX Matrix4x4::ToD3DXMATRIX()
+//{
+//	return D3DXMATRIX(
+//		m_matrix[0][0], m_matrix[0][1], m_matrix[0][2], m_matrix[0][3],
+//		m_matrix[1][0], m_matrix[1][1], m_matrix[1][2], m_matrix[1][3],
+//		m_matrix[2][0], m_matrix[2][1], m_matrix[2][2], m_matrix[2][3],
+//		m_matrix[3][0], m_matrix[3][1], m_matrix[3][2], m_matrix[3][3]
+//	);
+//}
 
 #pragma region Static Methods
 Matrix4x4 Matrix4x4::Zero4D()

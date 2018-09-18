@@ -350,5 +350,8 @@
     <ClInclude Include="SOURCE\Sphere.h">
       <Filter>Source Files\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="SOURCE\Color.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
