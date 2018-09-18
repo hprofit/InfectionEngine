@@ -30,51 +30,24 @@ MSG GameStateManager::Update() {
 
 	SeedRand(0);
 
-	Mesh* pMesh = new Mesh();
-
-	pMesh->AddVertex(-1.0f, 1.0f, -1.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
-	pMesh->AddVertex(1.0f, 1.0f, -1.0f, Color(0.0f, 1.0f, 0.0f, 1.0f));
-	pMesh->AddVertex(-1.0f, -1.0f, -1.0f, Color(0.0f, 0.0f, 1.0f, 1.0f));
-	pMesh->AddVertex(1.0f, -1.0f, -1.0f, Color(1.0f, 0.0f, 1.0f, 1.0f));
-	pMesh->AddVertex(-1.0f, 1.0f, 1.0f, Color(0.0f, 1.0f, 1.0f, 1.0f));
-	pMesh->AddVertex(1.0f, 1.0f, 1.0f, Color(1.0f, 0.0f, 1.0f, 1.0f));
-	pMesh->AddVertex(-1.0f, -1.0f, 1.0f, Color(1.0f, 1.0f, 0.0f, 1.0f));
-	pMesh->AddVertex(1.0f, -1.0f, 1.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
-
-	pMesh->AddFace(0, 1, 2);
-	pMesh->AddFace(2, 1, 3);
-	pMesh->AddFace(4, 0, 6);
-	pMesh->AddFace(6, 0, 2);
-	pMesh->AddFace(7, 5, 6);
-	pMesh->AddFace(6, 5, 4);
-	pMesh->AddFace(3, 1, 7);
-	pMesh->AddFace(7, 1, 5);
-	pMesh->AddFace(4, 5, 0);
-	pMesh->AddFace(0, 5, 1);
-	pMesh->AddFace(3, 7, 2);
-	pMesh->AddFace(2, 7, 6);
-
-	pMesh->FinishMesh();
-	Scene* pScene = new Scene(1);
-	(*pScene)[0] = pMesh;
-
 	GameObject* pGO = INFECT_GOM.SpawnGameObject();
 	MeshComponent* pMeshComp = INFECT_COMPONENT_FACTORY.CreateComponent<MeshComponent>();
 	//pMeshComp->SetScene("Suzy.fbx");
 	//pMeshComp->SetScene(PLANE_PRIMITIVE);
-	//pMeshComp->SetScene(CUBE_PRIMITIVE);
-	pMeshComp->SetScene(SKYBOX_PRIMITIVE);
+	pMeshComp->SetScene(CUBE_PRIMITIVE);
+	//pMeshComp->SetScene(SKYBOX_PRIMITIVE);
 	//pMeshComp->SetScene(SPHERE_PRIMITIVE);
 	//pMeshComp->SetScene(POLAR_SPHERE_PRIMITIVE);
-	////pMeshComp->SetScene(pScene);
-	pMeshComp->SetDiffuseTexture("worldTexture2.jpg");
+	//pMeshComp->SetScene("test");
+	//pMeshComp->SetDiffuseTexture("worldTexture2.jpg");
 	pMeshComp->SetIsLit(false);
 
 	TransformComponent* pTransComp = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
 	//pTransComp->SetAngleX(-90);
 	//pTransComp->SetAngleZ(45);
-	pTransComp->SetScale(500.0f, 500.0f, 500.0f);
+	//pTransComp->SetScale(500.0f, 500.0f, 500.0f);
+	pTransComp->SetScale(10.0f, 10.0f, 10.0f);
 
 	pGO->AddComponent(pMeshComp);
 	pGO->AddComponent(pTransComp);
@@ -188,6 +161,7 @@ MSG GameStateManager::Update() {
 				tcpCamera->RotateY(float(xMove));
 			if (yMove != 0)
 				tcpCamera->RotateX(float(yMove));
+
 			if (INFECT_INPUT.IsKeyPressed(DIK_D)) {
 				tcpCamera->Move(Infect::GetFrameTime() *30.f*tcpCamera->Right());
 			}
@@ -207,8 +181,8 @@ MSG GameStateManager::Update() {
 			if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {
 				INFECT_GAME_STATE.SetGameState(GameState::QUIT);
 			}
-			pGO->GetComponent<TransformComponent>()->SetPosition(tcpCamera->WorldPosition());
-			//pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);
+			//pGO->GetComponent<TransformComponent>()->SetPosition(tcpCamera->WorldPosition());
+			pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);
 			//pGO->GetComponent<TransformComponent>()->RotateZ(Infect::GetFrameTime() * 25.0f);
 			Infect::Update(Infect::GetFrameTime());			// Game loop
 

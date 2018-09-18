@@ -203,7 +203,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)FMOD Studio API Windows\api\studio\inc;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)Assimp\include;$(ProjectDir)DirectXTK\include;%(AdditionalIncludeDirectories);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)FMOD Studio API Windows\api\studio\inc;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)FMOD Studio API Windows\api\studio\inc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)Assimp\lib;$(ProjectDir)DirectXTK\lib;%(AdditionalLibraryDirectories);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)Assimp\lib;$(ProjectDir)DirectXTK\lib\x86\Debug;$(ProjectDir)DirectXTK\lib\x86\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;fmod64_vc.lib;fmodstudio64_vc.lib;%(AdditionalDependencies);fmod_vc.lib;fmodstudio_vc.lib;DirectXTK.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -219,7 +219,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)FMOD Studio API Windows\api\studio\inc;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\inc;$(ProjectDir)Assimp\include;$(ProjectDir)DirectXTK\include;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)Assimp\lib;$(ProjectDir)DirectXTK\lib;%(AdditionalLibraryDirectories);</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)Assimp\lib;$(ProjectDir)DirectXTK\lib\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;fmod64_vc.lib;fmodstudio64_vc.lib;%(AdditionalDependencies);fmod_vc.lib;fmodstudio_vc.lib;DirectXTK.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -239,7 +239,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)Assimp\lib;$(ProjectDir)DirectXTK\lib;%(AdditionalLibraryDirectories);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)Assimp\lib;$(ProjectDir)DirectXTK\lib\x86\Debug;$(ProjectDir)DirectXTK\lib\x86\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;fmod64_vc.lib;fmodstudio64_vc.lib;%(AdditionalDependencies);fmod_vc.lib;fmodstudio_vc.lib;DirectXTK.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -259,7 +259,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)Assimp\lib;$(ProjectDir)DirectXTK\lib;%(AdditionalLibraryDirectories);$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)FMOD Studio API Windows\api\studio\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)FMOD Studio API Windows\api\studio\lib;$(ProjectDir)FMOD Studio API Windows\api\lowlevel\lib;$(ProjectDir)Assimp\lib;$(ProjectDir)DirectXTK\lib\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>assimp-vc140-mt.lib;zlib.lib;zlibstatic.lib;IrrXML.lib;fmod64_vc.lib;fmodstudio64_vc.lib;%(AdditionalDependencies);fmod_vc.lib;fmodstudio_vc.lib;DirectXTK.lib</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>

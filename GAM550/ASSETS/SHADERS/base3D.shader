@@ -56,6 +56,7 @@ VOut VShader(
 	output.tbn = float3x3(T, B, N);
 	output.view = CameraPosition - P;
 	output.light = LightPosition - P;
+	output.light.w = 0;
 	output.color = color;
 	output.texCoords = texCoords;
 
@@ -73,8 +74,8 @@ float4 PShader(
 	float2 texCoords : TEXCOORDS
 ) : SV_TARGET
 {
-	float4 finalColor;
-	if (IsLit) {
+	float4 finalColor = float4(0,0,0, 1);
+	//if (IsLit) {
 		float4 m = normalize(normal);
 		float4 L = normalize(light);
 		float4 v = normalize(view);
@@ -84,14 +85,15 @@ float4 PShader(
 		float4 lightColor = float4(1, 1, 1, 1);
 
 		float4 ambient = color * float4(0.1, 0.1, 0.1, 1);
-		float4 diffuse = max(dot(m, L), 0) * Texture.Sample(ss, texCoords) * lightColor;
+		float4 diffuse = max(dot(m, L), 0) * color /*Texture.Sample(ss, texCoords)*/ * lightColor;
 		float4 specular = pow(max(dot(H, m), 0), specularCoef) * specularColor * lightColor;
 
-		finalColor = diffuse + specular + ambient;
-	}
-	else {
-		finalColor = Texture.Sample(ss, texCoords);
-	}
+		finalColor = diffuse;// +specular + ambient;
+	//}
+	//else {
+	//	finalColor = Texture.Sample(ss, texCoords);
+	//}
+		finalColor = L;
 	finalColor.w = 1;
 	return finalColor;
 }

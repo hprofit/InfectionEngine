@@ -26,7 +26,7 @@ bool RenderManager::_GameObjectHasRenderableComponent(const GameObject & gameObj
 }
 
 RenderManager::RenderManager() :
-	m_ClearColor(Color(0,0,0,1)),
+	m_ClearColor(Color(0.1f, 0.1f, 0.1f, 1)),
 	mp_D3D(new D3DHandler())
 {
 }
@@ -141,14 +141,14 @@ bool RenderManager::LoadShader()
 	// load and compile the shaders
 	int flag = D3D10_SHADER_WARNINGS_ARE_ERRORS;// | D3D10_SHADER_OPTIMIZATION_LEVEL3;
 
-	HRESULT result = D3DCompileFromFile(L"ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, 0, &mp_VSBlob, &mp_Errors);
+	HRESULT result = D3DCompileFromFile(L"ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, flag, &mp_VSBlob, &mp_Errors);
 	//D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, 0, 0, &mp_VSBlob, &mp_Errors, 0);
 	if (FAILED(result)) {
 		MessageBox(NULL, "The vertex shader failed to compile.", "Error", MB_OK);
 		return false;
 	}
 
-	result = D3DCompileFromFile(L"ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, 0, &mp_PSBlob, &mp_Errors);
+	result = D3DCompileFromFile(L"ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, flag, &mp_PSBlob, &mp_Errors);
 	//D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, 0, 0, &mp_PSBlob, &mp_Errors, 0);
 	if (FAILED(result)) {
 		MessageBox(NULL, "The pixel shader failed to compile.", "Error", MB_OK);
