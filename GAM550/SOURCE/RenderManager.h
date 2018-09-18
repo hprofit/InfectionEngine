@@ -14,11 +14,12 @@ struct ConstantBuffer {
 	Matrix4x4 MatFinal;
 	Matrix4x4 ModelMatrix;
 	Matrix4x4 NormalMatrix;
-	bool CastShadows;
-	bool ReceiveShadows;
-	bool IsLit;
 	Vector3D CameraPosition;
 	Vector3D LightPosition;
+	int CastShadows;
+	int ReceiveShadows;
+	int IsLit;
+	int Textured;
 };
 
 class RenderManager : public Subscriber

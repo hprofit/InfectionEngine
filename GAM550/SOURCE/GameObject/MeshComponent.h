@@ -50,6 +50,10 @@ public:
 
 	inline bool IsLit() const { return m_IsLit; }
 	void SetIsLit(bool isLit);
+
+	inline bool IsTextured() const { 
+		return mp_Diffuse != nullptr; 
+	}
 };
 
 #endif

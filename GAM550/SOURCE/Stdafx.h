@@ -36,6 +36,7 @@ Author: <Holden Profit>
 //#include <d3dx10.h>
 #include <dinput.h>
 #include <D3Dcompiler.h>
+#include <WICTextureLoader.h>
 #include <DDSTextureLoader.h>
 //#include <d3dx10math.h>
 

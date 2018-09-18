@@ -105,10 +105,11 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	cb.CastShadows = pMeshComp->CastShadows();
 	cb.ReceiveShadows = pMeshComp->ReceiveShadows();
 	cb.IsLit = pMeshComp->IsLit();
-	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
+	cb.Textured = pMeshComp->IsTextured();
+	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();// Vector3D(camPos.w, camPos.z, camPos.y, camPos.x);
 	// TODO: THIS IS A HACK, REMOVE IT
 	cb.LightPosition = INFECT_GOM.GetGameObject(2)->GetComponent<TransformComponent>()->WorldPosition();
-	
+
 	mp_D3D->mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_Cbuffer);
 	mp_D3D->mp_DeviceContext->PSSetConstantBuffers(0, 1, &mp_Cbuffer);
 	ID3D11ShaderResourceView* ptex = pMeshComp->GetDiffuseTexture();

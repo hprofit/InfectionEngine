@@ -46,7 +46,8 @@ Sphere::Sphere(unsigned int size)
 		m_vertices[index].y = m_vertices[index].nY;
 		m_vertices[index].z = m_vertices[index].nZ;
 
-		m_vertices[index].r = m_vertices[index].g = m_vertices[index].b = m_vertices[index].a;
+		m_vertices[index].r = m_vertices[index].a = 1;
+		m_vertices[index].g = m_vertices[index].b = 0;
 	}
 
 	for (unsigned int i = 2; i < N; ++i) {

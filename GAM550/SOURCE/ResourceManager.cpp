@@ -131,12 +131,15 @@ ID3D11ShaderResourceView * ResourceManager::_LoadTexture(const std::string & tex
 	ID3D11ShaderResourceView *pTexture;
 	ID3D11Resource ** pResource;
 	std::string filePath = INFECT_GAME_CONFIG.TexturesDir() + textureName;
-	HRESULT result = DirectX::CreateDDSTextureFromFile(
+	HRESULT result = DirectX::CreateWICTextureFromFile(
 		INFECT_RENDERER.Device(),
 		std::wstring(filePath.begin(), filePath.end()).c_str(),
 		NULL, &pTexture
 	);
-		
+	if (FAILED(result)) {
+		MessageBox(NULL, (std::string("Failed to load texture: ") + filePath).c_str(), "Error", MB_OK);
+		return nullptr;
+	}
 		
 		
 		//// the Direct3D device
