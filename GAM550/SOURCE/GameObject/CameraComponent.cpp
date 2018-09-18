@@ -9,7 +9,7 @@ Author: <Holden Profit>
 
 CameraComponent::CameraComponent(InfectGUID guid) :
 	Component(guid),
-	m_fov(105.f), 
+	m_fov(90.f), 
 	m_aspectRatio(1.f), 
 	m_Near(0.1f),
 	m_Far(1000.0f),

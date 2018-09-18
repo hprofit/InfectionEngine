@@ -10,17 +10,16 @@ Author: <Holden Profit>
 #ifndef RENDER_MANAGER_H
 #define RENDER_MANAGER_H
 
-// 208 bytes
 struct ConstantBuffer {
 	Matrix4x4 MatFinal;
 	Matrix4x4 ModelMatrix;
 	Matrix4x4 NormalMatrix;
 	Vector3D CameraPosition;
 	Vector3D LightPosition;
-};
-
-struct StandardCB : public ConstantBuffer {
-	Vector3D LightPosition2;
+	int CastShadows;
+	int ReceiveShadows;
+	int IsLit;
+	int Textured;
 };
 
 class RenderManager : public Subscriber
@@ -28,14 +27,14 @@ class RenderManager : public Subscriber
 private:
 	D3DHandler *mp_D3D;
 
-	D3DXCOLOR m_ClearColor;
+	Color m_ClearColor;
 	WindowSettings m_WindowSettings;
 	HWND m_hWnd; 	// the handle for the window, filled by a function
 
 	ID3D11Buffer *mp_Cbuffer;		// the constant buffer
 	ID3D11VertexShader *mp_VS;		// the vertex shader
 	ID3D11PixelShader *mp_PS;		// the pixel shader
-	ID3D10Blob *mp_VSBlob, *mp_PSBlob, *mp_Errors;
+	ID3DBlob  *mp_VSBlob, *mp_PSBlob, *mp_Errors;
 
 	bool _GameObjectHasRenderableComponent(const GameObject& gameObject);
 public:
@@ -70,7 +69,7 @@ public:
 
 	void RenderScene(const Scene * pScene);
 
-	void LoadShader(void);
+	bool LoadShader(void);
 
 	// TODO: Get rid of these in favor of selecting which VS/PS you want
 	ID3D11VertexShader * const VertexShader() { return mp_VS; }

@@ -32,16 +32,20 @@ Author: <Holden Profit>
 #include <dxgi.h>
 #include <d3dcommon.h>
 #include <d3d11.h>
-#include <d3dx11.h>
-#include <d3dx10.h>
+//#include <d3dx11.h>
+//#include <d3dx10.h>
 #include <dinput.h>
+#include <D3Dcompiler.h>
+#include <WICTextureLoader.h>
+#include <DDSTextureLoader.h>
 //#include <d3dx10math.h>
 
 /// Linking ///
 #pragma comment(lib, "dxgi.lib")
 #pragma comment (lib, "d3d11.lib")
-#pragma comment (lib, "d3dx11.lib")
-#pragma comment (lib, "d3dx10.lib")
+//#pragma comment (lib, "d3dx11.lib")
+//#pragma comment (lib, "d3dx10.lib")
+#pragma comment(lib,"d3dcompiler.lib")
 
 // DirectInput
 #pragma comment (lib, "dinput8.lib")
@@ -98,7 +102,7 @@ using namespace JsonReader;
 // TODO: This should probably be moved to a file
 typedef unsigned int InfectGUID;
 
-//#include <Color.h>
+#include <Color.h>
 //#include <Debug.h>
 #include <WindowProc.h>
 #include <WindowSettings.h>
@@ -113,7 +117,9 @@ typedef unsigned int InfectGUID;
 //#include <FontInfo.h>
 //#include <FrameBufferObject.h>
 #include <Mesh.h>
-//#include <Plane.h>
+#include <Plane.h>
+#include <Sphere.h>
+#include <Cube.h>
 //#include <DebugLineMesh.h>
 //#include <Shader.h>
 //#include <ShaderProgram.h>

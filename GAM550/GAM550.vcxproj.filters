@@ -177,6 +177,15 @@
     <ClCompile Include="SOURCE\Physics\Quaternion.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\Plane.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Cube.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Sphere.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
     <ClCompile Include="SOURCE\MemoryManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
@@ -335,11 +344,17 @@
     <ClInclude Include="SOURCE\GameObject\MeshComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Physics\RigidBody.h">
-      <Filter>Source Files\Physics</Filter>
+    <ClInclude Include="SOURCE\Plane.h">
+      <Filter>Source Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Physics\Quaternion.h">
-      <Filter>Source Files\Physics</Filter>
+    <ClInclude Include="SOURCE\Cube.h">
+      <Filter>Source Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Sphere.h">
+      <Filter>Source Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Color.h">
+      <Filter>Source Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\MemoryManager.h">
       <Filter>Source Files\Managers</Filter>

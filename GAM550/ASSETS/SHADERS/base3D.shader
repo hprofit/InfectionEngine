@@ -5,6 +5,10 @@ cbuffer ConstantBuffer
 	float4x4 NormalMatrix;
 	float4 CameraPosition;
 	float4 LightPosition;
+	bool CastShadows;
+	bool ReceiveShadows;
+	bool IsLit;
+	bool Textured;
 };
 
 struct VOut
@@ -15,7 +19,11 @@ struct VOut
 	float4 view : VIEW;
 	float4 light : LIGHT;
 	float4 color : COLOR;
+	float2 texCoords : TEXCOORDS;
 };
+
+Texture2D Texture;
+SamplerState ss;
 
 
 VOut VShader(
@@ -24,13 +32,20 @@ VOut VShader(
 	float4 tangent : TANGENT,
 	float4 bitangent : BITANGENT,
 	float2 texCoords : TEXCOORDS,
-	float4 color : COLOR)
+	float4 color : COLOR
+)
 {
 	VOut output;
+	position.w = 1;
+	normal.w = 0;
+	tangent.w = 0;
+	bitangent.w = 0;
+
 	float4 P = mul(ModelMatrix, position);
+
 	float4 n = mul(NormalMatrix, normal);
-	float4 t = mul(NormalMatrix, tangent);
 	float4 b = mul(NormalMatrix, bitangent);
+	float4 t = mul(NormalMatrix, tangent);
 
 	float3 T = normalize(mul(ModelMatrix, tangent)).xyz;
 	float3 B = normalize(mul(ModelMatrix, bitangent)).xyz;
@@ -38,11 +53,12 @@ VOut VShader(
 
 
 	output.position = mul(MatFinal, position);
-	output.normal = normalize(normal);
+	output.normal = mul(NormalMatrix, normal);
 	output.tbn = float3x3(T, B, N);
 	output.view = CameraPosition - P;
 	output.light = LightPosition - P;
 	output.color = color;
+	output.texCoords = texCoords;
 
 	return output;
 }
@@ -54,10 +70,31 @@ float4 PShader(
 	float3x3 tbn : TBN,
 	float4 view : VIEW,
 	float4 light : LIGHT,
-	float4 color : COLOR
+	float4 color : COLOR,
+	float2 texCoords : TEXCOORDS
 ) : SV_TARGET
 {
-	float4 ambient = float4(0.2, 0.2, 0.2, 1);
-	float4 diffuse = max(dot(normal, light), 0) * color;
-	return diffuse + ambient;
+	float4 finalColor = float4(0,0,0, 1);
+	float4 diffuseColor = Textured ? Texture.Sample(ss, texCoords) : color;
+	if (IsLit) {
+		float4 m = normalize(normal);
+		float4 L = normalize(light);
+		float4 v = normalize(view);
+		float4 H = normalize(v + L);
+		float specularCoef = 100;
+		float4 specularColor = float4(1, 1, 1, 1);
+		float4 lightColor = float4(1, 1, 1, 1);
+
+		float4 ambient = color * float4(0.1, 0.1, 0.1, 1);
+		float4 diffuse = max(dot(m, L), 0) * diffuseColor * lightColor;
+		float4 specular = pow(max(dot(H, m), 0), specularCoef) * specularColor * lightColor;
+
+		finalColor = diffuse + specular + ambient;
+	}
+	else {
+		finalColor = diffuseColor;
+	}
+
+	finalColor.w = 1;
+	return finalColor;
 }

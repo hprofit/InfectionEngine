@@ -12,7 +12,7 @@ Author: <Holden Profit>
 class LightBaseComponent : public Component
 {
 protected:
-	D3DXCOLOR m_color;
+	Color m_color;
 	float m_distance;	// How far before the light falls off entirely
 	float m_a, m_b;		// Light fall off  (1 / (1 + a * d + b^2 * d) )
 	float m_intensity;	// Intensity of the light
@@ -30,8 +30,8 @@ public:
 	inline FLOAT Green() const { return m_color.g; }
 	inline FLOAT Blue() const { return m_color.b; }
 	inline FLOAT Alpha() const { return m_color.a; }
-	inline D3DXCOLOR GetColor() const { return m_color; }
-	void SetColor(const D3DXCOLOR& color);
+	inline Color GetColor() const { return m_color; }
+	void SetColor(const Color& color);
 
 	inline float Distance() const { return m_distance; }
 	void SetDistance(float distance);

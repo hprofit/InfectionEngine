@@ -13,14 +13,15 @@ namespace Infect {
 	{
 		INFECT_EVENTS.Init();
 		INFECT_GAME_CONFIG.LoadConfig(configFile);
-		INFECT_RESOURCES.Init();
 		INFECT_GOM.Init();
 		if (INFECT_GAME_CONFIG.IsConsoleEnabled())
 			INFECT_RENDERER.InitConsole();
 		if (!INFECT_RENDERER.InitWindow(hInstance, nCmdShow, INFECT_GAME_CONFIG.WindowSettings()))
 			std::cout << "DIRECTX DID NOT INITIALIZE PROPERLY." << std::endl;
-		INFECT_RENDERER.LoadShader(); // TODO: MOVE THIS
+		if (!INFECT_RENDERER.LoadShader())  // TODO: MOVE THIS
+			return 1;
 		INFECT_INPUT.Init(hInstance);
+		INFECT_RESOURCES.Init();
 
 
 		INFECT_CMC.RegisterCompMngr(new TransformComponentManager());

@@ -39,11 +39,13 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 		v.u = mesh->mTextureCoords[0][i].x;
 		v.v = mesh->mTextureCoords[0][i].y;
 
-		//if (mesh->mColors[0][i]) {
-		//	aiColor4D color = mesh->mColors[0][i];
-		//	v.color = D3DXCOLOR(color.r, color.g, color.b, color.a);
-		//}
-		v.color = D3DXCOLOR(0,1,0,1);
+		if (mesh->mColors && mesh->mColors[0]) {
+			aiColor4D color = mesh->mColors[0][i];
+			v.r = color.r;
+			v.g = color.g;
+			v.b = color.b;
+			v.a = color.a;
+		}
 
 		m_vertices.push_back(v);
 	}
@@ -72,13 +74,17 @@ Mesh::~Mesh()
 	mp_VBuffer->Release();
 }
 
-void Mesh::AddVertex(FLOAT x, FLOAT y, FLOAT z, D3DXCOLOR color)
+void Mesh::AddVertex(FLOAT x, FLOAT y, FLOAT z, const float* color)
 {
 	Vertex vert;
 	vert.x = x;
 	vert.y = y;
 	vert.z = z;
-	vert.color = color;
+
+	vert.r = color[0];
+	vert.g = color[1];
+	vert.b = color[2];
+	vert.a = color[3];
 
 	vert.nX = 0;
 	vert.nY = 0;
@@ -98,13 +104,17 @@ void Mesh::AddVertex(FLOAT x, FLOAT y, FLOAT z, D3DXCOLOR color)
 	m_vertices.push_back(vert);
 }
 
-void Mesh::AddVertex(FLOAT x, FLOAT y, FLOAT z, FLOAT nx, FLOAT ny, FLOAT nz, FLOAT tx, FLOAT ty, FLOAT tz, D3DXCOLOR color)
+void Mesh::AddVertex(FLOAT x, FLOAT y, FLOAT z, FLOAT nx, FLOAT ny, FLOAT nz, FLOAT tx, FLOAT ty, FLOAT tz, const float* color)
 {
 	Vertex vert;
 	vert.x = x;
 	vert.y = y;
 	vert.z = z;
-	vert.color = color;
+
+	vert.r = color[0];
+	vert.g = color[1];
+	vert.b = color[2];
+	vert.a = color[3];
 
 	vert.nX = nx;
 	vert.nY = ny;

@@ -23,7 +23,7 @@ public:
 public:
 	Matrix4x4();
 	Matrix4x4(float x1, float y1, float z1, float w1, float x2, float y2, float z2, float w2, float x3, float y3, float z3, float w3, float x4, float y4, float z4, float w4);
-	Matrix4x4(const D3DXMATRIX &D3DMatrix);
+	//Matrix4x4(const D3DXMATRIX &D3DMatrix);
 	Matrix4x4(const Matrix4x4 &other); // Copy Ctor
 	Matrix4x4(const Matrix3x3 &other); // Copy Ctor
 	Matrix4x4& operator= (const Matrix4x4 &other); // Assignment Operator
@@ -36,7 +36,7 @@ public:
 	void Identity();
 	float Determinant() const;
 	void Print() const;
-	D3DXMATRIX ToD3DXMATRIX();
+	//D3DXMATRIX ToD3DXMATRIX();
 
 	static Matrix4x4 Zero4D();
 	static Matrix4x4 Identity4D();

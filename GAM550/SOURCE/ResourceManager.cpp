@@ -20,6 +20,64 @@ bool ResourceManager::Init()
 {
 	//LoadPrefabFiles();
 
+	Plane* plane = new Plane();
+	plane->FinishMesh();
+	Scene* pScenePlane = new Scene(1);
+	(*pScenePlane)[0] = plane;
+	m_scenes[PLANE_PRIMITIVE] = pScenePlane;
+
+	Cube* pCube = new Cube();
+	m_scenes[CUBE_PRIMITIVE] = pCube;
+
+	Skybox* pSkyBox = new Skybox();
+	m_scenes[SKYBOX_PRIMITIVE] = pSkyBox;
+
+	Sphere* pSphere = new Sphere(40);
+	pSphere->FinishMesh();
+	Scene* pSceneSphere = new Scene(1);
+	(*pSceneSphere)[0] = pSphere;
+	m_scenes[SPHERE_PRIMITIVE] = pSceneSphere;
+
+	PolarSphere* pPolarSphere = new PolarSphere();
+	pPolarSphere->FinishMesh();
+	Scene* pScenePolarSphere = new Scene(1);
+	(*pScenePolarSphere)[0] = pPolarSphere;
+	m_scenes[POLAR_SPHERE_PRIMITIVE] = pScenePolarSphere;
+
+
+
+
+	Mesh* pMesh = new Mesh();
+
+	pMesh->AddVertex(-1.0f, 1.0f, -1.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(1.0f, 1.0f, -1.0f, Color(0.0f, 1.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(-1.0f, -1.0f, -1.0f, Color(0.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(1.0f, -1.0f, -1.0f, Color(1.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(-1.0f, 1.0f, 1.0f, Color(0.0f, 1.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(1.0f, 1.0f, 1.0f, Color(1.0f, 0.0f, 1.0f, 1.0f));
+	pMesh->AddVertex(-1.0f, -1.0f, 1.0f, Color(1.0f, 1.0f, 0.0f, 1.0f));
+	pMesh->AddVertex(1.0f, -1.0f, 1.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
+
+	pMesh->AddFace(0, 1, 2);
+	pMesh->AddFace(2, 1, 3);
+	pMesh->AddFace(4, 0, 6);
+	pMesh->AddFace(6, 0, 2);
+	pMesh->AddFace(7, 5, 6);
+	pMesh->AddFace(6, 5, 4);
+	pMesh->AddFace(3, 1, 7);
+	pMesh->AddFace(7, 1, 5);
+	pMesh->AddFace(4, 5, 0);
+	pMesh->AddFace(0, 5, 1);
+	pMesh->AddFace(3, 7, 2);
+	pMesh->AddFace(2, 7, 6);
+
+	pMesh->FinishMesh();
+	Scene* pScene = new Scene(1);
+	(*pScene)[0] = pMesh;
+	m_scenes["test"] = pScene;
+
+
+
 	return true;
 }
 
@@ -67,6 +125,55 @@ void ResourceManager::UnloadMesh(const std::string& meshName)
 }
 
 #pragma endregion
+
+ID3D11ShaderResourceView * ResourceManager::_LoadTexture(const std::string & textureName)
+{
+	ID3D11ShaderResourceView *pTexture;
+	ID3D11Resource ** pResource;
+	std::string filePath = INFECT_GAME_CONFIG.TexturesDir() + textureName;
+	HRESULT result = DirectX::CreateWICTextureFromFile(
+		INFECT_RENDERER.Device(),
+		std::wstring(filePath.begin(), filePath.end()).c_str(),
+		NULL, &pTexture
+	);
+	if (FAILED(result)) {
+		MessageBox(NULL, (std::string("Failed to load texture: ") + filePath).c_str(), "Error", MB_OK);
+		return nullptr;
+	}
+		
+		
+		//// the Direct3D device
+		//(INFECT_GAME_CONFIG.TexturesDir() + textureName).c_str(),    // load texture from the local folder
+		//nullptr, nullptr);
+
+	//D3DX11CreateShaderResourceViewFromFile(INFECT_RENDERER.Device(),            // the Direct3D device
+	//	(INFECT_GAME_CONFIG.TexturesDir() + textureName).c_str(),    // load Wood.png in the local folder
+	//	NULL,           // no additional information
+	//	NULL,           // no multithreading
+	//	&pTexture,      // address of the shader-resource-view
+	//	NULL);          // no multithreading
+
+	m_textures[textureName] = pTexture;
+	return pTexture;
+}
+
+ID3D11ShaderResourceView * ResourceManager::GetTexture(const std::string & textureName)
+{
+	ID3D11ShaderResourceView* pTexture = m_textures[textureName];
+
+	if (pTexture)
+		return pTexture;
+	else
+		return _LoadTexture(textureName);
+}
+
+void ResourceManager::UnloadTexture(const std::string & textureName)
+{
+	if (m_textures[textureName]) {
+		delete m_textures[textureName];
+		m_textures.erase(textureName);
+	}
+}
 
 void ResourceManager::UnloadAll()
 {
