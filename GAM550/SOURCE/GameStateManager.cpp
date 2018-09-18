@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Holden Profit>
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #include <Stdafx.h>
@@ -59,12 +59,12 @@ MSG GameStateManager::Update() {
 	(*pScene)[0] = pMesh;
 	
 	GameObject* pGO = INFECT_GOM.SpawnGameObject();
-	MeshComponent* pMeshComp = INFECT_COMPONENT_FACTORY.CreateComponent<MeshComponent>();
+	MeshComponent* pMeshComp = (MeshComponent*)INFECT_MEMORY.GetNewComponent(C_Mesh);
 	//pMeshComp->SetScene(INFECT_RESOURCES.GetScene("Suzy.fbx"));
 	pMeshComp->SetScene(INFECT_RESOURCES.GetScene("sphere.obj"));
 	//pMeshComp->SetScene(pScene);
 	
-	TransformComponent* pTransComp = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
+	TransformComponent* pTransComp = (TransformComponent*)INFECT_MEMORY.GetNewComponent(C_Transform);
 	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
 	pTransComp->SetAngleX(-90);
 	//pTransComp->SetAngleZ(45);
@@ -75,17 +75,17 @@ MSG GameStateManager::Update() {
 	pGO->LateInitialize();
 	
 	GameObject* pGOCamera = INFECT_GOM.SpawnGameObject();
-	TransformComponent* pTransComp2 = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
+	TransformComponent* pTransComp2 = (TransformComponent*)INFECT_MEMORY.GetNewComponent(C_Transform);
 	pTransComp2->SetPosition(Vector3D(0, 0, 50, 1));
 	
-	CameraComponent * pCamComp = INFECT_COMPONENT_FACTORY.CreateComponent<CameraComponent>();
+	CameraComponent * pCamComp = (CameraComponent*)INFECT_MEMORY.GetNewComponent(C_Camera);
 	pGOCamera->AddComponent(pTransComp2);
 	pGOCamera->AddComponent(pCamComp);
 	pGOCamera->LateInitialize();
 
 	GameObject* pGOLight = INFECT_GOM.SpawnGameObject();
-	PointLightComponent *pLight = INFECT_COMPONENT_FACTORY.CreateComponent<PointLightComponent>();
-	TransformComponent* pTransComp3 = INFECT_COMPONENT_FACTORY.CreateComponent<TransformComponent>();
+	PointLightComponent *pLight = (PointLightComponent*) INFECT_MEMORY.GetNewComponent(C_PointLight);
+	TransformComponent* pTransComp3 = (TransformComponent*)INFECT_MEMORY.GetNewComponent(C_Transform);
 	pTransComp3->SetPosition(Vector3D(100, 100, 0, 1));
 	pGOLight->AddComponent(pLight);
 	pGOLight->AddComponent(pTransComp3);
@@ -122,7 +122,7 @@ MSG GameStateManager::Update() {
 			}
 
 			Infect::FrameStart();
-
+			
 			if (INFECT_INPUT.IsKeyPressed(DIK_D)) {
 				pGOLight->GetComponent<TransformComponent>()->Move(Infect::GetFrameTime() *30.f*pTransComp2->Right());
 			}
@@ -135,7 +135,6 @@ MSG GameStateManager::Update() {
 			if (INFECT_INPUT.IsKeyPressed(DIK_S)) {
 				pGOLight->GetComponent<TransformComponent>()->Move(Infect::GetFrameTime() *-30.f*pTransComp2->Up());
 			}
-
 
 
 			if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {

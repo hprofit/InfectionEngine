@@ -27,9 +27,11 @@ public:
 
 
 	// TODO: Get rid of this
-	void Register(CC t) {
-		m_Components.push_back(t);
+	void Register(Component* t) {
+		m_Components.push_back(static_cast<CC>(t));
 	}
+	void Unregister(Component* t) {}
+	void Init();
 };
 
 #endif

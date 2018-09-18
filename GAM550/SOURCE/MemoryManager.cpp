@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: Hyoyup Chung
+Author: <Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #include <Stdafx.h>
@@ -12,8 +12,8 @@ static void PrintLinkedList(MemoryBlock* node) {
 		printf("\n\nFINISHED\n\n");
 		return;
 	}
-
-	printf("MEMORY BLOCK :: node: %p :: pData: %p :: Size: %d :: FreeSize: %d :: Next: %p :: Prev: %p\n", node, node->pData, node->size, node->freesize, node->next, node->prev);
+	printf("MEMORY BLOCK :: node: %p :: pData: %p :: Size: %d :: FreeSize: %d :: Next: %p :: Prev: %p\n",
+		node, node->pData, node->size, node->freesize, node->next, node->prev);
 	PrintLinkedList(node->next);
 }
 
@@ -36,9 +36,19 @@ MemoryManager::MemoryManager():
 	m_pHead = (MemoryBlock*)malloc(sizeof(MemoryBlock));
 	m_pHead->Initialize(m_Buffer, 0, m_TotalBufferSize);
 	m_NumCachedBlock = 0;
-	for (unsigned i = 0; i < MAX_CACHE_SIZE_NUM; i++) {
-		//TODO: Add GameObject Ctr w.o. ID
-		m_GameObjectCache[i] = new GameObject();
+	m_ComponentFactory = new ComponentFactory();
+	// GameObject preallocation
+	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
+		m_GameObjectPool[i] = new GameObject();
+	}
+	// Component preallocation
+	for (unsigned _enum = 0; _enum < NUM_COMPONENTS; _enum++) {
+		ComponentType type = static_cast<ComponentType>(_enum);
+		// TODO: ask each component for cache size
+		m_ComponentPool[type].reserve(MAX_GAMEOBJECT_CACHE);
+		//for (unsigned size = 0; size < MAX_GAMEOBJECT_CACHE; size++) {
+		//	m_ComponentPool[type].push_back(CreateComponent(type));
+		//}
 	}
 }
 
@@ -49,6 +59,10 @@ MemoryManager::~MemoryManager() {
 		m_pHead = nullptr;
 	}
 	free(m_Buffer);
+
+	/*for (unsigned i = 0; i < MAX_CACHE_SIZE_NUM; i++) {
+		delete m_GameObjectPool[i];
+	}*/
 }
 
 void* MemoryManager::Alloc(std::size_t size) {
@@ -85,20 +99,13 @@ void MemoryManager::Free(void* ptr){
 		printf("MEMMNGR::FREE() NEVER REACH HERE!\n");
 		return;
 	}
-
-	// TODO: remove while-loop to O(1) of block node find
-	//		 use unordered_map<?,MemoryBlock*>
-	//						  <?,std::shared_ptr<MemoryBlock> >
-	// ? = reinterpret_case<unsigned long>
 	while(current && (current->pData != ptr)){
 		current = current->next;
 	}
-
 	if (!current) {
 		//printf("MEMMNGR::FREE() NEVER REACH HERE --2 !!!\n");
 		return;
 	}
-	
 	// remove links
 	if (current->next)
 		current->next->prev = current->prev;
@@ -110,7 +117,6 @@ void MemoryManager::Free(void* ptr){
 
 	current->next = nullptr;
 	current->prev = nullptr;
-
 	// try caching current block. If not, free.
 	Recycle(current);
 }
@@ -139,17 +145,17 @@ void* MemoryManager::m_Buffer = nullptr;
 // GAMEOBJECT RECYCLE 
 GameObject* MemoryManager::GetNewGameObject() {
 	//return new GameObject(id);
-	for (unsigned i = 0; i<MAX_CACHE_SIZE_NUM; i++) {
-		if (!m_GameObjectCache[i]->IsActive()) {
-			GameObject* pGO = m_GameObjectCache[i];
+	for (unsigned i = 0; i< MAX_GAMEOBJECT_CACHE; i++) {
+		if (!m_GameObjectPool[i]->IsActive()) {
+			GameObject* pGO = m_GameObjectPool[i];
 			pGO->SetID(INFECT_GUID.GetGUID());
 			pGO->SetActive(true);
 			return pGO; // this pGO needs to be reset with appropriate data
 						// only GUID is valid
 		}
 	}
-	
-	printf("NOT ENOUGH CACHE SIZE - Current cache size: %d\n", MAX_CACHE_SIZE_NUM);
+	printf("NO MORE EMPTY GAMEOBJECT - Current cache size: %d\n", MAX_GAMEOBJECT_CACHE);
+	return nullptr;
 }
 
 // GAMEOBJECT CACHING 
@@ -159,28 +165,19 @@ void MemoryManager::DeleteGameObject(GameObject* ptr) {
 	ptr->SetActive(false);
 }
 
-Component* MemoryManager::GetNewComponent(std::string type) {
+Component* MemoryManager::GetNewComponent(ComponentType cType) {
+	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
+		Component* compPtr = m_ComponentPool[cType][i];
+		if (!compPtr->IsDirty()) {
+			compPtr->SetDirty(true);
+			//INFECT_CMC.RegisterCompToCompMngr(compPtr, cType);
+			return compPtr;
+		}
+	}
 	return nullptr;
-
-	//std::string typeName = "C_" + type;
-	//if (m_ComponentCache[typeName].empty()) {
-	//	return nullptr;
-	//}
-	//else { // get empty component from cache
-	//	Component* emptyComp = m_ComponentCache[typeName].back();
-	//	m_ComponentCache[typeName].pop_back();
-	//	return emptyComp;
-	//}
 }
-void MemoryManager::DeleteComponent(Component* ptr) {
-	delete ptr;
 
-	//std::string typeString = ComponentTypeText[ptr->Type()];
-	//if (m_ComponentCache[typeString].size() < MAX_GAMEOBJECT_CACHE) {
-	//	ptr->Deactivate();
-	//	m_ComponentCache[typeString].push_back(ptr);
-	//}
-	//else {
-	//	delete ptr;
-	//}
+void MemoryManager::DeleteComponent(Component* ptr) {
+	ptr->SetDirty(false);
+	
 }

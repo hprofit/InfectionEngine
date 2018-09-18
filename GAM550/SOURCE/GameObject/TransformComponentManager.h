@@ -30,9 +30,11 @@ public:
 
 
 	// TODO: Get rid of this
-	void Register(TransformComponent* t) {
-		m_Components.push_back(t);
+	void Register(Component* t) {
+		m_Components.push_back(static_cast<TC>(t));
 	}
+	void Unregister(Component* t) {}
+	void Init();
 };
 
 #endif

@@ -48,3 +48,7 @@ void CameraComponentManager::HandleEvent(Event * pEvent)
 		tComp->HandleEvent(pEvent);
 	}
 }
+
+void CameraComponentManager::Init() {
+	INFECT_MEMORY.ComponentPoolInit<CameraComponent>(CameraComponent::Type);
+}

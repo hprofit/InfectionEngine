@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Holden Profit>
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #include <Stdafx.h>
@@ -25,4 +25,8 @@ void MeshComponentManager::HandleEvent(Event * pEvent)
 	for each (MC mComp in m_Components) {
 		mComp->HandleEvent(pEvent);
 	}
+}
+
+void MeshComponentManager::Init() {
+	INFECT_MEMORY.ComponentPoolInit<MeshComponent>(MeshComponent::Type);
 }

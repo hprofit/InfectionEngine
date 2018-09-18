@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Holden Profit>
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #include <Stdafx.h>
@@ -27,6 +27,7 @@ namespace Infect {
 		INFECT_CMC.RegisterCompMngr(new CameraComponentManager());
 		INFECT_CMC.RegisterCompMngr(new PointLightComponentManager());
 		INFECT_CMC.RegisterCompMngr(new MeshComponentManager());
+		INFECT_CMC.Init();
 		return 0;
 	}
 

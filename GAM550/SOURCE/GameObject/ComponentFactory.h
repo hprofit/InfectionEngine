@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Holden Profit>
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #pragma once
@@ -10,11 +10,13 @@ Author: <Holden Profit>
 #define COMPONENT_FACTORY_H
 
 typedef Component* CreationFunction(InfectGUID);
+typedef void RegisterFunction(Component*);
 
 class ComponentFactory {
 private:
 	//std::unordered_map <ComponentType, CreationFunction*> m_creationFunctions;
 	CreationFunction* m_creationFunctions[ComponentType::NUM_COMPONENTS];
+	RegisterFunction* m_registerFunctions[ComponentType::NUM_COMPONENTS];
 
 	InfectGUID _GetGUID() const;
 public:
@@ -24,13 +26,6 @@ public:
 	template <typename C>
 	C* CreateComponent(std::string component) 
 	{
-		// check if there's empty component stored in cache
-		//Component* cachedComp = INFECT_MEMORY.GetNewComponent(component);
-		//if (cachedComp) {
-		//	return cachedComp;
-		//}
-
-		// no empty component available, return create new comp
 		ComponentType cType;
 		for (int i = 0; i < ComponentType::NUM_COMPONENTS; ++i) {
 			if (strcmp(ComponentTypeText[i], component.c_str())) {
@@ -56,7 +51,16 @@ public:
 			return nullptr;
 	}
 
-	void RegisterComponent(ComponentType cType, CreationFunction*) {};
+	//Component* CreateComponent(ComponentType cType)
+	//{
+	//	CreationFunction* Create = m_creationFunctions[cType];
+	//	if (Create)
+	//		return  Create(_GetGUID());
+	//	else
+	//		return nullptr;
+	//}
+
+	void RegisterComponent(ComponentType cType);
 };
 
 #endif 

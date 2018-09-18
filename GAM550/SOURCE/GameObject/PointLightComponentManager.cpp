@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Holden Profit>
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #include <Stdafx.h>
@@ -25,4 +25,8 @@ void PointLightComponentManager::HandleEvent(Event * pEvent)
 	for each (PLC plComp in m_Components) {
 		plComp->HandleEvent(pEvent);
 	}
+}
+
+void PointLightComponentManager::Init() {
+	INFECT_MEMORY.ComponentPoolInit<PointLightComponent>(PointLightComponent::Type);
 }

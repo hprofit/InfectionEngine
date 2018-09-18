@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Holden Profit>
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #pragma once
@@ -22,6 +22,9 @@ public:
 
 	virtual void Update(float dt) = 0;
 	virtual void HandleEvent(Event* pEvent) = 0;
+	virtual void Register(Component* pComp) = 0;
+	virtual void Unregister(Component* pComp) = 0;
+	virtual void Init() = 0;
 };
 
 template <typename CType>
@@ -39,6 +42,9 @@ public:
 
 	virtual void Update(float dt) = 0;
 	virtual void HandleEvent(Event* pEvent) = 0;
+	virtual void Register(Component* pComp) = 0;
+	virtual void Unregister(Component* pComp) = 0;
+	virtual void Init() = 0;
 };
 
 #endif

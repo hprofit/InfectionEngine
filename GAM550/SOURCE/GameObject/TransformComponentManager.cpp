@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Holden Profit>
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #include <Stdafx.h>
@@ -66,4 +66,8 @@ void TransformComponentManager::HandleEvent(Event * pEvent)
 	for each (TransformComponent * tComp in m_Components) {
 		tComp->HandleEvent(pEvent);
 	}
+}
+
+void TransformComponentManager::Init() {
+	INFECT_MEMORY.ComponentPoolInit<TransformComponent>(TransformComponent::Type);
 }

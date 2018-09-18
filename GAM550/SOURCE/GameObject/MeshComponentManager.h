@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Holden Profit>
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #pragma once
@@ -26,9 +26,11 @@ public:
 
 
 	// TODO: Get rid of this
-	void Register(MC m) {
-		m_Components.push_back(m);
+	void Register(Component* m) {
+		m_Components.push_back(static_cast<MC>(m));
 	}
+	void Unregister(Component* t) {}
+	void Init();
 };
 
 #endif

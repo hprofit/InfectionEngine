@@ -6,7 +6,7 @@ File Name: MemoryManager.h
 Purpose: Allocation/Deallocation of Memory
 Language: C++
 Project: GAM541
-Author: Hyoyup Chung
+Author: <Hyoyup Chung>
 Creation date: 2/1/18
 - End Header --------------------------------------------------------*/
 #pragma once
@@ -14,6 +14,8 @@ Creation date: 2/1/18
 #define MEMORYMANAGER_H
 
 using namespace std;
+
+class Component;
 
 const int	 MAX_CACHE_SIZE_NUM = 100;			// # of Cacheable MemoryBlocks
 const size_t DEFAULT_BUFFER_SIZE_BYTE = 524288000;	// 5 MB = 5*1024*1024 byte
@@ -57,8 +59,9 @@ private:
 	MemoryBlock* m_pHead;						// First MemoryBlock in the linked list
 	MemoryBlock* m_Cache[MAX_CACHE_SIZE_NUM];	// Stores MemoryBlocks to be deleted, when full all will be deleted at once
 	int m_NumCachedBlock;						// Number of MemoryBlocks stored in the m_Cache
-	GameObject* m_GameObjectCache[MAX_CACHE_SIZE_NUM];
-	std::unordered_map< std::string, std::vector<Component*> >m_ComponentCache;
+	GameObject* m_GameObjectPool[MAX_GAMEOBJECT_CACHE];
+	std::unordered_map< ComponentType, std::vector<Component*> >m_ComponentPool;
+	ComponentFactory* m_ComponentFactory;
 
 	MemoryBlock* NewMemoryBlock();
 	void Recycle(MemoryBlock*);
@@ -75,7 +78,15 @@ public:
 	GameObject* GetNewGameObject();
 	void DeleteGameObject(GameObject* ptr);
 	// Component Factory
-	Component* GetNewComponent(std::string type);
+	template <typename C>
+	void ComponentPoolInit(ComponentType cType) {
+		static_assert(std::is_base_of<Component, C>::value, "MemMngr: C must inherit from Component class.");
+		//ComponentType cType = C.GetType();
+		for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
+			m_ComponentPool[cType].push_back(m_ComponentFactory->CreateComponent<C>());
+		}
+	}
+	Component* GetNewComponent(ComponentType type);
 	void DeleteComponent(Component* ptr);
 };
 #endif

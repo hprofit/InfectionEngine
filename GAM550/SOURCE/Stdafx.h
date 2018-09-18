@@ -271,10 +271,10 @@ typedef unsigned int InfectGUID;
 //#include <LevelManager.h>
 //#include <DebugManager.h>
 #include <AudioManager.h>
+#include <GameObject\ComponentFactory.h>
 #include <MemoryManager.h>
 //#include <ImguiManager.h>
 //#include <LevelEditor.h>
-#include <GameObject\ComponentFactory.h>
 //#include <LuaScript.h>
 //#include <UIManager.h>
 //#include <PlayerStatsManager.h>
