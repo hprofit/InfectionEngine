@@ -7,9 +7,13 @@ Author: <Holden Profit, Hyoyup Chung>
 
 #include <Stdafx.h>
 
+PointLightComponentManager::PointLightComponentManager() {
+	m_Components = (std::vector<PointLightComponent*>*)INFECT_MEMORY.GetComponentPool(PointLightComponent::Type);
+}
+
 void PointLightComponentManager::Update(float dt)
 {
-	for each (PLC plComp in m_Components) {
+	for each (PLC plComp in *m_Components) {
 		plComp->m_UpdatedLastFrame = false;
 		if (plComp->IsDirty()) {
 
@@ -22,7 +26,7 @@ void PointLightComponentManager::Update(float dt)
 // TODO: Super naive attempt at this
 void PointLightComponentManager::HandleEvent(Event * pEvent)
 {
-	for each (PLC plComp in m_Components) {
+	for each (PLC plComp in *m_Components) {
 		plComp->HandleEvent(pEvent);
 	}
 }

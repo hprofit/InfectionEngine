@@ -7,6 +7,10 @@ Author: <Holden Profit, Hyoyup Chung>
 
 #include <Stdafx.h>
 
+TransformComponentManager::TransformComponentManager() {
+	m_Components = (std::vector<TransformComponent*>*)INFECT_MEMORY.GetComponentPool(TransformComponent::Type);
+}
+
 void TransformComponentManager::_UpdateLookAt(TC tComp)
 {
 	tComp->m_rotation =
@@ -45,7 +49,7 @@ void TransformComponentManager::_UpdateTransform(TC tComp)
 
 void TransformComponentManager::Update(float dt)
 {
-	for each (TransformComponent * tComp in m_Components) {
+	for each (TransformComponent * tComp in *m_Components) {
 		tComp->m_UpdatedLastFrame = false;
 		if (tComp->IsDirty()) {
 			tComp->m_prevPosition = tComp->m_position;
@@ -63,7 +67,7 @@ void TransformComponentManager::Update(float dt)
 // TODO: Super naive attempt at this
 void TransformComponentManager::HandleEvent(Event * pEvent)
 {
-	for each (TransformComponent * tComp in m_Components) {
+	for each (TransformComponent * tComp in *m_Components) {
 		tComp->HandleEvent(pEvent);
 	}
 }

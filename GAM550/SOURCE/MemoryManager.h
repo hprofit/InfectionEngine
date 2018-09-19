@@ -59,6 +59,7 @@ private:
 	MemoryBlock* m_pHead;						// First MemoryBlock in the linked list
 	MemoryBlock* m_Cache[MAX_CACHE_SIZE_NUM];	// Stores MemoryBlocks to be deleted, when full all will be deleted at once
 	int m_NumCachedBlock;						// Number of MemoryBlocks stored in the m_Cache
+
 	GameObject* m_GameObjectPool[MAX_GAMEOBJECT_CACHE];
 	std::unordered_map< ComponentType, std::vector<Component*> >m_ComponentPool;
 	ComponentFactory* m_ComponentFactory;
@@ -86,6 +87,7 @@ public:
 			m_ComponentPool[cType].push_back(m_ComponentFactory->CreateComponent<C>());
 		}
 	}
+	std::vector<Component*>* GetComponentPool(ComponentType cType) { return &m_ComponentPool[cType]; }
 	Component* GetNewComponent(ComponentType type);
 	void DeleteComponent(Component* ptr);
 };

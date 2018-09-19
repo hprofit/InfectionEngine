@@ -17,19 +17,13 @@ protected:
 	typedef MeshComponent* MC;
 
 public:
-	MeshComponentManager() {};
+	MeshComponentManager();
 	virtual ~MeshComponentManager() {};
 
 
 	virtual void Update(float dt);
 	virtual void HandleEvent(Event* pEvent);
 
-
-	// TODO: Get rid of this
-	void Register(Component* m) {
-		m_Components.push_back(static_cast<MC>(m));
-	}
-	void Unregister(Component* t) {}
 	void Init();
 };
 

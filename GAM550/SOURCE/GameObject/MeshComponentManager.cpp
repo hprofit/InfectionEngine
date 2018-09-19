@@ -7,9 +7,13 @@ Author: <Holden Profit, Hyoyup Chung>
 
 #include <Stdafx.h>
 
+MeshComponentManager::MeshComponentManager() {
+	m_Components = (std::vector<MeshComponent*>*)INFECT_MEMORY.GetComponentPool(MeshComponent::Type);
+}
+
 void MeshComponentManager::Update(float dt)
 {
-	for each (MC mComp in m_Components) {
+	for each (MC mComp in *m_Components) {
 		mComp->m_UpdatedLastFrame = false;
 		if (mComp->IsDirty()) {
 
@@ -22,7 +26,7 @@ void MeshComponentManager::Update(float dt)
 // TODO: Super naive attempt at this
 void MeshComponentManager::HandleEvent(Event * pEvent)
 {
-	for each (MC mComp in m_Components) {
+	for each (MC mComp in *m_Components) {
 		mComp->HandleEvent(pEvent);
 	}
 }

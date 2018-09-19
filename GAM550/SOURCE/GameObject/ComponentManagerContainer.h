@@ -30,7 +30,6 @@ public:
 
 	// TODO: Get rid of this
 	CM* GetCM(int idx) { return m_CMngrs[idx]; }
-	void RegisterCompToCompMngr(Component* comp, ComponentType cType);
 };
 
 #endif

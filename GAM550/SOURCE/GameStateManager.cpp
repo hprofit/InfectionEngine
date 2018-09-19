@@ -91,7 +91,7 @@ MSG GameStateManager::Update() {
 
 
 
-
+/*
 	TransformComponentManager* tcm = static_cast<TransformComponentManager*>(INFECT_CMC.GetCM(0));
 	tcm->Register(pGOSkyBox->GetComponent<TransformComponent>());
 	tcm->Register(pGO->GetComponent<TransformComponent>());
@@ -104,7 +104,7 @@ MSG GameStateManager::Update() {
 	MeshComponentManager* mcm = static_cast<MeshComponentManager*>(INFECT_CMC.GetCM(3));
 	mcm->Register(pGOSkyBox->GetComponent<MeshComponent>());
 	mcm->Register(pGO->GetComponent<MeshComponent>());
-
+*/
 
 
 
@@ -136,8 +136,8 @@ MSG GameStateManager::Update() {
 		pGOFOR[i]->AddComponent(pTransComp);
 		pGOFOR[i]->LateInitialize();
 
-		tcm->Register(pGOFOR[i]->GetComponent<TransformComponent>());
-		mcm->Register(pGOFOR[i]->GetComponent<MeshComponent>());
+		//tcm->Register(pGOFOR[i]->GetComponent<TransformComponent>());
+		//mcm->Register(pGOFOR[i]->GetComponent<MeshComponent>());
 	}
 
 

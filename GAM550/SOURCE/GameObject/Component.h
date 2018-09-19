@@ -20,14 +20,16 @@ protected:
 	GameObject *mp_Parent;
 	bool m_IsDirty;
 	bool m_UpdatedLastFrame;
+	bool m_IsActive;
 public:
 	static const ComponentType Type = ComponentType::NUM_COMPONENTS;
 
-	Component(InfectGUID guid) : 
+	Component(InfectGUID guid) :
 		m_GUID(guid),
 		mp_Parent(nullptr),
 		m_IsDirty(false),
-		m_UpdatedLastFrame(false)
+		m_UpdatedLastFrame(false),
+		m_IsActive(false)
 	{};
 
 
@@ -52,6 +54,8 @@ public:
 	inline bool IsDirty() const { return m_IsDirty; }
 	inline void SetDirty(bool flag) { m_IsDirty = flag; }
 	inline bool UpdatedLastFrame() const { return m_UpdatedLastFrame; }
+	inline void SetActive(bool flag) { m_IsActive = flag; }
+	inline bool IsActive() const { return m_IsActive; }
 };
 
 #endif

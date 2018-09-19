@@ -18,19 +18,13 @@ protected:
 
 	void _CalcViewMatrix(CC comp);
 public:
-	CameraComponentManager() {};
+	CameraComponentManager();
 	virtual ~CameraComponentManager() {};
 
 
 	virtual void Update(float dt);
 	virtual void HandleEvent(Event* pEvent);
 
-
-	// TODO: Get rid of this
-	void Register(Component* t) {
-		m_Components.push_back(static_cast<CC>(t));
-	}
-	void Unregister(Component* t) {}
 	void Init();
 };
 

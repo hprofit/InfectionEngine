@@ -7,6 +7,10 @@ Author: <Holden Profit>
 
 #include <Stdafx.h>
 
+CameraComponentManager::CameraComponentManager() {
+	m_Components = (std::vector<CameraComponent*>*)INFECT_MEMORY.GetComponentPool(CameraComponent::Type);
+}
+
 void CameraComponentManager::_CalcViewMatrix(CC comp)
 {
 	TransformComponent* tComp = comp->Parent()->GetComponent<TransformComponent>();
@@ -16,7 +20,8 @@ void CameraComponentManager::_CalcViewMatrix(CC comp)
 
 void CameraComponentManager::Update(float dt)
 {
-	for each (CC cComp in m_Components) {
+	for each (CC cComp in *m_Components) {
+		if (!cComp->IsActive()) continue; // will be removed or modified later 
 		cComp->m_UpdatedLastFrame = false;
 		if (cComp->IsDirty() || cComp->Parent()->GetComponent<TransformComponent>()->UpdatedLastFrame()) {
 			_CalcViewMatrix(cComp);
@@ -44,7 +49,7 @@ void CameraComponentManager::Update(float dt)
 // TODO: Super naive attempt at this
 void CameraComponentManager::HandleEvent(Event * pEvent)
 {
-	for each (CC tComp in m_Components) {
+	for each (CC tComp in *m_Components) {
 		tComp->HandleEvent(pEvent);
 	}
 }

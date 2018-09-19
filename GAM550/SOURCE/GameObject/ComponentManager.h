@@ -22,8 +22,6 @@ public:
 
 	virtual void Update(float dt) = 0;
 	virtual void HandleEvent(Event* pEvent) = 0;
-	virtual void Register(Component* pComp) = 0;
-	virtual void Unregister(Component* pComp) = 0;
 	virtual void Init() = 0;
 };
 
@@ -32,7 +30,7 @@ class ComponentManager :
 	public CM
 {
 protected:
-	std::vector<CType*> m_Components;
+	std::vector<CType*> *m_Components;
 
 public:
 	ComponentManager() {
@@ -42,8 +40,6 @@ public:
 
 	virtual void Update(float dt) = 0;
 	virtual void HandleEvent(Event* pEvent) = 0;
-	virtual void Register(Component* pComp) = 0;
-	virtual void Unregister(Component* pComp) = 0;
 	virtual void Init() = 0;
 };
 

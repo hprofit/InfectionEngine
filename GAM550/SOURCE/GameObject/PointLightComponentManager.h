@@ -17,19 +17,13 @@ protected:
 	typedef PointLightComponent* PLC;
 
 public:
-	PointLightComponentManager() {};
+	PointLightComponentManager();
 	virtual ~PointLightComponentManager() {};
 
 
 	virtual void Update(float dt);
 	virtual void HandleEvent(Event* pEvent);
 
-
-	// TODO: Get rid of this
-	void Register(Component* p) {
-		m_Components.push_back(static_cast<PLC>(p));
-	}
-	void Unregister(Component* t) {}
 	void Init();
 };
 

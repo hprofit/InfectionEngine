@@ -21,19 +21,13 @@ protected:
 	void _UpdateTransform(TC tComp);
 
 public:
-	TransformComponentManager() {};
+	TransformComponentManager();
 	virtual ~TransformComponentManager() {};
 
 
 	virtual void Update(float dt);
 	virtual void HandleEvent(Event* pEvent);
 
-
-	// TODO: Get rid of this
-	void Register(Component* t) {
-		m_Components.push_back(static_cast<TC>(t));
-	}
-	void Unregister(Component* t) {}
 	void Init();
 };
 

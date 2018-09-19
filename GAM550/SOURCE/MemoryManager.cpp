@@ -36,6 +36,7 @@ MemoryManager::MemoryManager():
 	m_pHead = (MemoryBlock*)malloc(sizeof(MemoryBlock));
 	m_pHead->Initialize(m_Buffer, 0, m_TotalBufferSize);
 	m_NumCachedBlock = 0;
+
 	m_ComponentFactory = new ComponentFactory();
 	// GameObject preallocation
 	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
@@ -46,9 +47,6 @@ MemoryManager::MemoryManager():
 		ComponentType type = static_cast<ComponentType>(_enum);
 		// TODO: ask each component for cache size
 		m_ComponentPool[type].reserve(MAX_GAMEOBJECT_CACHE);
-		//for (unsigned size = 0; size < MAX_GAMEOBJECT_CACHE; size++) {
-		//	m_ComponentPool[type].push_back(CreateComponent(type));
-		//}
 	}
 }
 
@@ -168,8 +166,9 @@ void MemoryManager::DeleteGameObject(GameObject* ptr) {
 Component* MemoryManager::GetNewComponent(ComponentType cType) {
 	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
 		Component* compPtr = m_ComponentPool[cType][i];
-		if (!compPtr->IsDirty()) {
+		if (!compPtr->IsActive()) {
 			compPtr->SetDirty(true);
+			compPtr->SetActive(true);
 			//INFECT_CMC.RegisterCompToCompMngr(compPtr, cType);
 			return compPtr;
 		}

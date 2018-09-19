@@ -31,7 +31,3 @@ void ComponentManagerContainer::RegisterCompMngr(CM * cMngr)
 {
 	m_CMngrs.push_back(cMngr);
 }
-
-void ComponentManagerContainer::RegisterCompToCompMngr(Component* comp, ComponentType cType) {
-	m_CMngrs[(int)cType]->Register(comp);
-}
