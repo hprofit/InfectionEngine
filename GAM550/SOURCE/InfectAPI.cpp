@@ -29,6 +29,7 @@ namespace Infect {
 		INFECT_CMC.RegisterCompMngr(new PointLightComponentManager());
 		INFECT_CMC.RegisterCompMngr(new MeshComponentManager());
 		INFECT_CMC.Init();
+		INFECT_MEMORY.LateInit();
 		return 0;
 	}
 

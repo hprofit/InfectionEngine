@@ -8,7 +8,7 @@ Author: <Holden Profit, Hyoyup Chung>
 #include <Stdafx.h>
 
 TransformComponentManager::TransformComponentManager() {
-	m_Components = (std::vector<TransformComponent*>*)INFECT_MEMORY.GetComponentPool(TransformComponent::Type);
+	m_Components = (std::list<TransformComponent*>*)INFECT_MEMORY.GetComponentPool(TransformComponent::Type);
 }
 
 void TransformComponentManager::_UpdateLookAt(TC tComp)
@@ -50,6 +50,8 @@ void TransformComponentManager::_UpdateTransform(TC tComp)
 void TransformComponentManager::Update(float dt)
 {
 	for each (TransformComponent * tComp in *m_Components) {
+	//for (std::list<TransformComponent*>::iterator it=*m_Components.begin(); )
+		if (!tComp->IsActive()) continue; // will be removed or modified later 
 		tComp->m_UpdatedLastFrame = false;
 		if (tComp->IsDirty()) {
 			tComp->m_prevPosition = tComp->m_position;

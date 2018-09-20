@@ -63,7 +63,6 @@ public:
 	ObjNode(T data) : Data(data), next(nullptr), prev(nullptr) {}
 	~ObjNode<T>() { delete Data; }
 	void setNext(ObjNode* pNode) {
-
 		ObjNode* temp = next;
 		next = pNode;
 		pNode->prev = this;
@@ -135,7 +134,8 @@ private:
 	int m_NumCachedBlock;						// Number of MemoryBlocks stored in the m_Cache
 
 	GameObject* m_GameObjectPool[MAX_GAMEOBJECT_CACHE];
-	std::unordered_map< ComponentType, ObjList<Component*>* >m_ComponentPool;
+	std::unordered_map< ComponentType, std::list<Component*>* > m_ComponentPool;
+	std::unordered_map< ComponentType, std::list<Component*>::iterator> m_ComponentFirstDeadIter;
 	ComponentFactory* m_ComponentFactory;
 
 	MemoryBlock* NewMemoryBlock();
@@ -143,6 +143,8 @@ private:
 public:
 	MemoryManager();
 	~MemoryManager();
+	void LateInit();
+
 	MemoryManager(const MemoryManager &) = delete;
 	void operator=(const MemoryManager &) = delete;
 	// operator new & delete 
@@ -161,7 +163,7 @@ public:
 			m_ComponentPool[cType]->push_back(m_ComponentFactory->CreateComponent<C>());
 		}
 	}
-	ObjList<Component*>* GetComponentPool(ComponentType cType) { return m_ComponentPool[cType]; }
+	std::list<Component*>* GetComponentPool(ComponentType cType) { return m_ComponentPool[cType]; }
 	Component* GetNewComponent(ComponentType type);
 	void DeleteComponent(Component* ptr);
 };

@@ -8,12 +8,13 @@ Author: <Holden Profit, Hyoyup Chung>
 #include <Stdafx.h>
 
 MeshComponentManager::MeshComponentManager() {
-	m_Components = (std::vector<MeshComponent*>*)INFECT_MEMORY.GetComponentPool(MeshComponent::Type);
+	m_Components = (std::list<MeshComponent*>*)INFECT_MEMORY.GetComponentPool(MeshComponent::Type);
 }
 
 void MeshComponentManager::Update(float dt)
 {
 	for each (MC mComp in *m_Components) {
+		if (!mComp->IsActive()) continue; // will be removed or modified later 
 		mComp->m_UpdatedLastFrame = false;
 		if (mComp->IsDirty()) {
 

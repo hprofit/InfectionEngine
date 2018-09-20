@@ -46,7 +46,15 @@ MemoryManager::MemoryManager():
 	for (unsigned _enum = 0; _enum < NUM_COMPONENTS; _enum++) {
 		ComponentType type = static_cast<ComponentType>(_enum);
 		// TODO: ask each component for cache size
-		m_ComponentPool[type] = new ObjList<Component*>(MAX_GAMEOBJECT_CACHE);
+		m_ComponentPool[type] = new std::list<Component*>();
+		//m_ComponentFirstDeadIter[type] = m_ComponentPool[type]->begin();
+	}
+
+}
+void MemoryManager::LateInit() {
+	for (unsigned _enum = 0; _enum < NUM_COMPONENTS; _enum++) {
+		ComponentType type = static_cast<ComponentType>(_enum);
+		m_ComponentFirstDeadIter[type] = m_ComponentPool[type]->begin();
 	}
 }
 
@@ -167,10 +175,11 @@ void MemoryManager::DeleteGameObject(GameObject* ptr) {
 
 Component* MemoryManager::GetNewComponent(ComponentType cType) {
 	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
-		Component* compPtr = m_ComponentPool[cType]->pFirstDead->Data;
+		Component* compPtr = *m_ComponentFirstDeadIter[cType];
 		if (!compPtr->IsActive()) {
 			compPtr->SetDirty(true);
 			compPtr->SetActive(true);
+			m_ComponentFirstDeadIter[cType]++;
 			return compPtr;
 		}
 	}
