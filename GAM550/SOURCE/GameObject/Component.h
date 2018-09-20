@@ -23,6 +23,14 @@ protected:
 	bool m_IsActive;
 public:
 	static const ComponentType Type = ComponentType::NUM_COMPONENTS;
+	
+	Component() :
+		m_GUID(0),
+		mp_Parent(nullptr),
+		m_IsDirty(false),
+		m_UpdatedLastFrame(false),
+		m_IsActive(false)
+	{};
 
 	Component(InfectGUID guid) :
 		m_GUID(guid),

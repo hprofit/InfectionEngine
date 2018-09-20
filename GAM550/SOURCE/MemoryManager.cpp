@@ -46,7 +46,7 @@ MemoryManager::MemoryManager():
 	for (unsigned _enum = 0; _enum < NUM_COMPONENTS; _enum++) {
 		ComponentType type = static_cast<ComponentType>(_enum);
 		// TODO: ask each component for cache size
-		m_ComponentPool[type].reserve(MAX_GAMEOBJECT_CACHE);
+		m_ComponentPool[type] = new ObjList<Component*>(MAX_GAMEOBJECT_CACHE);
 	}
 }
 
@@ -58,9 +58,12 @@ MemoryManager::~MemoryManager() {
 	}
 	free(m_Buffer);
 
-	/*for (unsigned i = 0; i < MAX_CACHE_SIZE_NUM; i++) {
-		delete m_GameObjectPool[i];
-	}*/
+	//for (unsigned type = 0; type < NUM_COMPONENTS; type++) {
+	//	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
+	//		// will be deleted in the destructor
+	//	}
+	//}
+	delete m_ComponentFactory;
 }
 
 void* MemoryManager::Alloc(std::size_t size) {
@@ -158,18 +161,16 @@ GameObject* MemoryManager::GetNewGameObject() {
 
 // GAMEOBJECT CACHING 
 void MemoryManager::DeleteGameObject(GameObject* ptr) {
-	//delete ptr; 
 	ptr->Deactivate();
 	ptr->SetActive(false);
 }
 
 Component* MemoryManager::GetNewComponent(ComponentType cType) {
 	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
-		Component* compPtr = m_ComponentPool[cType][i];
+		Component* compPtr = m_ComponentPool[cType]->pFirstDead->Data;
 		if (!compPtr->IsActive()) {
 			compPtr->SetDirty(true);
 			compPtr->SetActive(true);
-			//INFECT_CMC.RegisterCompToCompMngr(compPtr, cType);
 			return compPtr;
 		}
 	}
@@ -177,6 +178,6 @@ Component* MemoryManager::GetNewComponent(ComponentType cType) {
 }
 
 void MemoryManager::DeleteComponent(Component* ptr) {
-	ptr->SetDirty(false);
+	ptr->SetActive(false);
 	
 }
