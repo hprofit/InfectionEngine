@@ -138,7 +138,7 @@ void InputManager::Update() {
 	if (FAILED(hr)) {
 		mDIRX_Keyboard->Acquire();
 		memset(m_CurrentKeyStates, 0, 256 * sizeof(BYTE));
-		//return;
+		return;
 	}
 	// update CurrentKeyStates
 	memcpy(m_CurrentKeyStates, &currentKeyStates, 256 * sizeof(BYTE));
