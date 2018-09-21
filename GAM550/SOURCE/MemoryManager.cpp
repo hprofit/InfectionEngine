@@ -188,5 +188,7 @@ Component* MemoryManager::GetNewComponent(ComponentType cType) {
 
 void MemoryManager::DeleteComponent(Component* ptr) {
 	ptr->SetActive(false);
-	
+	std::list<Component*>* cList = m_ComponentPool[ptr->GetType()];
+	std::list<Component*>::iterator it = std::find(cList->begin(), cList->end(), ptr);
+	cList->splice(cList->end(), *cList, it);
 }

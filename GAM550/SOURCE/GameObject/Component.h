@@ -64,6 +64,10 @@ public:
 	inline bool UpdatedLastFrame() const { return m_UpdatedLastFrame; }
 	inline void SetActive(bool flag) { m_IsActive = flag; }
 	inline bool IsActive() const { return m_IsActive; }
+	//inline bool operator==(const Component& comp) const { return this->ID() == comp.ID(); }
 };
-
+bool operator== (Component & lhs, Component & rhs)
+{
+	return lhs.ID() == rhs.ID();
+}
 #endif
