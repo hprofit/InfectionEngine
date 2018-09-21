@@ -14,7 +14,7 @@ PointLightComponentManager::PointLightComponentManager() {
 void PointLightComponentManager::Update(float dt)
 {
 	for each (PLC plComp in *m_Components) {
-		if (!plComp->IsActive()) continue; // will be removed or modified later 
+		if (!plComp->IsActive()) break; // will be removed or modified later 
 		plComp->m_UpdatedLastFrame = false;
 		if (plComp->IsDirty()) {
 
@@ -28,6 +28,7 @@ void PointLightComponentManager::Update(float dt)
 void PointLightComponentManager::HandleEvent(Event * pEvent)
 {
 	for each (PLC plComp in *m_Components) {
+		if (!plComp->IsActive()) break;
 		plComp->HandleEvent(pEvent);
 	}
 }

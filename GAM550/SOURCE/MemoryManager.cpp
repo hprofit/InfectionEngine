@@ -40,14 +40,14 @@ MemoryManager::MemoryManager():
 	m_ComponentFactory = new ComponentFactory();
 	// GameObject preallocation
 	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
-		m_GameObjectPool[i] = new GameObject();
+		m_GameObjectPool.push_back( new GameObject(INFECT_GUID.GetGUID()));
 	}
+	m_GameObjectFirstDead = m_GameObjectPool.begin();
 	// Component preallocation
 	for (unsigned _enum = 0; _enum < NUM_COMPONENTS; _enum++) {
 		ComponentType type = static_cast<ComponentType>(_enum);
 		// TODO: ask each component for cache size
 		m_ComponentPool[type] = new std::list<Component*>();
-		//m_ComponentFirstDeadIter[type] = m_ComponentPool[type]->begin();
 	}
 
 }
@@ -66,11 +66,8 @@ MemoryManager::~MemoryManager() {
 	}
 	free(m_Buffer);
 
-	//for (unsigned type = 0; type < NUM_COMPONENTS; type++) {
-	//	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
-	//		// will be deleted in the destructor
-	//	}
-	//}
+	// maybe clear pools? 
+
 	delete m_ComponentFactory;
 }
 
@@ -154,14 +151,12 @@ void* MemoryManager::m_Buffer = nullptr;
 // GAMEOBJECT RECYCLE 
 GameObject* MemoryManager::GetNewGameObject() {
 	//return new GameObject(id);
-	for (unsigned i = 0; i< MAX_GAMEOBJECT_CACHE; i++) {
-		if (!m_GameObjectPool[i]->IsActive()) {
-			GameObject* pGO = m_GameObjectPool[i];
-			pGO->SetID(INFECT_GUID.GetGUID());
-			pGO->SetActive(true);
-			return pGO; // this pGO needs to be reset with appropriate data
-						// only GUID is valid
-		}
+	GameObject* pGO = *m_GameObjectFirstDead;
+	if (!pGO->IsActive()) {
+		pGO->SetActive(true);
+		m_GameObjectFirstDead++;
+		return pGO; // this pGO needs to be reset with appropriate data
+					// only GUID is valid
 	}
 	printf("NO MORE EMPTY GAMEOBJECT - Current cache size: %d\n", MAX_GAMEOBJECT_CACHE);
 	return nullptr;
@@ -171,17 +166,17 @@ GameObject* MemoryManager::GetNewGameObject() {
 void MemoryManager::DeleteGameObject(GameObject* ptr) {
 	ptr->Deactivate();
 	ptr->SetActive(false);
+	std::list<GameObject*>::iterator it = std::find(m_GameObjectPool.begin(), m_GameObjectPool.end(), ptr);
+	m_GameObjectPool.splice(m_GameObjectPool.end(), m_GameObjectPool, it);
 }
 
 Component* MemoryManager::GetNewComponent(ComponentType cType) {
-	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
-		Component* compPtr = *m_ComponentFirstDeadIter[cType];
-		if (!compPtr->IsActive()) {
-			compPtr->SetDirty(true);
-			compPtr->SetActive(true);
-			m_ComponentFirstDeadIter[cType]++;
-			return compPtr;
-		}
+	Component* compPtr = *m_ComponentFirstDeadIter[cType];
+	if (!compPtr->IsActive()) {
+		compPtr->SetDirty(true);
+		compPtr->SetActive(true);
+		m_ComponentFirstDeadIter[cType]++;
+		return compPtr;
 	}
 	return nullptr;
 }

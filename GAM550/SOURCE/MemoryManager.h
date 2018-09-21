@@ -127,19 +127,22 @@ public:
 
 class MemoryManager :public MemoryManagerInterface {
 private:
+	// RAW MEMORY STACK 
 	static void* m_Buffer;						// Block of memory where all data exists
 	const size_t m_TotalBufferSize;				// How big the buffer is in bytes
 	MemoryBlock* m_pHead;						// First MemoryBlock in the linked list
 	MemoryBlock* m_Cache[MAX_CACHE_SIZE_NUM];	// Stores MemoryBlocks to be deleted, when full all will be deleted at once
 	int m_NumCachedBlock;						// Number of MemoryBlocks stored in the m_Cache
 
-	GameObject* m_GameObjectPool[MAX_GAMEOBJECT_CACHE];
+	MemoryBlock* NewMemoryBlock();
+	void Recycle(MemoryBlock*);
+
+	// OBJECT POOLING
+	std::list<GameObject*> m_GameObjectPool;
+	std::list<GameObject*>::iterator m_GameObjectFirstDead;
 	std::unordered_map< ComponentType, std::list<Component*>* > m_ComponentPool;
 	std::unordered_map< ComponentType, std::list<Component*>::iterator> m_ComponentFirstDeadIter;
 	ComponentFactory* m_ComponentFactory;
-
-	MemoryBlock* NewMemoryBlock();
-	void Recycle(MemoryBlock*);
 public:
 	MemoryManager();
 	~MemoryManager();

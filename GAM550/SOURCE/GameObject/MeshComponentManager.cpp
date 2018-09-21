@@ -14,7 +14,7 @@ MeshComponentManager::MeshComponentManager() {
 void MeshComponentManager::Update(float dt)
 {
 	for each (MC mComp in *m_Components) {
-		if (!mComp->IsActive()) continue; // will be removed or modified later 
+		if (!mComp->IsActive()) break; // will be removed or modified later 
 		mComp->m_UpdatedLastFrame = false;
 		if (mComp->IsDirty()) {
 
@@ -28,6 +28,7 @@ void MeshComponentManager::Update(float dt)
 void MeshComponentManager::HandleEvent(Event * pEvent)
 {
 	for each (MC mComp in *m_Components) {
+		if (!mComp->IsActive()) break;
 		mComp->HandleEvent(pEvent);
 	}
 }

@@ -6,10 +6,10 @@ GameObjectManager::GameObjectManager()
 
 GameObjectManager::~GameObjectManager()
 {
-	for (int i = 0; i < mp_GameObjects.size(); ++i) {
-		if (mp_GameObjects[i])
-			INFECT_MEMORY.DeleteGameObject(mp_GameObjects[i]);//delete mp_GameObjects[i];
-	}
+	//for (int i = 0; i < mp_GameObjects.size(); ++i) {
+	//	if (mp_GameObjects[i])
+	//		INFECT_MEMORY.DeleteGameObject(mp_GameObjects[i]);//delete mp_GameObjects[i];
+	//}
 }
 
 GameObject * GameObjectManager::SpawnGameObject()

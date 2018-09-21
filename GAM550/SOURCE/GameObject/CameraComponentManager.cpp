@@ -21,7 +21,7 @@ void CameraComponentManager::_CalcViewMatrix(CC comp)
 void CameraComponentManager::Update(float dt)
 {
 	for each (CC cComp in *m_Components) {
-		if (!cComp->IsActive()) continue; // will be removed or modified later 
+		if (!cComp->IsActive()) break; 
 
 		cComp->m_UpdatedLastFrame = false;
 		if (cComp->IsDirty() || cComp->Parent()->GetComponent<TransformComponent>()->UpdatedLastFrame()) {
@@ -51,6 +51,7 @@ void CameraComponentManager::Update(float dt)
 void CameraComponentManager::HandleEvent(Event * pEvent)
 {
 	for each (CC tComp in *m_Components) {
+		if (!tComp->IsActive()) break;
 		tComp->HandleEvent(pEvent);
 	}
 }
