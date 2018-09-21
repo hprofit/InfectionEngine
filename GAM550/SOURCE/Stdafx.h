@@ -35,6 +35,8 @@ Author: <Holden Profit>
 //#include <d3dx11.h>
 //#include <d3dx10.h>
 #include <dinput.h>
+#include <Dinputd.h>
+#include <XInput.h>
 #include <D3Dcompiler.h>
 #include <WICTextureLoader.h>
 #include <DDSTextureLoader.h>
@@ -50,6 +52,7 @@ Author: <Holden Profit>
 // DirectInput
 #pragma comment (lib, "dinput8.lib")
 #pragma comment (lib, "dxguid.lib")
+#pragma comment (lib, "XInput.lib")
 
 #include <xinput.h>
 

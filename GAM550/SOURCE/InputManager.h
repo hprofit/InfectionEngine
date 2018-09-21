@@ -23,10 +23,10 @@ enum XBOX_SCANCODE {
 	XBOX_BTN_X,
 	XBOX_BTN_Y,
 	XBOX_BTN_BACK,
-	XBOX_BTN_GUIDE,
+	//XBOX_BTN_GUIDE,
 	XBOX_BTN_START,
-	XBOX_BTN_LEFT_STICK,
-	XBOX_BTN_RIGHT_STICK,
+	XBOX_BTN_LEFT_THUMB,
+	XBOX_BTN_RIGHT_THUMB,
 	XBOX_BTN_LEFT_SHOULDER,
 	XBOX_BTN_RIGHT_SHOULDER,
 	XBOX_DPAD_UP,
@@ -52,14 +52,23 @@ enum JoystickAnalogueType {
 	JoystickAnalogue_NUM
 };
 
+enum PLAYER_NUM {
+	PLAYER1,
+	PLAYER2,
+	PLAYER3,
+	PLAYER4,
+
+	PLAYER_SIZE
+};
+
 class InputManager: public Subscriber
 {
 private:
 	// DirectInput
 	LPDIRECTINPUT8 DIRX_Interface = nullptr;		// Root DirectInput Interface
-	LPDIRECTINPUTDEVICE8 mDIRX_Keyboard = nullptr; // DirectInput keyboard device
-	LPDIRECTINPUTDEVICE8 mDIRX_Mouse = nullptr;	// DirectInput mouse device
-
+	LPDIRECTINPUTDEVICE8 mDIRX_Keyboard = nullptr;	// DirectInput keyboard device
+	LPDIRECTINPUTDEVICE8 mDIRX_Mouse = nullptr;		// DirectInput mouse device
+	LPDIRECTINPUTDEVICE8 mDIRX_Joystick = nullptr;	// DirectInput Joystick device
 	// keyboard state
 	BYTE *m_PreviousKeyStates;
 	BYTE *m_CurrentKeyStates;
@@ -75,9 +84,10 @@ private:
 	// Game controller States
 	BYTE  *m_CurrentButtonStates;
 	BYTE  *m_PreviousButtonStates;
+	XINPUT_STATE _xbox_state;
 	// Axis States
-	//Sint16 m_StickRightX, m_StickLeftX;
-	//Sint16 m_StickRightY, m_StickLeftY;
+	SHORT m_StickRightX, m_StickLeftX;
+	SHORT m_StickRightY, m_StickLeftY;
 
 	void FireEvents();
 public:
@@ -105,13 +115,15 @@ public:
 	int MousePosRelX(void);
 	int MousePosRelY(void);
 	// XBOX 360 Controller Input
-	bool IsKeyPressed(const XBOX_SCANCODE);
-	bool IsKeyTriggered(const XBOX_SCANCODE);
-	bool IsKeyReleased(const XBOX_SCANCODE);
-	//Sint16 GetLeftAxisX();
-	//Sint16 GetLeftAxisY();
-	//Sint16 GetRightAxisX();
-	//Sint16 GetRightAxisY();
+	bool IsControllerConnected();
+	void VibrateController(float leftamt, float rightamt);// Vibration - leftamt, rightamt ranges (0.0f, 1.0f)
+	bool IsButtonPressed(const XBOX_SCANCODE);
+	bool IsButtonTriggered(const XBOX_SCANCODE);
+	bool IsButtonReleased(const XBOX_SCANCODE);
+	SHORT GetLeftAxisX();
+	SHORT GetLeftAxisY();
+	SHORT GetRightAxisX();
+	SHORT GetRightAxisY();
 };
 
 #endif

@@ -181,16 +181,16 @@ MSG GameStateManager::Update() {
 			if (yMove != 0)
 				tcpCamera->RotateX(float(yMove));
 
-			if (INFECT_INPUT.IsKeyPressed(DIK_D)) {
+			if (INFECT_INPUT.IsButtonPressed(XBOX_DPAD_RIGHT) || INFECT_INPUT.IsKeyPressed(DIK_D)) {
 				tcpCamera->Move(Infect::GetFrameTime() *30.f*tcpCamera->Right());
 			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_A)) {
+			if (INFECT_INPUT.IsButtonPressed(XBOX_DPAD_LEFT) || INFECT_INPUT.IsKeyPressed(DIK_A)) {
 				tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Right());
 			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_W)) {
+			if (INFECT_INPUT.IsButtonPressed(XBOX_DPAD_UP) || INFECT_INPUT.IsKeyPressed(DIK_W)) {
 				tcpCamera->Move(Infect::GetFrameTime() *30.f * tcpCamera->Forward());
 			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_S)) {
+			if (INFECT_INPUT.IsButtonPressed(XBOX_DPAD_DOWN) || INFECT_INPUT.IsKeyPressed(DIK_S)) {
 				tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Forward());
 			}
 			if (INFECT_INPUT.IsKeyPressed(DIK_SPACE)) {
