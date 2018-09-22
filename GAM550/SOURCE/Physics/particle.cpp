@@ -1,6 +1,5 @@
 
 #include <Stdafx.h>
-
 using namespace physics;
 
 

@@ -24,8 +24,9 @@ MSG GameStateManager::Update() {
 
 
 
-
-
+  // Phy Test 
+  PhyTest tester;
+  tester.PhyTest_Setup();
 
 
 	SeedRand(0);
@@ -48,7 +49,7 @@ MSG GameStateManager::Update() {
 	pGOSkyBox->LateInitialize();
 
 
-	GameObject* pGO = INFECT_GOM.SpawnGameObject();
+	/*GameObject* pGO = INFECT_GOM.SpawnGameObject();
 	pMeshComp = (MeshComponent*)INFECT_MEMORY.GetNewComponent(MeshComponent::Type);
 	//pMeshComp->SetScene("Suzy.fbx");
 	//pMeshComp->SetScene(PLANE_PRIMITIVE);
@@ -68,7 +69,7 @@ MSG GameStateManager::Update() {
 
 	pGO->AddComponent(pMeshComp);
 	pGO->AddComponent(pTransComp);
-	pGO->LateInitialize();
+	pGO->LateInitialize();*/
 
 	GameObject* pGOCamera = INFECT_GOM.SpawnGameObject();
 	TransformComponent* pTransComp2 = (TransformComponent*)INFECT_MEMORY.GetNewComponent(TransformComponent::Type);
@@ -201,10 +202,10 @@ MSG GameStateManager::Update() {
 				INFECT_GAME_STATE.SetGameState(GameState::QUIT);
 			}
 			pGOSkyBox->GetComponent<TransformComponent>()->SetPosition(tcpCamera->WorldPosition());
-			pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);
+			//pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);
 			//pGO->GetComponent<TransformComponent>()->RotateZ(Infect::GetFrameTime() * 25.0f);
 			Infect::Update(Infect::GetFrameTime());			// Game loop
-
+      tester.PhyTest_Update();
 			Infect::FrameEnd();
 		}
 

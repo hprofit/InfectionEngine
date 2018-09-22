@@ -68,6 +68,8 @@ public:
   void setOrientationAndPos(const Quaternion &q, const Vector3D &pos);
   void fillGLArray(float array[16]) const;
   real getDeterminant() const;
+  Matrix4x4 Phy_multiply_Matrix(const Matrix4x4 &o) const;
+  Vector3D Phy_multiply_Vector3(const Vector3D &vector) const;
   //float* physicsMatrix();
 
 	operator float*();

@@ -1,6 +1,7 @@
 #ifndef RigidBody_H
 #define RigidBody_H
 
+#include "physics_math.h"
 namespace physics {
 
     /**
@@ -36,7 +37,7 @@ namespace physics {
         //kinematic = 2
       }bodytype;
 
-
+      
     protected:
         /**
          * Holds the inverse of the mass of the rigid body.
@@ -48,7 +49,9 @@ namespace physics {
          * Holds the inverse of the body's inertia tensor. The
          * inertia tensor provided must not be degenerate
          */
-        Matrix3x3 inverseInertiaTensor;
+        Matrix3x3 inverseInertiaTensor = Matrix3x3(0.f, 0.f, 0.f,
+          0.f, 0.f, 0.f,
+          0.f, 0.f, 0.f);;;
 
         /**
          * Holds the amount of damping applied to linear
@@ -78,7 +81,9 @@ namespace physics {
          *
          * use for inverseInertiaTensor
          */
-        Matrix3x3 inverseInertiaTensorWorld;
+        Matrix3x3 inverseInertiaTensorWorld = Matrix3x3(0.f, 0.f, 0.f,
+          0.f, 0.f, 0.f,
+          0.f, 0.f, 0.f);
 
         /**
          * Holds the amount of motion of the body. This is a recency
@@ -99,7 +104,10 @@ namespace physics {
          * use for getPointInWorldSpace
          * use for getTransform
          */
-        Matrix4x4 transformMatrix;
+        Matrix4x4 transformMatrix = Matrix4x4(1.f, 0.f, 0.f, 0.f,
+          0.f, 1.f, 0.f, 0.f,
+          0.f, 0.f, 1.f, 0.f,
+          0.f, 0.f, 0.f, 0.f);;
 
         /**
          * These data members store the current force, torque and

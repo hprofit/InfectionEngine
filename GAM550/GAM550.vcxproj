@@ -52,7 +52,11 @@
     <ClCompile Include="SOURCE\Math\Vector3D.cpp" />
     <ClCompile Include="SOURCE\MemoryManager.cpp" />
     <ClCompile Include="SOURCE\Mesh.cpp" />
+    <ClCompile Include="SOURCE\Physics\collide_coarse.cpp" />
+    <ClCompile Include="SOURCE\Physics\collide_fine.cpp" />
+    <ClCompile Include="SOURCE\Physics\contacts.cpp" />
     <ClCompile Include="SOURCE\Physics\particle.cpp" />
+    <ClCompile Include="SOURCE\Physics\PhysicsTest.cpp" />
     <ClCompile Include="SOURCE\Physics\physics_math.cpp" />
     <ClCompile Include="SOURCE\Physics\Quaternion.cpp" />
     <ClCompile Include="SOURCE\Physics\RigidBody.cpp" />
@@ -114,7 +118,11 @@
     <ClInclude Include="SOURCE\Math\Vector3D.h" />
     <ClInclude Include="SOURCE\MemoryManager.h" />
     <ClInclude Include="SOURCE\Mesh.h" />
+    <ClInclude Include="SOURCE\Physics\collide_coarse.h" />
+    <ClInclude Include="SOURCE\Physics\collide_fine.h" />
+    <ClInclude Include="SOURCE\Physics\contacts.h" />
     <ClInclude Include="SOURCE\Physics\particle.h" />
+    <ClInclude Include="SOURCE\Physics\PhysicsTest.h" />
     <ClInclude Include="SOURCE\Physics\physics_math.h" />
     <ClInclude Include="SOURCE\Plane.h" />
     <ClInclude Include="SOURCE\RenderManager.h" />

@@ -130,7 +130,9 @@ typedef unsigned int InfectGUID;
 #include <Sorting.h>
 //#include <Shape.h>
 #include <Physics/RigidBody.h>
-
+#include <Physics/contacts.h>
+#include <Physics/collide_coarse.h>
+#include <Physics/collide_fine.h>
 #pragma endregion
 
 #pragma region Game Object
@@ -288,8 +290,9 @@ typedef unsigned int InfectGUID;
 //#include <UIManager.h>
 //#include <PlayerStatsManager.h>
 //
+#include <Physics/PhysicsTest.h>
 #include <Global.h>
-#include <InfectAPI.h>
+#include <InfectAPI.h> 
 #pragma endregion 
 
 #pragma warning(default: 4005)
