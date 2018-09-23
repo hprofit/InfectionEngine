@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\AudioManager.cpp" />
+    <ClCompile Include="SOURCE\Command.cpp" />
+    <ClCompile Include="SOURCE\ThreadCommandList.cpp" />
     <ClCompile Include="SOURCE\Cube.cpp" />
     <ClCompile Include="SOURCE\D3DHandler.cpp" />
     <ClCompile Include="SOURCE\Event.cpp" />
@@ -42,6 +44,7 @@
     <ClCompile Include="SOURCE\InputManager.cpp" />
     <ClCompile Include="SOURCE\GameStateManager.cpp" />
     <ClCompile Include="SOURCE\InfectAPI.cpp" />
+    <ClCompile Include="SOURCE\JobManager.cpp" />
     <ClCompile Include="SOURCE\JsonReader.cpp" />
     <ClCompile Include="SOURCE\main.cpp" />
     <ClCompile Include="SOURCE\Math\MathFunctions.cpp" />
@@ -76,6 +79,8 @@
   <ItemGroup>
     <ClInclude Include="SOURCE\AudioManager.h" />
     <ClInclude Include="SOURCE\Color.h" />
+    <ClInclude Include="SOURCE\Command.h" />
+    <ClInclude Include="SOURCE\ThreadCommandList.h" />
     <ClInclude Include="SOURCE\Cube.h" />
     <ClInclude Include="SOURCE\D3DHandler.h" />
     <ClInclude Include="SOURCE\Event.h" />
@@ -108,6 +113,7 @@
     <ClInclude Include="SOURCE\GUID.h" />
     <ClInclude Include="SOURCE\InputManager.h" />
     <ClInclude Include="SOURCE\InfectAPI.h" />
+    <ClInclude Include="SOURCE\JobManager.h" />
     <ClInclude Include="SOURCE\JsonReader.h" />
     <ClInclude Include="SOURCE\Math\MathDefs.h" />
     <ClInclude Include="SOURCE\Math\MathFunctions.h" />
@@ -118,7 +124,7 @@
     <ClInclude Include="SOURCE\Math\Vector3D.h" />
     <ClInclude Include="SOURCE\MemoryManager.h" />
     <ClInclude Include="SOURCE\Mesh.h" />
-    <ClInclude Include="SOURCE\Physics\collide_coarse.h" />
+	<ClInclude Include="SOURCE\Physics\collide_coarse.h" />
     <ClInclude Include="SOURCE\Physics\collide_fine.h" />
     <ClInclude Include="SOURCE\Physics\contacts.h" />
     <ClInclude Include="SOURCE\Physics\particle.h" />
@@ -132,6 +138,8 @@
     <ClInclude Include="SOURCE\Sphere.h" />
     <ClInclude Include="SOURCE\Subscriber.h" />
     <ClInclude Include="SOURCE\SubscriberTracker.h" />
+    <ClInclude Include="SOURCE\ThreadContainer.h" />
+    <ClInclude Include="SOURCE\ThreadType.h" />
     <ClInclude Include="SOURCE\WindowProc.h" />
     <ClInclude Include="SOURCE\WindowSettings.h" />
   </ItemGroup>

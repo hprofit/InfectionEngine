@@ -55,6 +55,9 @@
     <Filter Include="Source Files\GameObject\ComponentManagers">
       <UniqueIdentifier>{ae8d1a54-03b0-4681-9c7b-03507d287d84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Threading">
+      <UniqueIdentifier>{f4322f82-58a1-490a-85bc-7a39392de6f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\main.cpp">
@@ -189,7 +192,7 @@
     <ClCompile Include="SOURCE\MemoryManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\Physics\collide_fine.cpp">
+	<ClCompile Include="SOURCE\Physics\collide_fine.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\Physics\contacts.cpp">
@@ -200,6 +203,15 @@
     </ClCompile>
     <ClCompile Include="SOURCE\Physics\collide_coarse.cpp">
       <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Command.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\ThreadCommandList.cpp">
+      <Filter>Source Files\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\JobManager.cpp">
+      <Filter>Source Files\Threading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -382,6 +394,21 @@
     </ClInclude>
     <ClInclude Include="SOURCE\Physics\PhysicsTest.h">
       <Filter>Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Command.h">
+      <Filter>Source Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\ThreadCommandList.h">
+      <Filter>Source Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\ThreadContainer.h">
+      <Filter>Source Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\ThreadType.h">
+      <Filter>Source Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\JobManager.h">
+      <Filter>Source Files\Threading</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

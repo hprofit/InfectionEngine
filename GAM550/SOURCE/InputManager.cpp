@@ -328,13 +328,13 @@ bool InputManager::IsButtonReleased(const XBOX_SCANCODE btn) {
 }
 
 void InputManager::HandleEvent(Event* pEvent) {
-	switch (pEvent->Type()) {
-		/*case EVENT_INPUT_TOGGLEJOYSTICK: {
-			InputButtonData* pButtonData = pEvent->Data<InputButtonData>();
-			if (pButtonData->m_isTrigger) m_isJoystickControlsActive = !m_isJoystickControlsActive;
-			break;
-		}*/
-	}
+	//switch (pEvent->Type()) {
+	//	/*case EVENT_INPUT_TOGGLEJOYSTICK: {
+	//		InputButtonData* pButtonData = pEvent->Data<InputButtonData>();
+	//		if (pButtonData->m_isTrigger) m_isJoystickControlsActive = !m_isJoystickControlsActive;
+	//		break;
+	//	}*/
+	//}
 }
 
 SHORT InputManager::GetLeftAxisX() {

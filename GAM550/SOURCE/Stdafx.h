@@ -79,9 +79,10 @@ Author: <Holden Profit>
 #include <memory>
 #include <stdlib.h>
 #include <float.h>
-//#include <time.h>
 #include <math.h>
 #include <exception>
+#include <vector>
+#include <thread>
 
 #pragma region Math
 #include <Math\MathDefs.h>
@@ -112,9 +113,14 @@ typedef unsigned int InfectGUID;
 #include <Face.h>
 #include <GameObject\GameObjectTags.h>
 #include <GameObject\ComponentTypes.h>
+#include <ThreadType.h>
+#include <Command.h>
+#include <ThreadContainer.h>
+#include <ThreadCommandList.h>
 #include <Event.h>
 #include <SubscriberTracker.h>
 #include <Subscriber.h>
+#include <ThreadContainer.h>
 #include <D3DHandler.h>
 //#include <SurfaceTextureBuffer.h>
 //#include <FontInfo.h>
@@ -268,6 +274,7 @@ typedef unsigned int InfectGUID;
 #pragma endregion
 
 #pragma region Globals + API
+#include <JobManager.h>
 #include <GUID.h>
 #include <GameConfig.h>
 #include <GameStateManager.h>
