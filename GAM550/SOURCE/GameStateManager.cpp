@@ -145,6 +145,8 @@ MSG GameStateManager::Update() {
 		m_currentState = GameState::CURRENT_LEVEL;
 		m_nextState = GameState::CURRENT_LEVEL;
 		
+		INFECT_THREAD_JOBS.AddNewJob(new StartSimulationCommand(*INFECT_THREAD_JOBS.GetThreadContainer<SimulationThreadContainer>(ThreadType::SimThread)));
+
 		// Game loop
 		// wait for the next message in the queue, store the result in 'msg'
 		while (m_currentState == m_nextState) {
@@ -155,59 +157,10 @@ MSG GameStateManager::Update() {
 				DispatchMessage(&msg);
 			}
 
-			Infect::FrameStart();
-
-#pragma region TestStuff
-			TransformComponent* tcpCamera = pGOCamera->GetComponent<TransformComponent>();
-			TransformComponent* tcpLight = pGOLight->GetComponent<TransformComponent>();
-			if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT) || INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
-				tcpLight->Move(Infect::GetFrameTime() *30.f*tcpLight->Right());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
-				tcpLight->Move(Infect::GetFrameTime() *-30.f*tcpLight->Right());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_UP)) {
-				tcpLight->Move(Infect::GetFrameTime() *30.f * tcpLight->Up());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
-				tcpLight->Move(Infect::GetFrameTime() *-30.f*tcpLight->Up());
-			}
-
-
-			int xMove = -INFECT_INPUT.MousePosX() / 4;
-			int yMove = -INFECT_INPUT.MousePosY() / 4;
-			if (xMove != 0)
-				tcpCamera->RotateY(float(xMove));
-			if (yMove != 0)
-				tcpCamera->RotateX(float(yMove));
-
-			if (INFECT_INPUT.IsButtonPressed(XBOX_DPAD_RIGHT) || INFECT_INPUT.IsKeyPressed(DIK_D)) {
-				tcpCamera->Move(Infect::GetFrameTime() *30.f*tcpCamera->Right());
-			}
-			if (INFECT_INPUT.IsButtonPressed(XBOX_DPAD_LEFT) || INFECT_INPUT.IsKeyPressed(DIK_A)) {
-				tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Right());
-			}
-			if (INFECT_INPUT.IsButtonPressed(XBOX_DPAD_UP) || INFECT_INPUT.IsKeyPressed(DIK_W)) {
-				tcpCamera->Move(Infect::GetFrameTime() *30.f * tcpCamera->Forward());
-			}
-			if (INFECT_INPUT.IsButtonPressed(XBOX_DPAD_DOWN) || INFECT_INPUT.IsKeyPressed(DIK_S)) {
-				tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Forward());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_SPACE)) {
-				tcpCamera->SetPosition(Vector3D(0, 0, 50, 1));
-			}
-			// alt+f4
-			if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {
-				INFECT_GAME_STATE.SetGameState(GameState::QUIT);
-			}
-			pGOSkyBox->GetComponent<TransformComponent>()->SetPosition(tcpCamera->WorldPosition());
-			//pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);
-			//pGO->GetComponent<TransformComponent>()->RotateZ(Infect::GetFrameTime() * 25.0f);
-
-#pragma endregion
-			Infect::Update(Infect::GetFrameTime());			// Game loop
-      //tester.PhyTest_Update();
-			Infect::FrameEnd();
+			//Infect::FrameStart();
+			//Infect::Update(Infect::GetFrameTime());			// Game loop
+			//tester.PhyTest_Update();
+			//Infect::FrameEnd();
 		}
 
 		m_currentState = m_nextState;

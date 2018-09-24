@@ -33,6 +33,7 @@ namespace Infect {
 		INFECT_MEMORY.LateInit();
 
 		INFECT_THREAD_JOBS.RegisterThreadContainer(new RenderThreadContainer());
+		INFECT_THREAD_JOBS.RegisterThreadContainer(new SimulationThreadContainer());
 		return 0;
 	}
 
@@ -49,7 +50,7 @@ namespace Infect {
 	void FrameStart()
 	{
 		INFECT_FRAMERATE.FrameStart();
-		INFECT_RENDERER.FrameStart();
+		
 	}
 
 	void Update(float deltaTime)
@@ -80,7 +81,6 @@ namespace Infect {
 	void FrameEnd()
 	{
 		//INFECT_IMGUI.FrameEnd();						// Render Imgui commands
-		INFECT_RENDERER.FrameEnd();						// Swap window buffer
 		INFECT_FRAMERATE.FrameEnd();					// Lock FPS 
 	}
 

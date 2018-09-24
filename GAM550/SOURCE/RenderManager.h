@@ -60,9 +60,9 @@ public:
 	bool InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings);
 
 
-	void FrameStart(void);
+	void ClearScreen(void);
 
-	void FrameEnd(void);
+	void PresentFrameToScreen(void);
 
 	// Renders an object given a specific camera
 	void RenderObject(const GameObject& pGOCamera, const GameObject& pGO);

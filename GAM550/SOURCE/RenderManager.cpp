@@ -9,6 +9,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 		// this message is read when the window is closed
 	case WM_DESTROY:
 	{
+		INFECT_THREAD_JOBS.AddNewJob(new RenderTerminateTerminate(*INFECT_THREAD_JOBS.GetThreadContainer<RenderThreadContainer>(ThreadType::RenderThread)));
+		INFECT_THREAD_JOBS.AddNewJob(new SimulationTerminateTerminate(*INFECT_THREAD_JOBS.GetThreadContainer<SimulationThreadContainer>(ThreadType::SimThread)));
 		INFECT_GAME_STATE.SetGameState(GameState::QUIT);
 		// close the application entirely
 		PostQuitMessage(0);
@@ -74,14 +76,14 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 	return mp_D3D->InitD3D(m_hWnd, settings);
 }
 
-void RenderManager::FrameStart(void)
+void RenderManager::ClearScreen(void)
 {
 	// Clear the back buffer and then the depth buffer
 	mp_D3D->ClearBackBuffer(m_ClearColor);
 	mp_D3D->ClearDepthBuffer();
 }
 
-void RenderManager::FrameEnd(void)
+void RenderManager::PresentFrameToScreen(void)
 {
 	mp_D3D->PresentBuffer(m_WindowSettings.VSync);
 }

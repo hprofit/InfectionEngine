@@ -6,18 +6,18 @@ void RenderThreadContainer::RunThread()
 		if (!mp_CurrentCommand) {
 			if (INFECT_THREAD_JOBS.HasJobs(Type)) {
 				mp_CurrentCommand = INFECT_THREAD_JOBS.GetThreadJob(Type);
-				std::cout << "Render Thread : Work received." << std::endl;
+				//std::cout << "Render Thread : Work received." << std::endl;
 			}
-			std::cout << "Render Thread : Idling..." << std::endl;
+			//std::cout << "Render Thread : Idling..." << std::endl;
 		}
 
 		if (mp_CurrentCommand) {
 			if (mp_CurrentCommand->execute()) {
-				std::cout << "Render Thread : Work completed." << std::endl;
+				//std::cout << "Render Thread : Work completed." << std::endl;
 				INFECT_THREAD_JOBS.FinishedJob(Type);
 				mp_CurrentCommand = nullptr;
 			}
-			std::cout << "Render Thread : Working..." << std::endl;
+			//std::cout << "Render Thread : Working..." << std::endl;
 		}
 	}
 	std::cout << "Render Thread : Terminating." << std::endl;
@@ -31,7 +31,9 @@ std::thread & RenderThreadContainer::Spawn()
 
 bool StartRenderCommand::execute() const
 {
-	INFECT_GOM.RenderCameras();
+	INFECT_RENDERER.ClearScreen();					// Clear the window buffer
+	INFECT_GOM.RenderCameras();						// Render all game objects
+	INFECT_RENDERER.PresentFrameToScreen();			// Swap window buffer
 	INFECT_THREAD_JOBS.AddNewJob(new StartSimulationCommand(*INFECT_THREAD_JOBS.GetThreadContainer<SimulationThreadContainer>(ThreadType::SimThread)));
 	return true;
 }
