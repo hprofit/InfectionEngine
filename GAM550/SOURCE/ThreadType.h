@@ -15,10 +15,8 @@ Author: <Holden Profit>
 // commands to specific threads rather than spawning smaller threads to do some work
 
 enum ThreadType {
-	TT_Thread0 = 0,
-	TT_Thread1,
-	TT_Thread2,
-	TT_Thread3,
+	RenderThread = 0,
+	SimThread,
 	AnyThread,
 	NUMTHREADTYPES
 };

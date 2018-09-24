@@ -6,8 +6,8 @@ Author: <Holden Profit>
 - End Header --------------------------------------------------------*/
 
 #pragma once
-#ifndef THREAD_JOB_CONTAINER_H
-#define THREAD_JOB_CONTAINER_H
+#ifndef THREAD_CONTAINER_H
+#define THREAD_CONTAINER_H
 
 class JobManager;
 
@@ -19,7 +19,6 @@ class JobManager;
 class ThreadContainer
 {
 protected:
-	JobManager & m_JobManager;				// Reference to the JobManager for ease of sending commands
 	std::thread * mp_Thread;				// Pointer to the thread spawned by this container
 	bool m_Terminate;						// When true, this thread will exit it's RunThread loop
 	bool m_Busy;							// 
@@ -29,8 +28,8 @@ public:
 	static const ThreadType Type = ThreadType::AnyThread;
 	virtual ThreadType GetType() const { return Type; }
 
-	ThreadContainer(JobManager& jobManager) :
-		m_JobManager(jobManager), mp_Thread(nullptr),
+	ThreadContainer() :
+		mp_Thread(nullptr),
 		m_Terminate(false), m_Busy(false),
 		mp_CurrentCommand(nullptr)
 	{};
@@ -84,8 +83,8 @@ public:
 	static const ThreadType Type = type;
 	virtual ThreadType GetType() const { return Type; }
 
-	TypedThreadContainer(JobManager& jobManager) :
-		ThreadContainer(jobManager)
+	TypedThreadContainer() :
+		ThreadContainer()
 	{}
 	virtual ~TypedThreadContainer() {};
 
@@ -95,7 +94,7 @@ public:
 	/* Derived classes are responsible for creating a new std::thread object
 	/ Typical implementation:
 	/	mp_Thread = new std::thread(&TypedThreadContainer::RunThread, this);
-	/	return mp_Thread;
+	/	return *mp_Thread;
 	*/
 	virtual std::thread& Spawn() = 0;
 };

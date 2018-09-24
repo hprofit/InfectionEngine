@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClCompile Include="SOURCE\AudioManager.cpp" />
     <ClCompile Include="SOURCE\Command.cpp" />
+    <ClCompile Include="SOURCE\RenderThreadContainer.cpp" />
+    <ClCompile Include="SOURCE\SimulationThreadContainer.cpp" />
     <ClCompile Include="SOURCE\ThreadCommandList.cpp" />
     <ClCompile Include="SOURCE\Cube.cpp" />
     <ClCompile Include="SOURCE\D3DHandler.cpp" />
@@ -80,6 +82,8 @@
     <ClInclude Include="SOURCE\AudioManager.h" />
     <ClInclude Include="SOURCE\Color.h" />
     <ClInclude Include="SOURCE\Command.h" />
+    <ClInclude Include="SOURCE\RenderThreadContainer.h" />
+    <ClInclude Include="SOURCE\SimulationThreadContainer.h" />
     <ClInclude Include="SOURCE\ThreadCommandList.h" />
     <ClInclude Include="SOURCE\Cube.h" />
     <ClInclude Include="SOURCE\D3DHandler.h" />
@@ -124,7 +128,7 @@
     <ClInclude Include="SOURCE\Math\Vector3D.h" />
     <ClInclude Include="SOURCE\MemoryManager.h" />
     <ClInclude Include="SOURCE\Mesh.h" />
-	<ClInclude Include="SOURCE\Physics\collide_coarse.h" />
+    <ClInclude Include="SOURCE\Physics\collide_coarse.h" />
     <ClInclude Include="SOURCE\Physics\collide_fine.h" />
     <ClInclude Include="SOURCE\Physics\contacts.h" />
     <ClInclude Include="SOURCE\Physics\particle.h" />

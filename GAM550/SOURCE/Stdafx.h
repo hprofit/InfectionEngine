@@ -115,8 +115,10 @@ typedef unsigned int InfectGUID;
 #include <GameObject\ComponentTypes.h>
 #include <ThreadType.h>
 #include <Command.h>
-#include <ThreadContainer.h>
 #include <ThreadCommandList.h>
+#include <ThreadContainer.h>
+#include <RenderThreadContainer.h>
+#include <SimulationThreadContainer.h>
 #include <Event.h>
 #include <SubscriberTracker.h>
 #include <Subscriber.h>

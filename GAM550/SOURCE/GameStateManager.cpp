@@ -21,12 +21,10 @@ MSG GameStateManager::Update() {
 	// this struct holds Windows event messages
 	MSG msg;
 
-
-
-
-  // Phy Test 
-  PhyTest tester;
-  tester.PhyTest_Setup();
+#pragma region Test Stuff
+  //// Phy Test 
+  //PhyTest tester;
+  //tester.PhyTest_Setup();
 
 
 	SeedRand(0);
@@ -49,7 +47,7 @@ MSG GameStateManager::Update() {
 	pGOSkyBox->LateInitialize();
 
 
-	/*GameObject* pGO = INFECT_GOM.SpawnGameObject();
+	GameObject* pGO = INFECT_GOM.SpawnGameObject();
 	pMeshComp = (MeshComponent*)INFECT_MEMORY.GetNewComponent(MeshComponent::Type);
 	//pMeshComp->SetScene("Suzy.fbx");
 	//pMeshComp->SetScene(PLANE_PRIMITIVE);
@@ -69,7 +67,7 @@ MSG GameStateManager::Update() {
 
 	pGO->AddComponent(pMeshComp);
 	pGO->AddComponent(pTransComp);
-	pGO->LateInitialize();*/
+	pGO->LateInitialize();
 
 	GameObject* pGOCamera = INFECT_GOM.SpawnGameObject();
 	TransformComponent* pTransComp2 = (TransformComponent*)INFECT_MEMORY.GetNewComponent(TransformComponent::Type);
@@ -140,7 +138,7 @@ MSG GameStateManager::Update() {
 		//tcm->Register(pGOFOR[i]->GetComponent<TransformComponent>());
 		//mcm->Register(pGOFOR[i]->GetComponent<MeshComponent>());
 	}
-
+#pragma endregion
 
 	while (m_currentState != GameState::QUIT) {
 
@@ -159,6 +157,7 @@ MSG GameStateManager::Update() {
 
 			Infect::FrameStart();
 
+#pragma region TestStuff
 			TransformComponent* tcpCamera = pGOCamera->GetComponent<TransformComponent>();
 			TransformComponent* tcpLight = pGOLight->GetComponent<TransformComponent>();
 			if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT) || INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
@@ -204,8 +203,10 @@ MSG GameStateManager::Update() {
 			pGOSkyBox->GetComponent<TransformComponent>()->SetPosition(tcpCamera->WorldPosition());
 			//pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);
 			//pGO->GetComponent<TransformComponent>()->RotateZ(Infect::GetFrameTime() * 25.0f);
+
+#pragma endregion
 			Infect::Update(Infect::GetFrameTime());			// Game loop
-      tester.PhyTest_Update();
+      //tester.PhyTest_Update();
 			Infect::FrameEnd();
 		}
 

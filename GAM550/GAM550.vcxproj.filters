@@ -192,7 +192,7 @@
     <ClCompile Include="SOURCE\MemoryManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
-	<ClCompile Include="SOURCE\Physics\collide_fine.cpp">
+    <ClCompile Include="SOURCE\Physics\collide_fine.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\Physics\contacts.cpp">
@@ -211,6 +211,12 @@
       <Filter>Source Files\Threading</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\JobManager.cpp">
+      <Filter>Source Files\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\RenderThreadContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\SimulationThreadContainer.cpp">
       <Filter>Source Files\Threading</Filter>
     </ClCompile>
   </ItemGroup>
@@ -408,6 +414,12 @@
       <Filter>Source Files\Threading</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\JobManager.h">
+      <Filter>Source Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\RenderThreadContainer.h">
+      <Filter>Source Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\SimulationThreadContainer.h">
       <Filter>Source Files\Threading</Filter>
     </ClInclude>
   </ItemGroup>
