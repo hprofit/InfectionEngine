@@ -12,6 +12,7 @@ Author: <Holden Profit>
 
 #define DEFAULT_PLANE_SIZE 20
 #define PLANE_PRIMITIVE "Plane"
+#define QUAD_PRIMITIVE "Quad"
 
 class Plane : 
 	public Mesh

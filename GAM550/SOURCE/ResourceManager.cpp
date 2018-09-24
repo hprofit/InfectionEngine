@@ -33,23 +33,35 @@ bool ResourceManager::Init()
 	(*pScenePlane)[0] = plane;
 	m_scenes[PLANE_PRIMITIVE] = pScenePlane;
 
+	Plane* quad = new Plane();
+	quad->FinishMesh();
+	Scene* pSceneQuad = new Scene(1);
+	(*pSceneQuad)[0] = quad;
+	m_scenes[QUAD_PRIMITIVE] = pSceneQuad;
+
 	Cube* pCube = new Cube();
 	m_scenes[CUBE_PRIMITIVE] = pCube;
 
 	Skybox* pSkyBox = new Skybox();
 	m_scenes[SKYBOX_PRIMITIVE] = pSkyBox;
 
-	Sphere* pSphere = new Sphere(40);
+	Sphere* pSphere = new Sphere();
 	pSphere->FinishMesh();
 	Scene* pSceneSphere = new Scene(1);
 	(*pSceneSphere)[0] = pSphere;
 	m_scenes[SPHERE_PRIMITIVE] = pSceneSphere;
 
-	PolarSphere* pPolarSphere = new PolarSphere();
-	pPolarSphere->FinishMesh();
-	Scene* pScenePolarSphere = new Scene(1);
-	(*pScenePolarSphere)[0] = pPolarSphere;
-	m_scenes[POLAR_SPHERE_PRIMITIVE] = pScenePolarSphere;
+	Sphere* pLowPolySphere = new Sphere(10);
+	pLowPolySphere->FinishMesh();
+	Scene* pSceneLowPolySphere = new Scene(1);
+	(*pSceneLowPolySphere)[0] = pLowPolySphere;
+	m_scenes[SIMPLE_SPHERE_PRIMITIVE] = pSceneLowPolySphere;
+
+	//PolarSphere* pPolarSphere = new PolarSphere();
+	//pPolarSphere->FinishMesh();
+	//Scene* pScenePolarSphere = new Scene(1);
+	//(*pScenePolarSphere)[0] = pPolarSphere;
+	//m_scenes[POLAR_SPHERE_PRIMITIVE] = pScenePolarSphere;
 
 
 
