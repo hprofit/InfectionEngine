@@ -104,7 +104,7 @@ bool StartSimulationCommand::execute() const
 
 	INFECT_THREAD_JOBS.AddNewJob(new StartRenderCommand(*INFECT_THREAD_JOBS.GetThreadContainer<RenderThreadContainer>(ThreadType::RenderThread)));
 	//INFECT_IMGUI.Update();						// Update all Imgui commands
-	return false;
+	return true;
 }
 
 bool SimulationTerminateTerminate::execute() const
