@@ -8,7 +8,6 @@ JobManager::~JobManager()
 	for (int i = 0; i < ThreadType::NUMTHREADTYPES; ++i) {
 		delete m_CommandQueues[i];
 	}
-	//delete[] m_CommandQueues;
 }
 
 void JobManager::Init()

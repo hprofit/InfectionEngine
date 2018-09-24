@@ -92,7 +92,7 @@ bool StartSimulationCommand::execute() const
 	INFECT_EVENTS.Update(deltaTime);				// Pump the event manager
 													//INFECT_AUDIO.Update(deltaTime);
 
-	INFECT_GOM.Update(deltaTime);					// Update game logic
+	//INFECT_GOM.Update(deltaTime);					// Update game logic
 	INFECT_CMC.Update(deltaTime);
 
 
@@ -100,7 +100,7 @@ bool StartSimulationCommand::execute() const
 	//INFECT_GOM.UpdateStatus();					// Update status of game objects
 	//INFECT_PHYSICS.Integrate(deltaTime);			// Move physics bodies
 	//INFECT_PHYSICS.ResolveCollisions();			// Resolve collisions on physics bodies
-	INFECT_GOM.LateUpdate(deltaTime);				// Update game logic that occurs after physics
+	//INFECT_GOM.LateUpdate(deltaTime);				// Update game logic that occurs after physics
 
 	INFECT_THREAD_JOBS.AddNewJob(new StartRenderCommand(*INFECT_THREAD_JOBS.GetThreadContainer<RenderThreadContainer>(ThreadType::RenderThread)));
 	//INFECT_IMGUI.Update();						// Update all Imgui commands
