@@ -44,8 +44,8 @@ public:
 	inline IDXGISwapChain * const SwapChain() { return mp_D3D->SwapChain(); }
 	inline ID3D11Device * const Device() { return mp_D3D->Device(); }
 	inline ID3D11DeviceContext * const DeviceContext() { return mp_D3D->DeviceContext(); }
-	inline ID3D11RenderTargetView * const BackBuffer() { return mp_D3D->BackBuffer(); }
-	inline ID3D11RenderTargetView * const DepthBuffer() { return mp_D3D->BackBuffer(); }
+	//inline ID3D11RenderTargetView * const BackBuffer() { return mp_D3D->BackBuffer(); }
+	//inline ID3D11RenderTargetView * const DepthBuffer() { return mp_D3D->BackBuffer(); }
 
 	inline float AspectRatio() const { return m_WindowSettings.AspectRatio; }
 	inline unsigned int ScreenWidth() const { return m_WindowSettings.Width; }

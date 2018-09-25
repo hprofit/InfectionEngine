@@ -221,6 +221,8 @@
     </ClCompile>
     <ClCompile Include="SOURCE\RenderThreadContainer.cpp">
       <Filter>Source Files\Threading</Filter>
+    <ClCompile Include="SOURCE\RenderTarget.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -427,6 +429,8 @@
     </ClInclude>
     <ClInclude Include="SOURCE\LevelManager.h">
       <Filter>Source Files\Managers</Filter>
+    <ClInclude Include="SOURCE\RenderTarget.h">
+      <Filter>Source Files\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

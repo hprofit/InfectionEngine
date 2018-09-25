@@ -7,49 +7,62 @@ Author: <Holden Profit>
 
 #pragma once
 
-#ifndef D3DHANDLER_H
-#define D3DHANDLER_H
+#ifndef IMAGE_RENDERER_H
+#define IMAGE_RENDERER_H
 
-class D3DHandler
+class ImageRenderer
 {
-protected:
-	IDXGISwapChain *mp_SwapChain;
-	ID3D11Device *mp_Device;
-	ID3D11DeviceContext *mp_DeviceContext;
-	ID3D11RenderTargetView *mp_BackBuffer;
-	ID3D11RenderTargetView *mp_DepthBuffer;
-
-	ID3D11Texture2D* mp_DepthStencilBuffer;
-	ID3D11DepthStencilState* mp_DepthStencilState;
-	ID3D11DepthStencilView* mp_DepthStencilView;
-	ID3D11RasterizerState* mp_RasterState;
-
-	int m_VideoCardMemory;
-	char m_VideoCardDescription[128];
+private:
+	//FrameBufferObject* mp_RenderTarget;
 
 public:
-	friend class RenderManager;
-	D3DHandler();
-	~D3DHandler();
+	ImageRenderer();
+	ImageRenderer(ShaderProgram*, GLsizei, GLsizei, FBOType);
+	~ImageRenderer();
+	ImageRenderer(const ImageRenderer &) = delete;
+	void operator=(const ImageRenderer &) = delete;
 
-	inline IDXGISwapChain * const SwapChain() { return mp_SwapChain; }
-	inline ID3D11Device * const Device() { return mp_Device; }
-	inline ID3D11DeviceContext * const DeviceContext() { return mp_DeviceContext; }
-	inline ID3D11RenderTargetView * const BackBuffer() { return mp_BackBuffer; }
-	inline ID3D11RenderTargetView * const DepthBuffer() { return mp_DepthBuffer; }
+	inline Mesh& Mesh() const { return m_mesh; }
+	inline ShaderProgram* Shader() const { return m_pShader; }
+	inline FrameBufferObject* FBO() const { return m_pFBO; }
 
-	// Sets up and initializes window
-	HWND InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings);
-	// Sets up and initializes Direct3D
-	bool InitD3D(HWND hWnd, WindowSettings settings);
-	// Closes Direct3D and releases memory
-	void CleanD3D(void);
+	void Render(ImageRenderer * pIR) const;
+	void Render(FrameBufferObject* pOtherFBO) const;
 
-	void ClearBackBuffer(const Color& color);
+	/*
+	Renders this Image Renderer's FBO to the screen with
+	the supplied shader. The rendered quad is resized to match the current screen aspect ratio
+	*/
+	void RenderToScreen(const ShaderProgram&, int width, int height) const;
 
-	void ClearDepthBuffer(void);
+	/*
+	Renders this Image Renderer's FBO to the screen with
+	the supplied shader
+	*/
+	void RenderToScreen(const ShaderProgram&) const;
 
-	void PresentBuffer(bool vSync);
+	/*
+	Renders this Image Renderer's FBO + another IR's FBO to the screen with
+	the supplied shader
+	*/
+	void RenderToScreen(const ShaderProgram&, const ImageRenderer&) const;
+
+	/*
+	Renders this Image Renderer's FBO to the supplied FBO with
+	the supplied shader
+	*/
+	void RenderToFBO(const FrameBufferObject&, const ShaderProgram&) const;
+
+	/*
+	Renders this Image Renderer's FBO to the given Image Renderer's FBO
+	with the supplied shader
+	*/
+	inline void RenderToIR(const ImageRenderer& ir, const ShaderProgram& shader) const { RenderToFBO(*ir.m_pFBO, shader); }
+
+	inline void BindFBO() const { m_pFBO->BindFrameBuffer(); }
+	inline void UnbindFBO() const { m_pFBO->UnbindFrameBuffer(); }
+
+	inline void ClearBuffer(const Vector3D& color = Vector3D(0, 0, 0, 0)) { m_pFBO->ClearFrameBuffer(color); }
 };
 
 #endif

@@ -123,10 +123,11 @@ typedef unsigned int InfectGUID;
 #include <SubscriberTracker.h>
 #include <Subscriber.h>
 #include <ThreadContainer.h>
+
+#include <RenderTarget.h>
 #include <D3DHandler.h>
 //#include <SurfaceTextureBuffer.h>
 //#include <FontInfo.h>
-//#include <FrameBufferObject.h>
 #include <Mesh.h>
 #include <Plane.h>
 #include <Sphere.h>

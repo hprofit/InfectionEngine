@@ -16,13 +16,15 @@ protected:
 	IDXGISwapChain *mp_SwapChain;
 	ID3D11Device *mp_Device;
 	ID3D11DeviceContext *mp_DeviceContext;
-	ID3D11RenderTargetView *mp_BackBuffer;
-	ID3D11RenderTargetView *mp_DepthBuffer;
+	//ID3D11RenderTargetView *mp_BackBuffer;
+	//ID3D11RenderTargetView *mp_DepthBuffer;
 
-	ID3D11Texture2D* mp_DepthStencilBuffer;
-	ID3D11DepthStencilState* mp_DepthStencilState;
-	ID3D11DepthStencilView* mp_DepthStencilView;
-	ID3D11RasterizerState* mp_RasterState;
+	//ID3D11Texture2D* mp_DepthStencilBuffer;
+	//ID3D11DepthStencilState* mp_DepthStencilState;
+	//ID3D11DepthStencilView* mp_DepthStencilView;
+	//ID3D11RasterizerState* mp_RasterState;
+
+	RenderTarget* mp_RenderTarget;
 
 	int m_VideoCardMemory;
 	char m_VideoCardDescription[128];
@@ -35,8 +37,8 @@ public:
 	inline IDXGISwapChain * const SwapChain() { return mp_SwapChain; }
 	inline ID3D11Device * const Device() { return mp_Device; }
 	inline ID3D11DeviceContext * const DeviceContext() { return mp_DeviceContext; }
-	inline ID3D11RenderTargetView * const BackBuffer() { return mp_BackBuffer; }
-	inline ID3D11RenderTargetView * const DepthBuffer() { return mp_DepthBuffer; }
+	//inline ID3D11RenderTargetView * const BackBuffer() { return mp_BackBuffer; }
+	//inline ID3D11RenderTargetView * const DepthBuffer() { return mp_DepthBuffer; }
 
 	// Sets up and initializes window
 	HWND InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings);
