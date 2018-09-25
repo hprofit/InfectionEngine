@@ -55,7 +55,7 @@ VOut VShader(
 	output.normal = mul(NormalMatrix, normal);
 	output.tbn = float3x3(T, B, N);
 	output.view = CameraPosition - P;
-	output.light = float4(0,5,5,1) - P;
+	output.light = float4(0,10,10,1) - P;
 	output.color = color;
 	output.texCoords = texCoords;
 
@@ -87,13 +87,11 @@ float4 PShader(
 		float4 ambient = color * float4(0.1, 0.1, 0.1, 1);
 		float4 diffuse = max(dot(m, L), 0) * diffuseColor * lightColor;
 		float4 specular = pow(max(dot(H, m), 0), specularCoef) * specularColor * lightColor;
-
 		finalColor = diffuse + specular + ambient;
 	}
 	else {
 		finalColor = diffuseColor;
 	}
 
-	finalColor.w = 1;
 	return finalColor;
 }

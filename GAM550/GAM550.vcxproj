@@ -25,6 +25,7 @@
     <ClCompile Include="SOURCE\RenderTarget.cpp" />
     <ClCompile Include="SOURCE\RenderThreadContainer.cpp" />
     <ClCompile Include="SOURCE\Shader.cpp" />
+    <ClCompile Include="SOURCE\ShaderProgram.cpp" />
     <ClCompile Include="SOURCE\SimulationThreadContainer.cpp" />
     <ClCompile Include="SOURCE\ThreadCommandList.cpp" />
     <ClCompile Include="SOURCE\Cube.cpp" />
@@ -90,6 +91,7 @@
     <ClInclude Include="SOURCE\RenderTarget.h" />
     <ClInclude Include="SOURCE\RenderThreadContainer.h" />
     <ClInclude Include="SOURCE\Shader.h" />
+    <ClInclude Include="SOURCE\ShaderProgram.h" />
     <ClInclude Include="SOURCE\SimulationThreadContainer.h" />
     <ClInclude Include="SOURCE\ThreadCommandList.h" />
     <ClInclude Include="SOURCE\Cube.h" />

@@ -135,7 +135,7 @@ typedef unsigned int InfectGUID;
 //#include <DebugLineMesh.h>
 #include <ConstantBuffer.h>
 #include <Shader.h>
-//#include <ShaderProgram.h>
+#include <ShaderProgram.h>
 //#include <ImageRenderer.h>
 #include <Sorting.h>
 //#include <Shape.h>

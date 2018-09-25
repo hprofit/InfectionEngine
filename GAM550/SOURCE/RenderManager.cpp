@@ -1,3 +1,10 @@
+/* Start Header -------------------------------------------------------
+Copyright (C) 2018 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+Author: <Holden Profit>
+- End Header --------------------------------------------------------*/
+
 #include "Stdafx.h"
 
 // this is the main message handler for the program
@@ -35,12 +42,8 @@ RenderManager::RenderManager() :
 
 RenderManager::~RenderManager()
 {
-	if (mp_VS)
-		mp_VS->Release();
-	if (mp_PS)
-		mp_PS->Release();
-	if (mp_CBuffer)
-		mp_CBuffer->Release();
+	mp_ShaderProgramDefault->Release();
+	delete mp_ShaderProgramDefault;
 
 	// Show the mouse cursor.
 	ShowCursor(true);
@@ -104,7 +107,7 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	Matrix4x4 M = pGO.GetComponent<TransformComponent>()->GetTransform();
 	Matrix4x4 N = Matrix4x4::Transpose3x3(Matrix4x4::Inverse3x3(M));
 	Matrix4x4 I = Matrix4x4::Transpose(N) * M;
-	MainCB& cb = mp_CBuffer->BufferData();
+	MainCB& cb = mp_ShaderProgramDefault->CB()->BufferData();
 	cb.MatFinal = pCamComp->GetCameraMatrix() * pCamComp->GetViewMatrix() * M;
 	cb.MatFinal.Transpose();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
@@ -115,15 +118,12 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	cb.Textured = pMeshComp->IsTextured();
 	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
 
-	mp_CBuffer->SetConstantBuffer(mp_D3D->mp_DeviceContext);
-	//mp_D3D->mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_CBuffer);
-	//mp_D3D->mp_DeviceContext->PSSetConstantBuffers(0, 1, &mp_Cbuffer);
+	mp_ShaderProgramDefault->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 	ID3D11ShaderResourceView* ptex = pMeshComp->GetDiffuseTexture();
 	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &ptex);
 
 	// set the new values for the constant buffer
-	mp_CBuffer->UpdateSubresource(mp_D3D->mp_DeviceContext);
-	//mp_D3D->mp_DeviceContext->UpdateSubresource(mp_CBuffer->CBuffer(), 0, 0, &cb, 0, 0);
+	mp_ShaderProgramDefault->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
 
 	// do 3D rendering on the back buffer here
 	RenderScene(pMeshComp->GetScene());
@@ -167,13 +167,14 @@ bool RenderManager::LoadShader(std::string shaderName)
 	//mp_D3D->mp_Device->CreatePixelShader(mp_PSBlob->GetBufferPointer(), mp_PSBlob->GetBufferSize(), NULL, &mp_PS);
 	
 	std::string filePath = INFECT_GAME_CONFIG.ShadersDir() + shaderName;
-	mp_VS = new VertexShader(filePath);
-	mp_PS = new PixelShader(filePath);
 
-	mp_VS->BindShader();
-	mp_PS->BindShader();
+	// TODO: Made this less shitty
+	if (!mp_ShaderProgramDefault)
+		mp_ShaderProgramDefault = new ShaderProgram(filePath);
+	else 
+		mp_ShaderProgramDeferred = new ShaderProgram(filePath);
 
-	mp_CBuffer = new ConstantBufferWrapper<MainCB>(mp_D3D->mp_Device);
+	mp_ShaderProgramDefault->BindShader();
 
 	return true;
 }

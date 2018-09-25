@@ -7,71 +7,38 @@ Author: <Holden Profit>
 
 #include <Stdafx.h>
 
-ShaderProgram::ShaderProgram() :
-	m_pVertexShader(NULL),
-	m_pFragmentShader(NULL)
+ShaderProgram::ShaderProgram(std::string shaderFile)
 {
-	m_programID = glCreateProgram();
+	mp_VertexShader = new VertexShader(shaderFile);
+	mp_PixelShader = new PixelShader(shaderFile);
+	mp_CBuffer = new ConstantBufferWrapper<MainCB>(INFECT_RENDERER.Device());
 }
 
-ShaderProgram::~ShaderProgram()
+ShaderProgram::ShaderProgram(std::string vertexShaderFile, std::string pixelShaderFile)
 {
-	if (m_pVertexShader) {
-		glDetachShader(m_programID, m_pVertexShader->GetShaderID());
-		delete m_pVertexShader;
-	}
-	if (m_pFragmentShader) {
-		glDetachShader(m_programID, m_pFragmentShader->GetShaderID());
-		delete m_pFragmentShader;
-	}
+	mp_VertexShader = new VertexShader(vertexShaderFile);
+	mp_PixelShader = new PixelShader(pixelShaderFile);
+	mp_CBuffer = new ConstantBufferWrapper<MainCB>(INFECT_RENDERER.Device());
 }
 
-GLint ShaderProgram::GetProgramID() const
+ShaderProgram::ShaderProgram(std::string vertexShaderFile, std::string pixelShaderFile, std::string vertexShaderFunc, std::string pixelShaderFunc)
 {
-	return m_programID;
+	mp_VertexShader = new VertexShader(vertexShaderFile, vertexShaderFunc);
+	mp_PixelShader = new PixelShader(pixelShaderFile, pixelShaderFunc);
+	mp_CBuffer = new ConstantBufferWrapper<MainCB>(INFECT_RENDERER.Device());
 }
 
-GLint & ShaderProgram::GetProgramIDRef()
+ShaderProgram::~ShaderProgram(){}
+
+void ShaderProgram::BindShader()
 {
-	return m_programID;
+	mp_VertexShader->BindShader();
+	mp_PixelShader->BindShader();
 }
 
-bool ShaderProgram::operator==(const ShaderProgram& rhs) const
+void ShaderProgram::Release()
 {
-	return rhs.m_programID == m_programID;
-}
-
-bool ShaderProgram::operator!=(const ShaderProgram& rhs) const
-{
-	return rhs.m_programID != m_programID;
-}
-
-void ShaderProgram::AttachShader(Shader& shader)
-{
-	switch (shader.GetShaderType()) {
-		case VERTEX_SHADER:
-			m_pVertexShader = &shader;
-			break;
-		case FRAGMENT_SHADER:
-			m_pFragmentShader = &shader;
-			break;
-	}
-	glAttachShader(m_programID, shader.GetShaderID());
-}
-
-void ShaderProgram::LinkShaders()
-{
-	GLint Result;
-	int InfoLogLength;
-	glLinkProgram(m_programID);
-
-	glGetProgramiv(m_programID, GL_LINK_STATUS, &Result);
-	glGetProgramiv(m_programID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 0) {
-		std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
-		glGetProgramInfoLog(m_programID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-		std::cout << &ProgramErrorMessage[0] << std::endl;
-	}
-	if (Result != GL_TRUE)
-		std::cout << "LINKING FAILED : " << m_programID << std::endl;
+	mp_VertexShader->Release();
+	mp_PixelShader->Release();
+	mp_CBuffer->Release();
 }

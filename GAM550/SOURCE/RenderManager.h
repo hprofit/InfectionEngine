@@ -31,13 +31,8 @@ private:
 	WindowSettings m_WindowSettings;
 	HWND m_hWnd; 	// the handle for the window, filled by a function
 
-	//ID3D11Buffer *mp_Cbuffer;		// the constant buffer
-	//ID3D11VertexShader *mp_VS;		// the vertex shader
-	//ID3D11PixelShader *mp_PS;		// the pixel shader
-	//ID3DBlob  *mp_VSBlob, *mp_PSBlob, *mp_Errors;
-	VertexShader* mp_VS;
-	PixelShader* mp_PS;
-	ConstantBufferWrapper<MainCB>* mp_CBuffer;
+	ShaderProgram* mp_ShaderProgramDefault;
+	ShaderProgram* mp_ShaderProgramDeferred;
 
 	bool _GameObjectHasRenderableComponent(const GameObject& gameObject);
 public:
@@ -47,8 +42,6 @@ public:
 	inline IDXGISwapChain * const SwapChain() { return mp_D3D->SwapChain(); }
 	inline ID3D11Device * const Device() { return mp_D3D->Device(); }
 	inline ID3D11DeviceContext * const DeviceContext() { return mp_D3D->DeviceContext(); }
-	//inline ID3D11RenderTargetView * const BackBuffer() { return mp_D3D->BackBuffer(); }
-	//inline ID3D11RenderTargetView * const DepthBuffer() { return mp_D3D->BackBuffer(); }
 
 	inline float AspectRatio() const { return m_WindowSettings.AspectRatio; }
 	inline unsigned int ScreenWidth() const { return m_WindowSettings.Width; }
@@ -76,13 +69,7 @@ public:
 
 	bool LoadShader(std::string shaderName);
 
-	// TODO: Get rid of these in favor of selecting which VS/PS you want
-	//ID3D11VertexShader * const VertexShader() { return mp_VS; }
-	//ID3D11PixelShader * const PixelShader() { return mp_PS; }
-	//ID3D10Blob * const VSBlob() { return mp_VSBlob; }
-	//ID3D10Blob * const PSBlob() { return mp_PSBlob; }
-
-	ID3D10Blob * const VSBlob() { return mp_VS->Blob(); }
+	ID3D10Blob * const VSBlob() { return mp_ShaderProgramDefault->VS()->Blob(); }
 };
 
 #endif

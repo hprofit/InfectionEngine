@@ -21,6 +21,8 @@ namespace Infect {
 			std::cout << "DIRECTX DID NOT INITIALIZE PROPERLY." << std::endl;
 		if (!INFECT_RENDERER.LoadShader("base3D.shader"))  // TODO: MOVE THIS
 			return 1;
+		if (!INFECT_RENDERER.LoadShader("deferred.shader"))  // TODO: MOVE THIS
+			return 1;
 		INFECT_INPUT.Init(hInstance);
 		INFECT_RESOURCES.Init();
 

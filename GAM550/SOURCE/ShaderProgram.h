@@ -2,12 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: ShaderProgram.h
-Purpose: Houses a Shader Program for that can have individual shaders linked to it
-Language: C++
-Project: GAM541
-Author: Holden Profit
-Creation date: 1/17/18
+Author: <Holden Profit>
 - End Header --------------------------------------------------------*/
 
 #pragma once
@@ -15,30 +10,26 @@ Creation date: 1/17/18
 #ifndef SHADER_PROGRAM_H
 #define SHADER_PROGRAM_H
 
-//#include <glew.h>
-//#include <map>
-//#include <string>
-//#include "Shader.h"
-
 class ShaderProgram
 {
 protected:
-	GLint m_programID;
-	Shader * m_pVertexShader;
-	Shader * m_pFragmentShader;
+	VertexShader * mp_VertexShader;
+	PixelShader * mp_PixelShader;
+	ConstantBufferWrapper<MainCB>* mp_CBuffer;
 
 public:
-	ShaderProgram();
+	ShaderProgram(std::string shaderFile);
+	ShaderProgram(std::string vertexShaderFile, std::string pixelShaderFile);
+	ShaderProgram(std::string vertexShaderFile, std::string pixelShaderFile, std::string vertexShaderFunc = "VShader", std::string pixelShaderFunc = "PShader");
 	~ShaderProgram();
 
-	GLint GetProgramID() const;
-	GLint& GetProgramIDRef();
 
-	bool operator==(const ShaderProgram& rhs) const;
-	bool operator!=(const ShaderProgram& rhs) const;
+	void BindShader();
+	void Release();
 
-	virtual void AttachShader(Shader& shader);
-	void LinkShaders();
+	VertexShader* VS() { return mp_VertexShader; }
+	PixelShader* PS() { return mp_PixelShader; }
+	ConstantBufferWrapper<MainCB>* CB() { return mp_CBuffer; }
 };
 
 #endif

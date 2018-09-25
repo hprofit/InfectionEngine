@@ -32,6 +32,7 @@ protected:
 
 public:
 	VertexShader(std::string shaderFilePath);
+	VertexShader(std::string shaderFilePath, std::string shaderFunc);
 	virtual ~VertexShader() {};
 
 	bool LoadFromFile(std::string shaderFilePath, std::string shaderFunc = "VShader");
@@ -50,6 +51,7 @@ protected:
 
 public:
 	PixelShader(std::string shaderFilePath);
+	PixelShader(std::string shaderFilePath, std::string shaderFunc);
 	virtual ~PixelShader() {};
 
 	bool LoadFromFile(std::string shaderFilePath, std::string shaderFunc = "PShader");

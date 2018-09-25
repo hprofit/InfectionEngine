@@ -13,6 +13,10 @@ VertexShader::VertexShader(std::string shaderFilePath) :
 	LoadFromFile(shaderFilePath);
 }
 
+VertexShader::VertexShader(std::string shaderFilePath, std::string shaderFunc)
+{
+}
+
 bool VertexShader::LoadFromFile(std::string shaderFilePath, std::string shaderFunc)
 {
 	// load and compile the shaders
@@ -54,6 +58,10 @@ PixelShader::PixelShader(std::string shaderFilePath) :
 	Shader()
 {
 	LoadFromFile(shaderFilePath);
+}
+
+PixelShader::PixelShader(std::string shaderFilePath, std::string shaderFunc)
+{
 }
 
 bool PixelShader::LoadFromFile(std::string shaderFilePath, std::string shaderFunc)
