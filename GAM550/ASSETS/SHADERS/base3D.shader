@@ -4,7 +4,6 @@ cbuffer ConstantBuffer
 	float4x4 ModelMatrix;
 	float4x4 NormalMatrix;
 	float4 CameraPosition;
-	float4 LightPosition;
 	bool CastShadows;
 	bool ReceiveShadows;
 	bool IsLit;
@@ -56,7 +55,7 @@ VOut VShader(
 	output.normal = mul(NormalMatrix, normal);
 	output.tbn = float3x3(T, B, N);
 	output.view = CameraPosition - P;
-	output.light = LightPosition - P;
+	output.light = float4(0,5,5,1) - P;
 	output.color = color;
 	output.texCoords = texCoords;
 

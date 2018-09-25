@@ -10,17 +10,17 @@ Author: <Holden Profit>
 #ifndef RENDER_MANAGER_H
 #define RENDER_MANAGER_H
 
-struct ConstantBuffer {
-	Matrix4x4 MatFinal;
-	Matrix4x4 ModelMatrix;
-	Matrix4x4 NormalMatrix;
-	Vector3D CameraPosition;
-	Vector3D LightPosition;
-	int CastShadows;
-	int ReceiveShadows;
-	int IsLit;
-	int Textured;
-};
+//struct ConstantBuffer {
+//	Matrix4x4 MatFinal;
+//	Matrix4x4 ModelMatrix;
+//	Matrix4x4 NormalMatrix;
+//	Vector3D CameraPosition;
+//	Vector3D LightPosition;
+//	int CastShadows;
+//	int ReceiveShadows;
+//	int IsLit;
+//	int Textured;
+//};
 
 class RenderManager : public Subscriber
 {
@@ -31,10 +31,13 @@ private:
 	WindowSettings m_WindowSettings;
 	HWND m_hWnd; 	// the handle for the window, filled by a function
 
-	ID3D11Buffer *mp_Cbuffer;		// the constant buffer
-	ID3D11VertexShader *mp_VS;		// the vertex shader
-	ID3D11PixelShader *mp_PS;		// the pixel shader
-	ID3DBlob  *mp_VSBlob, *mp_PSBlob, *mp_Errors;
+	//ID3D11Buffer *mp_Cbuffer;		// the constant buffer
+	//ID3D11VertexShader *mp_VS;		// the vertex shader
+	//ID3D11PixelShader *mp_PS;		// the pixel shader
+	//ID3DBlob  *mp_VSBlob, *mp_PSBlob, *mp_Errors;
+	VertexShader* mp_VS;
+	PixelShader* mp_PS;
+	ConstantBufferWrapper<MainCB>* mp_CBuffer;
 
 	bool _GameObjectHasRenderableComponent(const GameObject& gameObject);
 public:
@@ -71,13 +74,15 @@ public:
 
 	void RenderScene(const Scene * pScene);
 
-	bool LoadShader(void);
+	bool LoadShader(std::string shaderName);
 
 	// TODO: Get rid of these in favor of selecting which VS/PS you want
-	ID3D11VertexShader * const VertexShader() { return mp_VS; }
-	ID3D11PixelShader * const PixelShader() { return mp_PS; }
-	ID3D10Blob * const VSBlob() { return mp_VSBlob; }
-	ID3D10Blob * const PSBlob() { return mp_PSBlob; }
+	//ID3D11VertexShader * const VertexShader() { return mp_VS; }
+	//ID3D11PixelShader * const PixelShader() { return mp_PS; }
+	//ID3D10Blob * const VSBlob() { return mp_VSBlob; }
+	//ID3D10Blob * const PSBlob() { return mp_PSBlob; }
+
+	ID3D10Blob * const VSBlob() { return mp_VS->Blob(); }
 };
 
 #endif

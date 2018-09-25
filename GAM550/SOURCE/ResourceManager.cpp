@@ -103,7 +103,7 @@ bool ResourceManager::Init()
 
 Scene* ResourceManager::_LoadScene(const std::string& meshSceneName)
 {
-	const aiScene* scene = m_importer.ReadFile(/*INFECT_GAME_CONFIG.MeshesDir()*/"ASSETS/MESHES/" + meshSceneName,
+	const aiScene* scene = m_importer.ReadFile(INFECT_GAME_CONFIG.MeshesDir() + meshSceneName,
 		aiProcess_CalcTangentSpace |
 		aiProcess_Triangulate |
 		aiProcess_JoinIdenticalVertices |

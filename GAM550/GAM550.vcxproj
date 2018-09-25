@@ -24,6 +24,7 @@
     <ClCompile Include="SOURCE\LevelManager.cpp" />
     <ClCompile Include="SOURCE\RenderTarget.cpp" />
     <ClCompile Include="SOURCE\RenderThreadContainer.cpp" />
+    <ClCompile Include="SOURCE\Shader.cpp" />
     <ClCompile Include="SOURCE\SimulationThreadContainer.cpp" />
     <ClCompile Include="SOURCE\ThreadCommandList.cpp" />
     <ClCompile Include="SOURCE\Cube.cpp" />
@@ -85,8 +86,10 @@
     <ClInclude Include="SOURCE\Color.h" />
     <ClInclude Include="SOURCE\Command.h" />
     <ClInclude Include="SOURCE\LevelManager.h" />
+    <ClInclude Include="SOURCE\ConstantBuffer.h" />
     <ClInclude Include="SOURCE\RenderTarget.h" />
     <ClInclude Include="SOURCE\RenderThreadContainer.h" />
+    <ClInclude Include="SOURCE\Shader.h" />
     <ClInclude Include="SOURCE\SimulationThreadContainer.h" />
     <ClInclude Include="SOURCE\ThreadCommandList.h" />
     <ClInclude Include="SOURCE\Cube.h" />

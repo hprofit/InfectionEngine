@@ -39,8 +39,8 @@ RenderManager::~RenderManager()
 		mp_VS->Release();
 	if (mp_PS)
 		mp_PS->Release();
-	if (mp_Cbuffer)
-		mp_Cbuffer->Release();
+	if (mp_CBuffer)
+		mp_CBuffer->Release();
 
 	// Show the mouse cursor.
 	ShowCursor(true);
@@ -104,7 +104,7 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	Matrix4x4 M = pGO.GetComponent<TransformComponent>()->GetTransform();
 	Matrix4x4 N = Matrix4x4::Transpose3x3(Matrix4x4::Inverse3x3(M));
 	Matrix4x4 I = Matrix4x4::Transpose(N) * M;
-	ConstantBuffer cb;
+	MainCB& cb = mp_CBuffer->BufferData();
 	cb.MatFinal = pCamComp->GetCameraMatrix() * pCamComp->GetViewMatrix() * M;
 	cb.MatFinal.Transpose();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
@@ -113,17 +113,17 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	cb.ReceiveShadows = pMeshComp->ReceiveShadows();
 	cb.IsLit = pMeshComp->IsLit();
 	cb.Textured = pMeshComp->IsTextured();
-	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();// Vector3D(camPos.w, camPos.z, camPos.y, camPos.x);
-	// TODO: THIS IS A HACK, REMOVE IT
-	cb.LightPosition = INFECT_GOM.GetGameObject(3)->GetComponent<TransformComponent>()->WorldPosition();
+	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
 
-	mp_D3D->mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_Cbuffer);
-	mp_D3D->mp_DeviceContext->PSSetConstantBuffers(0, 1, &mp_Cbuffer);
+	mp_CBuffer->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+	//mp_D3D->mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_CBuffer);
+	//mp_D3D->mp_DeviceContext->PSSetConstantBuffers(0, 1, &mp_Cbuffer);
 	ID3D11ShaderResourceView* ptex = pMeshComp->GetDiffuseTexture();
 	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &ptex);
 
 	// set the new values for the constant buffer
-	mp_D3D->mp_DeviceContext->UpdateSubresource(mp_Cbuffer, 0, 0, &cb, 0, 0);
+	mp_CBuffer->UpdateSubresource(mp_D3D->mp_DeviceContext);
+	//mp_D3D->mp_DeviceContext->UpdateSubresource(mp_CBuffer->CBuffer(), 0, 0, &cb, 0, 0);
 
 	// do 3D rendering on the back buffer here
 	RenderScene(pMeshComp->GetScene());
@@ -144,40 +144,36 @@ void RenderManager::RenderScene(const Scene * pScene)
 	}
 }
 
-bool RenderManager::LoadShader()
+bool RenderManager::LoadShader(std::string shaderName)
 {
-	// load and compile the shaders
-	int flag = D3D10_SHADER_WARNINGS_ARE_ERRORS;// | D3D10_SHADER_OPTIMIZATION_LEVEL3;
+	//// load and compile the shaders
+	//int flag = D3D10_SHADER_WARNINGS_ARE_ERRORS;// | D3D10_SHADER_OPTIMIZATION_LEVEL3;
+	//
+	//std::string filePath = INFECT_GAME_CONFIG.ShadersDir() + shaderName;
+	//HRESULT result = D3DCompileFromFile(std::wstring(filePath.begin(), filePath.end()).c_str(), 0, 0, "VShader", "vs_4_0", flag, flag, &mp_VSBlob, &mp_Errors);
+	//if (FAILED(result)) {
+	//	MessageBox(NULL, "The vertex shader failed to compile.", "Error", MB_OK);
+	//	return false;
+	//}
+	//
+	//result = D3DCompileFromFile(std::wstring(filePath.begin(), filePath.end()).c_str(), 0, 0, "PShader", "ps_4_0", flag, flag, &mp_PSBlob, &mp_Errors);
+	//if (FAILED(result)) {
+	//	MessageBox(NULL, "The pixel shader failed to compile.", "Error", MB_OK);
+	//	return false;
+	//}
+	//
+	//// Encapsulate both shaders into shader objects
+	//mp_D3D->mp_Device->CreateVertexShader(mp_VSBlob->GetBufferPointer(), mp_VSBlob->GetBufferSize(), NULL, &mp_VS);
+	//mp_D3D->mp_Device->CreatePixelShader(mp_PSBlob->GetBufferPointer(), mp_PSBlob->GetBufferSize(), NULL, &mp_PS);
+	
+	std::string filePath = INFECT_GAME_CONFIG.ShadersDir() + shaderName;
+	mp_VS = new VertexShader(filePath);
+	mp_PS = new PixelShader(filePath);
 
-	HRESULT result = D3DCompileFromFile(L"ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, flag, &mp_VSBlob, &mp_Errors);
-	//D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, 0, 0, &mp_VSBlob, &mp_Errors, 0);
-	if (FAILED(result)) {
-		MessageBox(NULL, "The vertex shader failed to compile.", "Error", MB_OK);
-		return false;
-	}
+	mp_VS->BindShader();
+	mp_PS->BindShader();
 
-	result = D3DCompileFromFile(L"ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, flag, &mp_PSBlob, &mp_Errors);
-	//D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, 0, 0, &mp_PSBlob, &mp_Errors, 0);
-	if (FAILED(result)) {
-		MessageBox(NULL, "The pixel shader failed to compile.", "Error", MB_OK);
-		return false;
-	}
-
-	// Encapsulate both shaders into shader objects
-	mp_D3D->mp_Device->CreateVertexShader(mp_VSBlob->GetBufferPointer(), mp_VSBlob->GetBufferSize(), NULL, &mp_VS);
-	mp_D3D->mp_Device->CreatePixelShader(mp_PSBlob->GetBufferPointer(), mp_PSBlob->GetBufferSize(), NULL, &mp_PS);
-
-	mp_D3D->mp_DeviceContext->VSSetShader(mp_VS, 0, 0);
-	mp_D3D->mp_DeviceContext->PSSetShader(mp_PS, 0, 0);
-
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(bd));
-
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(ConstantBuffer) + (16 - (sizeof(ConstantBuffer) % 16));
-	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-
-	mp_D3D->mp_Device->CreateBuffer(&bd, NULL, &mp_Cbuffer);
+	mp_CBuffer = new ConstantBufferWrapper<MainCB>(mp_D3D->mp_Device);
 
 	return true;
 }

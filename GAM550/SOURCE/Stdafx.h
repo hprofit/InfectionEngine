@@ -133,7 +133,8 @@ typedef unsigned int InfectGUID;
 #include <Sphere.h>
 #include <Cube.h>
 //#include <DebugLineMesh.h>
-//#include <Shader.h>
+#include <ConstantBuffer.h>
+#include <Shader.h>
 //#include <ShaderProgram.h>
 //#include <ImageRenderer.h>
 #include <Sorting.h>
