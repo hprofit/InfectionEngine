@@ -37,7 +37,7 @@ bool StartSimulationCommand::execute() const
 #pragma region TestStuff
 	TransformComponent* tcpCamera = INFECT_GOM.GetGameObject(2)->GetComponent<TransformComponent>();  // 2
 	TransformComponent* tcpLight = INFECT_GOM.GetGameObject(3)->GetComponent<TransformComponent>();	// 3
-	if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT) || INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
+	if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
 		tcpLight->Move(Infect::GetFrameTime() *30.f*tcpLight->Right());
 	}
 	if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
@@ -75,7 +75,7 @@ bool StartSimulationCommand::execute() const
 	}
 	// alt+f4
 	if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {
-		INFECT_GAME_STATE.SetGameState(GameState::QUIT);
+		//INFECT_GAME_STATE.SetGameState(GameState::QUIT);
 	}
 	INFECT_GOM.GetGameObject(0)->GetComponent<TransformComponent>()->SetPosition(tcpCamera->WorldPosition());
 	//pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);

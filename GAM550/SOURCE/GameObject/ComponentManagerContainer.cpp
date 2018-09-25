@@ -10,7 +10,8 @@ Author: <Holden Profit, Hyoyup Chung>
 void ComponentManagerContainer::Update(float dt)
 {
 	for each (CM* cm in m_CMngrs) {
-		cm->Update(dt);
+		if (cm)
+			cm->Update(dt);
 	}
 }
 

@@ -12,8 +12,8 @@ static void PrintLinkedList(MemoryBlock* node) {
 		printf("\n\nFINISHED\n\n");
 		return;
 	}
-	printf("MEMORY BLOCK :: node: %p :: pData: %p :: Size: %d :: FreeSize: %d :: Next: %p :: Prev: %p\n",
-		node, node->pData, node->size, node->freesize, node->next, node->prev);
+	//printf("MEMORY BLOCK :: node: %p :: pData: %p :: Size: %d :: FreeSize: %d :: Next: %p :: Prev: %p\n",
+	//	node, node->pData, node->size, node->freesize, node->next, node->prev);
 	PrintLinkedList(node->next);
 }
 
@@ -26,7 +26,7 @@ static void PrintMemoryBlock(MemoryBlock* block) {
 	if (block->next)
 		PrintPointer("Next->Prev MB", block->next->prev);
 	PrintPointer("Prev MB", block->prev);
-	printf("Block Size: %d : Block Freesize: %d\n", block->size, block->freesize);
+	printf("Block Size: %u : Block Freesize: %u\n", (unsigned) block->size, (unsigned) block->freesize);
 }
 
 MemoryManager::MemoryManager():

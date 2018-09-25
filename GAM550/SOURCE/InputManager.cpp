@@ -9,7 +9,7 @@ Author: <Hyoyup Chung>
 #include <iostream>
 
 #define JoystickDeadZone 5500
-#define DIRECTINPUT_VERSION 0x0800 
+//#define DIRECTINPUT_VERSION 0x0800 
 #define SAFERELEASE(p) {if(p) {(p)->Release(); (p)=nullptr;}}
 #define SAFEDELETE(p)  {if(p) {delete (p); (p)=nullptr;}}
 
@@ -304,6 +304,7 @@ bool InputManager::IsControllerConnected() {
 	DWORD res = XInputGetState(0, &_xbox_state);
 	if (res == ERROR_SUCCESS)
 		return true;
+	memset(m_CurrentButtonStates, 0, XBOX_NUM_SCANCODES * sizeof(BYTE));
 	return false;
 }
 
