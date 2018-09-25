@@ -47,6 +47,9 @@ public:
 	// Closes Direct3D and releases memory
 	void CleanD3D(void);
 
+
+	void BindBackBuffer() const;
+
 	void ClearBackBuffer(const Color& color);
 
 	void ClearDepthBuffer(void);

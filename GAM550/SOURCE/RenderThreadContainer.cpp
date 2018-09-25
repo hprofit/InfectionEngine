@@ -32,6 +32,7 @@ std::thread & RenderThreadContainer::Spawn()
 bool StartRenderCommand::execute() const
 {
 	INFECT_RENDERER.ClearScreen();					// Clear the window buffer
+	INFECT_RENDERER.BindBackBuffer();
 	INFECT_GOM.RenderCameras();						// Render all game objects
 	INFECT_RENDERER.PresentFrameToScreen();			// Swap window buffer
 	INFECT_THREAD_JOBS.AddNewJob(new StartSimulationCommand(*INFECT_THREAD_JOBS.GetThreadContainer<SimulationThreadContainer>(ThreadType::SimThread)));

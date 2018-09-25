@@ -77,10 +77,6 @@ bool RenderTarget::_CreateDepthStencilState()
 	HRESULT result = INFECT_RENDERER.Device()->CreateDepthStencilState(&depthStencilDesc, &mp_DepthStencilState);
 	if (FAILED(result))
 		return false;
-
-	// Set the depth stencil state.
-	INFECT_RENDERER.DeviceContext()->OMSetDepthStencilState(mp_DepthStencilState, 1);
-
 	return true;
 }
 
@@ -99,11 +95,6 @@ bool RenderTarget::_CreateDepthStencilView()
 	HRESULT result = INFECT_RENDERER.Device()->CreateDepthStencilView(mp_DepthAndStencilBuffer, &depthStencilViewDesc, &mp_DepthStencilView);
 	if (FAILED(result))
 		return false;
-
-	// Bind the render target view and depth stencil buffer to the output render pipeline.
-	INFECT_RENDERER.DeviceContext()->OMSetRenderTargets(1, &mp_BackBuffer, mp_DepthStencilView);
-	INFECT_RENDERER.DeviceContext()->RSSetState(mp_RasterState);
-
 	return true;
 }
 
@@ -126,9 +117,6 @@ bool RenderTarget::_CreateRasterState()
 	HRESULT result = INFECT_RENDERER.Device()->CreateRasterizerState(&rasterDesc, &mp_RasterState);
 	if (FAILED(result))
 		return false;
-
-	// Now set the rasterizer state.
-	INFECT_RENDERER.DeviceContext()->RSSetState(mp_RasterState);
 	return true;
 }
 
@@ -167,7 +155,15 @@ void RenderTarget::BindToRead() const
 
 void RenderTarget::BindRenderTarget() const
 {
+	// Set the depth stencil state.
+	INFECT_RENDERER.DeviceContext()->OMSetDepthStencilState(mp_DepthStencilState, 1);
 
+	// Bind the render target view and depth stencil buffer to the output render pipeline.
+	INFECT_RENDERER.DeviceContext()->OMSetRenderTargets(1, &mp_BackBuffer, mp_DepthStencilView);
+	INFECT_RENDERER.DeviceContext()->RSSetState(mp_RasterState);
+
+	// Now set the rasterizer state.
+	INFECT_RENDERER.DeviceContext()->RSSetState(mp_RasterState);
 }
 
 void RenderTarget::UnbindRenderTarget() const

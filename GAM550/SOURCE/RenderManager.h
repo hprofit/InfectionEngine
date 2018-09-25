@@ -60,6 +60,8 @@ public:
 	bool InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings);
 
 
+	void BindBackBuffer();
+
 	void ClearScreen(void);
 
 	void PresentFrameToScreen(void);

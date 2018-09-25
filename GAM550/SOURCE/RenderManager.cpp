@@ -76,6 +76,11 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 	return mp_D3D->InitD3D(m_hWnd, settings);
 }
 
+void RenderManager::BindBackBuffer()
+{
+	mp_D3D->BindBackBuffer();
+}
+
 void RenderManager::ClearScreen(void)
 {
 	// Clear the back buffer and then the depth buffer
