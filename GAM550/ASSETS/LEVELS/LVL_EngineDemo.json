@@ -1,0 +1,90 @@
+{
+    "GAME_OBJECTS": [
+        {
+            "prefab": "P_SkyBox"
+        },
+        {
+            "prefab": "P_Player",
+            "position": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+		    "prefab": "P_Camera"
+        },
+        {
+            "prefab": "P_PointLight",
+            "position":{
+                "x": 0.0,
+                "y": 10.0,
+                "z": 10.0
+            }
+        },
+	    {
+            "prefab": "P_SmallCube",
+            "position": {
+                "x": 25,
+                "y": 25,
+                "z": 25
+            }
+        },
+        {
+            "prefab": "P_SmallCube",
+            "position": {
+                "x": -25,
+                "y": 25,
+                "z": 25
+            }
+        },
+        {
+            "prefab": "P_SmallCube",
+            "position": {
+                "x": 25,
+                "y": -25,
+                "z": 25
+            }
+        },
+        {
+            "prefab": "P_SmallCube",
+            "position": {
+                "x": -25,
+                "y": -25,
+                "z": 25
+            }
+        },
+        {
+            "prefab": "P_SmallCube",
+            "position": {
+                "x": 25,
+                "y": 25,
+                "z": -25
+            }
+        },
+        {
+            "prefab": "P_SmallCube",
+            "position": {
+                "x": -25,
+                "y": 25,
+                "z": -25
+            }
+        },
+        {
+            "prefab": "P_SmallCube",
+            "position": {
+                "x": 25,
+                "y": -25,
+                "z": -25
+            }
+        },
+        {
+            "prefab": "P_SmallCube",
+            "position": {
+                "x": -25,
+                "y": -25,
+                "z": -25
+            }
+        }
+    ]
+}

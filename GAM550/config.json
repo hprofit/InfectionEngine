@@ -24,6 +24,11 @@
 		"width": 800,
 		"vsync": true
 	},
+	"LEVEL_SETTINGS": {
+		"Levels":[
+			{"Name": "LVL_EngineDemo"}
+		]
+	},
 	"INPUT_SETTINGS": [
 
 	]

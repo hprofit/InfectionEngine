@@ -65,14 +65,13 @@ class InputManager: public Subscriber
 {
 private:
 	// DirectInput
-	LPDIRECTINPUT8 DIRX_Interface = nullptr;		// Root DirectInput Interface
+	LPDIRECTINPUT8 DIRX_Interface = nullptr;		// DirectInput interface
 	LPDIRECTINPUTDEVICE8 mDIRX_Keyboard = nullptr;	// DirectInput keyboard device
 	LPDIRECTINPUTDEVICE8 mDIRX_Mouse = nullptr;		// DirectInput mouse device
-	LPDIRECTINPUTDEVICE8 mDIRX_Joystick = nullptr;	// DirectInput Joystick device
-	// keyboard state
+	// Keyboard State
 	BYTE *m_PreviousKeyStates;
 	BYTE *m_CurrentKeyStates;
-	// mouse state
+	// Mouse State
 	DIMOUSESTATE m_CurrentMouseStates;
 	DIMOUSESTATE m_PreviousMouseStates;
 
@@ -80,11 +79,12 @@ private:
 	bool m_PrevRightMouse, m_RightMouse;
 	int m_MousePosX, m_MousePosY;
 	int m_MousePosRelX, m_MousePosRelY;
-	bool m_isJoystickControlsActive;
-	// Game controller States
+
+	// XInput 
+	XINPUT_STATE _xbox_state;
+	// Game Controller States
 	BYTE  *m_CurrentButtonStates;
 	BYTE  *m_PreviousButtonStates;
-	XINPUT_STATE _xbox_state;
 	// Axis States
 	SHORT m_StickRightX, m_StickLeftX;
 	SHORT m_StickRightY, m_StickLeftY;

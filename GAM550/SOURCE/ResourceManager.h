@@ -2,13 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: ResourceManager.h
-Purpose: Loads Meshes and other commonly used game resources into
-memory and manages their instances as well as returns references to them.
-Language: C++
-Project: GAM541
-Author: Holden Profit
-Creation date: 1/17/18
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #pragma once
@@ -25,6 +19,7 @@ private:
 	std::unordered_map<std::string, Mesh* > m_meshes;
 	std::unordered_map<std::string, Scene* > m_scenes;
 	std::unordered_map<std::string, ID3D11ShaderResourceView* > m_textures;
+	std::unordered_map<std::string, json*> m_prefabs;
 
 	// Parses a file using assimp and returns a pointer to the created Scene object
 	Scene* _LoadScene(const std::string& sceneName);
@@ -46,6 +41,8 @@ public:
 	ID3D11ShaderResourceView* GetTexture(const std::string& textureName);
 	// Deletes the ResourceManager's reference to the specified texture object
 	void UnloadTexture(const std::string& textureName);
+	// Returns a pointer to a json prefab data
+	json* GetPrefabFile(const std::string& prefabName);
 	// Deletes the Resourcemanager's reference to all resource objects
 	void UnloadAll();
 };

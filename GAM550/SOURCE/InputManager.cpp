@@ -15,7 +15,7 @@ Author: <Hyoyup Chung>
 
 InputManager::InputManager()
 	:	m_PrevLeftMouse(false), m_LeftMouse(false), 
-		m_PrevRightMouse(false), m_RightMouse(false), m_isJoystickControlsActive(false) {
+		m_PrevRightMouse(false), m_RightMouse(false) {
 	
 	// initialize mouse pos
 	m_MousePosX = 0;

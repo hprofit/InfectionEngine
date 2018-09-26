@@ -1,3 +1,10 @@
+/* Start Header -------------------------------------------------------
+Copyright (C) 2018 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+Author: <Holden Profit, Hyoyup Chung>
+- End Header --------------------------------------------------------*/
+
 #include "Stdafx.h"
 
 GameObjectManager::GameObjectManager()
@@ -12,10 +19,31 @@ GameObjectManager::~GameObjectManager()
 	//}
 }
 
-GameObject * GameObjectManager::SpawnGameObject()
+GameObject * GameObjectManager::SpawnGameObject(const std::string prefabName)
 {
-	GameObject* newGO = INFECT_MEMORY.GetNewGameObject();//new GameObject( INFECT_GUID.GetGUID() );
-	mp_GameObjects.push_back(newGO);
+	json* j = INFECT_RESOURCES.GetPrefabFile(prefabName + ".json");
+	if (!j) return nullptr;
+
+	GameObject* newGO = INFECT_MEMORY.GetNewGameObject();
+	newGO->SwitchTag(TAG_NAMES[ParseString(*j, "Tag")]);
+
+	unsigned totalActiveComp = static_cast<unsigned>((*j)[COMPONENTS].size());
+	for (unsigned i = 0; i < totalActiveComp; i++) {
+		Component* pComponent = INFECT_MEMORY.GetNewComponent(COMPONENT_NAMES[ParseString((*j)[COMPONENTS][i], "Component")]);
+		newGO->AddComponent(pComponent);
+		pComponent->Serialize((*j)[COMPONENTS][i]);
+	}
+
+	newGO->LateInitialize();
+
+	mp_GameObjects.push_back(newGO); // is this necessary?
+	return newGO;
+}
+
+GameObject* GameObjectManager::SpawnGameObject() {
+	GameObject* newGO = INFECT_MEMORY.GetNewGameObject();
+	newGO->LateInitialize();
+	mp_GameObjects.push_back(newGO); // is this necessary?
 	return newGO;
 }
 

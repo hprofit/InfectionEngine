@@ -9,14 +9,19 @@ Author: <Holden Profit, Hyoyup Chung>
 
 void ComponentManagerContainer::Update(float dt)
 {
-	for each (CM* cm in m_CMngrs) {
-		if (cm)
-			cm->Update(dt);
-	}
+	//if (!m_isQuitSeq) {
+		for each (CM* cm in m_CMngrs) {
+			if (cm)
+				cm->Update(dt);
+		}
+	//}
 }
 
 void ComponentManagerContainer::HandleEvent(Event * pEvent)
-{
+{	
+	/*if (pEvent->Type()== EVENT_WINDOW_CLOSED){
+		m_isQuitSeq = true;
+	}*/
 	for each (CM* cm in m_CMngrs) {
 		cm->HandleEvent(pEvent);
 	}

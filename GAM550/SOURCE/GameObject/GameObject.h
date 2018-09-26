@@ -46,8 +46,7 @@ public:
 	void DestroyIn(float time);
 	void Deactivate();
 
-	//void OverrideComponents(const json & j);
-	void OverrideComponents();
+	void OverrideComponents(const json& j);
 
 	InfectGUID ID() const { return m_GUID; }
 	void SetID(InfectGUID id) { m_GUID = id; }

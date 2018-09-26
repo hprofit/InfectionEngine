@@ -1,0 +1,24 @@
+{
+  	"Tag": "Player",
+  	"COMPONENTS": [
+		{
+	 		"Component": "Transform",
+		  	"position": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+		  	},
+		  	"scale": {
+				"x": 10,
+				"y": 10,
+				"z": 10
+		  	},
+		  	"pivotOffset": {},
+		  	"rotation": {}
+		},
+		{
+			"Component": "Mesh",
+			"scene": "Sphere"
+		}
+  ]
+}

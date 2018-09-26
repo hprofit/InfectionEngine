@@ -288,7 +288,7 @@ typedef unsigned int InfectGUID;
 #include <ResourceManager.h>
 //#include <PhysicsManager.h>
 #include <EventManager.h>
-//#include <LevelManager.h>
+#include <LevelManager.h>
 //#include <DebugManager.h>
 #include <AudioManager.h>
 #include <GameObject\ComponentFactory.h>

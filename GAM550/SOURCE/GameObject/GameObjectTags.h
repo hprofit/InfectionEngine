@@ -31,6 +31,7 @@ static const char* TagNameText[] =
 static std::unordered_map<std::string, GameObjectTag> TAG_NAMES = {
 	{ "Player", T_Player },
 	{ "Camera", T_Camera },
+	{ "Light", T_Light },
 	{ "NONE", T_None },
 	{ "None", T_None }
 

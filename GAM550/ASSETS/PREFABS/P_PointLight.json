@@ -1,0 +1,19 @@
+{
+  "Tag": "Light",
+  "COMPONENTS": [
+	{
+	  	"Component": "Transform",
+	  	"position": {
+			"x": 0,
+			"y": 0,
+			"z": 10
+	  	},
+	  	"scale": {},
+	  	"pivotOffset": {},
+	  	"rotation": {}
+	},
+	{
+		"Component": "PointLight"
+	}
+  ]
+}

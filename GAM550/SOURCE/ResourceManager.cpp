@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Holden Profit>
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #include <Stdafx.h>
@@ -18,7 +18,14 @@ ResourceManager::~ResourceManager()
 
 bool ResourceManager::Init()
 {
-	//LoadPrefabFiles();
+	//Loading Prefab Files
+	std::string path = INFECT_GAME_CONFIG.PrefabsDir();
+	for (auto &p : fs::directory_iterator(path)) {
+		json* j = new json();
+		*j = OpenJsonFile(p.path().string());
+		std::string filename = p.path().filename().string();
+		m_prefabs[filename] = j;
+	}
 
 	Plane* plane = new Plane();
 	plane->FinishMesh();
@@ -75,7 +82,6 @@ bool ResourceManager::Init()
 	Scene* pScene = new Scene(1);
 	(*pScene)[0] = pMesh;
 	m_scenes["test"] = pScene;
-
 
 
 	return true;
@@ -163,11 +169,29 @@ void ResourceManager::UnloadTexture(const std::string & textureName)
 	}
 }
 
+#pragma region Prefab
+
+json* ResourceManager::GetPrefabFile(const std::string& prefabName) {
+	json* file = m_prefabs[prefabName];
+	if (file)
+		return file;
+	return nullptr;
+}
+
+#pragma endregion
+
 void ResourceManager::UnloadAll()
 {
 	for (auto comp : m_meshes) {
 		if (comp.second)
 			delete comp.second;
 	}
-	m_meshes.clear();
+	m_meshes.clear();	
+	
+	for (auto comp : m_prefabs) {
+		if (comp.second) {
+			delete comp.second;
+		}
+	}
+	m_prefabs.clear();
 }

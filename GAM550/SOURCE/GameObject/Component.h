@@ -47,8 +47,7 @@ public:
 	virtual void LateUpdate(float dt) {};
 	virtual void Serialize(const json& j) = 0;
 	virtual void Deactivate() {};
-	//virtual void Override(const json& j) {};
-	virtual void Override() {};
+	virtual void Override(const json& j) {};
 	virtual void HandleEvent(Event* pEvent) {}
 
 	virtual ComponentType GetType() const { return Type; }

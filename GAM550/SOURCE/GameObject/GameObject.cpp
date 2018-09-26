@@ -34,8 +34,8 @@ GameObject::GameObject(InfectGUID id) :
 
 GameObject::~GameObject() {
 	for (int i = 0; i < ComponentType::NUM_COMPONENTS; ++i) {
-		//if (mComponents[i])
-		//	TETRA_MEMORY.DeleteComponent(mComponents[i]);
+		if (mComponents[i])
+			INFECT_MEMORY.DeleteComponent(mComponents[i]);
 	}
 
 	m_activeComponents.clear();
@@ -70,7 +70,6 @@ void GameObject::Deactivate() {
 	m_isSetToDestroy = false;
 	for (int i = 0; i < ComponentType::NUM_COMPONENTS; ++i) {
 		if (mComponents[i]) {
-			//TETRA_MEMORY.DeleteComponent(mComponents[i]);
 			mComponents[i] = nullptr;
 		}
 	}
@@ -78,11 +77,11 @@ void GameObject::Deactivate() {
 	m_activeComponents.clear();
 }
 
-void GameObject::OverrideComponents()
+void GameObject::OverrideComponents(const json &j)
 {
-	//for (unsigned int i = 0; i < m_activeComponents.size(); ++i) {
-	//	mComponents[(int)m_activeComponents[i]]->Override(j);
-	//}
+	for (unsigned int i = 0; i < m_activeComponents.size(); ++i) {
+		mComponents[(int)m_activeComponents[i]]->Override(j);
+	}
 }
 
 void GameObject::Update(float dt) {

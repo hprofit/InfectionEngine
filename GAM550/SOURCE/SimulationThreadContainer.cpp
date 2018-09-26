@@ -76,6 +76,7 @@ bool StartSimulationCommand::execute() const
 	// alt+f4
 	if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {
 		//INFECT_GAME_STATE.SetGameState(GameState::QUIT);
+		//INFECT_EVENTS.BroadcastEvent(&Event(EVENT_WINDOW_CLOSED));
 	}
 	INFECT_GOM.GetGameObject(0)->GetComponent<TransformComponent>()->SetPosition(tcpCamera->WorldPosition());
 	//pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);

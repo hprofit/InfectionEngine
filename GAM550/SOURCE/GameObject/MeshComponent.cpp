@@ -28,10 +28,15 @@ void MeshComponent::Update(float dt) {}
 
 void MeshComponent::Serialize(const json& j)
 {
-
+	mp_Scene = INFECT_RESOURCES.GetScene(ParseString(j, "scene"));
+	if(ValueExists(j, "texture"))
+		mp_Diffuse = INFECT_RESOURCES.GetTexture(ParseString(j, "texture"));
+	if (ValueExists(j, "isLit"))
+		m_IsLit = ParseBool(j, "isLit");
+	m_IsDirty = true;
 }
 
-void MeshComponent::Override() 
+void MeshComponent::Override(const json& j) 
 {
 
 }

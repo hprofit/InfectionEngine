@@ -29,4 +29,12 @@ static const char* ComponentTypeText[] =
 };
 #undef REGISTER_COMPONENT_TYPE
 
+static std::unordered_map<std::string, ComponentType> COMPONENT_NAMES = {
+	{ "Transform", C_Transform },
+	{ "Mesh", C_Mesh },
+	{ "Camera", C_Camera },
+	{ "PointLight", C_PointLight }
+
+};
+
 #endif // !COMPONENT_TYPES_H

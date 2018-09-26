@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Holden Profit>
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #pragma once
@@ -25,6 +25,7 @@ public:
 
 	void Init() {};
 
+	GameObject* SpawnGameObject(const std::string prefabName);
 	GameObject* SpawnGameObject();
 
 	GameObject* GetGameObject(unsigned int id) const { return mp_GameObjects[id]; }
