@@ -7,14 +7,11 @@ Author: <Holden Profit>
 
 #include <Stdafx.h>
 
-bool RenderTarget::_CreateRenderViewTarget()
+bool RenderTarget::_CreateRenderViewTarget(ID3D11Device * device, unsigned int index)
 {
 	D3D11_TEXTURE2D_DESC textureDesc;
-	HRESULT result;
 	D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
 	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
-	D3D11_TEXTURE2D_DESC depthBufferDesc;
-	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 
 	// Initialize the render target texture description.
 	ZeroMemory(&textureDesc, sizeof(textureDesc));
@@ -32,7 +29,7 @@ bool RenderTarget::_CreateRenderViewTarget()
 	textureDesc.MiscFlags = 0;
 
 	// Create the render target textures.
-	if (FAILED( INFECT_RENDERER.Device()->CreateTexture2D(&textureDesc, NULL, &m_renderTargetTextures[0])))
+	if (FAILED( device->CreateTexture2D(&textureDesc, NULL, &m_renderTargetTextures[index])))
 		return false;
 
 	// Setup the description of the render target view.
@@ -40,12 +37,22 @@ bool RenderTarget::_CreateRenderViewTarget()
 	renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 	renderTargetViewDesc.Texture2D.MipSlice = 0;
 
-	if (FAILED(INFECT_RENDERER.Device()->CreateRenderTargetView(m_renderTargetTextures[0], &renderTargetViewDesc, &mp_BackBuffer)))
+	if (FAILED(device->CreateRenderTargetView(m_renderTargetTextures[index], &renderTargetViewDesc, &mp_BackBuffer)))
+		return false;
+
+	// Setup the description of the shader resource view.
+	shaderResourceViewDesc.Format = textureDesc.Format;
+	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+	shaderResourceViewDesc.Texture2D.MipLevels = 1;
+
+	// Create the shader resource views.
+	if (FAILED(device->CreateShaderResourceView(m_renderTargetTextures[index], &shaderResourceViewDesc, &m_shaderResourceViews[index])))
 		return false;
 	return true;
 }
 
-bool RenderTarget::_CreateDepthAndStencilBuffer()
+bool RenderTarget::_CreateDepthAndStencilBuffer(ID3D11Device * device)
 {
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
 	// Initialize the description of the depth buffer.
@@ -65,12 +72,12 @@ bool RenderTarget::_CreateDepthAndStencilBuffer()
 	depthBufferDesc.MiscFlags = 0;
 
 	// Create the texture for the depth buffer using the filled out description.
-	if (FAILED(INFECT_RENDERER.Device()->CreateTexture2D(&depthBufferDesc, NULL, &mp_DepthStencilBuffer)))
+	if (FAILED(device->CreateTexture2D(&depthBufferDesc, NULL, &mp_DepthStencilBuffer)))
 		return false;
 	return true;
 }
 
-bool RenderTarget::_CreateDepthStencilState()
+bool RenderTarget::_CreateDepthStencilState(ID3D11Device * device)
 {
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 	// Initialize the description of the stencil state.
@@ -98,12 +105,12 @@ bool RenderTarget::_CreateDepthStencilState()
 	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
 	// Create the depth stencil state.
-	if (FAILED(INFECT_RENDERER.Device()->CreateDepthStencilState(&depthStencilDesc, &mp_DepthStencilState)))
+	if (FAILED(device->CreateDepthStencilState(&depthStencilDesc, &mp_DepthStencilState)))
 		return false;
 	return true;
 }
 
-bool RenderTarget::_CreateDepthStencilView()
+bool RenderTarget::_CreateDepthStencilView(ID3D11Device * device)
 {
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 	// Initailze the depth stencil view.
@@ -115,12 +122,12 @@ bool RenderTarget::_CreateDepthStencilView()
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
 
 	// Create the depth stencil view.
-	if (FAILED(INFECT_RENDERER.Device()->CreateDepthStencilView(mp_DepthStencilBuffer, &depthStencilViewDesc, &mp_DepthStencilView)))
+	if (FAILED(device->CreateDepthStencilView(mp_DepthStencilBuffer, &depthStencilViewDesc, &mp_DepthStencilView)))
 		return false;
 	return true;
 }
 
-bool RenderTarget::_CreateRasterState()
+bool RenderTarget::_CreateRasterState(ID3D11Device * device)
 {
 	D3D11_RASTERIZER_DESC rasterDesc;
 	// Setup the raster description which will determine how and what polygons will be drawn.
@@ -136,7 +143,7 @@ bool RenderTarget::_CreateRasterState()
 	rasterDesc.SlopeScaledDepthBias = 0.0f;
 
 	// Create the rasterizer state from the description we just filled out.
-	if (FAILED(INFECT_RENDERER.Device()->CreateRasterizerState(&rasterDesc, &mp_RasterState)))
+	if (FAILED(device->CreateRasterizerState(&rasterDesc, &mp_RasterState)))
 		return false;
 	return true;
 }
@@ -153,16 +160,22 @@ RenderTarget::RenderTarget(unsigned int width, unsigned int height, unsigned int
 		m_renderTargetViews[i] = nullptr;
 		m_shaderResourceViews[i] = nullptr;
 	}
-
-	_CreateRenderViewTarget();
-	_CreateDepthAndStencilBuffer();
-	_CreateDepthStencilState();
-	_CreateDepthStencilView();
-	_CreateRasterState();
 }
 
 RenderTarget::~RenderTarget()
 {
+}
+
+void RenderTarget::Initialize(ID3D11Device * device)
+{
+	for (unsigned int i = 0; i < m_NumTargets; ++i) {
+		_CreateRenderViewTarget(device, i);
+	}
+
+	_CreateDepthAndStencilBuffer(device);
+	_CreateDepthStencilState(device);
+	_CreateDepthStencilView(device);
+	_CreateRasterState(device);
 }
 
 void RenderTarget::Release()
@@ -217,7 +230,9 @@ void RenderTarget::UnbindRenderTarget() const
 
 void RenderTarget::ClearRenderTarget(ID3D11DeviceContext* deviceContext, const Color& color)
 {
-	deviceContext->ClearRenderTargetView(mp_BackBuffer, color);
+	for (unsigned int i = 0; i < m_NumTargets; ++i) {
+		deviceContext->ClearRenderTargetView(m_renderTargetViews[i], color);
+	}
 	deviceContext->ClearDepthStencilView(mp_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
@@ -229,20 +244,20 @@ void RenderTarget::ClearRenderTarget(ID3D11DeviceContext* deviceContext, const C
 
 
 
-bool BackBufferRenderTarget::_CreateRenderViewTarget()
+bool BackBufferRenderTarget::_CreateRenderViewTarget(ID3D11Device * device, IDXGISwapChain * swapChain)
 {
 	ID3D11Texture2D* pBuffer;
-	if (FAILED(INFECT_RENDERER.SwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBuffer)))
+	if (FAILED(swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBuffer)))
 		return false;
 
 	// use the buffer address to create the render target
-	if (FAILED(INFECT_RENDERER.Device()->CreateRenderTargetView(pBuffer, NULL, &mp_BackBuffer)))
+	if (FAILED(device->CreateRenderTargetView(pBuffer, NULL, &mp_BackBuffer)))
 		return false;
 	pBuffer->Release();
 	return true;
 }
 
-bool BackBufferRenderTarget::_CreateDepthAndStencilBuffer(const WindowSettings& settings)
+bool BackBufferRenderTarget::_CreateDepthAndStencilBuffer(const WindowSettings& settings, ID3D11Device * device)
 {
 	D3D11_TEXTURE2D_DESC depthBufferDesc;
 	// Initialize the description of the depth buffer.
@@ -262,12 +277,12 @@ bool BackBufferRenderTarget::_CreateDepthAndStencilBuffer(const WindowSettings& 
 	depthBufferDesc.MiscFlags = 0;
 
 	// Create the texture for the depth buffer using the filled out description.
-	if (FAILED(INFECT_RENDERER.Device()->CreateTexture2D(&depthBufferDesc, NULL, &mp_DepthStencilBuffer)))
+	if (FAILED(device->CreateTexture2D(&depthBufferDesc, NULL, &mp_DepthStencilBuffer)))
 		return false;
 	return true;
 }
 
-bool BackBufferRenderTarget::_CreateDepthStencilState()
+bool BackBufferRenderTarget::_CreateDepthStencilState(ID3D11Device * device)
 {
 	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 	// Initialize the description of the stencil state.
@@ -295,12 +310,12 @@ bool BackBufferRenderTarget::_CreateDepthStencilState()
 	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
 	// Create the depth stencil state.
-	if (FAILED(INFECT_RENDERER.Device()->CreateDepthStencilState(&depthStencilDesc, &mp_DepthStencilState)))
+	if (FAILED(device->CreateDepthStencilState(&depthStencilDesc, &mp_DepthStencilState)))
 		return false;
 	return true;
 }
 
-bool BackBufferRenderTarget::_CreateDepthStencilView()
+bool BackBufferRenderTarget::_CreateDepthStencilView(ID3D11Device * device)
 {
 	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 	// Initailze the depth stencil view.
@@ -312,12 +327,12 @@ bool BackBufferRenderTarget::_CreateDepthStencilView()
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
 
 	// Create the depth stencil view.
-	if (FAILED(INFECT_RENDERER.Device()->CreateDepthStencilView(mp_DepthStencilBuffer, &depthStencilViewDesc, &mp_DepthStencilView)))
+	if (FAILED(device->CreateDepthStencilView(mp_DepthStencilBuffer, &depthStencilViewDesc, &mp_DepthStencilView)))
 		return false;
 	return true;
 }
 
-bool BackBufferRenderTarget::_CreateRasterState()
+bool BackBufferRenderTarget::_CreateRasterState(ID3D11Device * device)
 {
 	D3D11_RASTERIZER_DESC rasterDesc;
 	// Setup the raster description which will determine how and what polygons will be drawn.
@@ -333,7 +348,7 @@ bool BackBufferRenderTarget::_CreateRasterState()
 	rasterDesc.SlopeScaledDepthBias = 0.0f;
 
 	// Create the rasterizer state from the description we just filled out.
-	if (FAILED(INFECT_RENDERER.Device()->CreateRasterizerState(&rasterDesc, &mp_RasterState)))
+	if (FAILED(device->CreateRasterizerState(&rasterDesc, &mp_RasterState)))
 		return false;
 	return true;
 }
@@ -350,13 +365,13 @@ BackBufferRenderTarget::~BackBufferRenderTarget()
 {
 }
 
-void BackBufferRenderTarget::Initialize(const WindowSettings& settings, ID3D11Device * device, ID3D11DeviceContext * deviceContext)
+void BackBufferRenderTarget::Initialize(const WindowSettings& settings, ID3D11Device * device, IDXGISwapChain * swapChain)
 {
-	_CreateRenderViewTarget();
-	_CreateDepthAndStencilBuffer(settings);
-	_CreateDepthStencilState();
-	_CreateDepthStencilView();
-	_CreateRasterState();
+	_CreateRenderViewTarget(device, swapChain);
+	_CreateDepthAndStencilBuffer(settings, device);
+	_CreateDepthStencilState(device);
+	_CreateDepthStencilView(device);
+	_CreateRasterState(device);
 }
 
 void BackBufferRenderTarget::Release()

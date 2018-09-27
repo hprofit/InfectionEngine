@@ -252,7 +252,10 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 
 
 	mp_BackBuffer = new BackBufferRenderTarget();
-	mp_BackBuffer->Initialize(settings, mp_Device, mp_DeviceContext);
+	mp_BackBuffer->Initialize(settings, mp_Device, mp_SwapChain);
+
+	mp_DeferredRenderTarget = new RenderTarget(settings.Width, settings.Height, 4);
+	mp_DeferredRenderTarget->Initialize(mp_Device);
 
 #pragma region Viewport
 	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
@@ -288,6 +291,9 @@ void D3DHandler::CleanD3D(void)
 
 	if (mp_BackBuffer)
 		mp_BackBuffer->Release();
+
+	if (mp_DeferredRenderTarget)
+		mp_DeferredRenderTarget->Release();
 }
 
 void D3DHandler::BindBackBuffer() const

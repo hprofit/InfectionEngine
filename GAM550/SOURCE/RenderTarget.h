@@ -26,11 +26,11 @@ protected:
 	D3D11_VIEWPORT m_viewport;
 
 
-	virtual bool _CreateRenderViewTarget();
-	virtual bool _CreateDepthAndStencilBuffer();
-	virtual bool _CreateDepthStencilState();
-	virtual bool _CreateDepthStencilView();
-	virtual bool _CreateRasterState();
+	virtual bool _CreateRenderViewTarget(ID3D11Device * device, unsigned int);
+	virtual bool _CreateDepthAndStencilBuffer(ID3D11Device * device);
+	virtual bool _CreateDepthStencilState(ID3D11Device * device);
+	virtual bool _CreateDepthStencilView(ID3D11Device * device);
+	virtual bool _CreateRasterState(ID3D11Device * device);
 public:
 	RenderTarget(unsigned int width, unsigned int height, unsigned int numTargets = 1);
 	virtual ~RenderTarget();
@@ -40,6 +40,8 @@ public:
 	inline ID3D11DepthStencilView* DepthStencilView() { return mp_DepthStencilView; }
 	inline ID3D11RasterizerState* RasterState() { return mp_RasterState; }
 	inline ID3D11RenderTargetView* RenderTargetView() { return mp_BackBuffer; }
+
+	void Initialize(ID3D11Device*);
 
 	void Release();
 
@@ -77,11 +79,11 @@ protected:
 	ID3D11RasterizerState* mp_RasterState;
 	ID3D11RenderTargetView * mp_BackBuffer;
 
-	virtual bool _CreateRenderViewTarget();
-	virtual bool _CreateDepthAndStencilBuffer(const WindowSettings& settings);
-	virtual bool _CreateDepthStencilState();
-	virtual bool _CreateDepthStencilView();
-	virtual bool _CreateRasterState();
+	virtual bool _CreateRenderViewTarget(ID3D11Device * device, IDXGISwapChain * swapChain);
+	virtual bool _CreateDepthAndStencilBuffer(const WindowSettings& settings, ID3D11Device * device);
+	virtual bool _CreateDepthStencilState(ID3D11Device * device);
+	virtual bool _CreateDepthStencilView(ID3D11Device * device);
+	virtual bool _CreateRasterState(ID3D11Device * device);
 public:
 	BackBufferRenderTarget();
 	virtual ~BackBufferRenderTarget();
@@ -92,7 +94,7 @@ public:
 	inline ID3D11RasterizerState* RasterState() { return mp_RasterState; }
 	inline ID3D11RenderTargetView* RenderTargetView() { return mp_BackBuffer; }
 
-	void Initialize(const WindowSettings& settings, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	void Initialize(const WindowSettings&, ID3D11Device*, IDXGISwapChain *);
 
 	void Release();
 
