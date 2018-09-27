@@ -86,9 +86,7 @@ void RenderManager::BindBackBuffer()
 
 void RenderManager::ClearScreen(void)
 {
-	// Clear the back buffer and then the depth buffer
 	mp_D3D->ClearBackBuffer(m_ClearColor);
-	mp_D3D->ClearDepthBuffer();
 }
 
 void RenderManager::PresentFrameToScreen(void)

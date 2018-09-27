@@ -147,7 +147,6 @@ void ResourceManager::UnloadMesh(const std::string& meshName)
 ID3D11ShaderResourceView * ResourceManager::_LoadTexture(const std::string & textureName)
 {
 	ID3D11ShaderResourceView *pTexture;
-	ID3D11Resource ** pResource;
 	std::string filePath = INFECT_GAME_CONFIG.TexturesDir() + textureName;
 	HRESULT result = DirectX::CreateWICTextureFromFile(
 		INFECT_RENDERER.Device(),

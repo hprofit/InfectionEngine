@@ -171,7 +171,8 @@ void RenderTarget::UnbindRenderTarget() const
 	
 }
 
-void RenderTarget::ClearRenderTarget(const Color& color)
+void RenderTarget::ClearRenderTarget(ID3D11DeviceContext* deviceContext, const Color& color)
 {
-	
+	deviceContext->ClearRenderTargetView(mp_BackBuffer, color);
+	deviceContext->ClearDepthStencilView(mp_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }

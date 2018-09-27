@@ -103,17 +103,18 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 	IDXGIFactory* factory;
 	IDXGIAdapter* adapter;
 	IDXGIOutput* adapterOutput;
-	unsigned int numModes, i, numerator, denominator, stringLength;
+	size_t stringLength;
+	unsigned int numModes, i, numerator, denominator;
 	DXGI_MODE_DESC* displayModeList;
 	DXGI_ADAPTER_DESC adapterDesc;
 	int error;
 	DXGI_SWAP_CHAIN_DESC swapChainDesc; // create a struct to hold information about the swap chain
 	D3D_FEATURE_LEVEL featureLevel;
-	ID3D11Texture2D* backBufferPtr;
-	D3D11_TEXTURE2D_DESC depthBufferDesc;
-	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
-	D3D11_RASTERIZER_DESC rasterDesc;
+	//ID3D11Texture2D* backBufferPtr;
+	//D3D11_TEXTURE2D_DESC depthBufferDesc;
+	//D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+	//D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
+	//D3D11_RASTERIZER_DESC rasterDesc;
 	D3D11_VIEWPORT viewport;
 
 #pragma region Refresh Rate and Video Card Info
@@ -170,9 +171,10 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 	m_VideoCardMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
 
 	// Convert the name of the video card to a character array and store it.
-	//error = wcstombs_s(&stringLength, m_VideoCardDescription, 128, adapterDesc.Description, 128);
-	//if (error != 0)
-	//	return false;
+	error = wcstombs_s(&stringLength, m_VideoCardDescription, 128, adapterDesc.Description, 128);
+	
+	if (error != 0)
+		return false;
 
 	// Release the adapter output.
 	adapterOutput->Release();
@@ -305,15 +307,7 @@ void D3DHandler::BindBackBuffer() const
 
 void D3DHandler::ClearBackBuffer(const Color& color)
 {
-	//mp_DeviceContext->ClearRenderTargetView(mp_BackBuffer, color);
-
-	mp_DeviceContext->ClearRenderTargetView(mp_RenderTarget->RenderTargetView(), color);
-}
-
-void D3DHandler::ClearDepthBuffer(void)
-{
-	//mp_DeviceContext->ClearDepthStencilView(mp_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-	mp_DeviceContext->ClearDepthStencilView(mp_RenderTarget->DepthStencilView(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+	mp_RenderTarget->ClearRenderTarget(mp_DeviceContext, color);
 }
 
 void D3DHandler::PresentBuffer(bool vSync)

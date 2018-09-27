@@ -35,10 +35,10 @@ void Override(const json& j){}
 
 void CameraComponent::HandleEvent(Event * pEvent)
 {
-	switch (pEvent->Type()) {
-	default:
-		break;
-	}
+	//switch (pEvent->Type()) {
+	//default:
+	//	break;
+	//}
 }
 
 bool CameraComponent::LeftDepthGreaterThanRight(GameObject * left, GameObject * right)

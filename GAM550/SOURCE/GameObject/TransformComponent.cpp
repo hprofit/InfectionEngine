@@ -67,10 +67,10 @@ void TransformComponent::Override(const json& j)
 }
 
 void TransformComponent::HandleEvent(Event * p_event) {
-	switch (p_event->Type()) {
-	default:
-		break;
-	}
+	//switch (p_event->Type()) {
+	//default:
+	//	break;
+	//}
 }
 
 #pragma region Translation

@@ -25,7 +25,6 @@ protected:
 	ID3D11RasterizerState* mp_RasterState;
 
 	ID3D11RenderTargetView * mp_BackBuffer;
-	//ID3D11RenderTargetView *mp_DepthBuffer;
 
 	bool _CreateRenderViewTarget();
 	bool _CreateDepthAndStencilBuffer(unsigned int width, unsigned int height);
@@ -41,7 +40,6 @@ public:
 	inline ID3D11DepthStencilView* DepthStencilView() { return mp_DepthStencilView; }
 	inline ID3D11RasterizerState* RasterState() { return mp_RasterState; }
 	inline ID3D11RenderTargetView* RenderTargetView() { return mp_BackBuffer; }
-	//inline ID3D11RenderTargetView* DepthBuffer() { return mp_DepthBuffer; }
 
 	void Release();
 
@@ -62,7 +60,7 @@ public:
 	*/
 	void UnbindRenderTarget() const;
 
-	void ClearRenderTarget(const Color& color = Color(0,0,0,1));
+	void ClearRenderTarget(ID3D11DeviceContext* deviceContext, const Color& color = Color(0,0,0,1));
 };
 
 #endif
