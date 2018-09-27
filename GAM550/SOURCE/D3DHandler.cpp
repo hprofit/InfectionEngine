@@ -281,8 +281,6 @@ void D3DHandler::CleanD3D(void)
 	// close and release all existing COM objects
 	if (mp_SwapChain)
 		mp_SwapChain->Release();
-	//if (mp_BackBuffer)
-	//	mp_BackBuffer->Release();
 	if (mp_Device)
 		mp_Device->Release();
 	if (mp_DeviceContext)
@@ -290,15 +288,6 @@ void D3DHandler::CleanD3D(void)
 
 	if (mp_BackBuffer)
 		mp_BackBuffer->Release();
-
-	//if (mp_DepthStencilBuffer)
-	//	mp_DepthStencilBuffer->Release();
-	//if (mp_DepthStencilState)
-	//	mp_DepthStencilState->Release();
-	//if (mp_DepthStencilView)
-	//	mp_DepthStencilView->Release();
-	//if (mp_RasterState)
-	//	mp_RasterState->Release();
 }
 
 void D3DHandler::BindBackBuffer() const

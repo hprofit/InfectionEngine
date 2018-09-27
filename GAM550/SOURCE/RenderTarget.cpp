@@ -43,17 +43,6 @@ bool RenderTarget::_CreateRenderViewTarget()
 	if (FAILED(INFECT_RENDERER.Device()->CreateRenderTargetView(m_renderTargetTextures[0], &renderTargetViewDesc, &mp_BackBuffer)))
 		return false;
 	return true;
-
-
-	//ID3D11Texture2D* pBuffer;
-	//if (FAILED(INFECT_RENDERER.SwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBuffer)))
-	//	return false;
-
-	//// use the buffer address to create the render target
-	//if (FAILED(INFECT_RENDERER.Device()->CreateRenderTargetView(pBuffer, NULL, &mp_BackBuffer)))
-	//	return false;
-	//pBuffer->Release();
-	//return true;
 }
 
 bool RenderTarget::_CreateDepthAndStencilBuffer()
@@ -155,10 +144,6 @@ bool RenderTarget::_CreateRasterState()
 RenderTarget::RenderTarget(unsigned int width, unsigned int height, unsigned int numTargets) :
 	m_TextureWidth(width), m_TextureHeight(height), m_NumTargets(numTargets)
 {
-	//ID3D11Texture2D** m_renderTargetTextures;
-	//ID3D11RenderTargetView** m_renderTargetViews;
-	//ID3D11ShaderResourceView** m_shaderResourceViews;
-
 	m_renderTargetTextures = new ID3D11Texture2D*[m_NumTargets];
 	m_renderTargetViews = new ID3D11RenderTargetView*[m_NumTargets];
 	m_shaderResourceViews = new ID3D11ShaderResourceView*[m_NumTargets];
@@ -168,7 +153,6 @@ RenderTarget::RenderTarget(unsigned int width, unsigned int height, unsigned int
 		m_renderTargetViews[i] = nullptr;
 		m_shaderResourceViews[i] = nullptr;
 	}
-
 
 	_CreateRenderViewTarget();
 	_CreateDepthAndStencilBuffer();
@@ -183,9 +167,6 @@ RenderTarget::~RenderTarget()
 
 void RenderTarget::Release()
 {
-	//if (mp_BackBuffer)
-	//	mp_BackBuffer->Release();
-
 	if (mp_DepthStencilBuffer)
 		mp_DepthStencilBuffer->Release();
 	if (mp_DepthStencilState)
