@@ -10,32 +10,32 @@ Author: <Holden Profit>
 #ifndef RENDER_TARGET_H
 #define RENDER_TARGET_H
 
-enum RenderTargetType {
-	FBO_NONE = 0,
-	FBO_DEPTH_RENDER_BUFFER,
-	FBO_DEPTH_TEXTURE
-};
-
 class RenderTarget
 {
 protected:
-	ID3D11Texture2D * mp_DepthAndStencilBuffer;
+	ID3D11Texture2D * mp_DepthStencilBuffer;
 	ID3D11DepthStencilState* mp_DepthStencilState;
 	ID3D11DepthStencilView* mp_DepthStencilView;
 	ID3D11RasterizerState* mp_RasterState;
-
 	ID3D11RenderTargetView * mp_BackBuffer;
+	unsigned int m_TextureWidth, m_TextureHeight, m_NumTargets;
 
-	bool _CreateRenderViewTarget();
-	bool _CreateDepthAndStencilBuffer(unsigned int width, unsigned int height);
-	bool _CreateDepthStencilState();
-	bool _CreateDepthStencilView();
-	bool _CreateRasterState();
+	ID3D11Texture2D** m_renderTargetTextures;
+	ID3D11RenderTargetView** m_renderTargetViews;
+	ID3D11ShaderResourceView** m_shaderResourceViews;
+	D3D11_VIEWPORT m_viewport;
+
+
+	virtual bool _CreateRenderViewTarget();
+	virtual bool _CreateDepthAndStencilBuffer();
+	virtual bool _CreateDepthStencilState();
+	virtual bool _CreateDepthStencilView();
+	virtual bool _CreateRasterState();
 public:
-	RenderTarget(unsigned int width, unsigned int height);
-	~RenderTarget();
+	RenderTarget(unsigned int width, unsigned int height, unsigned int numTargets = 1);
+	virtual ~RenderTarget();
 
-	inline ID3D11Texture2D* DepthStencilBuffer() { return mp_DepthAndStencilBuffer; }
+	inline ID3D11Texture2D* DepthStencilBuffer() { return mp_DepthStencilBuffer; }
 	inline ID3D11DepthStencilState* DepthStencilState() { return mp_DepthStencilState; }
 	inline ID3D11DepthStencilView* DepthStencilView() { return mp_DepthStencilView; }
 	inline ID3D11RasterizerState* RasterState() { return mp_RasterState; }
@@ -51,7 +51,7 @@ public:
 		rendered after this method will be rendered to this RenderTarget
 		and not to the screen.
 	*/
-	void BindRenderTarget() const;
+	void BindRenderTarget(ID3D11DeviceContext* deviceContext) const;
 
 	/*
 		Unbinds this RenderTarget, setting the default RenderTarget as the current
@@ -61,6 +61,59 @@ public:
 	void UnbindRenderTarget() const;
 
 	void ClearRenderTarget(ID3D11DeviceContext* deviceContext, const Color& color = Color(0,0,0,1));
+};
+
+
+
+
+
+
+class BackBufferRenderTarget 
+{
+protected:
+	ID3D11Texture2D * mp_DepthStencilBuffer;
+	ID3D11DepthStencilState* mp_DepthStencilState;
+	ID3D11DepthStencilView* mp_DepthStencilView;
+	ID3D11RasterizerState* mp_RasterState;
+	ID3D11RenderTargetView * mp_BackBuffer;
+
+	virtual bool _CreateRenderViewTarget();
+	virtual bool _CreateDepthAndStencilBuffer(const WindowSettings& settings);
+	virtual bool _CreateDepthStencilState();
+	virtual bool _CreateDepthStencilView();
+	virtual bool _CreateRasterState();
+public:
+	BackBufferRenderTarget();
+	virtual ~BackBufferRenderTarget();
+
+	inline ID3D11Texture2D* DepthStencilBuffer() { return mp_DepthStencilBuffer; }
+	inline ID3D11DepthStencilState* DepthStencilState() { return mp_DepthStencilState; }
+	inline ID3D11DepthStencilView* DepthStencilView() { return mp_DepthStencilView; }
+	inline ID3D11RasterizerState* RasterState() { return mp_RasterState; }
+	inline ID3D11RenderTargetView* RenderTargetView() { return mp_BackBuffer; }
+
+	void Initialize(const WindowSettings& settings, ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+
+	void Release();
+
+	// Binds the current FBO to be read from
+	void BindToRead() const;
+
+	/*
+		Binds this RenderTarget, setting it as the current render target. Anything
+		rendered after this method will be rendered to this RenderTarget
+		and not to the screen.
+	*/
+	void BindRenderTarget(ID3D11DeviceContext* deviceContext) const;
+
+	/*
+		Unbinds this RenderTarget, setting the default RenderTarget as the current
+		render target. Anything rendered after this will be rendered to the
+		screen, not this RenderTarget.
+	*/
+	void UnbindRenderTarget() const;
+
+	void ClearRenderTarget(ID3D11DeviceContext* deviceContext, const Color& color = Color(0, 0, 0, 1));
 };
 
 #endif

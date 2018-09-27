@@ -17,7 +17,7 @@ protected:
 	ID3D11Device *mp_Device;
 	ID3D11DeviceContext *mp_DeviceContext;
 
-	RenderTarget* mp_RenderTarget;
+	BackBufferRenderTarget* mp_BackBuffer;
 
 	int m_VideoCardMemory;
 	char m_VideoCardDescription[128];

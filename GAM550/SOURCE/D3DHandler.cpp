@@ -251,7 +251,8 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 #pragma endregion
 
 
-	mp_RenderTarget = new RenderTarget(settings.Width, settings.Height);
+	mp_BackBuffer = new BackBufferRenderTarget();
+	mp_BackBuffer->Initialize(settings, mp_Device, mp_DeviceContext);
 
 #pragma region Viewport
 	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
@@ -287,8 +288,8 @@ void D3DHandler::CleanD3D(void)
 	if (mp_DeviceContext)
 		mp_DeviceContext->Release();
 
-	if (mp_RenderTarget)
-		mp_RenderTarget->Release();
+	if (mp_BackBuffer)
+		mp_BackBuffer->Release();
 
 	//if (mp_DepthStencilBuffer)
 	//	mp_DepthStencilBuffer->Release();
@@ -302,12 +303,12 @@ void D3DHandler::CleanD3D(void)
 
 void D3DHandler::BindBackBuffer() const
 {
-	mp_RenderTarget->BindRenderTarget();
+	mp_BackBuffer->BindRenderTarget(mp_DeviceContext);
 }
 
 void D3DHandler::ClearBackBuffer(const Color& color)
 {
-	mp_RenderTarget->ClearRenderTarget(mp_DeviceContext, color);
+	mp_BackBuffer->ClearRenderTarget(mp_DeviceContext, color);
 }
 
 void D3DHandler::PresentBuffer(bool vSync)
