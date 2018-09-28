@@ -1,0 +1,27 @@
+{
+  	"Tag": "None",
+  	"COMPONENTS": [
+		{
+	 		"Component": "Transform",
+		  	"position": {
+				"x": 0,
+				"y": -30,
+				"z": 0
+		  	},
+		  	"scale": {
+				"x": 100,
+				"y": 100,
+				"z": 100
+		  	},
+		  	"pivotOffset": {},
+		  	"rotation": {
+				"x": -90				
+			}
+		},
+		{
+			"Component": "Mesh",
+			"scene": "Quad",
+			"texture": "DirtDiffuse.tif"
+		}
+  ]
+}

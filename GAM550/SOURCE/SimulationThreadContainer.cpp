@@ -35,21 +35,25 @@ bool StartSimulationCommand::execute() const
 
 
 #pragma region TestStuff
-	TransformComponent* tcpCamera = INFECT_GOM.GetGameObject(2)->GetComponent<TransformComponent>();  // 2
-	TransformComponent* tcpLight = INFECT_GOM.GetGameObject(3)->GetComponent<TransformComponent>();	// 3
-	if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
-		tcpLight->Move(Infect::GetFrameTime() *30.f*tcpLight->Right());
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
-		tcpLight->Move(Infect::GetFrameTime() *-30.f*tcpLight->Right());
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_UP)) {
-		tcpLight->Move(Infect::GetFrameTime() *30.f * tcpLight->Up());
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
-		tcpLight->Move(Infect::GetFrameTime() *-30.f*tcpLight->Up());
-	}
+	TransformComponent* tcpCamera = INFECT_GOM.GetGameObject(0)->GetComponent<TransformComponent>();  // 2
 
+	//TransformComponent* tcpLight = INFECT_GOM.GetGameObject(2)->GetComponent<TransformComponent>();	// 3
+	//if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
+	//	tcpLight->Move(Infect::GetFrameTime() *30.f*tcpLight->Right());
+	//}
+	//if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
+	//	tcpLight->Move(Infect::GetFrameTime() *-30.f*tcpLight->Right());
+	//}
+	//if (INFECT_INPUT.IsKeyPressed(DIK_UP)) {
+	//	tcpLight->Move(Infect::GetFrameTime() *30.f * tcpLight->Up());
+	//}
+	//if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
+	//	tcpLight->Move(Infect::GetFrameTime() *-30.f*tcpLight->Up());
+	//}
+
+	if (INFECT_INPUT.IsKeyReleased(DIK_P)) {
+		INFECT_RENDERER.NextRenderMode();
+	}
 
 	int xMove = -INFECT_INPUT.MousePosX() / 4;
 	int yMove = -INFECT_INPUT.MousePosY() / 4;
@@ -78,7 +82,7 @@ bool StartSimulationCommand::execute() const
 		//INFECT_GAME_STATE.SetGameState(GameState::QUIT);
 		//INFECT_EVENTS.BroadcastEvent(&Event(EVENT_WINDOW_CLOSED));
 	}
-	INFECT_GOM.GetGameObject(0)->GetComponent<TransformComponent>()->SetPosition(tcpCamera->WorldPosition());
+	//INFECT_GOM.GetGameObject(0)->GetComponent<TransformComponent>()->SetPosition(tcpCamera->WorldPosition());
 	//pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);
 	//pGO->GetComponent<TransformComponent>()->RotateZ(Infect::GetFrameTime() * 25.0f);
 

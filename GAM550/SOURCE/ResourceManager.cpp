@@ -33,7 +33,7 @@ bool ResourceManager::Init()
 	(*pScenePlane)[0] = plane;
 	m_scenes[PLANE_PRIMITIVE] = pScenePlane;
 
-	Plane* quad = new Plane();
+	Plane* quad = new Plane(1);
 	quad->FinishMesh();
 	Scene* pSceneQuad = new Scene(1);
 	(*pSceneQuad)[0] = quad;

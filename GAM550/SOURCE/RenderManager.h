@@ -10,17 +10,15 @@ Author: <Holden Profit>
 #ifndef RENDER_MANAGER_H
 #define RENDER_MANAGER_H
 
-//struct ConstantBuffer {
-//	Matrix4x4 MatFinal;
-//	Matrix4x4 ModelMatrix;
-//	Matrix4x4 NormalMatrix;
-//	Vector3D CameraPosition;
-//	Vector3D LightPosition;
-//	int CastShadows;
-//	int ReceiveShadows;
-//	int IsLit;
-//	int Textured;
-//};
+enum RenderMode {
+	WorldPos = 0,
+	Normal,
+	Diffuse,
+	Specular,
+	Final,
+
+	NUM_MODES
+};
 
 class RenderManager : public Subscriber
 {
@@ -35,6 +33,8 @@ private:
 	ShaderProgram* mp_ShaderProgramDefault;
 	ShaderProgram* mp_ShaderProgramDeferred;
 	ShaderProgram* mp_ShaderProgramQuad;
+
+	RenderMode m_RenderMode;
 
 	bool _GameObjectHasRenderableComponent(const GameObject& gameObject);
 public:
@@ -76,6 +76,8 @@ public:
 	bool LoadShader(std::string shaderName);
 
 	ID3D10Blob * const VSBlob() { return mp_ShaderProgramDefault->VS()->Blob(); }
+
+	void NextRenderMode();
 };
 
 #endif

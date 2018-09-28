@@ -1,9 +1,14 @@
-{
-    "GAME_OBJECTS": [
-        {
+{	
+	"GAME_OBJECTS_EXTRA": [
+		{
             "prefab": "P_SkyBox"
+        }
+	],
+    "GAME_OBJECTS": [
+		{
+		    "prefab": "P_Camera"
         },
-        {
+		{
             "prefab": "P_Player",
             "position": {
                 "x": 0.0,
@@ -11,8 +16,8 @@
                 "z": 0.0
             }
         },
-        {
-		    "prefab": "P_Camera"
+		{
+		    "prefab": "Floor"
         },
         {
             "prefab": "P_PointLight",

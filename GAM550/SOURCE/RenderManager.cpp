@@ -36,7 +36,8 @@ bool RenderManager::_GameObjectHasRenderableComponent(const GameObject & gameObj
 
 RenderManager::RenderManager() :
 	m_ClearColor(Color(0.1f, 0.1f, 0.1f, 1)),
-	mp_D3D(new D3DHandler())
+	mp_D3D(new D3DHandler()),
+	m_RenderMode(RenderMode::WorldPos)
 {
 }
 
@@ -122,11 +123,26 @@ void RenderManager::RenderDeferredBuffer()
 
 	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 	
-	mp_D3D->mp_DeviceContext->PSSetShaderResources(
-		0,
-		1,//mp_D3D->GetDeferredRenderTarget()->GetNumViews(),
-		&mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()[2]
-	);
+	switch (m_RenderMode) {
+		case RenderMode::Final:
+		{
+			mp_D3D->mp_DeviceContext->PSSetShaderResources(
+				0,
+				mp_D3D->GetDeferredRenderTarget()->GetNumViews(),
+				mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()
+			);
+			break;
+		}
+		default:
+		{
+			mp_D3D->mp_DeviceContext->PSSetShaderResources(
+				0,
+				1,
+				&mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()[m_RenderMode]
+			);
+			break;
+		}
+	}
 
 	// set the new values for the constant buffer
 	mp_ShaderProgramQuad->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
@@ -214,7 +230,12 @@ bool RenderManager::LoadShader(std::string shaderName)
 	}
 	++mShaderCount;
 
-	//mp_ShaderProgramDefault->BindShader();
-
 	return true;
+}
+
+void RenderManager::NextRenderMode()
+{
+	m_RenderMode = RenderMode(int(m_RenderMode) + 1);
+	if (m_RenderMode >= RenderMode::NUM_MODES)
+		m_RenderMode = RenderMode(0);
 }
