@@ -51,8 +51,8 @@ namespace JsonReader {
 	Vector3D ParseVector3D(const json& j, const std::string&);
 	Vector3D ParseVector3D(const json& j, const std::string&, const std::string&);
 
-	Vector3D ParseColor(const json& j, const std::string&);
-	Vector3D ParseColor(const json& j, const std::string&, const std::string&);
+	Color ParseColor(const json& j, const std::string&);
+	Color ParseColor(const json& j, const std::string&, const std::string&);
 
 	bool ValueExists(const json& j, const std::string&);
 	bool ValueExists(const json& j, const std::string&, const std::string&);

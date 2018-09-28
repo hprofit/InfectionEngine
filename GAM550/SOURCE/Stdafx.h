@@ -100,14 +100,14 @@ Author: <Holden Profit>
 
 #pragma region Resources
 #include <Singleton.h>
+#include <Color.h>
+
 using json = nlohmann::json;
 #include <JsonReader.h>
 using namespace JsonReader;
 // TODO: This should probably be moved to a file
 typedef unsigned int InfectGUID;
 
-#include <Color.h>
-//#include <Debug.h>
 #include <WindowProc.h>
 #include <WindowSettings.h>
 #include <Face.h>

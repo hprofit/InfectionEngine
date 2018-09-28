@@ -21,10 +21,11 @@ public:
 	static const ComponentType Type = ComponentType::C_Transform;
 	virtual ComponentType GetType() const { return Type; }
 
-	LightBaseComponent(InfectGUID guid) : Component(guid) {};
+	LightBaseComponent(InfectGUID guid);
 	~LightBaseComponent() {};
 
 	virtual void LateInitialize();
+	virtual void Serialize(const json& j);
 
 	inline FLOAT Red() const { return m_color.r; }
 	inline FLOAT Green() const { return m_color.g; }

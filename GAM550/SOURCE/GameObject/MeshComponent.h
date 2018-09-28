@@ -18,8 +18,8 @@ protected:
 
 	Scene* mp_Scene;		// Pointer to a Scene that contains meshes for rendering
 	ID3D11ShaderResourceView * mp_Diffuse;
-	//SurfaceTextureBuffer * mp_NormalMap;
-	//SurfaceTextureBuffer * mp_SpecMap;
+	ID3D11ShaderResourceView * mp_NormalMap;
+	ID3D11ShaderResourceView * mp_SpecMap;
 	bool m_CastShadows;
 	bool m_ReceiveShadows;
 	bool m_IsLit;
@@ -42,6 +42,12 @@ public:
 
 	inline ID3D11ShaderResourceView* GetDiffuseTexture() const { return mp_Diffuse; }
 	void SetDiffuseTexture(const std::string& textureName);
+
+	inline ID3D11ShaderResourceView* GetNormalTexture() const { return mp_NormalMap; }
+	void SetNormalTexture(const std::string& textureName);
+
+	inline ID3D11ShaderResourceView* GetSpecularTexture() const { return mp_SpecMap; }
+	void SetSpecularTexture(const std::string& textureName);
 
 	inline bool CastShadows() const { return m_CastShadows; }
 	void SetCastShadows(bool castShadows);

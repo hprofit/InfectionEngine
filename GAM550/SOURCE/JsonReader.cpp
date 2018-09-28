@@ -261,24 +261,24 @@ namespace JsonReader {
 		return Vector3D();
 	}
 
-	Vector3D ParseColor(const json& j, const std::string& first)
+	Color ParseColor(const json& j, const std::string& first)
 	{
 		if (j.find(first) != j.end()) {
-			return Vector3D(
+			return Color(
 				ValueExists(j, first) ? j[first]["r"] : 1.0f,
 				ValueExists(j, first) ? j[first]["g"] : 1.0f,
 				ValueExists(j, first) ? j[first]["b"] : 1.0f,
 				ValueExists(j, first) ? j[first]["a"] : 1.0f
 			);
 		}
-		return Vector3D(1, 1, 1, 1);
+		return Color(1, 1, 1, 1);
 	}
 
-	Vector3D ParseColor(const json& j, const std::string& first, const std::string& second)
+	Color ParseColor(const json& j, const std::string& first, const std::string& second)
 	{
 		if (j.find(first) != j.end()) {
 			if (j[first].find(second) != j[first].end()) {
-				return Vector3D(
+				return Color(
 					ValueExists(j, first, second) ? j[first][second]["r"] : 1.0f,
 					ValueExists(j, first, second) ? j[first][second]["g"] : 1.0f,
 					ValueExists(j, first, second) ? j[first][second]["b"] : 1.0f,
@@ -286,7 +286,7 @@ namespace JsonReader {
 				);
 			}
 		}
-		return Vector3D(1, 1, 1, 1);
+		return Color(1, 1, 1, 1);
 	}
 
 	bool ValueExists(const json& j, const std::string& first)

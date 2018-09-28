@@ -14,7 +14,7 @@ class PointLightComponentManager;
 class PointLightComponent : public LightBaseComponent
 {
 protected:
-	// TODO: Add primitive Mesh member
+	Scene * mp_Scene;		// Pointer to a Scene that contains meshes representing the light's volume
 
 public:
 	friend PointLightComponentManager;
@@ -23,14 +23,17 @@ public:
 	static const ComponentType Type = ComponentType::C_PointLight;
 	virtual ComponentType GetType() const { return Type; }
 
-	PointLightComponent(InfectGUID guid) : LightBaseComponent(guid) {};
+	PointLightComponent(InfectGUID guid);
 	~PointLightComponent() {};
 
 	static Component* CreateInstance(InfectGUID guid) { return new PointLightComponent(guid); }
 	virtual void Deactivate();
 	virtual void Update(float dt) {};
-	virtual void Serialize(const json& j) {};
+	virtual void Serialize(const json& j);
 	void Override() {};
+
+	inline const Scene* GetScene() const { return mp_Scene; }
+	void SetScene(const std::string & sceneName);
 };
 
 #endif

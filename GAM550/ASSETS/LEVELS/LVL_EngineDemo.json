@@ -19,14 +19,6 @@
 		{
 		    "prefab": "Floor"
         },
-        {
-            "prefab": "P_PointLight",
-            "position":{
-                "x": 0.0,
-                "y": 10.0,
-                "z": 10.0
-            }
-        },
 	    {
             "prefab": "P_SmallCube",
             "position": {
@@ -89,6 +81,103 @@
                 "x": -25,
                 "y": -25,
                 "z": -25
+            }
+        },
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": 0.0,
+                "y": 10.0,
+                "z": 10.0
+            }
+        },
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": 0.0,
+                "y": 10.0,
+                "z": -10.0
+            }
+        },
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": 10.0,
+                "y": 10.0,
+                "z": 10.0
+            }
+        },
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": -10.0,
+                "y": 10.0,
+                "z": 10.0
+            }
+        },
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": 10.0,
+                "y": 10.0,
+                "z": -10.0
+            }
+        },
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": -10.0,
+                "y": 10.0,
+                "z": -10.0
+            }
+        },
+	
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": 0.0,
+                "y": 10.0,
+                "z": 50.0
+            }
+        },
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": 0.0,
+                "y": 10.0,
+                "z": -50.0
+            }
+        },
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": 50.0,
+                "y": 10.0,
+                "z": 50.0
+            }
+        },
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": -50.0,
+                "y": 10.0,
+                "z": 50.0
+            }
+        },
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": 50.0,
+                "y": 10.0,
+                "z": -50.0
+            }
+        },
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": -50.0,
+                "y": 10.0,
+                "z": -50.0
             }
         }
     ]

@@ -53,6 +53,18 @@ void MeshComponent::SetDiffuseTexture(const std::string & textureName)
 	m_IsDirty = true;
 }
 
+void MeshComponent::SetNormalTexture(const std::string & textureName)
+{
+	mp_NormalMap = INFECT_RESOURCES.GetTexture(textureName);
+	m_IsDirty = true;
+}
+
+void MeshComponent::SetSpecularTexture(const std::string & textureName)
+{
+	mp_SpecMap = INFECT_RESOURCES.GetTexture(textureName);
+	m_IsDirty = true;
+}
+
 void MeshComponent::SetCastShadows(bool castShadows)
 {
 	m_CastShadows = castShadows;
