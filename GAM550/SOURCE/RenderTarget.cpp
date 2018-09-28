@@ -37,7 +37,7 @@ bool RenderTarget::_CreateRenderViewTarget(ID3D11Device * device, unsigned int i
 	renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 	renderTargetViewDesc.Texture2D.MipSlice = 0;
 
-	if (FAILED(device->CreateRenderTargetView(m_renderTargetTextures[index], &renderTargetViewDesc, &mp_BackBuffer)))
+	if (FAILED(device->CreateRenderTargetView(m_renderTargetTextures[index], &renderTargetViewDesc, &m_renderTargetViews[index])))
 		return false;
 
 	// Setup the description of the shader resource view.
@@ -176,6 +176,14 @@ void RenderTarget::Initialize(ID3D11Device * device)
 	_CreateDepthStencilState(device);
 	_CreateDepthStencilView(device);
 	_CreateRasterState(device);
+
+	// Setup the viewport for rendering.
+	m_viewport.Width = (float)m_TextureWidth;
+	m_viewport.Height = (float)m_TextureHeight;
+	m_viewport.MinDepth = 0.0f;
+	m_viewport.MaxDepth = 1.0f;
+	m_viewport.TopLeftX = 0.0f;
+	m_viewport.TopLeftY = 0.0f;
 }
 
 void RenderTarget::Release()
@@ -217,10 +225,12 @@ void RenderTarget::BindRenderTarget(ID3D11DeviceContext* deviceContext) const
 	deviceContext->OMSetDepthStencilState(mp_DepthStencilState, 1);
 
 	// Bind the render target view and depth stencil buffer to the output render pipeline.
-	deviceContext->OMSetRenderTargets(1, &mp_BackBuffer, mp_DepthStencilView);
+	deviceContext->OMSetRenderTargets(m_NumTargets, m_renderTargetViews, mp_DepthStencilView);
 
 	// Now set the rasterizer state.
 	deviceContext->RSSetState(mp_RasterState);
+
+	deviceContext->RSSetViewports(1, &m_viewport);
 }
 
 void RenderTarget::UnbindRenderTarget() const

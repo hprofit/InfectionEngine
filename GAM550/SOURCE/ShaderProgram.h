@@ -18,11 +18,15 @@ protected:
 	ConstantBufferWrapper<MainCB>* mp_CBuffer;
 
 public:
-	ShaderProgram(std::string shaderFile);
-	ShaderProgram(std::string vertexShaderFile, std::string pixelShaderFile);
-	ShaderProgram(std::string vertexShaderFile, std::string pixelShaderFile, std::string vertexShaderFunc = "VShader", std::string pixelShaderFunc = "PShader");
-	~ShaderProgram();
+	ShaderProgram() {};
+	~ShaderProgram() 
+	{
+		Release();
+	};
 
+	void Initialize(ID3D11Device*, std::string shaderFile);
+	void Initialize(ID3D11Device*, std::string vertexShaderFile, std::string pixelShaderFile);
+	void Initialize(ID3D11Device*, std::string vertexShaderFile, std::string pixelShaderFile, std::string vertexShaderFunc = "VShader", std::string pixelShaderFunc = "PShader");
 
 	void BindShader();
 	void Release();

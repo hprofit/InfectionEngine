@@ -221,6 +221,7 @@
     </ClCompile>
     <ClCompile Include="SOURCE\RenderThreadContainer.cpp">
       <Filter>Source Files\Threading</Filter>
+    </ClCompile>
     <ClCompile Include="SOURCE\RenderTarget.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
@@ -232,6 +233,9 @@
     </ClCompile>
     <ClCompile Include="SOURCE\ShaderProgram.cpp">
       <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\ConstantBuffer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -438,6 +442,7 @@
     </ClInclude>
     <ClInclude Include="SOURCE\LevelManager.h">
       <Filter>Source Files\Managers</Filter>
+    </ClInclude>
     <ClInclude Include="SOURCE\RenderTarget.h">
       <Filter>Source Files\Rendering</Filter>
     </ClInclude>

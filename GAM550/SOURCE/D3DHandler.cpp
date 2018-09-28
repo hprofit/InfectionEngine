@@ -258,18 +258,18 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 	mp_DeferredRenderTarget->Initialize(mp_Device);
 
 #pragma region Viewport
-	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+	ZeroMemory(&m_viewport, sizeof(D3D11_VIEWPORT));
 
 	// Setup the viewport for rendering.
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
-	viewport.Width = FLOAT(settings.Width);
-	viewport.Height = FLOAT(settings.Height);
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
+	m_viewport.TopLeftX = 0;
+	m_viewport.TopLeftY = 0;
+	m_viewport.Width = FLOAT(settings.Width);
+	m_viewport.Height = FLOAT(settings.Height);
+	m_viewport.MinDepth = 0.0f;
+	m_viewport.MaxDepth = 1.0f;
 
 	// Create the viewport.
-	mp_DeviceContext->RSSetViewports(1, &viewport);
+	mp_DeviceContext->RSSetViewports(1, &m_viewport);
 #pragma endregion
 
 	return true;
@@ -299,11 +299,22 @@ void D3DHandler::CleanD3D(void)
 void D3DHandler::BindBackBuffer() const
 {
 	mp_BackBuffer->BindRenderTarget(mp_DeviceContext);
+	mp_DeviceContext->RSSetViewports(1, &m_viewport);
+}
+
+void D3DHandler::BindDeferredBuffer() const
+{
+	mp_DeferredRenderTarget->BindRenderTarget(mp_DeviceContext);
 }
 
 void D3DHandler::ClearBackBuffer(const Color& color)
 {
 	mp_BackBuffer->ClearRenderTarget(mp_DeviceContext, color);
+}
+
+void D3DHandler::ClearDeferredBuffer(const Color & color)
+{
+	mp_DeferredRenderTarget->ClearRenderTarget(mp_DeviceContext, color);
 }
 
 void D3DHandler::PresentBuffer(bool vSync)

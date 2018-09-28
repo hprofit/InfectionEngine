@@ -42,8 +42,21 @@ RenderManager::RenderManager() :
 
 RenderManager::~RenderManager()
 {
-	mp_ShaderProgramDefault->Release();
-	delete mp_ShaderProgramDefault;
+	if (mp_ShaderProgramDefault) {
+		mp_ShaderProgramDefault->Release();
+		delete mp_ShaderProgramDefault;
+		mp_ShaderProgramDefault = nullptr;
+	}
+	if (mp_ShaderProgramDeferred) {
+		mp_ShaderProgramDeferred->Release();
+		delete mp_ShaderProgramDeferred;
+		mp_ShaderProgramDeferred = nullptr;
+	}
+	if (mp_ShaderProgramQuad) {
+		mp_ShaderProgramQuad->Release();
+		delete mp_ShaderProgramQuad;
+		mp_ShaderProgramQuad = nullptr;
+	}
 
 	// Show the mouse cursor.
 	ShowCursor(true);
@@ -76,17 +89,56 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 {
 	m_WindowSettings = settings;
 	m_hWnd = mp_D3D->InitWindow(hInstance, nCmdShow, settings);
-	return mp_D3D->InitD3D(m_hWnd, settings);
+	bool result = mp_D3D->InitD3D(m_hWnd, settings);
+
+	if (result)
+	{
+		mp_ShaderProgramDefault = new ShaderProgram();
+		mp_ShaderProgramDeferred = new ShaderProgram();
+		mp_ShaderProgramQuad = new ShaderProgram();
+	}
+	return result;
 }
 
 void RenderManager::BindBackBuffer()
 {
 	mp_D3D->BindBackBuffer();
+	mp_ShaderProgramQuad->BindShader();
+}
+
+void RenderManager::BindDeferredBuffer()
+{
+	mp_D3D->BindDeferredBuffer();
+	mp_ShaderProgramDeferred->BindShader();
+}
+
+void RenderManager::RenderDeferredBuffer()
+{
+
+	Matrix4x4 M = Matrix4x4();
+	M.Identity();
+	MainCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
+	cb.ModelMatrix = Matrix4x4::Transpose(M);
+
+	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+	
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(
+		0,
+		1,//mp_D3D->GetDeferredRenderTarget()->GetNumViews(),
+		&mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()[2]
+	);
+
+	// set the new values for the constant buffer
+	mp_ShaderProgramQuad->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+	// do 3D rendering on the back buffer here
+	RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
 }
 
 void RenderManager::ClearScreen(void)
 {
 	mp_D3D->ClearBackBuffer(m_ClearColor);
+	mp_D3D->ClearDeferredBuffer(m_ClearColor);
 }
 
 void RenderManager::PresentFrameToScreen(void)
@@ -144,35 +196,25 @@ void RenderManager::RenderScene(const Scene * pScene)
 
 bool RenderManager::LoadShader(std::string shaderName)
 {
-	//// load and compile the shaders
-	//int flag = D3D10_SHADER_WARNINGS_ARE_ERRORS;// | D3D10_SHADER_OPTIMIZATION_LEVEL3;
-	//
-	//std::string filePath = INFECT_GAME_CONFIG.ShadersDir() + shaderName;
-	//HRESULT result = D3DCompileFromFile(std::wstring(filePath.begin(), filePath.end()).c_str(), 0, 0, "VShader", "vs_4_0", flag, flag, &mp_VSBlob, &mp_Errors);
-	//if (FAILED(result)) {
-	//	MessageBox(NULL, "The vertex shader failed to compile.", "Error", MB_OK);
-	//	return false;
-	//}
-	//
-	//result = D3DCompileFromFile(std::wstring(filePath.begin(), filePath.end()).c_str(), 0, 0, "PShader", "ps_4_0", flag, flag, &mp_PSBlob, &mp_Errors);
-	//if (FAILED(result)) {
-	//	MessageBox(NULL, "The pixel shader failed to compile.", "Error", MB_OK);
-	//	return false;
-	//}
-	//
-	//// Encapsulate both shaders into shader objects
-	//mp_D3D->mp_Device->CreateVertexShader(mp_VSBlob->GetBufferPointer(), mp_VSBlob->GetBufferSize(), NULL, &mp_VS);
-	//mp_D3D->mp_Device->CreatePixelShader(mp_PSBlob->GetBufferPointer(), mp_PSBlob->GetBufferSize(), NULL, &mp_PS);
-	
 	std::string filePath = INFECT_GAME_CONFIG.ShadersDir() + shaderName;
 
 	// TODO: Made this less shitty
-	if (!mp_ShaderProgramDefault)
-		mp_ShaderProgramDefault = new ShaderProgram(filePath);
-	else 
-		mp_ShaderProgramDeferred = new ShaderProgram(filePath);
+	switch (mShaderCount) {
+		case 0:
+			mp_ShaderProgramDefault->Initialize(mp_D3D->mp_Device, filePath);
+			break;
+		case 1:
+			mp_ShaderProgramDeferred->Initialize(mp_D3D->mp_Device, filePath);
+			break;
+		case 2:
+			mp_ShaderProgramQuad->Initialize(mp_D3D->mp_Device, filePath);
+			break;
+		default:
+			break;
+	}
+	++mShaderCount;
 
-	mp_ShaderProgramDefault->BindShader();
+	//mp_ShaderProgramDefault->BindShader();
 
 	return true;
 }

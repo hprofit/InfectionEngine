@@ -17,7 +17,6 @@ protected:
 	ID3D11DepthStencilState* mp_DepthStencilState;
 	ID3D11DepthStencilView* mp_DepthStencilView;
 	ID3D11RasterizerState* mp_RasterState;
-	ID3D11RenderTargetView * mp_BackBuffer;
 	unsigned int m_TextureWidth, m_TextureHeight, m_NumTargets;
 
 	ID3D11Texture2D** m_renderTargetTextures;
@@ -39,7 +38,10 @@ public:
 	inline ID3D11DepthStencilState* DepthStencilState() { return mp_DepthStencilState; }
 	inline ID3D11DepthStencilView* DepthStencilView() { return mp_DepthStencilView; }
 	inline ID3D11RasterizerState* RasterState() { return mp_RasterState; }
-	inline ID3D11RenderTargetView* RenderTargetView() { return mp_BackBuffer; }
+
+	unsigned int GetNumViews() const { return m_NumTargets; }
+	ID3D11Texture2D** GetRenderTextures() { return m_renderTargetTextures; }
+	ID3D11ShaderResourceView** GetShaderResourceViews() { return m_shaderResourceViews; }
 
 	void Initialize(ID3D11Device*);
 

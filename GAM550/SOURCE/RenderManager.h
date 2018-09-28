@@ -31,8 +31,10 @@ private:
 	WindowSettings m_WindowSettings;
 	HWND m_hWnd; 	// the handle for the window, filled by a function
 
+	unsigned int mShaderCount = 0;
 	ShaderProgram* mp_ShaderProgramDefault;
 	ShaderProgram* mp_ShaderProgramDeferred;
+	ShaderProgram* mp_ShaderProgramQuad;
 
 	bool _GameObjectHasRenderableComponent(const GameObject& gameObject);
 public:
@@ -57,6 +59,10 @@ public:
 
 
 	void BindBackBuffer();
+
+	void BindDeferredBuffer();
+
+	void RenderDeferredBuffer();
 
 	void ClearScreen(void);
 

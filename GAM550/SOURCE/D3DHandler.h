@@ -19,6 +19,7 @@ protected:
 
 	BackBufferRenderTarget* mp_BackBuffer;
 	RenderTarget* mp_DeferredRenderTarget;
+	D3D11_VIEWPORT m_viewport;
 
 	int m_VideoCardMemory;
 	char m_VideoCardDescription[128];
@@ -39,11 +40,16 @@ public:
 	// Closes Direct3D and releases memory
 	void CleanD3D(void);
 
+	RenderTarget* GetDeferredRenderTarget() { return mp_DeferredRenderTarget; }
 
 	void BindBackBuffer() const;
 
+	void BindDeferredBuffer() const;
+
 	// Clear the currently bound render target and the depth buffer
 	void ClearBackBuffer(const Color& color);
+
+	void ClearDeferredBuffer(const Color& color);
 
 	void PresentBuffer(bool vSync);
 };

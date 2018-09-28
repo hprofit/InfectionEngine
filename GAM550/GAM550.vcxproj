@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="SOURCE\AudioManager.cpp" />
     <ClCompile Include="SOURCE\Command.cpp" />
+    <ClCompile Include="SOURCE\ConstantBuffer.cpp" />
     <ClCompile Include="SOURCE\LevelManager.cpp" />
     <ClCompile Include="SOURCE\RenderTarget.cpp" />
     <ClCompile Include="SOURCE\RenderThreadContainer.cpp" />

@@ -105,8 +105,8 @@ POut PShader(
 		output.color0 = diffuseColor;
 	}
 
-	output.color1 = float4(1, 0, 0, 1);
-	output.color2 = float4(0, 0, 1, 1);
+	output.color1 = output.color0 * float4(2, 0.9, 0.9, 1);
+	output.color2 = output.color0 * float4(0, 0, 1, 1);
 
 	return output;
 }

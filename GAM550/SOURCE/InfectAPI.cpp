@@ -23,6 +23,8 @@ namespace Infect {
 			return 1;
 		if (!INFECT_RENDERER.LoadShader("deferred.shader"))  // TODO: MOVE THIS
 			return 1;
+		if (!INFECT_RENDERER.LoadShader("quadRender.shader"))  // TODO: MOVE THIS
+			return 1;
 		INFECT_INPUT.Init(hInstance);
 		INFECT_RESOURCES.Init();
 

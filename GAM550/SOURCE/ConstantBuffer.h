@@ -25,10 +25,29 @@ struct MainCB : public ConstantBuffer {
 	int Textured;
 };
 
-template<typename BufferType>
-class ConstantBufferWrapper {
+struct QuadCB : public ConstantBuffer {
+	Matrix4x4 ModelMatrix;
+};
+
+
+class CBW {
 protected:
 	ID3D11Buffer* mp_CBuffer;	// Pointer to DirectX Constant Buffer object
+
+public:
+	CBW();
+	virtual ~CBW();
+
+	virtual void SetConstantBuffer(ID3D11DeviceContext* deviceContext);
+	virtual void UpdateSubresource(ID3D11DeviceContext* deviceContext) = 0;
+	virtual void Release();
+};
+
+template<typename BufferType>
+class ConstantBufferWrapper : 
+	public CBW
+{
+protected:
 	BufferType mp_CBufferData;
 
 public:
@@ -38,12 +57,8 @@ public:
 	ID3D11Buffer* CBuffer() { return mp_CBuffer; }
 	BufferType& BufferData() { return mp_CBufferData; }
 
-	void SetConstantBuffer(ID3D11DeviceContext* deviceContext);
-	void UpdateSubresource(ID3D11DeviceContext* deviceContext);
-	void Release();
+	virtual void UpdateSubresource(ID3D11DeviceContext* deviceContext);
 };
-
-
 
 template<typename BufferType>
 ConstantBufferWrapper<BufferType>::ConstantBufferWrapper(ID3D11Device* device)
@@ -59,24 +74,11 @@ ConstantBufferWrapper<BufferType>::ConstantBufferWrapper(ID3D11Device* device)
 }
 
 template<typename BufferType>
-void ConstantBufferWrapper<BufferType>::SetConstantBuffer(ID3D11DeviceContext* deviceContext)
-{
-	deviceContext->VSSetConstantBuffers(0, 1, &(mp_CBuffer));
-	deviceContext->PSSetConstantBuffers(0, 1, &mp_CBuffer);
-}
-
-template<typename BufferType>
 void ConstantBufferWrapper<BufferType>::UpdateSubresource(ID3D11DeviceContext* deviceContext)
 {
 	deviceContext->UpdateSubresource(mp_CBuffer, 0, 0, &mp_CBufferData, 0, 0);
 }
 
-template<typename BufferType>
-void ConstantBufferWrapper<BufferType>::Release()
-{
-	if (mp_CBuffer)
-		mp_CBuffer->Release();
-}
 
 
 #endif

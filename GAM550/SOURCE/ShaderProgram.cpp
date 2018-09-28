@@ -7,28 +7,26 @@ Author: <Holden Profit>
 
 #include <Stdafx.h>
 
-ShaderProgram::ShaderProgram(std::string shaderFile)
+void ShaderProgram::Initialize(ID3D11Device* device, std::string shaderFile)
 {
 	mp_VertexShader = new VertexShader(shaderFile);
 	mp_PixelShader = new PixelShader(shaderFile);
-	mp_CBuffer = new ConstantBufferWrapper<MainCB>(INFECT_RENDERER.Device());
+	mp_CBuffer = new ConstantBufferWrapper<MainCB>(device);
 }
 
-ShaderProgram::ShaderProgram(std::string vertexShaderFile, std::string pixelShaderFile)
+void ShaderProgram::Initialize(ID3D11Device* device, std::string vertexShaderFile, std::string pixelShaderFile)
 {
 	mp_VertexShader = new VertexShader(vertexShaderFile);
 	mp_PixelShader = new PixelShader(pixelShaderFile);
-	mp_CBuffer = new ConstantBufferWrapper<MainCB>(INFECT_RENDERER.Device());
+	mp_CBuffer = new ConstantBufferWrapper<MainCB>(device);
 }
 
-ShaderProgram::ShaderProgram(std::string vertexShaderFile, std::string pixelShaderFile, std::string vertexShaderFunc, std::string pixelShaderFunc)
+void ShaderProgram::Initialize(ID3D11Device* device, std::string vertexShaderFile, std::string pixelShaderFile, std::string vertexShaderFunc, std::string pixelShaderFunc)
 {
 	mp_VertexShader = new VertexShader(vertexShaderFile, vertexShaderFunc);
 	mp_PixelShader = new PixelShader(pixelShaderFile, pixelShaderFunc);
-	mp_CBuffer = new ConstantBufferWrapper<MainCB>(INFECT_RENDERER.Device());
+	mp_CBuffer = new ConstantBufferWrapper<MainCB>(device);
 }
-
-ShaderProgram::~ShaderProgram(){}
 
 void ShaderProgram::BindShader()
 {
@@ -38,7 +36,15 @@ void ShaderProgram::BindShader()
 
 void ShaderProgram::Release()
 {
-	mp_VertexShader->Release();
-	mp_PixelShader->Release();
-	mp_CBuffer->Release();
+	if (mp_VertexShader)
+		mp_VertexShader->Release();
+	if (mp_PixelShader)
+		mp_PixelShader->Release();
+	if (mp_CBuffer)
+		mp_CBuffer->Release();
+
+
+	mp_VertexShader = nullptr;
+	mp_PixelShader = nullptr;
+	mp_CBuffer = nullptr;
 }
