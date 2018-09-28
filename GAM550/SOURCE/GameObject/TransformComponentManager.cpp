@@ -75,5 +75,5 @@ void TransformComponentManager::HandleEvent(Event * pEvent)
 }
 
 void TransformComponentManager::Init() {
-	INFECT_MEMORY.ComponentPoolInit<TransformComponent>(TransformComponent::Type);
+	INFECT_MEMORY.ComponentPoolInit<TransformComponent>(TransformComponent::Type, TransformComponent::CACHESIZE);
 }

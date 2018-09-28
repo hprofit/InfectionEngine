@@ -39,7 +39,7 @@ MemoryManager::MemoryManager():
 
 	m_ComponentFactory = new ComponentFactory();
 	// GameObject preallocation
-	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
+	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHESIZE; i++) {
 		m_GameObjectPool.push_back( new GameObject(INFECT_GUID.GetGUID()));
 	}
 	m_GameObjectFirstDead = m_GameObjectPool.begin();
@@ -158,7 +158,7 @@ GameObject* MemoryManager::GetNewGameObject() {
 		return pGO; // this pGO needs to be reset with appropriate data
 					// only GUID is valid
 	}
-	printf("NO MORE EMPTY GAMEOBJECT - Current cache size: %d\n", MAX_GAMEOBJECT_CACHE);
+	printf("NO MORE EMPTY GAMEOBJECT - Current cache size: %d\n", MAX_GAMEOBJECT_CACHESIZE);
 	return nullptr;
 }
 

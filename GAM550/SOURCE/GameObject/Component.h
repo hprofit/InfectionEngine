@@ -23,7 +23,8 @@ protected:
 	bool m_IsActive;
 public:
 	static const ComponentType Type = ComponentType::NUM_COMPONENTS;
-	
+	static const unsigned CACHESIZE = 50;
+
 	Component() :
 		m_GUID(0),
 		mp_Parent(nullptr),

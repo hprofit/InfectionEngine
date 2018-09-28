@@ -34,5 +34,5 @@ void PointLightComponentManager::HandleEvent(Event * pEvent)
 }
 
 void PointLightComponentManager::Init() {
-	INFECT_MEMORY.ComponentPoolInit<PointLightComponent>(PointLightComponent::Type);
+	INFECT_MEMORY.ComponentPoolInit<PointLightComponent>(PointLightComponent::Type, PointLightComponent::CACHESIZE);
 }

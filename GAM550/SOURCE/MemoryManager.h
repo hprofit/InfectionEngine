@@ -13,8 +13,8 @@ using namespace std;
 class Component;
 
 const unsigned	 MAX_CACHE_SIZE_NUM = 100;			// # of Cacheable MemoryBlocks
-const size_t DEFAULT_BUFFER_SIZE_BYTE = 524288000;	// 5 MB = 5*1024*1024 byte
-const unsigned	 MAX_GAMEOBJECT_CACHE = 50;
+const size_t DEFAULT_BUFFER_SIZE_BYTE = 52428800;	// 50 MB = 50*1024*1024 byte
+const unsigned	 MAX_GAMEOBJECT_CACHESIZE = 300;
 
 class MemoryManagerInterface {
 public:
@@ -154,10 +154,10 @@ public:
 	void DeleteGameObject(GameObject* ptr);
 	// Component Factory
 	template <typename C>
-	void ComponentPoolInit(ComponentType cType) {
+	void ComponentPoolInit(ComponentType cType, unsigned compPoolSize) {
 		static_assert(std::is_base_of<Component, C>::value, "MemMngr: C must inherit from Component class.");
-		//ComponentType cType = C.GetType();
-		for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
+		unsigned poolSize = compPoolSize;
+		for (unsigned i = 0; i < poolSize; i++) {
 			m_ComponentPool[cType]->push_back(m_ComponentFactory->CreateComponent<C>());
 		}
 	}

@@ -32,6 +32,7 @@ private:
 	//void _CalcViewMatrix();
 public:
 	static const ComponentType Type = ComponentType::C_Camera;
+	static const unsigned CACHESIZE = 5;
 	virtual ComponentType GetType() const { return Type; }
 
 	CameraComponent(InfectGUID guid);

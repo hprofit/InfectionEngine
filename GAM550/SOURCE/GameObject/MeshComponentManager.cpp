@@ -34,5 +34,5 @@ void MeshComponentManager::HandleEvent(Event * pEvent)
 }
 
 void MeshComponentManager::Init() {
-	INFECT_MEMORY.ComponentPoolInit<MeshComponent>(MeshComponent::Type);
+	INFECT_MEMORY.ComponentPoolInit<MeshComponent>(MeshComponent::Type, MeshComponent::CACHESIZE);
 }

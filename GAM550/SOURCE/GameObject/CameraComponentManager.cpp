@@ -57,5 +57,5 @@ void CameraComponentManager::HandleEvent(Event * pEvent)
 }
 
 void CameraComponentManager::Init() {
-	INFECT_MEMORY.ComponentPoolInit<CameraComponent>(CameraComponent::Type);
+	INFECT_MEMORY.ComponentPoolInit<CameraComponent>(CameraComponent::Type, CameraComponent::CACHESIZE);
 }

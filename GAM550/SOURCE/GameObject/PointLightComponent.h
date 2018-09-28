@@ -19,6 +19,7 @@ protected:
 public:
 	friend PointLightComponentManager;
 
+	static const unsigned CACHESIZE = 300;
 	static const ComponentType Type = ComponentType::C_PointLight;
 	virtual ComponentType GetType() const { return Type; }
 

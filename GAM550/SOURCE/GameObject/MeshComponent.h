@@ -25,6 +25,7 @@ protected:
 	bool m_IsLit;
 
 public:
+	static const unsigned CACHESIZE = 300;
 	static const ComponentType Type = ComponentType::C_Mesh;
 	virtual ComponentType GetType() const { return Type; }
 
