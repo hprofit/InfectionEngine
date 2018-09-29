@@ -9,9 +9,9 @@
 			"z": 0
 	  	},
 	  	"scale": {
-			"x": 20,
-			"y": 20,
-			"z": 20
+			"x": 40,
+			"y": 40,
+			"z": 40
 		},
 	  	"pivotOffset": {},
 	  	"rotation": {}
@@ -24,7 +24,7 @@
 			"b": 1,
 			"a": 1
 		},
-		"distance": 100,
+		"distance": 20,
 		"a": 0.25,
 		"b": 0.1,
 		"intensity": 1,

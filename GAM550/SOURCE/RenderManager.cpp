@@ -255,10 +255,10 @@ void RenderManager::RenderLight(const GameObject & pGOCamera, const GameObject &
 	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
 	cb.LightPosition = pTransComp->WorldPosition();
 	cb.LightColor = pPointLightComp->GetColor();
-	cb.LIHW.x = pPointLightComp->Intensity();
-	cb.LIHW.y = float(m_WindowSettings.Height);
-	cb.LIHW.z = float(m_WindowSettings.Width);
-	cb.LIHW.w = 1;
+	cb.LIDHW.x = pPointLightComp->Intensity();
+	cb.LIDHW.y = pPointLightComp->Distance();
+	cb.LIDHW.z = float(m_WindowSettings.Height);
+	cb.LIDHW.w = float(m_WindowSettings.Width);
 
 	mp_ShaderProgramDeferredFinal->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 

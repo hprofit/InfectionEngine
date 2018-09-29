@@ -36,7 +36,7 @@ struct DeferredFinalCB : public ConstantBuffer {
 	Vector3D CameraPosition;
 	Vector3D LightPosition;
 	Color LightColor;
-	Vector3D LIHW;	// Light Intensity, Screen Height, Screen Width
+	Vector3D LIDHW;	// Light Intensity, Screen Height, Screen Width
 };
 
 

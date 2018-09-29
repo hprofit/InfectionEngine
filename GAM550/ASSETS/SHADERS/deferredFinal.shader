@@ -5,13 +5,12 @@ cbuffer DeferredFinalConstantBuffer
 	float4 CameraPosition;
 	float4 LightPosition;
 	float4 LightColor;
-	float4 LIHW;	// Intensity, Height, Width, NAN
+	float4 LIDHW;	// Intensity, Distance, Height, Width
 };
 
 struct VOut
 {
 	float4 position : SV_POSITION;
-	float4 view : VIEW;
 };
 
 Texture2D WorldPosTexture : register(t0);
@@ -36,18 +35,35 @@ VOut VShader(
 	float4 P = mul(ModelMatrix, position);
 
 	output.position = mul(MatFinal, position);
-	output.view = CameraPosition - P;
 
 	return output;
 }
 
 
 float4 PShader(
-	float4 position : SV_POSITION,
-	float4 view : VIEW
+	float4 position : SV_POSITION
 ) : SV_TARGET
 {
-	float2 texCoords = float2(position.x / LIHW.z, position.y / LIHW.y);
-	float4 color = float4(position.x / LIHW.z, position.y / LIHW.y, 0,1);
-	return DiffuseTexture.Sample(ss, texCoords) * 5.0f;
+	float2 texCoords = float2(position.x / LIDHW.w, position.y / LIDHW.z);
+
+	float4 worldPos = WorldPosTexture.Sample(ss, texCoords);
+	if (length(LightPosition - worldPos) > LIDHW.y) {
+		return float4(0, 0, 0, 0);
+	}
+
+
+	float4 normal = normalize(NormalTexture.Sample(ss, texCoords));
+	float4 diffuseColor = DiffuseTexture.Sample(ss, texCoords);
+	float4 specularInfo = SpecularTexture.Sample(ss, texCoords);
+
+	float4 L = normalize(LightPosition - worldPos);
+	float4 v = normalize(CameraPosition - worldPos);
+	float4 H = normalize(v + L);
+	float specularCoef = specularInfo.w;
+	float4 specularColor = float4(specularInfo.x, specularInfo.y, specularInfo.z, 1);
+
+	float4 diffuse = max(dot(normal, L), 0) * diffuseColor * LightColor;
+	float4 specular = pow(max(dot(H, normal), 0), specularCoef) * specularColor * LightColor;
+	
+	return NormalTexture.Sample(ss, texCoords) * 100;// diffuse + specular;
 }

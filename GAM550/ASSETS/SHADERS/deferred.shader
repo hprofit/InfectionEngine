@@ -83,7 +83,7 @@ POut PShader(
 	output.worldPos = worldPosition;
 	output.normal = normalize(normal);
 	output.diffuse = Textured ? Texture.Sample(ss, texCoords) : color;
-	output.specular = float4(0.5, 0.5, 0.5, 100);
+	output.specular = float4(0.5, 0.5, 0.5, 60);
 
 	return output;
 }
