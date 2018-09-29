@@ -26,6 +26,7 @@ public:
 
 	virtual void LateInitialize();
 	virtual void Serialize(const json& j);
+	virtual void Override(const json& j);
 
 	inline FLOAT Red() const { return m_color.r; }
 	inline FLOAT Green() const { return m_color.g; }

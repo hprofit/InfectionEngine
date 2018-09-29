@@ -20,8 +20,8 @@
 	"WINDOW_SETTINGS": {
 		"title" : "Infection",
 		"fullScreen": false,
-		"height": 600,
-		"width": 800,
+		"width": 1280,
+		"height": 720,
 		"vsync": true
 	},
 	"LEVEL_SETTINGS": {

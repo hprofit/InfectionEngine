@@ -30,6 +30,22 @@ void LightBaseComponent::Serialize(const json & j)
 	m_IsDirty = true;
 }
 
+void LightBaseComponent::Override(const json & j)
+{
+	if (ValueExists(j, "color"))
+		m_color = ParseColor(j, "color");
+	if (ValueExists(j, "distance"))
+		m_distance = ParseFloat(j, "distance");
+	if (ValueExists(j, "a"))
+		m_a = ParseFloat(j, "a");
+	if (ValueExists(j, "b"))
+		m_b = ParseFloat(j, "b");
+	if (ValueExists(j, "intensity"))
+		m_intensity = ParseFloat(j, "intensity");
+
+	m_IsDirty = true;
+}
+
 void LightBaseComponent::SetColor(const Color & color)
 {
 	m_color = color;

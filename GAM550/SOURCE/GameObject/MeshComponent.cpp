@@ -15,6 +15,7 @@ MeshComponent::MeshComponent(InfectGUID guid) :
 	m_ReceiveShadows(true),
 	m_IsLit(true)
 {
+	//mp_Textures = new ID3D11ShaderResourceView[TextureType::NUM_TEXTURE_TYPES];
 }
 
 MeshComponent::~MeshComponent() {}

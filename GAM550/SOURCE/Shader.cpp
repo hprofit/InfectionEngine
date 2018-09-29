@@ -46,7 +46,10 @@ void VertexShader::BindShader() const
 
 void VertexShader::Release()
 {
-	mp_VS->Release();
+	if (mp_VS) {
+		mp_VS->Release();
+		mp_VS = nullptr;
+	}
 }
 
 
@@ -93,5 +96,8 @@ void PixelShader::BindShader() const
 
 void PixelShader::Release()
 {
-	mp_PS->Release();
+	if (mp_PS) {
+		mp_PS->Release();
+		mp_PS = nullptr;
+	}
 }

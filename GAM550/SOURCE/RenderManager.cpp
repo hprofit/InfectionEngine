@@ -35,7 +35,7 @@ bool RenderManager::_GameObjectHasRenderableComponent(const GameObject & gameObj
 }
 
 RenderManager::RenderManager() :
-	m_ClearColor(Color(0.1f, 0.1f, 0.1f, 1)),
+	m_ClearColor(Color(0.0f, 0.0f, 0.0f, 1)),
 	mp_D3D(new D3DHandler()),
 	m_RenderMode(RenderMode::WorldPos)
 {
@@ -43,11 +43,6 @@ RenderManager::RenderManager() :
 
 RenderManager::~RenderManager()
 {
-	//if (mp_ShaderProgramDefault) {
-	//	mp_ShaderProgramDefault->Release();
-	//	delete mp_ShaderProgramDefault;
-	//	mp_ShaderProgramDefault = nullptr;
-	//}
 	if (mp_ShaderProgramDeferred) {
 		mp_ShaderProgramDeferred->Release();
 		delete mp_ShaderProgramDeferred;
@@ -57,6 +52,11 @@ RenderManager::~RenderManager()
 		mp_ShaderProgramQuad->Release();
 		delete mp_ShaderProgramQuad;
 		mp_ShaderProgramQuad = nullptr;
+	}
+	if (mp_ShaderProgramDeferredFinal) {
+		mp_ShaderProgramDeferredFinal->Release();
+		delete mp_ShaderProgramDeferredFinal;
+		mp_ShaderProgramDeferredFinal = nullptr;
 	}
 
 	// Show the mouse cursor.
@@ -94,7 +94,6 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 
 	if (result)
 	{
-		//mp_ShaderProgramDefault = new ShaderProgram();
 		mp_ShaderProgramDeferred = new ShaderProgram<MainCB>();
 		mp_ShaderProgramQuad = new ShaderProgram<QuadCB>();
 		mp_ShaderProgramDeferredFinal = new ShaderProgram<DeferredFinalCB>();
@@ -114,15 +113,6 @@ void RenderManager::BindDeferredBuffer()
 {
 	mp_D3D->BindDeferredBuffer();
 	mp_ShaderProgramDeferred->BindShader();
-
-	// turn off additive blending
-	ID3D11BlendState* g_pBlendState = NULL;
-
-	D3D11_BLEND_DESC BlendState;
-	ZeroMemory(&BlendState, sizeof(D3D11_BLEND_DESC));
-	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-	UINT sampleMask = 0xffffffff;
-	mp_D3D->mp_DeviceContext->OMSetBlendState(g_pBlendState, blendFactor, sampleMask);
 
 	mp_D3D->EnableDepth();
 	mp_D3D->DisableAlpha();
@@ -182,7 +172,7 @@ void RenderManager::RenderDeferredBufferAmbientOnly()
 	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
 	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
-	cb.Ambient = Color(0.1f, 0.1f, 0.1f, 1);
+	cb.Ambient = Color(0.4f, 0.4f, 0.4f, 1);
 	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 
 	// set the new values for the constant buffer
@@ -254,11 +244,14 @@ void RenderManager::RenderLight(const GameObject & pGOCamera, const GameObject &
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
 	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
 	cb.LightPosition = pTransComp->WorldPosition();
+	cb.LightPosition.w = pPointLightComp->LightA();
 	cb.LightColor = pPointLightComp->GetColor();
+	cb.LightColor.a = pPointLightComp->LightB();
 	cb.LIDHW.x = pPointLightComp->Intensity();
 	cb.LIDHW.y = pPointLightComp->Distance();
 	cb.LIDHW.z = float(m_WindowSettings.Height);
 	cb.LIDHW.w = float(m_WindowSettings.Width);
+	cb.Ambient = Color(0.4f, 0.4f, 0.4f, 1);
 
 	mp_ShaderProgramDeferredFinal->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 
@@ -290,9 +283,6 @@ bool RenderManager::LoadShader(std::string shaderName)
 
 	// TODO: Made this less shitty
 	switch (mShaderCount) {
-		//case 0:
-		//	mp_ShaderProgramDefault->Initialize(mp_D3D->mp_Device, filePath);
-		//	break;
 		case 0:
 			mp_ShaderProgramDeferred->Initialize(mp_D3D->mp_Device, filePath);
 			break;

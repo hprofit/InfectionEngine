@@ -11,6 +11,14 @@ Author: <Holden Profit, Hyoyup Chung>
 
 class MeshComponentManager;
 
+enum TextureType {
+	DiffuseTexture = 0,
+	NormalMap,
+	SpecularMap,
+
+	NUM_TEXTURE_TYPES
+};
+
 class MeshComponent : public RenderableComponent
 {
 protected:	
@@ -20,6 +28,9 @@ protected:
 	ID3D11ShaderResourceView * mp_Diffuse;
 	ID3D11ShaderResourceView * mp_NormalMap;
 	ID3D11ShaderResourceView * mp_SpecMap;
+
+
+	//ID3D11ShaderResourceView * mp_Textures[TextureType::NUM_TEXTURE_TYPES];
 	bool m_CastShadows;
 	bool m_ReceiveShadows;
 	bool m_IsLit;

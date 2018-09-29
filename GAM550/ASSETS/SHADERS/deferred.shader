@@ -20,7 +20,9 @@ struct VOut
 	float2 texCoords : TEXCOORDS;
 };
 
-Texture2D Texture;
+Texture2D DiffuseTexture : register(t0);
+Texture2D NormalMap : register(t1);
+Texture2D SpecularMap : register(t2);
 SamplerState ss;
 
 
@@ -81,9 +83,14 @@ POut PShader(
 	POut output;
 
 	output.worldPos = worldPosition;
+	// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
+	output.worldPos.w = 1;
+	output.normal.w = 0;
 	output.normal = normalize(normal);
-	output.diffuse = Textured ? Texture.Sample(ss, texCoords) : color;
-	output.specular = float4(0.5, 0.5, 0.5, 60);
+	// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
+	output.normal.w = 1;
+	output.diffuse = Textured ? DiffuseTexture.Sample(ss, texCoords) : color;
+	output.specular = float4(0.9, 0.9, 0.9, 60);
 
 	return output;
 }

@@ -21,8 +21,19 @@ void PointLightComponent::Deactivate()
 void PointLightComponent::Serialize(const json & j)
 {
 	LightBaseComponent::Serialize(j);
-	mp_Scene = INFECT_RESOURCES.GetScene(ParseString(j, "volumeShape"));
-	m_IsDirty = true;
+	if (ValueExists(j, "volumeShape")) {
+		mp_Scene = INFECT_RESOURCES.GetScene(ParseString(j, "volumeShape"));
+		m_IsDirty = true;
+	}
+}
+
+void PointLightComponent::Override(const json & j)
+{
+	LightBaseComponent::Serialize(j);
+	if (ValueExists(j, "volumeShape")) {
+		mp_Scene = INFECT_RESOURCES.GetScene(ParseString(j, "volumeShape"));
+		m_IsDirty = true;
+	}
 }
 
 void PointLightComponent::SetScene(const std::string & sceneName)

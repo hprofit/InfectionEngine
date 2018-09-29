@@ -6,18 +6,28 @@
 	],
     "GAME_OBJECTS": [
 		{
-		    "prefab": "Camera"
+		    "prefab": "Camera",
+			"position":{
+                "x": 0.0,
+                "y": 50.0,
+                "z": 50.0
+            }
         },
 		{
             "prefab": "Player",
-            "position": {
+            "position":{
                 "x": 0.0,
                 "y": 0.0,
                 "z": 0.0
             }
         },
 		{
-		    "prefab": "Floor"
+		    "prefab": "Floor",
+            "position":{
+                "x": 0.0,
+                "y": -5.0,
+                "z": 0.0
+            }
         },
 	    {
             "prefab": "SmallCube",
@@ -83,58 +93,77 @@
                 "z": -25
             }
         },
+		
+		
+		
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": 30.0,
+                "y": 5.0,
+                "z": 0.0
+            },
+			"color": {
+				"r": 1,
+				"g": 1,
+				"b": 1,
+				"a": 1
+			}
+        },
+		{
+            "prefab": "PointLight",
+            "position":{
+                "x": -30.0,
+                "y": -3.0,
+                "z": 0.0
+            }
+        },		
 		{
             "prefab": "PointLight",
             "position":{
                 "x": 0.0,
                 "y": 0.0,
-                "z": 10.0
+                "z": 20.0
             }
-        }
-	],
-	"GAME_OBJECTS_OTHER": [
-		
-		
-		
-		
+        },
 		{
             "prefab": "PointLight",
             "position":{
                 "x": 0.0,
-                "y": 10.0,
-                "z": -10.0
+                "y": 0.0,
+                "z": -20.0
             }
         },
 		{
             "prefab": "PointLight",
             "position":{
-                "x": 10.0,
-                "y": 10.0,
-                "z": 10.0
+                "x": 20.0,
+                "y": 0.0,
+                "z": 20.0
             }
         },
 		{
             "prefab": "PointLight",
             "position":{
-                "x": -10.0,
-                "y": 10.0,
-                "z": 10.0
+                "x": -20.0,
+                "y": 0.0,
+                "z": 20.0
             }
         },
 		{
             "prefab": "PointLight",
             "position":{
-                "x": 10.0,
-                "y": 10.0,
-                "z": -10.0
+                "x": 20.0,
+                "y": 0.0,
+                "z": -20.0
             }
         },
 		{
             "prefab": "PointLight",
             "position":{
-                "x": -10.0,
-                "y": 10.0,
-                "z": -10.0
+                "x": -20.0,
+                "y": 0.0,
+                "z": -20.0
             }
         },
 	
@@ -142,7 +171,7 @@
             "prefab": "PointLight",
             "position":{
                 "x": 0.0,
-                "y": 10.0,
+                "y": 0.0,
                 "z": 50.0
             }
         },
@@ -150,7 +179,7 @@
             "prefab": "PointLight",
             "position":{
                 "x": 0.0,
-                "y": 10.0,
+                "y": 0.0,
                 "z": -50.0
             }
         },
@@ -158,7 +187,7 @@
             "prefab": "PointLight",
             "position":{
                 "x": 50.0,
-                "y": 10.0,
+                "y": 0.0,
                 "z": 50.0
             }
         },
@@ -166,7 +195,7 @@
             "prefab": "PointLight",
             "position":{
                 "x": -50.0,
-                "y": 10.0,
+                "y": 0.0,
                 "z": 50.0
             }
         },
@@ -174,7 +203,7 @@
             "prefab": "PointLight",
             "position":{
                 "x": 50.0,
-                "y": 10.0,
+                "y": 0.0,
                 "z": -50.0
             }
         },
@@ -182,7 +211,7 @@
             "prefab": "PointLight",
             "position":{
                 "x": -50.0,
-                "y": 10.0,
+                "y": 0.0,
                 "z": -50.0
             }
         }
