@@ -58,12 +58,6 @@
     <Filter Include="Source Files\Threading">
       <UniqueIdentifier>{f4322f82-58a1-490a-85bc-7a39392de6f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Rendering\Mesh">
-      <UniqueIdentifier>{4fc69f92-c2a8-4c0f-ac72-49f4d43c79a4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Rendering\Mesh\Primitives">
-      <UniqueIdentifier>{0af055ff-165f-4500-8105-b03f5704bb8b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\main.cpp">
@@ -86,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="SOURCE\Event.cpp">
       <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Mesh.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\GameObject\ComponentFactory.cpp">
       <Filter>Source Files\GameObject\Base</Filter>
@@ -183,6 +180,15 @@
     <ClCompile Include="SOURCE\Physics\Quaternion.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\Plane.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Cube.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Sphere.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
     <ClCompile Include="SOURCE\MemoryManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
@@ -231,17 +237,8 @@
     <ClCompile Include="SOURCE\ConstantBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\Cube.cpp">
-      <Filter>Source Files\Rendering\Mesh\Primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\Plane.cpp">
-      <Filter>Source Files\Rendering\Mesh\Primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\Sphere.cpp">
-      <Filter>Source Files\Rendering\Mesh\Primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\Mesh.cpp">
-      <Filter>Source Files\Rendering\Mesh</Filter>
+    <ClCompile Include="SOURCE\BackBufferRenderTarget.cpp">
+      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +262,12 @@
     </ClInclude>
     <ClInclude Include="SOURCE\Event.h">
       <Filter>Source Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Mesh.h">
+      <Filter>Source Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Face.h">
+      <Filter>Source Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\Component.h">
       <Filter>Source Files\GameObject\Base</Filter>
@@ -392,6 +395,15 @@
     <ClInclude Include="SOURCE\GameObject\MeshComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
+    <ClInclude Include="SOURCE\Plane.h">
+      <Filter>Source Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Cube.h">
+      <Filter>Source Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Sphere.h">
+      <Filter>Source Files\Rendering</Filter>
+    </ClInclude>
     <ClInclude Include="SOURCE\Color.h">
       <Filter>Source Files\Utility</Filter>
     </ClInclude>
@@ -446,20 +458,8 @@
     <ClInclude Include="SOURCE\ShaderProgram.h">
       <Filter>Source Files\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Cube.h">
-      <Filter>Source Files\Rendering\Mesh\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Plane.h">
-      <Filter>Source Files\Rendering\Mesh\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Sphere.h">
-      <Filter>Source Files\Rendering\Mesh\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Face.h">
-      <Filter>Source Files\Rendering\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Mesh.h">
-      <Filter>Source Files\Rendering\Mesh</Filter>
+    <ClInclude Include="SOURCE\BackBufferRenderTarget.h">
+      <Filter>Source Files\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

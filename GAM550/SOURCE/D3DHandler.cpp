@@ -329,12 +329,29 @@ void D3DHandler::PresentBuffer(bool vSync)
 	mp_SwapChain->Present(0, 0);
 }
 
-void D3DHandler::EnableDepthTesting()
+void D3DHandler::EnableAlpha()
+{
+	float blendFactor[4] = {0,0,0,0};
+
+	// Turn on the alpha blending.
+	mp_DeviceContext->OMSetBlendState(mp_BackBuffer->AlphaEnabledBlendingState(), blendFactor, 0xffffffff);
+}
+
+void D3DHandler::DisableAlpha()
+{
+	float blendFactor[4] = { 0,0,0,0 };
+
+	// Turn off the alpha blending.
+	mp_DeviceContext->OMSetBlendState(mp_BackBuffer->AlphaDisabledBlendingState(), blendFactor, 0xffffffff);
+
+}
+
+void D3DHandler::EnableDepth()
 {
 	mp_DeviceContext->OMSetDepthStencilState(mp_BackBuffer->DepthStencilState(), 1);
 }
 
-void D3DHandler::DisableDepthTesting()
+void D3DHandler::DisableDepth()
 {
-
+	mp_DeviceContext->OMSetDepthStencilState(mp_BackBuffer->DepthDisabledStencilState(), 1);
 }

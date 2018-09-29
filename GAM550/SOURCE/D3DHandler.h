@@ -53,9 +53,13 @@ public:
 
 	void PresentBuffer(bool vSync);
 
-	void EnableDepthTesting();
+	void EnableAlpha();
 
-	void DisableDepthTesting();
+	void DisableAlpha();
+
+	void EnableDepth();
+
+	void DisableDepth();
 };
 
 #endif

@@ -125,6 +125,7 @@ typedef unsigned int InfectGUID;
 #include <ThreadContainer.h>
 
 #include <RenderTarget.h>
+#include <BackBufferRenderTarget.h>
 #include <D3DHandler.h>
 //#include <SurfaceTextureBuffer.h>
 //#include <FontInfo.h>
