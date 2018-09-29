@@ -11,18 +11,25 @@ MeshComponent::MeshComponent(InfectGUID guid) :
 	RenderableComponent(guid),
 	mp_Scene(nullptr),
 	mp_Diffuse(nullptr),
+	mp_NormalMap(nullptr),
+	mp_SpecMap(nullptr),
 	m_CastShadows(true),
 	m_ReceiveShadows(true),
 	m_IsLit(true)
 {
-	//mp_Textures = new ID3D11ShaderResourceView[TextureType::NUM_TEXTURE_TYPES];
+	for (int i = 0; i < TextureType::NUM_TEXTURE_TYPES; ++i) {
+		m_Textures[i] = nullptr;
+	}
 }
 
 MeshComponent::~MeshComponent() {}
 
 void MeshComponent::Deactivate() 
 {
-	mp_Parent = nullptr; 
+	mp_Parent = nullptr;
+	for (int i = 0; i < TextureType::NUM_TEXTURE_TYPES; ++i) {
+		m_Textures[i] = nullptr;
+	}
 }
 
 void MeshComponent::Update(float dt) {}
@@ -30,8 +37,10 @@ void MeshComponent::Update(float dt) {}
 void MeshComponent::Serialize(const json& j)
 {
 	mp_Scene = INFECT_RESOURCES.GetScene(ParseString(j, "scene"));
-	if(ValueExists(j, "texture"))
-		mp_Diffuse = INFECT_RESOURCES.GetTexture(ParseString(j, "texture"));
+	if(ValueExists(j, "diffuse"))
+		mp_Diffuse = INFECT_RESOURCES.GetTexture(ParseString(j, "diffuse"));
+	if (ValueExists(j, "normal"))
+		mp_NormalMap = INFECT_RESOURCES.GetTexture(ParseString(j, "normal"));
 	if (ValueExists(j, "isLit"))
 		m_IsLit = ParseBool(j, "isLit");
 	m_IsDirty = true;
@@ -39,7 +48,15 @@ void MeshComponent::Serialize(const json& j)
 
 void MeshComponent::Override(const json& j) 
 {
-
+	if (ValueExists(j, "scene"))
+		mp_Scene = INFECT_RESOURCES.GetScene(ParseString(j, "scene"));
+	if (ValueExists(j, "diffuse"))
+		mp_Diffuse = INFECT_RESOURCES.GetTexture(ParseString(j, "diffuse"));
+	if (ValueExists(j, "normal"))
+		mp_NormalMap = INFECT_RESOURCES.GetTexture(ParseString(j, "normal"));
+	if (ValueExists(j, "isLit"))
+		m_IsLit = ParseBool(j, "isLit");
+	m_IsDirty = true;
 }
 
 void MeshComponent::SetScene(const std::string & sceneName)

@@ -61,7 +61,9 @@ public:
 
 	void BindBackBuffer();
 
-	void BindDeferredBuffer();
+	void PrepDeferredPass();
+
+	void BindSecondPassBuffer();
 
 	void PrepDeferredFinal();
 
@@ -69,6 +71,8 @@ public:
 	void RenderDeferredBuffer();
 
 	void RenderDeferredBufferAmbientOnly();
+
+	void RenderSecondPassBuffer();
 
 	void ClearScreen(void);
 

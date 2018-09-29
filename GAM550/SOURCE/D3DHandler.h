@@ -19,6 +19,7 @@ protected:
 
 	BackBufferRenderTarget* mp_BackBuffer;
 	RenderTarget* mp_DeferredRenderTarget;
+	RenderTarget* mp_SecondPassRenderTarget;
 	D3D11_VIEWPORT m_viewport;
 
 	int m_VideoCardMemory;
@@ -41,15 +42,20 @@ public:
 	void CleanD3D(void);
 
 	RenderTarget* GetDeferredRenderTarget() { return mp_DeferredRenderTarget; }
+	RenderTarget* GetSecondPassRenderTarget() { return mp_SecondPassRenderTarget; }
 
 	void BindBackBuffer() const;
 
 	void BindDeferredBuffer() const;
 
+	void BindSecondPassBuffer() const;
+
 	// Clear the currently bound render target and the depth buffer
 	void ClearBackBuffer(const Color& color);
 
 	void ClearDeferredBuffer(const Color& color);
+
+	void ClearSecondPassBuffer(const Color& color);
 
 	void PresentBuffer(bool vSync);
 

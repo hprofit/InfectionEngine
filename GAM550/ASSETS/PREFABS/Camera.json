@@ -10,7 +10,9 @@
 			},
 			"scale": {},
 			"pivotOffset": {},
-			"rotation": {}
+			"rotation": {
+				"x": -45
+			}
         },
         {
             "Component": "Camera",

@@ -85,12 +85,13 @@ POut PShader(
 	output.worldPos = worldPosition;
 	// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
 	output.worldPos.w = 1;
-	output.normal.w = 0;
+	normal.w = 0;
 	output.normal = normalize(normal);
+	output.normal.w = 0;
 	// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
 	output.normal.w = 1;
 	output.diffuse = Textured ? DiffuseTexture.Sample(ss, texCoords) : color;
-	output.specular = float4(0.9, 0.9, 0.9, 60);
+	output.specular = float4(0.9, 0.9, 0.9, 100);
 
 	return output;
 }

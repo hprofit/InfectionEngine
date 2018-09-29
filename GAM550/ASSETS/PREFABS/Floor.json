@@ -21,7 +21,8 @@
 		{
 			"Component": "Mesh",
 			"scene": "Quad",
-			"texture": "DirtDiffuse.tif"
+			"diffuse": "DirtDiffuse.tif",
+			"normal": "DirtNormal.tif"
 		}
   ]
 }

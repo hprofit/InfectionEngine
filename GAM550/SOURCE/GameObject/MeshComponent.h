@@ -30,7 +30,7 @@ protected:
 	ID3D11ShaderResourceView * mp_SpecMap;
 
 
-	//ID3D11ShaderResourceView * mp_Textures[TextureType::NUM_TEXTURE_TYPES];
+	ID3D11ShaderResourceView * m_Textures[TextureType::NUM_TEXTURE_TYPES];
 	bool m_CastShadows;
 	bool m_ReceiveShadows;
 	bool m_IsLit;

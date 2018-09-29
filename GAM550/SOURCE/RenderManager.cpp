@@ -104,12 +104,9 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 void RenderManager::BindBackBuffer()
 {
 	mp_D3D->BindBackBuffer();
-	mp_ShaderProgramQuad->BindShader();
-	mp_D3D->DisableDepth();
-	mp_D3D->DisableAlpha();
 }
 
-void RenderManager::BindDeferredBuffer()
+void RenderManager::PrepDeferredPass()
 {
 	mp_D3D->BindDeferredBuffer();
 	mp_ShaderProgramDeferred->BindShader();
@@ -118,9 +115,13 @@ void RenderManager::BindDeferredBuffer()
 	mp_D3D->DisableAlpha();
 }
 
+void RenderManager::BindSecondPassBuffer()
+{
+	mp_D3D->BindSecondPassBuffer();
+}
+
 void RenderManager::PrepDeferredFinal()
 {
-	mp_D3D->BindBackBuffer();
 	mp_ShaderProgramDeferredFinal->BindShader();
 	ID3D11ShaderResourceView** pTextures = mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews();
 	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, mp_D3D->GetDeferredRenderTarget()->GetNumViews(), pTextures);
@@ -132,7 +133,10 @@ void RenderManager::PrepDeferredFinal()
 // For Debug only
 void RenderManager::RenderDeferredBuffer()
 {
-
+	mp_D3D->BindBackBuffer();
+	mp_ShaderProgramQuad->BindShader();
+	mp_D3D->DisableDepth();
+	mp_D3D->DisableAlpha();
 	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
 	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
@@ -169,10 +173,14 @@ void RenderManager::RenderDeferredBuffer()
 
 void RenderManager::RenderDeferredBufferAmbientOnly()
 {
+	mp_ShaderProgramQuad->BindShader();
+	mp_D3D->DisableDepth();
+	mp_D3D->DisableAlpha();
+
 	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
 	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
-	cb.Ambient = Color(0.4f, 0.4f, 0.4f, 1);
+	cb.Ambient = Color(0.6f, 0.6f, 0.6f, 1);
 	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 
 	// set the new values for the constant buffer
@@ -188,10 +196,36 @@ void RenderManager::RenderDeferredBufferAmbientOnly()
 	RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
 }
 
+void RenderManager::RenderSecondPassBuffer()
+{
+	mp_ShaderProgramQuad->BindShader();
+	mp_D3D->DisableDepth();
+	mp_D3D->DisableAlpha();
+
+	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
+	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
+	cb.ModelMatrix = Matrix4x4::Transpose(M);
+	cb.Ambient = Color(0.6f, 0.6f, 0.6f, 1);
+	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+
+	// set the new values for the constant buffer
+	mp_ShaderProgramQuad->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(
+		0,
+		1,
+		&mp_D3D->GetSecondPassRenderTarget()->GetShaderResourceViews()[0]
+	);
+
+	// do 3D rendering on the back buffer here
+	RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+}
+
 void RenderManager::ClearScreen(void)
 {
 	mp_D3D->ClearBackBuffer(m_ClearColor);
 	mp_D3D->ClearDeferredBuffer(m_ClearColor);
+	mp_D3D->ClearSecondPassBuffer(m_ClearColor);
 }
 
 void RenderManager::PresentFrameToScreen(void)

@@ -67,7 +67,7 @@ float4 PShader(
 		return float4(0, 0, 0, 0);
 	}
 	float4 LColor = LightColor;
-	LColor *= falloff(L_Length, a, b);
+	LColor *= falloff(L_Length, a, b) * LIDHW.x;
 	LColor.a = 1;
 
 	float4 normal = NormalTexture.Sample(ss, texCoords);
@@ -77,6 +77,9 @@ float4 PShader(
 	float4 diffuseColor = DiffuseTexture.Sample(ss, texCoords);
 	float4 specularInfo = SpecularTexture.Sample(ss, texCoords);
 
+
+
+
 	float4 L = normalize(LPos - worldPos);
 	float4 v = normalize(CameraPosition - worldPos);
 	float4 H = normalize(v + L);
@@ -84,9 +87,12 @@ float4 PShader(
 	float4 specularColor = float4(specularInfo.x, specularInfo.y, specularInfo.z, 1);
 
 	float4 attVal = attenuation(L_Length, LIDHW.y);
+
 	float4 ambient = diffuseColor * Ambient;
 	float4 diffuse = max(dot(normal, L), 0) * diffuseColor * LColor;
-	float4 specular = pow(max(dot(H, normal), 0), specularCoef) * specularColor * LColor * attVal;
+	float4 specular = pow(max(dot(H, normal), 0), specularCoef) * specularColor * LColor;
 	
-	return (ambient + diffuse + specular) * attVal;
+	float4 finalColor = (diffuse + specular) * LIDHW.x * attVal;
+	finalColor.a = 1;
+	return finalColor;
 }
