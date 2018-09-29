@@ -30,9 +30,10 @@ private:
 	HWND m_hWnd; 	// the handle for the window, filled by a function
 
 	unsigned int mShaderCount = 0;
-	ShaderProgram* mp_ShaderProgramDefault;
-	ShaderProgram* mp_ShaderProgramDeferred;
-	ShaderProgram* mp_ShaderProgramQuad;
+	//ShaderProgram* mp_ShaderProgramDefault;
+	ShaderProgram<MainCB>* mp_ShaderProgramDeferred;
+	ShaderProgram<QuadCB>* mp_ShaderProgramQuad;
+	ShaderProgram<DeferredFinalCB>* mp_ShaderProgramDeferredFinal;
 
 	RenderMode m_RenderMode;
 
@@ -62,7 +63,12 @@ public:
 
 	void BindDeferredBuffer();
 
+	void PrepDeferredFinal();
+
+	// For Debug only
 	void RenderDeferredBuffer();
+
+	void RenderDeferredBufferAmbientOnly();
 
 	void ClearScreen(void);
 
@@ -71,12 +77,17 @@ public:
 	// Renders an object given a specific camera
 	void RenderObject(const GameObject& pGOCamera, const GameObject& pGO);
 
+	// Renders a light given a specific camera
+	void RenderLight(const GameObject& pGOCamera, const GameObject& pGOLight);
+
 	void RenderScene(const Scene * pScene);
 
 	bool LoadShader(std::string shaderName);
 
-	ID3D10Blob * const VSBlob() { return mp_ShaderProgramDefault->VS()->Blob(); }
+	//ID3D10Blob * const VSBlob() { return mp_ShaderProgramDefault->VS()->Blob(); }
+	ID3D10Blob * const VSBlob() { return mp_ShaderProgramDeferred->VS()->Blob(); }
 
+	// TODO: Remove this
 	void NextRenderMode();
 };
 

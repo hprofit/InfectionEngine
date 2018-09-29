@@ -326,5 +326,15 @@ void D3DHandler::PresentBuffer(bool vSync)
 		mp_SwapChain->Present(1, 0);
 	// Present as fast as possible.
 	else
-		mp_SwapChain->Present(0, 0);
+	mp_SwapChain->Present(0, 0);
+}
+
+void D3DHandler::EnableDepthTesting()
+{
+	mp_DeviceContext->OMSetDepthStencilState(mp_BackBuffer->DepthStencilState(), 1);
+}
+
+void D3DHandler::DisableDepthTesting()
+{
+
 }

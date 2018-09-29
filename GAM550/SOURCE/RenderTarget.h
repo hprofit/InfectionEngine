@@ -77,9 +77,12 @@ class BackBufferRenderTarget
 protected:
 	ID3D11Texture2D * mp_DepthStencilBuffer;
 	ID3D11DepthStencilState* mp_DepthStencilState;
+	ID3D11DepthStencilState* mp_DepthDisabledStencilState;
 	ID3D11DepthStencilView* mp_DepthStencilView;
 	ID3D11RasterizerState* mp_RasterState;
 	ID3D11RenderTargetView * mp_BackBuffer;
+	ID3D11BlendState * mp_AlphaEnabledBlendingState;
+	ID3D11BlendState * mp_AlphaDisabledBlendingState;
 
 	virtual bool _CreateRenderViewTarget(ID3D11Device * device, IDXGISwapChain * swapChain);
 	virtual bool _CreateDepthAndStencilBuffer(const WindowSettings& settings, ID3D11Device * device);

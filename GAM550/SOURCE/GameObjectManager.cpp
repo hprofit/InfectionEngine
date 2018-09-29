@@ -68,17 +68,27 @@ void GameObjectManager::UnregisterLight(GameObject * lightGO)
 
 void GameObjectManager::RenderCameras()
 {
-	for (int camIdx = 0; camIdx < mp_Cameras.size(); ++camIdx) {
-		for (int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {
+	for (unsigned int camIdx = 0; camIdx < mp_Cameras.size(); ++camIdx) {
+		for (unsigned int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {
 			if (mp_GameObjects[objIdx]->IsActive() && mp_Cameras[camIdx] != mp_GameObjects[objIdx])
 				INFECT_RENDERER.RenderObject((*mp_Cameras[camIdx]), (*mp_GameObjects[objIdx]));
 		}
 	}
 }
 
+void GameObjectManager::RenderLights()
+{
+	for (unsigned int camIdx = 0; camIdx < mp_Cameras.size(); ++camIdx) {
+		for (unsigned int lightIdx = 0; lightIdx < mp_Lights.size(); ++lightIdx) {
+			if (mp_Lights[lightIdx]->IsActive() && mp_Cameras[camIdx] != mp_Lights[lightIdx])
+				INFECT_RENDERER.RenderLight((*mp_Cameras[camIdx]), (*mp_Lights[lightIdx]));
+		}
+	}
+}
+
 void GameObjectManager::Update(float deltaTime)
 {
-	for (int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {
+	for (unsigned int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {
 		if (mp_GameObjects[objIdx]->IsActive())
 			mp_GameObjects[objIdx]->Update(deltaTime);
 	}
@@ -86,7 +96,7 @@ void GameObjectManager::Update(float deltaTime)
 
 void GameObjectManager::LateUpdate(float deltaTime)
 {
-	for (int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {
+	for (unsigned int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {
 		if (mp_GameObjects[objIdx]->IsActive())
 			mp_GameObjects[objIdx]->LateUpdate(deltaTime);
 	}

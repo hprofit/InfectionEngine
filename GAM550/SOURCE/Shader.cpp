@@ -25,7 +25,7 @@ bool VertexShader::LoadFromFile(std::string shaderFilePath, std::string shaderFu
 
 	HRESULT result = D3DCompileFromFile(std::wstring(shaderFilePath.begin(), shaderFilePath.end()).c_str(), 0, 0, shaderFunc.c_str(), "vs_4_0", flag, flag, &mp_ShaderBlob, &pErrors);
 	if (FAILED(result)) {
-		MessageBox(NULL, "The vertex shader failed to compile.", "Error", MB_OK);
+		MessageBox(NULL, "The vertex shader failed to compile,", "Error", MB_OK);
 		return false;
 	}
 

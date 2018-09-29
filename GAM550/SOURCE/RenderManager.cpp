@@ -43,11 +43,11 @@ RenderManager::RenderManager() :
 
 RenderManager::~RenderManager()
 {
-	if (mp_ShaderProgramDefault) {
-		mp_ShaderProgramDefault->Release();
-		delete mp_ShaderProgramDefault;
-		mp_ShaderProgramDefault = nullptr;
-	}
+	//if (mp_ShaderProgramDefault) {
+	//	mp_ShaderProgramDefault->Release();
+	//	delete mp_ShaderProgramDefault;
+	//	mp_ShaderProgramDefault = nullptr;
+	//}
 	if (mp_ShaderProgramDeferred) {
 		mp_ShaderProgramDeferred->Release();
 		delete mp_ShaderProgramDeferred;
@@ -94,9 +94,10 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 
 	if (result)
 	{
-		mp_ShaderProgramDefault = new ShaderProgram();
-		mp_ShaderProgramDeferred = new ShaderProgram();
-		mp_ShaderProgramQuad = new ShaderProgram();
+		//mp_ShaderProgramDefault = new ShaderProgram();
+		mp_ShaderProgramDeferred = new ShaderProgram<MainCB>();
+		mp_ShaderProgramQuad = new ShaderProgram<QuadCB>();
+		mp_ShaderProgramDeferredFinal = new ShaderProgram<DeferredFinalCB>();
 	}
 	return result;
 }
@@ -111,16 +112,56 @@ void RenderManager::BindDeferredBuffer()
 {
 	mp_D3D->BindDeferredBuffer();
 	mp_ShaderProgramDeferred->BindShader();
+
+	// turn off additive blending
+	ID3D11BlendState* g_pBlendState = NULL;
+
+	D3D11_BLEND_DESC BlendState;
+	ZeroMemory(&BlendState, sizeof(D3D11_BLEND_DESC));
+	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	UINT sampleMask = 0xffffffff;
+	mp_D3D->mp_DeviceContext->OMSetBlendState(g_pBlendState, blendFactor, sampleMask);
 }
 
+void RenderManager::PrepDeferredFinal()
+{
+	mp_D3D->BindBackBuffer();
+	mp_ShaderProgramDeferredFinal->BindShader();
+	ID3D11ShaderResourceView** pTextures = mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews();
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, mp_D3D->GetDeferredRenderTarget()->GetNumViews(), pTextures);
+	
+	
+	//// additive blending
+	//ID3D11BlendState* g_pBlendState = NULL;
+
+	//D3D11_BLEND_DESC BlendState;
+	//ZeroMemory(&BlendState, sizeof(D3D11_BLEND_DESC));
+	//BlendState.AlphaToCoverageEnable = false;
+	//BlendState.IndependentBlendEnable = false;
+	//BlendState.RenderTarget[0].BlendEnable = true;
+	//BlendState.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	//BlendState.RenderTarget[0].DestBlend = D3D11_BLEND_SRC_ALPHA;
+	//BlendState.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	//BlendState.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	//BlendState.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+	//BlendState.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	//BlendState.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	//mp_D3D->mp_Device->CreateBlendState(&BlendState, &g_pBlendState);
+
+	//float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	//UINT sampleMask = 0xffffffff;
+
+	//mp_D3D->mp_DeviceContext->OMSetBlendState(g_pBlendState, blendFactor, sampleMask);
+}
+
+// For Debug only
 void RenderManager::RenderDeferredBuffer()
 {
 
-	Matrix4x4 M = Matrix4x4();
-	M.Identity();
-	MainCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
+	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
+	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
-
+	cb.Ambient = Color(1, 1, 1, 1);
 	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 	
 	switch (m_RenderMode) {
@@ -151,6 +192,27 @@ void RenderManager::RenderDeferredBuffer()
 	RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
 }
 
+void RenderManager::RenderDeferredBufferAmbientOnly()
+{
+	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
+	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
+	cb.ModelMatrix = Matrix4x4::Transpose(M);
+	cb.Ambient = Color(0.1f, 0.1f, 0.1f, 1);
+	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+
+	// set the new values for the constant buffer
+	mp_ShaderProgramQuad->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(
+		0,
+		1,
+		&mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()[RenderMode::Diffuse]
+	);
+
+	// do 3D rendering on the back buffer here
+	RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+}
+
 void RenderManager::ClearScreen(void)
 {
 	mp_D3D->ClearBackBuffer(m_ClearColor);
@@ -172,8 +234,7 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 
 	Matrix4x4 M = pGO.GetComponent<TransformComponent>()->GetTransform();
 	Matrix4x4 N = Matrix4x4::Transpose3x3(Matrix4x4::Inverse3x3(M));
-	Matrix4x4 I = Matrix4x4::Transpose(N) * M;
-	MainCB& cb = mp_ShaderProgramDefault->CB()->BufferData();
+	MainCB& cb = mp_ShaderProgramDeferred->CB()->BufferData();
 	cb.MatFinal = pCamComp->GetCameraMatrix() * pCamComp->GetViewMatrix() * M;
 	cb.MatFinal.Transpose();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
@@ -184,15 +245,43 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	cb.Textured = pMeshComp->IsTextured();
 	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
 
-	mp_ShaderProgramDefault->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+	mp_ShaderProgramDeferred->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+	// set the new values for the constant buffer
+	mp_ShaderProgramDeferred->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
 	ID3D11ShaderResourceView* ptex = pMeshComp->GetDiffuseTexture();
 	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &ptex);
 
-	// set the new values for the constant buffer
-	mp_ShaderProgramDefault->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
-
-	// do 3D rendering on the back buffer here
+	// do 3D rendering to the currently bound buffer here
 	RenderScene(pMeshComp->GetScene());
+}
+
+void RenderManager::RenderLight(const GameObject & pGOCamera, const GameObject & pGOLight)
+{
+	const CameraComponent * pCamComp = pGOCamera.GetComponent<CameraComponent>();
+	const TransformComponent * pTransComp = pGOLight.GetComponent<TransformComponent>();
+	const PointLightComponent * pPointLightComp = pGOLight.GetComponent<PointLightComponent>();
+	Matrix4x4 M = pTransComp->GetTransform();
+	DeferredFinalCB& cb = mp_ShaderProgramDeferredFinal->CB()->BufferData();
+
+	cb.MatFinal = pCamComp->GetCameraMatrix() * pCamComp->GetViewMatrix() * M;
+	cb.MatFinal.Transpose();
+	cb.ModelMatrix = Matrix4x4::Transpose(M);
+	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
+	cb.LightPosition = pTransComp->WorldPosition();
+	cb.LightColor = pPointLightComp->GetColor();
+	cb.LIHW.x = pPointLightComp->Intensity();
+	cb.LIHW.y = float(m_WindowSettings.Height);
+	cb.LIHW.z = float(m_WindowSettings.Width);
+	cb.LIHW.w = 1;
+
+	mp_ShaderProgramDeferredFinal->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+
+	// set the new values for the constant buffer
+	mp_ShaderProgramDeferredFinal->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+	// do 3D rendering to the currently bound buffer here
+	RenderScene(pPointLightComp->GetScene());
 }
 
 void RenderManager::RenderScene(const Scene * pScene)
@@ -216,15 +305,17 @@ bool RenderManager::LoadShader(std::string shaderName)
 
 	// TODO: Made this less shitty
 	switch (mShaderCount) {
+		//case 0:
+		//	mp_ShaderProgramDefault->Initialize(mp_D3D->mp_Device, filePath);
+		//	break;
 		case 0:
-			mp_ShaderProgramDefault->Initialize(mp_D3D->mp_Device, filePath);
-			break;
-		case 1:
 			mp_ShaderProgramDeferred->Initialize(mp_D3D->mp_Device, filePath);
 			break;
-		case 2:
+		case 1:
 			mp_ShaderProgramQuad->Initialize(mp_D3D->mp_Device, filePath);
 			break;
+		case 2:
+			mp_ShaderProgramDeferredFinal->Initialize(mp_D3D->mp_Device, filePath);
 		default:
 			break;
 	}

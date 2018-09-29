@@ -14,7 +14,7 @@
         },
         {
             "Component": "Camera",
-            "fov": 90.0
+            "fov": 70.0
         }
     ]
 }

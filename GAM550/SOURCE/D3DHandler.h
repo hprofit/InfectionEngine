@@ -52,6 +52,10 @@ public:
 	void ClearDeferredBuffer(const Color& color);
 
 	void PresentBuffer(bool vSync);
+
+	void EnableDepthTesting();
+
+	void DisableDepthTesting();
 };
 
 #endif

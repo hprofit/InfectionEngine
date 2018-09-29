@@ -38,6 +38,8 @@ public:
 
 	void RenderCameras();
 
+	void RenderLights();
+
 	void Update(float deltaTime);
 
 	void LateUpdate(float deltaTime);

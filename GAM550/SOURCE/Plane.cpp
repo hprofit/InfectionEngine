@@ -17,8 +17,8 @@ Plane::Plane(unsigned int size)
 			float x = i * d - 1.0f;
 			//int index = (size + 1)*j + i;
 			Vertex v;
-			v.x = x;
-			v.y = y;
+			v.x = x * 0.5f;
+			v.y = y * 0.5f;
 			v.z = 0;
 
 			v.nX = 0;

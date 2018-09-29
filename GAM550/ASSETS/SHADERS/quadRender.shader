@@ -1,13 +1,7 @@
 cbuffer ConstantBuffer
 {
-	float4x4 MatFinal;
 	float4x4 ModelMatrix;
-	float4x4 NormalMatrix;
-	float4 CameraPosition;
-	bool CastShadows;
-	bool ReceiveShadows;
-	bool IsLit;
-	bool Textured;
+	float4 Ambient;
 };
 
 struct VOut
@@ -43,5 +37,5 @@ float4 PShader(
 	float2 texCoords : TEXCOORDS
 ) : SV_TARGET
 {
-	return Texture.Sample(ss, texCoords);
+	return Texture.Sample(ss, texCoords) * Ambient;
 }

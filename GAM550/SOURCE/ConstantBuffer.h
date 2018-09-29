@@ -27,6 +27,16 @@ struct MainCB : public ConstantBuffer {
 
 struct QuadCB : public ConstantBuffer {
 	Matrix4x4 ModelMatrix;
+	Color Ambient;
+};
+
+struct DeferredFinalCB : public ConstantBuffer {
+	Matrix4x4 MatFinal;
+	Matrix4x4 ModelMatrix;
+	Vector3D CameraPosition;
+	Vector3D LightPosition;
+	Color LightColor;
+	Vector3D LIHW;	// Light Intensity, Screen Height, Screen Width
 };
 
 
