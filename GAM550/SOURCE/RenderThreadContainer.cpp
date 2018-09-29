@@ -40,7 +40,7 @@ bool StartRenderCommand::execute() const
 	INFECT_GOM.RenderCameras();
 	INFECT_RENDERER.BindBackBuffer();
 	//INFECT_RENDERER.RenderDeferredBuffer(); // Don't use
-	//INFECT_RENDERER.RenderDeferredBufferAmbientOnly();
+	INFECT_RENDERER.RenderDeferredBufferAmbientOnly();
 	INFECT_RENDERER.PrepDeferredFinal();
 	INFECT_GOM.RenderLights();
 

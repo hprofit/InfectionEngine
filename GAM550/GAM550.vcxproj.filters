@@ -225,9 +225,6 @@
     <ClCompile Include="SOURCE\RenderThreadContainer.cpp">
       <Filter>Source Files\Threading</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\ConstantBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\Mesh.cpp">
       <Filter>Source Files\Rendering\Mesh</Filter>
     </ClCompile>
@@ -250,6 +247,9 @@
       <Filter>Source Files\Rendering\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\ShaderProgram.cpp">
+      <Filter>Source Files\Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\ConstantBuffer.cpp">
       <Filter>Source Files\Rendering\Shaders</Filter>
     </ClCompile>
   </ItemGroup>

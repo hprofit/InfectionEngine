@@ -106,6 +106,8 @@ void RenderManager::BindBackBuffer()
 {
 	mp_D3D->BindBackBuffer();
 	mp_ShaderProgramQuad->BindShader();
+	mp_D3D->DisableDepth();
+	mp_D3D->DisableAlpha();
 }
 
 void RenderManager::BindDeferredBuffer()
@@ -121,6 +123,9 @@ void RenderManager::BindDeferredBuffer()
 	float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	UINT sampleMask = 0xffffffff;
 	mp_D3D->mp_DeviceContext->OMSetBlendState(g_pBlendState, blendFactor, sampleMask);
+
+	mp_D3D->EnableDepth();
+	mp_D3D->DisableAlpha();
 }
 
 void RenderManager::PrepDeferredFinal()
@@ -130,28 +135,8 @@ void RenderManager::PrepDeferredFinal()
 	ID3D11ShaderResourceView** pTextures = mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews();
 	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, mp_D3D->GetDeferredRenderTarget()->GetNumViews(), pTextures);
 	
-	
-	//// additive blending
-	//ID3D11BlendState* g_pBlendState = NULL;
-
-	//D3D11_BLEND_DESC BlendState;
-	//ZeroMemory(&BlendState, sizeof(D3D11_BLEND_DESC));
-	//BlendState.AlphaToCoverageEnable = false;
-	//BlendState.IndependentBlendEnable = false;
-	//BlendState.RenderTarget[0].BlendEnable = true;
-	//BlendState.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	//BlendState.RenderTarget[0].DestBlend = D3D11_BLEND_SRC_ALPHA;
-	//BlendState.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	//BlendState.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	//BlendState.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-	//BlendState.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	//BlendState.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	//mp_D3D->mp_Device->CreateBlendState(&BlendState, &g_pBlendState);
-
-	//float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
-	//UINT sampleMask = 0xffffffff;
-
-	//mp_D3D->mp_DeviceContext->OMSetBlendState(g_pBlendState, blendFactor, sampleMask);
+	mp_D3D->DisableDepth();
+	mp_D3D->EnableAlpha();
 }
 
 // For Debug only

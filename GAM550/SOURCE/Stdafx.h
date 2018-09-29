@@ -11,10 +11,6 @@ Author: <Holden Profit>
 #pragma warning(disable: 4995) 
 
 
-
-//#include <Math\MathLibs.h>
-//#include <glew.h>
-//#include <GL\gl.h>
 #include <fmod_studio.hpp>
 #include <fmod.hpp>
 #include <fmod_errors.h>
@@ -32,21 +28,16 @@ Author: <Holden Profit>
 #include <dxgi.h>
 #include <d3dcommon.h>
 #include <d3d11.h>
-//#include <d3dx11.h>
-//#include <d3dx10.h>
 #include <dinput.h>
 #include <Dinputd.h>
 #include <XInput.h>
 #include <D3Dcompiler.h>
 #include <WICTextureLoader.h>
 #include <DDSTextureLoader.h>
-//#include <d3dx10math.h>
 
 /// Linking ///
 #pragma comment(lib, "dxgi.lib")
 #pragma comment (lib, "d3d11.lib")
-//#pragma comment (lib, "d3dx11.lib")
-//#pragma comment (lib, "d3dx10.lib")
 #pragma comment(lib,"d3dcompiler.lib")
 
 // DirectInput
@@ -127,17 +118,13 @@ typedef unsigned int InfectGUID;
 #include <RenderTarget.h>
 #include <BackBufferRenderTarget.h>
 #include <D3DHandler.h>
-//#include <SurfaceTextureBuffer.h>
-//#include <FontInfo.h>
 #include <Mesh.h>
 #include <Plane.h>
 #include <Sphere.h>
 #include <Cube.h>
-//#include <DebugLineMesh.h>
 #include <ConstantBuffer.h>
 #include <Shader.h>
 #include <ShaderProgram.h>
-//#include <ImageRenderer.h>
 #include <Sorting.h>
 //#include <Shape.h>
 #include <Physics/RigidBody.h>
@@ -152,37 +139,6 @@ typedef unsigned int InfectGUID;
 #pragma endregion
 
 #pragma region AI
-//#include <AI_State.h>
-//#include <AI_Idle.h>
-//#include <AI_IdleForDuration.h>
-//#include <AI_Engage.h>
-//#include <AI_Attack.h>
-//#include <AI_RangeAttack.h>
-//#include <AI_Retreat.h>
-//#include <AI_MoveToRandomPointInZone.h>
-//#include <AI_WalkTowardPlayerIdle.h>
-//#include <AI_WalkTowardPlayerAttack.h>
-//#include <AI_WalkTowardPlayerEngage.h>
-//#include <AI_DashingAttack.h>
-//#include <AI_DashingEngage.h>
-//#include <AI_DashingStunned.h>
-//#include <AI_HitNRunAttack.h>
-//#include <AI_HitNRunEngage.h>
-//#include <AI_HitNRunRetreat.h>
-//#include <AI_BomberAttack.h>
-//#include <AI_BomberRetreat.h>
-//#include <AI_Reaction.h>
-//#include <AI_EnemyBatReaction.h>
-//#include <AI_RatBossIdle.h>
-//#include <AI_RatBossReaction.h>
-//#include <AI_RatBossEngage.h>
-//#include <AI_RatBossAttack.h>
-//#include <AI_RatBossRetreat.h>
-//#include <AI_RockBossIdle.h>
-//#include <AI_RockBossReaction.h>
-//#include <AI_RockBossEngage.h>
-//#include <AI_RockBossAttack.h>
-//#include <AI_StateFactory.h>
 #pragma endregion
 
 #pragma region Components
@@ -202,71 +158,14 @@ typedef unsigned int InfectGUID;
 #include <GameObject\CameraComponent.h>
 #include <GameObject\LightBaseComponent.h>
 #include <GameObject\PointLightComponent.h>
-//#include <LetterBox.h>
+
 //#include <HeightMap.h>
-//
-//#include <Stamina.h>
-//
-//// Components - Agent
-//#include <Agent.h>
-//#include <Controller.h>
-//#include <NPCController.h>
-//
-//// Components - Combat
-//#include <Weapon.h>
-//
-////Components - Audio
+
+//Components - Audio
 //#include <Audio.h>
 //#include <Microphone.h>
 //
-////Components - UI
-//#include <FollowCursor.h>
-//#include <Button.h>
-//#include <EggCounter.h>
-//#include <UICounter.h>
-//#include <PauseMenu.h>
-//#include <Canvas.h>
-//#include <Slider.h>
-//#include <Endpoints.h>
-//#include <PowerUpButton.h>
-//#include <SelectableButton.h>
-//#include <ListSelector.h>
-//
-//#include<HillNodes.h>
-//#include <CutScene.h>
-//#include <CamFollow.h>
-//#include <ScreenWrap.h>
-//#include <SizeToScreen.h>
-//#include <FollowCamera.h>
-//#include <SnapToCamera.h>
-//#include <Health.h>
-//#include <FlashOnTakeDamage.h>
-//#include <Projectile.h>
-//
-//#include <DestroyOnHealthZero.h>
-//#include <DealDamageOnCollision.h>
-//#include <ProjectileSpawner.h>
-//#include <ScaleByHPStamina.h>
-//#include <Collectible.h>
-//#include <WaveMovement.h>
-//#include <StraightLineMovement.h>
-//#include <SpawnOnHealthZero.h>
-//#include <Shop.h>
-//#include <NotEnoughGoldFeathers.h>
-//
-//#include <LevelStatus.h>
-//#include <Microphone.h>
-//#include <ScriptedAnimation.h>
-//#include <WinMessage.h>
-//#include <Gate.h>
-//#include <GateTriggerBox.h>
-//#include <Spawner.h>
-//#include <TimeToLive.h>
-//#include <ApplyTinyOnDifficultyUp.h>
-//#include <SplashScreen.h>
-//#include <InGameCredits.h>
-//#include <Spinner.h>
-
+//Components - UI
 #pragma endregion 
 
 #pragma region Component Managers
@@ -285,7 +184,6 @@ typedef unsigned int InfectGUID;
 #include <GameStateManager.h>
 #include <InputManager.h>
 #include <FrameRateManager.h>
-//#include <PostProcessing.h>
 #include <GameObjectManager.h>
 #include <RenderManager.h>
 #include <ResourceManager.h>
