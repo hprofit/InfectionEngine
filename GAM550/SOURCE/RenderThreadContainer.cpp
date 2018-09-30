@@ -32,20 +32,28 @@ std::thread & RenderThreadContainer::Spawn()
 bool StartRenderCommand::execute() const
 {
 	INFECT_RENDERER.ClearScreen();					// Clear the window buffer
+	// DATED
 	//INFECT_RENDERER.BindBackBuffer();
 	//INFECT_GOM.RenderCameras();						// Render all game objects
 
 
 	INFECT_RENDERER.PrepDeferredPass();
 	INFECT_GOM.RenderCameras();
-	//INFECT_RENDERER.BindBackBuffer();
-	//INFECT_RENDERER.RenderDeferredBuffer(); // Don't use
-	INFECT_RENDERER.BindSecondPassBuffer();
-	INFECT_RENDERER.RenderDeferredBufferAmbientOnly();
-	INFECT_RENDERER.PrepDeferredFinal();
-	INFECT_GOM.RenderLights();
-	INFECT_RENDERER.BindBackBuffer();
-	INFECT_RENDERER.RenderSecondPassBuffer();
+
+	// Render the G BUffers individually
+	if (INFECT_RENDERER.CurrentRenderMode() != RenderMode::Final) {
+		INFECT_RENDERER.BindBackBuffer();
+		INFECT_RENDERER.RenderDeferredBuffer();
+	}
+	// Render the whole deferred shading and lighting
+	else {
+		INFECT_RENDERER.BindSecondPassBuffer();
+		INFECT_RENDERER.RenderDeferredBufferAmbientOnly();
+		INFECT_RENDERER.PrepDeferredFinal();
+		INFECT_GOM.RenderLights();
+		INFECT_RENDERER.BindBackBuffer();
+		INFECT_RENDERER.RenderSecondPassBuffer();
+	}
 
 
 	INFECT_RENDERER.PresentFrameToScreen();			// Swap window buffer

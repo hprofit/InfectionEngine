@@ -93,6 +93,8 @@ public:
 
 	// TODO: Remove this
 	void NextRenderMode();
+
+	inline RenderMode CurrentRenderMode() const { return m_RenderMode; }
 };
 
 #endif

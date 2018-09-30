@@ -10,12 +10,10 @@ Author: <Holden Profit>
 MeshComponent::MeshComponent(InfectGUID guid) :
 	RenderableComponent(guid),
 	mp_Scene(nullptr),
-	mp_Diffuse(nullptr),
-	mp_NormalMap(nullptr),
-	mp_SpecMap(nullptr),
 	m_CastShadows(true),
 	m_ReceiveShadows(true),
-	m_IsLit(true)
+	m_IsLit(true),
+	m_TextureFlags(0)
 {
 	for (int i = 0; i < TextureType::NUM_TEXTURE_TYPES; ++i) {
 		m_Textures[i] = nullptr;
@@ -36,11 +34,20 @@ void MeshComponent::Update(float dt) {}
 
 void MeshComponent::Serialize(const json& j)
 {
+	m_TextureFlags = 0;
 	mp_Scene = INFECT_RESOURCES.GetScene(ParseString(j, "scene"));
-	if(ValueExists(j, "diffuse"))
-		mp_Diffuse = INFECT_RESOURCES.GetTexture(ParseString(j, "diffuse"));
-	if (ValueExists(j, "normal"))
-		mp_NormalMap = INFECT_RESOURCES.GetTexture(ParseString(j, "normal"));
+	if (ValueExists(j, "diffuse")) {
+		m_Textures[TextureType::DiffuseTexture] = INFECT_RESOURCES.GetTexture(ParseString(j, "diffuse"));
+		m_TextureFlags |= DIFFUSE_TEXTURED;
+	}
+	if (ValueExists(j, "normal")) {
+		m_TextureFlags |= NORMAL_MAPPED;
+		m_Textures[TextureType::NormalMap] = INFECT_RESOURCES.GetTexture(ParseString(j, "normal"));
+	}
+	if (ValueExists(j, "specular")) {
+		m_TextureFlags |= SPECULAR_MAPPED;
+		m_Textures[TextureType::SpecularMap] = INFECT_RESOURCES.GetTexture(ParseString(j, "specular"));
+	}
 	if (ValueExists(j, "isLit"))
 		m_IsLit = ParseBool(j, "isLit");
 	m_IsDirty = true;
@@ -50,10 +57,18 @@ void MeshComponent::Override(const json& j)
 {
 	if (ValueExists(j, "scene"))
 		mp_Scene = INFECT_RESOURCES.GetScene(ParseString(j, "scene"));
-	if (ValueExists(j, "diffuse"))
-		mp_Diffuse = INFECT_RESOURCES.GetTexture(ParseString(j, "diffuse"));
-	if (ValueExists(j, "normal"))
-		mp_NormalMap = INFECT_RESOURCES.GetTexture(ParseString(j, "normal"));
+	if (ValueExists(j, "diffuse")) {
+		m_Textures[TextureType::DiffuseTexture] = INFECT_RESOURCES.GetTexture(ParseString(j, "diffuse"));
+		m_TextureFlags |= DIFFUSE_TEXTURED;
+	}
+	if (ValueExists(j, "normal")) {
+		m_TextureFlags |= NORMAL_MAPPED;
+		m_Textures[TextureType::NormalMap] = INFECT_RESOURCES.GetTexture(ParseString(j, "normal"));
+	}
+	if (ValueExists(j, "specular")) {
+		m_TextureFlags |= SPECULAR_MAPPED;
+		m_Textures[TextureType::SpecularMap] = INFECT_RESOURCES.GetTexture(ParseString(j, "specular"));
+	}
 	if (ValueExists(j, "isLit"))
 		m_IsLit = ParseBool(j, "isLit");
 	m_IsDirty = true;
@@ -67,19 +82,19 @@ void MeshComponent::SetScene(const std::string & sceneName)
 
 void MeshComponent::SetDiffuseTexture(const std::string & textureName)
 {
-	mp_Diffuse = INFECT_RESOURCES.GetTexture(textureName);
+	m_Textures[TextureType::DiffuseTexture] = INFECT_RESOURCES.GetTexture(textureName);
 	m_IsDirty = true;
 }
 
 void MeshComponent::SetNormalTexture(const std::string & textureName)
 {
-	mp_NormalMap = INFECT_RESOURCES.GetTexture(textureName);
+	m_Textures[TextureType::NormalMap] = INFECT_RESOURCES.GetTexture(textureName);
 	m_IsDirty = true;
 }
 
 void MeshComponent::SetSpecularTexture(const std::string & textureName)
 {
-	mp_SpecMap = INFECT_RESOURCES.GetTexture(textureName);
+	m_Textures[TextureType::SpecularMap] = INFECT_RESOURCES.GetTexture(textureName);
 	m_IsDirty = true;
 }
 

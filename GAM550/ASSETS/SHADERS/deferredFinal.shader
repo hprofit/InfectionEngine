@@ -88,7 +88,6 @@ float4 PShader(
 
 	float4 attVal = attenuation(L_Length, LIDHW.y);
 
-	float4 ambient = diffuseColor * Ambient;
 	float4 diffuse = max(dot(normal, L), 0) * diffuseColor * LColor;
 	float4 specular = pow(max(dot(H, normal), 0), specularCoef) * specularColor * LColor;
 	

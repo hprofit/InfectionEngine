@@ -7,7 +7,7 @@ cbuffer ConstantBuffer
 	bool CastShadows;
 	bool ReceiveShadows;
 	bool IsLit;
-	bool Textured;
+	unsigned int TextureFlags;
 };
 
 struct VOut
@@ -41,18 +41,14 @@ VOut VShader(
 	tangent.w = 0;
 	bitangent.w = 0;
 
-	float4 n = mul(NormalMatrix, normal);
-	float4 b = mul(NormalMatrix, bitangent);
-	float4 t = mul(NormalMatrix, tangent);
-
-	float3 T = normalize(mul(ModelMatrix, tangent)).xyz;
-	float3 B = normalize(mul(ModelMatrix, bitangent)).xyz;
-	float3 N = normalize(mul(ModelMatrix, normal)).xyz;
+	float3 T = normalize(mul(NormalMatrix, tangent)).xyz;
+	float3 B = normalize(mul(NormalMatrix, bitangent)).xyz;
+	float3 N = normalize(mul(NormalMatrix, normal)).xyz;
 
 	output.worldPosition = mul(ModelMatrix, position);
 	output.position = mul(MatFinal, position);
 	output.normal = mul(NormalMatrix, normal);
-	output.tbn = float3x3(T, B, N);
+	output.tbn = transpose(float3x3(T, B, N));
 	output.color = color;
 	output.texCoords = texCoords;
 
@@ -81,16 +77,40 @@ POut PShader(
 )
 {
 	POut output;
+	unsigned int DIFFUSE_TEXTURE = 1;
+	unsigned int NORMAL_MAPPED = 2;
+	unsigned int SPECULAR_MAPPED = 4;
+	bool hasDiffuseTexture = TextureFlags & DIFFUSE_TEXTURE;
+	bool hasNormalMap = (TextureFlags & NORMAL_MAPPED)>>1;
+	bool hasSpecularMap = (TextureFlags & SPECULAR_MAPPED)>>2;
+
+	if (hasNormalMap) {
+		float3 normalMapValue = NormalMap.Sample(ss, texCoords).rgb;
+		float3 nMapVal = normalize(
+			float3(
+				normalMapValue.r * 2.0 - 1.0,
+				normalMapValue.g * 2.0 - 1.0,
+				normalMapValue.b * 2.0 - 1.0
+			)
+		);
+		float3 m = normalize(mul(tbn, nMapVal));
+
+		output.normal = float4(m.x, m.y, m.z, 0);
+		// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
+		output.normal.w = 1;
+	}
+	else {
+		normal.w = 0;
+		output.normal = normalize(normal);// float4(m.x, m.y, m.z, 0);
+		// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
+		output.normal.w = 1;
+	}
+
 
 	output.worldPos = worldPosition;
 	// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
 	output.worldPos.w = 1;
-	normal.w = 0;
-	output.normal = normalize(normal);
-	output.normal.w = 0;
-	// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
-	output.normal.w = 1;
-	output.diffuse = Textured ? DiffuseTexture.Sample(ss, texCoords) : color;
+	output.diffuse = hasDiffuseTexture ? DiffuseTexture.Sample(ss, texCoords) : color;
 	output.specular = float4(0.9, 0.9, 0.9, 100);
 
 	return output;

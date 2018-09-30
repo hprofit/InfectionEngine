@@ -251,15 +251,19 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	cb.CastShadows = pMeshComp->CastShadows();
 	cb.ReceiveShadows = pMeshComp->ReceiveShadows();
 	cb.IsLit = pMeshComp->IsLit();
-	cb.Textured = pMeshComp->IsTextured();
+	cb.TextureFlags = pMeshComp->TexturedFlags();
 	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
 
 	mp_ShaderProgramDeferred->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 	// set the new values for the constant buffer
 	mp_ShaderProgramDeferred->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
 
-	ID3D11ShaderResourceView* ptex = pMeshComp->GetDiffuseTexture();
-	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &ptex);
+	//ID3D11ShaderResourceView* ptex = pMeshComp->GetDiffuseTexture();
+	//mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &ptex);
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(0,
+		TextureType::NUM_TEXTURE_TYPES,
+		pMeshComp->GetTextures()
+	);
 
 	// do 3D rendering to the currently bound buffer here
 	RenderScene(pMeshComp->GetScene());

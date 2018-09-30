@@ -22,7 +22,7 @@ struct MainCB : public ConstantBuffer {
 	int CastShadows;
 	int ReceiveShadows;
 	int IsLit;
-	int Textured;
+	unsigned int TextureFlags;
 };
 
 struct QuadCB : public ConstantBuffer {
