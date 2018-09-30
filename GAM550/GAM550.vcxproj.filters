@@ -70,6 +70,9 @@
     <Filter Include="Source Files\Rendering\Shaders">
       <UniqueIdentifier>{b52de618-d08d-4d5a-b0b9-b3935c3cf18a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameObject\Components\Physics">
+      <UniqueIdentifier>{8271eb0e-688c-4c7c-96c8-f20147b1f197}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\main.cpp">
@@ -251,6 +254,18 @@
     </ClCompile>
     <ClCompile Include="SOURCE\ConstantBuffer.cpp">
       <Filter>Source Files\Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\RigidBodyComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\CollisionComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\RigidBodyComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\CollisionComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -472,6 +487,18 @@
     </ClInclude>
     <ClInclude Include="SOURCE\Shader.h">
       <Filter>Source Files\Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\RigidBodyComponent.h">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\CollisionComponent.h">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\RigidBodyComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\CollisionComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
