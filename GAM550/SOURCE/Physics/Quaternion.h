@@ -27,5 +27,42 @@ public:
   void addScaledVector(const Vector3D& vector, real scale);
 
   void rotateByVector(const Vector3D& vector);
+
+  //========================================================
+  //Additional Quaternion Functions
+  //========================================================
+
+
+  Quaternion operator+ (const Quaternion& Q2);
+
+  Quaternion operator- (const Quaternion& Q2);
+
+  Quaternion operator* (const Quaternion& Q2);
+
+  Quaternion QuatScalarMult(Quaternion Q, real value);
+
+  Quaternion QuatScalarDiv(Quaternion Q, real value);
+
+  void QuatSetIdentity();
+
+  Quaternion QuatSetIdentity(Quaternion &Q);
+
+  Quaternion QuatInverse(Quaternion Q);
+
+  real QuatLength();
+
+  real QuatLength(Quaternion Q);
+
+  real QuatDotProduct(Quaternion Q2);
+
+  real QuatDotProduct(Quaternion Q1, Quaternion Q2);
+
+  void QuatConjugate(Quaternion & Q);
+
+  void QuatConjugate();
+
+  void QuatNegation();
+
+
 };
 #endif

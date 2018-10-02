@@ -51,3 +51,172 @@ void Quaternion::rotateByVector(const Vector3D& vector)
   Quaternion q(0, vector.x, vector.y, vector.z);
   (*this) *= q;
 }
+
+Quaternion Quaternion::operator+(const Quaternion & Q2)
+{
+	Quaternion Q1 = *this;
+
+	Quaternion result;
+
+	result.r = Q1.r + Q2.r;
+	result.i = Q1.i + Q2.i;
+	result.j = Q1.j + Q2.j;
+	result.k = Q1.k + Q2.k;
+
+	return result;
+}
+
+Quaternion Quaternion::operator-(const Quaternion & Q2)
+{
+	Quaternion Q1 = *this;
+
+	Quaternion result;
+
+	result.r = Q1.r - Q2.r;
+	result.i = Q1.i - Q2.i;
+	result.j = Q1.j - Q2.j;
+	result.k = Q1.k - Q2.k;
+
+	return result;
+}
+
+Quaternion Quaternion::operator*(const Quaternion & Q2)
+{
+	Quaternion Q1 = *this;
+
+	Quaternion result;
+
+	result.r = Q1.r * Q2.r;
+	result.i = Q1.i * Q2.i;
+	result.j = Q1.j * Q2.j;
+	result.k = Q1.k * Q2.k;
+
+	return result;
+}
+
+Quaternion Quaternion::QuatScalarMult(Quaternion Q, real value)
+{
+	Quaternion result;
+
+	result.r = value * Q.r;
+	result.i = value * Q.i;
+	result.j = value * Q.j;
+	result.k = value * Q.k;
+
+	return result;
+}
+
+Quaternion Quaternion::QuatScalarDiv(Quaternion Q, real value)
+{
+	Quaternion result;
+
+	result.r = Q.r / value;
+	result.i = Q.i / value;
+	result.j = Q.j / value;
+	result.k = Q.k / value;
+
+	return result;
+}
+
+void Quaternion::QuatSetIdentity()
+{
+	Quaternion &Q = *this;
+
+	Q.r = 1;
+	Q.i = 0;
+	Q.j = 0;
+	Q.k = 0;
+
+}
+
+Quaternion Quaternion::QuatSetIdentity(Quaternion & Q)
+{
+	Q.r = 1.0f;
+	Q.i = 0.0f;
+	Q.j = 0.0f;
+	Q.k = 0.0f;
+
+
+	return Q;
+}
+
+Quaternion Quaternion::QuatInverse(Quaternion Q)
+{
+	real divided = Q.r * Q.r + Q.i * Q.i + Q.j * Q.j + Q.k * Q.k;
+
+	Q.r = Q.r / divided;
+	Q.i = -Q.i / divided;
+	Q.j = -Q.j / divided;
+	Q.k = -Q.k / divided;
+
+	return Q;
+}
+
+real Quaternion::QuatLength()
+{
+	real result;
+	Quaternion &Q = *this;
+
+
+	real length = Q.r * Q.r + Q.i * Q.i + Q.j * Q.j + Q.k * Q.k;
+	result = sqrtf(length);
+
+	return result;
+}
+
+real Quaternion::QuatLength(Quaternion Q)
+{
+	real result;
+
+	real length = Q.r * Q.r + Q.i * Q.i + Q.j * Q.j + Q.k * Q.k;
+	result = sqrtf(length);
+
+	return result;
+}
+
+real Quaternion::QuatDotProduct(Quaternion Q2)
+{
+	Quaternion Q1 = *this;
+
+	real result;
+
+	result = Q1.r * Q2.r + Q1.i * Q2.i + Q1.j * Q2.j + Q1.k * Q2.k;
+
+	return result;
+}
+
+real Quaternion::QuatDotProduct(Quaternion Q1, Quaternion Q2)
+{
+	real result;
+
+	result = Q1.r * Q2.r + Q1.i * Q2.i + Q1.j * Q2.j + Q1.k * Q2.k;
+
+	return result;
+}
+
+void Quaternion::QuatConjugate()
+{
+	Quaternion &Q = *this;
+
+	Q.i = -Q.i;
+	Q.j = -Q.j;
+	Q.k = -Q.k;
+}
+
+void Quaternion::QuatConjugate(Quaternion& Q)
+{
+	Q.i = -Q.i;
+	Q.j = -Q.j;
+	Q.k = -Q.k;
+}
+
+void Quaternion::QuatNegation()
+{
+	Quaternion &Q = *this;
+
+	Q.r = -Q.r;
+	Q.i = -Q.i;
+	Q.j = -Q.j;
+	Q.k = -Q.k;
+
+}

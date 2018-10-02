@@ -28,6 +28,48 @@ static void _GeneratePascalRow(unsigned short degree) {
 	pascalTriangle[degree] = row;
 }
 
+Quaternion QuatLerp(Quaternion Q1, Quaternion Q2, real interpolation_value)
+{
+	Quaternion sub = Q2 - Q1;
+	Quaternion mul;
+	mul.QuatScalarMult(sub, interpolation_value);
+	return (Q1 + mul);
+}
+
+Quaternion QuatSlerp(Quaternion Q1, Quaternion Q2, real interpolation_value)
+{
+	real d;
+	d = Q1.QuatDotProduct(Q2);
+	Quaternion res;
+
+	if (d > 0.9995)
+	{
+		//Do lerp
+		res = QuatLerp(Q1, Q2, interpolation_value);
+		res.normalise();
+
+		return res;
+	}
+
+	if (d < 0)
+	{
+		//negate everything
+		Q2.QuatNegation();
+		d = -d;
+	}
+
+	//Cos inverse of the d
+	real angle = acos(d);
+
+	Quaternion parta = Q1.QuatScalarMult(Q1, sinf((1 - interpolation_value)*angle));
+	Quaternion partb = Q2.QuatScalarMult(Q2, sinf(interpolation_value * angle));
+	Quaternion partab = parta - partb;
+
+	return	partab.QuatScalarDiv(partab, sinf(angle));
+
+}
+
+
 Vector3D Lerp(const Vector3D& vectorA, const Vector3D& vectorB, float t, bool isEaseIn, bool isEaseOut) {
 	return Vector3D(Lerp(vectorA.x, vectorB.x, t, isEaseIn, isEaseOut), Lerp(vectorA.y, vectorB.y, t, isEaseIn, isEaseOut), Lerp(vectorA.z, vectorB.z, t, isEaseIn, isEaseOut), Lerp(vectorA.w, vectorB.w, t, isEaseIn, isEaseOut));
 }

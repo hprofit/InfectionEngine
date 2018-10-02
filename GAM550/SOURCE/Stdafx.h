@@ -159,6 +159,7 @@ typedef unsigned int InfectGUID;
 #include <GameObject\PointLightComponent.h>
 #include <GameObject\RigidBodyComponent.h>
 #include <GameObject\CollisionComponent.h>
+#include <GameObject\CollisionTriggerComponent.h>
 //#include <HeightMap.h>
 
 //Components - Audio
@@ -190,6 +191,7 @@ typedef unsigned int InfectGUID;
 #include <GameObject\PointLightComponentManager.h>
 #include <GameObject\RigidBodyComponentManager.h>
 #include <GameObject\CollisionComponentManager.h>
+#include <GameObject\CollisionTriggerComponentManager.h>
 #include <AI\BrainComponentManager.h>
 #pragma endregion
 

@@ -8,6 +8,9 @@ Author: <Holden Profit>
 #ifndef MATH_FUNCTIONS_H
 #define MATH_FUNCTIONS_H
 
+Quaternion QuatLerp(Quaternion Q1, Quaternion Q2, real interpolation_value);
+Quaternion QuatSlerp(Quaternion Q1, Quaternion Q2, real interpolation_value);
+
 Vector3D Lerp(const Vector3D& vectorA, const Vector3D& vectorB, float t, bool isEaseIn = false, bool isEaseOut = false);
 Vector2D Lerp(const Vector2D& vectorA, const Vector2D& vectorB, float t, bool isEaseIn = false, bool isEaseOut = false);
 float Lerp(float valueA, float valueB, float t, bool isEaseIn = false, bool isEaseOut = false);
@@ -29,4 +32,6 @@ int Rand();
 float Rand_Zero_One();
 
 float cot(float val);
+
+
 #endif
