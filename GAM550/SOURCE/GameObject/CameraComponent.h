@@ -32,6 +32,7 @@ private:
 	//void _CalcViewMatrix();
 public:
 	static const ComponentType Type = ComponentType::C_Camera;
+	static const unsigned CACHESIZE = 5;
 	virtual ComponentType GetType() const { return Type; }
 
 	CameraComponent(InfectGUID guid);
@@ -42,6 +43,7 @@ public:
 	virtual void Update(float dt) {};
 	virtual void LateUpdate(float dt) {};
 	virtual void Serialize(const json& j);
+	virtual void Override(const json& j) {}
 	virtual void HandleEvent(Event* pEvent);
 
 	static bool LeftDepthGreaterThanRight(GameObject* left, GameObject* right);

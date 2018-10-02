@@ -30,7 +30,7 @@ class ComponentManager :
 	public CM
 {
 protected:
-	std::vector<CType*> *m_Components;
+	std::list<CType*> *m_Components;
 
 public:
 	ComponentManager() {

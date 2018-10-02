@@ -8,12 +8,13 @@ Author: <Holden Profit, Hyoyup Chung>
 #include <Stdafx.h>
 
 MeshComponentManager::MeshComponentManager() {
-	m_Components = (std::vector<MeshComponent*>*)INFECT_MEMORY.GetComponentPool(MeshComponent::Type);
+	m_Components = (std::list<MeshComponent*>*)INFECT_MEMORY.GetComponentPool(MeshComponent::Type);
 }
 
 void MeshComponentManager::Update(float dt)
 {
 	for each (MC mComp in *m_Components) {
+		if (!mComp->IsActive()) break;
 		mComp->m_UpdatedLastFrame = false;
 		if (mComp->IsDirty()) {
 
@@ -27,10 +28,11 @@ void MeshComponentManager::Update(float dt)
 void MeshComponentManager::HandleEvent(Event * pEvent)
 {
 	for each (MC mComp in *m_Components) {
+		if (!mComp->IsActive()) break;
 		mComp->HandleEvent(pEvent);
 	}
 }
 
 void MeshComponentManager::Init() {
-	INFECT_MEMORY.ComponentPoolInit<MeshComponent>(MeshComponent::Type);
+	INFECT_MEMORY.ComponentPoolInit<MeshComponent>(MeshComponent::Type, MeshComponent::CACHESIZE);
 }

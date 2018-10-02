@@ -1,12 +1,7 @@
-
 #include <Stdafx.h>
-
-//#include <memory.h>
-
 
 using namespace physics;
 //using namespace physics;
-
 
 /**
  * Internal function that checks the validity of an inverse inertia tensor.
@@ -26,35 +21,33 @@ static inline void _transformInertiaTensor(Matrix3x3 &iitWorld,
                                            const Matrix3x3 &iitBody,
                                            const Matrix4x4 &rotmat)
 {
-  rotmat.Get(0, 0);
-
-    real t4 = rotmat.Get(0, 0)*iitBody.Get(0, 0)+
-        rotmat.Get(0, 1)*iitBody.Get(1, 0)+
-        rotmat.Get(0, 2)*iitBody.Get(2, 0);
-    real t9 = rotmat.Get(0, 0)*iitBody.Get(0, 1)+
-        rotmat.Get(0, 1)*iitBody.Get(1, 1)+
-        rotmat.Get(0, 2)*iitBody.Get(2, 1);
-    real t14 = rotmat.Get(0, 0)*iitBody.Get(0, 2)+
-        rotmat.Get(0, 1)*iitBody.Get(1, 2)+
-        rotmat.Get(0, 2)*iitBody.Get(2, 2);
-    real t28 = rotmat.Get(1, 0)*iitBody.Get(0, 0)+
-        rotmat.Get(1, 1)*iitBody.Get(1, 0)+
-        rotmat.Get(1, 2)*iitBody.Get(2, 0);
-    real t33 = rotmat.Get(1, 0)*iitBody.Get(0, 1)+
-        rotmat.Get(1, 1)*iitBody.Get(1, 1)+
-        rotmat.Get(1, 2)*iitBody.Get(2, 1);
-    real t38 = rotmat.Get(1, 0)*iitBody.Get(0, 2)+
-        rotmat.Get(1, 1)*iitBody.Get(1, 2)+
-        rotmat.Get(1, 2)*iitBody.Get(2, 2);
-    real t52 = rotmat.Get(2, 0)*iitBody.Get(0, 0)+
-        rotmat.Get(2, 1)*iitBody.Get(1, 0)+
-        rotmat.Get(2, 2)*iitBody.Get(2, 0);
-    real t57 = rotmat.Get(2, 0)*iitBody.Get(0, 1)+
-        rotmat.Get(2, 1)*iitBody.Get(1, 1)+
-        rotmat.Get(2, 2)*iitBody.Get(2, 1);
-    real t62 = rotmat.Get(2, 0)*iitBody.Get(0, 2)+
-        rotmat.Get(2, 1)*iitBody.Get(1, 2)+
-        rotmat.Get(2, 2)*iitBody.Get(2, 2);
+    real t4 = rotmat.m_matrix[0][0]*iitBody.m_matrix[0][0]+
+        rotmat.m_matrix[0][1]*iitBody.m_matrix[1][0]+
+        rotmat.m_matrix[0][2]*iitBody.m_matrix[2][0];
+    real t9 = rotmat.m_matrix[0][0]*iitBody.m_matrix[0][1]+
+        rotmat.m_matrix[0][1]*iitBody.m_matrix[1][1]+
+        rotmat.m_matrix[0][2]*iitBody.m_matrix[2][1];
+    real t14 = rotmat.m_matrix[0][0]*iitBody.m_matrix[0][2]+
+        rotmat.m_matrix[0][1]*iitBody.m_matrix[1][2]+
+        rotmat.m_matrix[0][2]*iitBody.m_matrix[2][2];
+    real t28 = rotmat.m_matrix[1][0]*iitBody.m_matrix[0][0]+
+        rotmat.m_matrix[1][1]*iitBody.m_matrix[1][0]+
+        rotmat.m_matrix[1][2]*iitBody.m_matrix[2][0];
+    real t33 = rotmat.m_matrix[1][0]*iitBody.m_matrix[0][1]+
+        rotmat.m_matrix[1][1]*iitBody.m_matrix[1][1]+
+        rotmat.m_matrix[1][2]*iitBody.m_matrix[2][1];
+    real t38 = rotmat.m_matrix[1][0]*iitBody.m_matrix[0][2]+
+        rotmat.m_matrix[1][1]*iitBody.m_matrix[1][2]+
+        rotmat.m_matrix[1][2]*iitBody.m_matrix[2][2];
+    real t52 = rotmat.m_matrix[2][0]*iitBody.m_matrix[0][0]+
+        rotmat.m_matrix[2][1]*iitBody.m_matrix[1][0]+
+        rotmat.m_matrix[2][2]*iitBody.m_matrix[2][0];
+    real t57 = rotmat.m_matrix[2][0]*iitBody.m_matrix[0][1]+
+        rotmat.m_matrix[2][1]*iitBody.m_matrix[1][1]+
+        rotmat.m_matrix[2][2]*iitBody.m_matrix[2][1];
+    real t62 = rotmat.m_matrix[2][0]*iitBody.m_matrix[0][2]+
+        rotmat.m_matrix[2][1]*iitBody.m_matrix[1][2]+
+        rotmat.m_matrix[2][2]*iitBody.m_matrix[2][2];
 
     iitWorld.m_matrix[0][0] = t4*rotmat.m_matrix[0][0]+
         t9*rotmat.m_matrix[0][1]+
@@ -228,7 +221,9 @@ void RigidBody::getInertiaTensor(Matrix3x3 *inertiaTensor) const
 
 Matrix3x3 RigidBody::getInertiaTensor() const
 {
-    Matrix3x3 it;
+  Matrix3x3 it = Matrix3x3(0.f, 0.f, 0.f,
+    0.f, 0.f, 0.f,
+    0.f, 0.f, 0.f);;
     getInertiaTensor(&it);
     return it;
 }
@@ -240,7 +235,9 @@ void RigidBody::getInertiaTensorWorld(Matrix3x3 *inertiaTensor) const
 
 Matrix3x3 RigidBody::getInertiaTensorWorld() const
 {
-    Matrix3x3 it;
+  Matrix3x3 it = Matrix3x3(0.f, 0.f, 0.f,
+    0.f, 0.f, 0.f,
+    0.f, 0.f, 0.f);;
     getInertiaTensorWorld(&it);
     return it;
 }
@@ -348,34 +345,31 @@ Quaternion RigidBody::getOrientation() const
 
 void RigidBody::getOrientation(Matrix3x3 *matrix) const
 {
+  //matrix->test = 0;
     getOrientation(matrix->m_matrix);
 }
 
 void RigidBody::getOrientation(real matrix[3][3]) const
 {
-    matrix[0][0] = transformMatrix.Get(0, 0);
-    matrix[0][1] = transformMatrix.Get(0, 1);
-    matrix[0][2] = transformMatrix.Get(0, 2);
+    matrix[0][0] = transformMatrix.m_matrix[0][0];
+    matrix[0][1] = transformMatrix.m_matrix[0][1];
+    matrix[0][2] = transformMatrix.m_matrix[0][2];
 
-    matrix[1][0] = transformMatrix.Get(1, 0);
-    matrix[1][1] = transformMatrix.Get(1, 1);
-    matrix[1][2] = transformMatrix.Get(1, 2);
+    matrix[1][0] = transformMatrix.m_matrix[1][0];
+    matrix[1][1] = transformMatrix.m_matrix[1][1];
+    matrix[1][2] = transformMatrix.m_matrix[1][2];
 
-    matrix[2][0] = transformMatrix.Get(2, 0);
-    matrix[2][1] = transformMatrix.Get(2, 1);
-    matrix[2][2] = transformMatrix.Get(2, 2);
+    matrix[2][0] = transformMatrix.m_matrix[2][0];
+    matrix[2][1] = transformMatrix.m_matrix[2][1];
+    matrix[2][2] = transformMatrix.m_matrix[2][2];
 }
 
 void RigidBody::getTransform(Matrix4x4 *transform) const
 {
+   // transform->test = 0;
     memcpy(transform, &transformMatrix.m_matrix, sizeof(Matrix4x4));
 }
 
-void arrayToMatrix(real matrix[3][3])
-{
-  //real copy[16];
-
-}
 
 void RigidBody::getTransform(real matrix[16]) const
 {
@@ -386,24 +380,24 @@ void RigidBody::getTransform(real matrix[16]) const
 
 void RigidBody::getGLTransform(float matrix[16]) const
 {
-    matrix[0] = (float)transformMatrix.Get(0, 0);
-    matrix[1] = (float)transformMatrix.Get(1, 0);
-    matrix[2] = (float)transformMatrix.Get(2, 0);
+    matrix[0] = (float)transformMatrix.m_matrix[0][0];
+    matrix[1] = (float)transformMatrix.m_matrix[1][0];
+    matrix[2] = (float)transformMatrix.m_matrix[2][0];
     matrix[3] = 0;
 
-    matrix[4] = (float)transformMatrix.Get(0, 1);
-    matrix[5] = (float)transformMatrix.Get(1, 1);
-    matrix[6] = (float)transformMatrix.Get(2, 1);
+    matrix[4] = (float)transformMatrix.m_matrix[0][1];
+    matrix[5] = (float)transformMatrix.m_matrix[1][1];
+    matrix[6] = (float)transformMatrix.m_matrix[2][1];
     matrix[7] = 0;
 
-    matrix[8] = (float)transformMatrix.Get(0, 2);
-    matrix[9] = (float)transformMatrix.Get(1, 2);
-    matrix[10] = (float)transformMatrix.Get(2, 2);
+    matrix[8] = (float)transformMatrix.m_matrix[0][2];
+    matrix[9] = (float)transformMatrix.m_matrix[1][2];
+    matrix[10] = (float)transformMatrix.m_matrix[2][2];
     matrix[11] = 0;
 
-    matrix[12] = (float)transformMatrix.Get(0, 3);
-    matrix[13] = (float)transformMatrix.Get(1, 3);
-    matrix[14] = (float)transformMatrix.Get(2, 3);
+    matrix[12] = (float)transformMatrix.m_matrix[0][3];
+    matrix[13] = (float)transformMatrix.m_matrix[1][3];
+    matrix[14] = (float)transformMatrix.m_matrix[2][3];
     matrix[15] = 1;
 }
 

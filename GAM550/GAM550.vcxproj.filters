@@ -55,6 +55,48 @@
     <Filter Include="Source Files\GameObject\ComponentManagers">
       <UniqueIdentifier>{ae8d1a54-03b0-4681-9c7b-03507d287d84}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Threading">
+      <UniqueIdentifier>{f4322f82-58a1-490a-85bc-7a39392de6f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\Mesh">
+      <UniqueIdentifier>{8c48c594-955d-44e9-be07-f68be83774e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\Mesh\Primitiers">
+      <UniqueIdentifier>{87365e49-0e3b-4610-895b-659b5d025045}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\RenderTarget">
+      <UniqueIdentifier>{9cb0745e-eba2-4018-899d-00929a413193}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Rendering\Shaders">
+      <UniqueIdentifier>{b52de618-d08d-4d5a-b0b9-b3935c3cf18a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\Components\Physics">
+      <UniqueIdentifier>{8271eb0e-688c-4c7c-96c8-f20147b1f197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI">
+      <UniqueIdentifier>{9de90c69-f198-4777-8c81-328e59394e0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\BehaviorTree">
+      <UniqueIdentifier>{2301d2d4-a6c1-4d62-887c-22a097f95c0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\Components\AI">
+      <UniqueIdentifier>{60eb4fb5-9356-44fb-8156-2b844fcae894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\BehaviorTree\Composites">
+      <UniqueIdentifier>{622340e5-da3a-45bd-b5e8-c7684148fc94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\BehaviorTree\Decorators">
+      <UniqueIdentifier>{70d068bd-7786-4ddc-aea7-04ad79b83b2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\BehaviorTree\Actions">
+      <UniqueIdentifier>{e387320d-f737-425c-9089-687bf21afd0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\FiniteStateMachine">
+      <UniqueIdentifier>{00b85c2d-8250-4df9-a13a-9ced50bbdca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\FiniteStateMachine\Base">
+      <UniqueIdentifier>{1b169d22-289f-4e79-9126-94c450c69392}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\main.cpp">
@@ -77,9 +119,6 @@
     </ClCompile>
     <ClCompile Include="SOURCE\Event.cpp">
       <Filter>Source Files\Events</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\Mesh.cpp">
-      <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\GameObject\ComponentFactory.cpp">
       <Filter>Source Files\GameObject\Base</Filter>
@@ -177,17 +216,110 @@
     <ClCompile Include="SOURCE\Physics\Quaternion.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\Plane.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\Cube.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\Sphere.cpp">
-      <Filter>Source Files\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\MemoryManager.cpp">
       <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Physics\collide_fine.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Physics\contacts.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Physics\PhysicsTest.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Physics\collide_coarse.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Command.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\ThreadCommandList.cpp">
+      <Filter>Source Files\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\JobManager.cpp">
+      <Filter>Source Files\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\SimulationThreadContainer.cpp">
+      <Filter>Source Files\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\LevelManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\RenderThreadContainer.cpp">
+      <Filter>Source Files\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\RenderThreadContainer.cpp">
+      <Filter>Source Files\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Mesh.cpp">
+      <Filter>Source Files\Rendering\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Cube.cpp">
+      <Filter>Source Files\Rendering\Mesh\Primitiers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Plane.cpp">
+      <Filter>Source Files\Rendering\Mesh\Primitiers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Sphere.cpp">
+      <Filter>Source Files\Rendering\Mesh\Primitiers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\BackBufferRenderTarget.cpp">
+      <Filter>Source Files\Rendering\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\RenderTarget.cpp">
+      <Filter>Source Files\Rendering\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Shader.cpp">
+      <Filter>Source Files\Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\ShaderProgram.cpp">
+      <Filter>Source Files\Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\ConstantBuffer.cpp">
+      <Filter>Source Files\Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\RigidBodyComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\CollisionComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\RigidBodyComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\CollisionComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BrainComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BrainComponent.cpp">
+      <Filter>Source Files\GameObject\Components\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\FSM\AI_StateFactory.cpp">
+      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\FSM\AI_Combat.cpp">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\FSM\AI_Idle.cpp">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\FSM\AI_Move.cpp">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\BehaviorTree.cpp">
+      <Filter>Source Files\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\Behavior.cpp">
+      <Filter>Source Files\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\CollisionTriggerComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\CollisionTriggerComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -211,12 +343,6 @@
     </ClInclude>
     <ClInclude Include="SOURCE\Event.h">
       <Filter>Source Files\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Mesh.h">
-      <Filter>Source Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Face.h">
-      <Filter>Source Files\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\Component.h">
       <Filter>Source Files\GameObject\Base</Filter>
@@ -344,20 +470,128 @@
     <ClInclude Include="SOURCE\GameObject\MeshComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\Plane.h">
-      <Filter>Source Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Cube.h">
-      <Filter>Source Files\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\Sphere.h">
-      <Filter>Source Files\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\Color.h">
       <Filter>Source Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\MemoryManager.h">
       <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Physics\collide_coarse.h">
+      <Filter>Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Physics\collide_fine.h">
+      <Filter>Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Physics\contacts.h">
+      <Filter>Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Physics\PhysicsTest.h">
+      <Filter>Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Command.h">
+      <Filter>Source Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\ThreadCommandList.h">
+      <Filter>Source Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\ThreadContainer.h">
+      <Filter>Source Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\ThreadType.h">
+      <Filter>Source Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\JobManager.h">
+      <Filter>Source Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\RenderThreadContainer.h">
+      <Filter>Source Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\SimulationThreadContainer.h">
+      <Filter>Source Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\LevelManager.h">
+      <Filter>Source Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Face.h">
+      <Filter>Source Files\Rendering\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Mesh.h">
+      <Filter>Source Files\Rendering\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Cube.h">
+      <Filter>Source Files\Rendering\Mesh\Primitiers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Plane.h">
+      <Filter>Source Files\Rendering\Mesh\Primitiers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Sphere.h">
+      <Filter>Source Files\Rendering\Mesh\Primitiers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\BackBufferRenderTarget.h">
+      <Filter>Source Files\Rendering\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\RenderTarget.h">
+      <Filter>Source Files\Rendering\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\ShaderProgram.h">
+      <Filter>Source Files\Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\ConstantBuffer.h">
+      <Filter>Source Files\Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Shader.h">
+      <Filter>Source Files\Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\RigidBodyComponent.h">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\CollisionComponent.h">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\RigidBodyComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\CollisionComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BrainComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BrainComponent.h">
+      <Filter>Source Files\GameObject\Components\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_State.h">
+      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_StateFactory.h">
+      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_StateTypeNames.h">
+      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_StateTypes.h">
+      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_Combat.h">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_Idle.h">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_Move.h">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\BehaviorTree.h">
+      <Filter>Source Files\AI\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Behavior.h">
+      <Filter>Source Files\AI\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\CollisionTriggerComponent.h">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\CollisionTriggerComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

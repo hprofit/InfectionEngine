@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Holden Profit>
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #include <Stdafx.h>
@@ -18,7 +18,14 @@ ResourceManager::~ResourceManager()
 
 bool ResourceManager::Init()
 {
-	//LoadPrefabFiles();
+	//Loading Prefab Files
+	std::string path = INFECT_GAME_CONFIG.PrefabsDir();
+	for (auto &p : fs::directory_iterator(path)) {
+		json* j = new json();
+		*j = OpenJsonFile(p.path().string());
+		std::string filename = p.path().filename().string();
+		m_prefabs[filename] = j;
+	}
 
 	Plane* plane = new Plane();
 	plane->FinishMesh();
@@ -26,23 +33,35 @@ bool ResourceManager::Init()
 	(*pScenePlane)[0] = plane;
 	m_scenes[PLANE_PRIMITIVE] = pScenePlane;
 
+	Plane* quad = new Plane(1);
+	quad->FinishMesh();
+	Scene* pSceneQuad = new Scene(1);
+	(*pSceneQuad)[0] = quad;
+	m_scenes[QUAD_PRIMITIVE] = pSceneQuad;
+
 	Cube* pCube = new Cube();
 	m_scenes[CUBE_PRIMITIVE] = pCube;
 
 	Skybox* pSkyBox = new Skybox();
 	m_scenes[SKYBOX_PRIMITIVE] = pSkyBox;
 
-	Sphere* pSphere = new Sphere(40);
+	Sphere* pSphere = new Sphere();
 	pSphere->FinishMesh();
 	Scene* pSceneSphere = new Scene(1);
 	(*pSceneSphere)[0] = pSphere;
 	m_scenes[SPHERE_PRIMITIVE] = pSceneSphere;
 
-	PolarSphere* pPolarSphere = new PolarSphere();
-	pPolarSphere->FinishMesh();
-	Scene* pScenePolarSphere = new Scene(1);
-	(*pScenePolarSphere)[0] = pPolarSphere;
-	m_scenes[POLAR_SPHERE_PRIMITIVE] = pScenePolarSphere;
+	Sphere* pLowPolySphere = new Sphere(10);
+	pLowPolySphere->FinishMesh();
+	Scene* pSceneLowPolySphere = new Scene(1);
+	(*pSceneLowPolySphere)[0] = pLowPolySphere;
+	m_scenes[SIMPLE_SPHERE_PRIMITIVE] = pSceneLowPolySphere;
+
+	//PolarSphere* pPolarSphere = new PolarSphere();
+	//pPolarSphere->FinishMesh();
+	//Scene* pScenePolarSphere = new Scene(1);
+	//(*pScenePolarSphere)[0] = pPolarSphere;
+	//m_scenes[POLAR_SPHERE_PRIMITIVE] = pScenePolarSphere;
 
 
 
@@ -77,7 +96,6 @@ bool ResourceManager::Init()
 	m_scenes["test"] = pScene;
 
 
-
 	return true;
 }
 
@@ -85,7 +103,7 @@ bool ResourceManager::Init()
 
 Scene* ResourceManager::_LoadScene(const std::string& meshSceneName)
 {
-	const aiScene* scene = m_importer.ReadFile(/*INFECT_GAME_CONFIG.MeshesDir()*/"ASSETS/MESHES/" + meshSceneName,
+	const aiScene* scene = m_importer.ReadFile(INFECT_GAME_CONFIG.MeshesDir() + meshSceneName,
 		aiProcess_CalcTangentSpace |
 		aiProcess_Triangulate |
 		aiProcess_JoinIdenticalVertices |
@@ -129,7 +147,6 @@ void ResourceManager::UnloadMesh(const std::string& meshName)
 ID3D11ShaderResourceView * ResourceManager::_LoadTexture(const std::string & textureName)
 {
 	ID3D11ShaderResourceView *pTexture;
-	ID3D11Resource ** pResource;
 	std::string filePath = INFECT_GAME_CONFIG.TexturesDir() + textureName;
 	HRESULT result = DirectX::CreateWICTextureFromFile(
 		INFECT_RENDERER.Device(),
@@ -140,18 +157,6 @@ ID3D11ShaderResourceView * ResourceManager::_LoadTexture(const std::string & tex
 		MessageBox(NULL, (std::string("Failed to load texture: ") + filePath).c_str(), "Error", MB_OK);
 		return nullptr;
 	}
-		
-		
-		//// the Direct3D device
-		//(INFECT_GAME_CONFIG.TexturesDir() + textureName).c_str(),    // load texture from the local folder
-		//nullptr, nullptr);
-
-	//D3DX11CreateShaderResourceViewFromFile(INFECT_RENDERER.Device(),            // the Direct3D device
-	//	(INFECT_GAME_CONFIG.TexturesDir() + textureName).c_str(),    // load Wood.png in the local folder
-	//	NULL,           // no additional information
-	//	NULL,           // no multithreading
-	//	&pTexture,      // address of the shader-resource-view
-	//	NULL);          // no multithreading
 
 	m_textures[textureName] = pTexture;
 	return pTexture;
@@ -175,11 +180,29 @@ void ResourceManager::UnloadTexture(const std::string & textureName)
 	}
 }
 
+#pragma region Prefab
+
+json* ResourceManager::GetPrefabFile(const std::string& prefabName) {
+	json* file = m_prefabs[prefabName];
+	if (file)
+		return file;
+	return nullptr;
+}
+
+#pragma endregion
+
 void ResourceManager::UnloadAll()
 {
 	for (auto comp : m_meshes) {
 		if (comp.second)
 			delete comp.second;
 	}
-	m_meshes.clear();
+	m_meshes.clear();	
+	
+	for (auto comp : m_prefabs) {
+		if (comp.second) {
+			delete comp.second;
+		}
+	}
+	m_prefabs.clear();
 }

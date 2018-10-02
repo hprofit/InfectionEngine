@@ -12,8 +12,8 @@ static void PrintLinkedList(MemoryBlock* node) {
 		printf("\n\nFINISHED\n\n");
 		return;
 	}
-	printf("MEMORY BLOCK :: node: %p :: pData: %p :: Size: %d :: FreeSize: %d :: Next: %p :: Prev: %p\n",
-		node, node->pData, node->size, node->freesize, node->next, node->prev);
+	//printf("MEMORY BLOCK :: node: %p :: pData: %p :: Size: %d :: FreeSize: %d :: Next: %p :: Prev: %p\n",
+	//	node, node->pData, node->size, node->freesize, node->next, node->prev);
 	PrintLinkedList(node->next);
 }
 
@@ -26,7 +26,7 @@ static void PrintMemoryBlock(MemoryBlock* block) {
 	if (block->next)
 		PrintPointer("Next->Prev MB", block->next->prev);
 	PrintPointer("Prev MB", block->prev);
-	printf("Block Size: %d : Block Freesize: %d\n", block->size, block->freesize);
+	printf("Block Size: %u : Block Freesize: %u\n", (unsigned) block->size, (unsigned) block->freesize);
 }
 
 MemoryManager::MemoryManager():
@@ -39,14 +39,22 @@ MemoryManager::MemoryManager():
 
 	m_ComponentFactory = new ComponentFactory();
 	// GameObject preallocation
-	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
-		m_GameObjectPool[i] = new GameObject();
+	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHESIZE; i++) {
+		m_GameObjectPool.push_back( new GameObject(INFECT_GUID.GetGUID()));
 	}
+	m_GameObjectFirstDead = m_GameObjectPool.begin();
 	// Component preallocation
 	for (unsigned _enum = 0; _enum < NUM_COMPONENTS; _enum++) {
 		ComponentType type = static_cast<ComponentType>(_enum);
 		// TODO: ask each component for cache size
-		m_ComponentPool[type].reserve(MAX_GAMEOBJECT_CACHE);
+		m_ComponentPool[type] = new std::list<Component*>();
+	}
+
+}
+void MemoryManager::LateInit() {
+	for (unsigned _enum = 0; _enum < NUM_COMPONENTS; _enum++) {
+		ComponentType type = static_cast<ComponentType>(_enum);
+		m_ComponentFirstDeadIter[type] = m_ComponentPool[type]->begin();
 	}
 }
 
@@ -58,9 +66,9 @@ MemoryManager::~MemoryManager() {
 	}
 	free(m_Buffer);
 
-	/*for (unsigned i = 0; i < MAX_CACHE_SIZE_NUM; i++) {
-		delete m_GameObjectPool[i];
-	}*/
+	// maybe clear pools? 
+
+	delete m_ComponentFactory;
 }
 
 void* MemoryManager::Alloc(std::size_t size) {
@@ -143,40 +151,39 @@ void* MemoryManager::m_Buffer = nullptr;
 // GAMEOBJECT RECYCLE 
 GameObject* MemoryManager::GetNewGameObject() {
 	//return new GameObject(id);
-	for (unsigned i = 0; i< MAX_GAMEOBJECT_CACHE; i++) {
-		if (!m_GameObjectPool[i]->IsActive()) {
-			GameObject* pGO = m_GameObjectPool[i];
-			pGO->SetID(INFECT_GUID.GetGUID());
-			pGO->SetActive(true);
-			return pGO; // this pGO needs to be reset with appropriate data
-						// only GUID is valid
-		}
+	GameObject* pGO = *m_GameObjectFirstDead;
+	if (!pGO->IsActive()) {
+		pGO->SetActive(true);
+		m_GameObjectFirstDead++;
+		return pGO; // this pGO needs to be reset with appropriate data
+					// only GUID is valid
 	}
-	printf("NO MORE EMPTY GAMEOBJECT - Current cache size: %d\n", MAX_GAMEOBJECT_CACHE);
+	printf("NO MORE EMPTY GAMEOBJECT - Current cache size: %d\n", MAX_GAMEOBJECT_CACHESIZE);
 	return nullptr;
 }
 
 // GAMEOBJECT CACHING 
 void MemoryManager::DeleteGameObject(GameObject* ptr) {
-	//delete ptr; 
 	ptr->Deactivate();
 	ptr->SetActive(false);
+	std::list<GameObject*>::iterator it = std::find(m_GameObjectPool.begin(), m_GameObjectPool.end(), ptr);
+	m_GameObjectPool.splice(m_GameObjectPool.end(), m_GameObjectPool, it);
 }
 
 Component* MemoryManager::GetNewComponent(ComponentType cType) {
-	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHE; i++) {
-		Component* compPtr = m_ComponentPool[cType][i];
-		if (!compPtr->IsActive()) {
-			compPtr->SetDirty(true);
-			compPtr->SetActive(true);
-			//INFECT_CMC.RegisterCompToCompMngr(compPtr, cType);
-			return compPtr;
-		}
+	Component* compPtr = *m_ComponentFirstDeadIter[cType];
+	if (!compPtr->IsActive()) {
+		compPtr->SetDirty(true);
+		compPtr->SetActive(true);
+		m_ComponentFirstDeadIter[cType]++;
+		return compPtr;
 	}
 	return nullptr;
 }
 
 void MemoryManager::DeleteComponent(Component* ptr) {
-	ptr->SetDirty(false);
-	
+	ptr->SetActive(false);
+	std::list<Component*>* cList = m_ComponentPool[ptr->GetType()];
+	std::list<Component*>::iterator it = std::find(cList->begin(), cList->end(), ptr);
+	cList->splice(cList->end(), *cList, it);
 }

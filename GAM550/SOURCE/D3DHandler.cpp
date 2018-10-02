@@ -103,17 +103,18 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 	IDXGIFactory* factory;
 	IDXGIAdapter* adapter;
 	IDXGIOutput* adapterOutput;
-	unsigned int numModes, i, numerator, denominator, stringLength;
+	size_t stringLength;
+	unsigned int numModes, i, numerator, denominator;
 	DXGI_MODE_DESC* displayModeList;
 	DXGI_ADAPTER_DESC adapterDesc;
 	int error;
 	DXGI_SWAP_CHAIN_DESC swapChainDesc; // create a struct to hold information about the swap chain
 	D3D_FEATURE_LEVEL featureLevel;
-	ID3D11Texture2D* backBufferPtr;
-	D3D11_TEXTURE2D_DESC depthBufferDesc;
-	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
-	D3D11_RASTERIZER_DESC rasterDesc;
+	//ID3D11Texture2D* backBufferPtr;
+	//D3D11_TEXTURE2D_DESC depthBufferDesc;
+	//D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+	//D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
+	//D3D11_RASTERIZER_DESC rasterDesc;
 	D3D11_VIEWPORT viewport;
 
 #pragma region Refresh Rate and Video Card Info
@@ -170,9 +171,10 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 	m_VideoCardMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
 
 	// Convert the name of the video card to a character array and store it.
-	//error = wcstombs_s(&stringLength, m_VideoCardDescription, 128, adapterDesc.Description, 128);
-	//if (error != 0)
-	//	return false;
+	error = wcstombs_s(&stringLength, m_VideoCardDescription, 128, adapterDesc.Description, 128);
+	
+	if (error != 0)
+		return false;
 
 	// Release the adapter output.
 	adapterOutput->Release();
@@ -248,130 +250,29 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 
 #pragma endregion
 
-#pragma region BackBuffer
-	result = mp_SwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBufferPtr);
-	if (FAILED(result))
-		return false;
-	mp_SwapChain->SetFullscreenState(settings.FullScreen, NULL);
 
-	// use the back buffer address to create the render target
-	result = mp_Device->CreateRenderTargetView(backBufferPtr, NULL, &mp_BackBuffer);
-	if (FAILED(result))
-		return false;
-	backBufferPtr->Release();
-#pragma endregion
+	mp_BackBuffer = new BackBufferRenderTarget();
+	mp_BackBuffer->Initialize(settings, mp_Device, mp_SwapChain);
 
-#pragma region Depth Buffer
-	// Initialize the description of the depth buffer.
-	ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
+	mp_DeferredRenderTarget = new RenderTarget(settings.Width, settings.Height, 4);
+	mp_DeferredRenderTarget->Initialize(mp_Device);
 
-	// Set up the description of the depth buffer.
-	depthBufferDesc.Width = settings.Width;
-	depthBufferDesc.Height = settings.Height;
-	depthBufferDesc.MipLevels = 1;
-	depthBufferDesc.ArraySize = 1;
-	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthBufferDesc.SampleDesc.Count = 1;
-	depthBufferDesc.SampleDesc.Quality = 0;
-	depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	depthBufferDesc.CPUAccessFlags = 0;
-	depthBufferDesc.MiscFlags = 0;
-
-	// Create the texture for the depth buffer using the filled out description.
-	result = mp_Device->CreateTexture2D(&depthBufferDesc, NULL, &mp_DepthStencilBuffer);
-	if (FAILED(result))
-		return false;
-#pragma endregion
-
-#pragma region Depth Stencil
-	// Initialize the description of the stencil state.
-	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
-
-	// Set up the description of the stencil state.
-	depthStencilDesc.DepthEnable = true;
-	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
-	depthStencilDesc.StencilEnable = true;
-	depthStencilDesc.StencilReadMask = 0xFF;
-	depthStencilDesc.StencilWriteMask = 0xFF;
-
-	// Stencil operations if pixel is front-facing.
-	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-	// Stencil operations if pixel is back-facing.
-	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-
-	// Create the depth stencil state.
-	result = mp_Device->CreateDepthStencilState(&depthStencilDesc, &mp_DepthStencilState);
-	if (FAILED(result))
-		return false;
-
-	// Set the depth stencil state.
-	mp_DeviceContext->OMSetDepthStencilState(mp_DepthStencilState, 1);
-#pragma endregion
-
-#pragma region Depth Stencil View
-	// Initailze the depth stencil view.
-	ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
-
-	// Set up the depth stencil view description.
-	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-	depthStencilViewDesc.Texture2D.MipSlice = 0;
-
-	// Create the depth stencil view.
-	result = mp_Device->CreateDepthStencilView(mp_DepthStencilBuffer, &depthStencilViewDesc, &mp_DepthStencilView);
-	if (FAILED(result))
-		return false;
-
-	// Bind the render target view and depth stencil buffer to the output render pipeline.
-	mp_DeviceContext->OMSetRenderTargets(1, &mp_BackBuffer, mp_DepthStencilView);
-	mp_DeviceContext->RSSetState(mp_RasterState);
-#pragma endregion
-
-#pragma region Rasterizer
-	// Setup the raster description which will determine how and what polygons will be drawn.
-	rasterDesc.AntialiasedLineEnable = false;
-	rasterDesc.CullMode = D3D11_CULL_BACK;
-	rasterDesc.DepthBias = 0;
-	rasterDesc.DepthBiasClamp = 0.0f;
-	rasterDesc.DepthClipEnable = true;
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.FrontCounterClockwise = true;
-	rasterDesc.MultisampleEnable = false;
-	rasterDesc.ScissorEnable = false;
-	rasterDesc.SlopeScaledDepthBias = 0.0f;
-
-	// Create the rasterizer state from the description we just filled out.
-	result = mp_Device->CreateRasterizerState(&rasterDesc, &mp_RasterState);
-	if (FAILED(result))
-		return false;
-
-	//// Now set the rasterizer state.
-	mp_DeviceContext->RSSetState(mp_RasterState);
-#pragma endregion
+	mp_SecondPassRenderTarget = new RenderTarget(settings.Width, settings.Height, 1);
+	mp_SecondPassRenderTarget->Initialize(mp_Device);
 
 #pragma region Viewport
-	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+	ZeroMemory(&m_viewport, sizeof(D3D11_VIEWPORT));
 
 	// Setup the viewport for rendering.
-	viewport.TopLeftX = 0;
-	viewport.TopLeftY = 0;
-	viewport.Width = FLOAT(settings.Width);
-	viewport.Height = FLOAT(settings.Height);
-	viewport.MinDepth = 0.0f;
-	viewport.MaxDepth = 1.0f;
+	m_viewport.TopLeftX = 0;
+	m_viewport.TopLeftY = 0;
+	m_viewport.Width = FLOAT(settings.Width);
+	m_viewport.Height = FLOAT(settings.Height);
+	m_viewport.MinDepth = 0.0f;
+	m_viewport.MaxDepth = 1.0f;
 
 	// Create the viewport.
-	mp_DeviceContext->RSSetViewports(1, &viewport);
+	mp_DeviceContext->RSSetViewports(1, &m_viewport);
 #pragma endregion
 
 	return true;
@@ -386,31 +287,50 @@ void D3DHandler::CleanD3D(void)
 	// close and release all existing COM objects
 	if (mp_SwapChain)
 		mp_SwapChain->Release();
-	if (mp_BackBuffer)
-		mp_BackBuffer->Release();
 	if (mp_Device)
 		mp_Device->Release();
 	if (mp_DeviceContext)
 		mp_DeviceContext->Release();
 
-	if (mp_DepthStencilBuffer)
-		mp_DepthStencilBuffer->Release();
-	if (mp_DepthStencilState)
-		mp_DepthStencilState->Release();
-	if (mp_DepthStencilView)
-		mp_DepthStencilView->Release();
-	if (mp_RasterState)
-		mp_RasterState->Release();
+	if (mp_BackBuffer)
+		mp_BackBuffer->Release();
+
+	if (mp_DeferredRenderTarget)
+		mp_DeferredRenderTarget->Release();
+
+	if (mp_SecondPassRenderTarget)
+		mp_SecondPassRenderTarget->Release();
+}
+
+void D3DHandler::BindBackBuffer() const
+{
+	mp_BackBuffer->BindRenderTarget(mp_DeviceContext);
+	mp_DeviceContext->RSSetViewports(1, &m_viewport);
+}
+
+void D3DHandler::BindDeferredBuffer() const
+{
+	mp_DeferredRenderTarget->BindRenderTarget(mp_DeviceContext);
+}
+
+void D3DHandler::BindSecondPassBuffer() const
+{
+	mp_SecondPassRenderTarget->BindRenderTarget(mp_DeviceContext);
 }
 
 void D3DHandler::ClearBackBuffer(const Color& color)
 {
-	mp_DeviceContext->ClearRenderTargetView(mp_BackBuffer, color);
+	mp_BackBuffer->ClearRenderTarget(mp_DeviceContext, color);
 }
 
-void D3DHandler::ClearDepthBuffer(void)
+void D3DHandler::ClearDeferredBuffer(const Color & color)
 {
-	mp_DeviceContext->ClearDepthStencilView(mp_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	mp_DeferredRenderTarget->ClearRenderTarget(mp_DeviceContext, color);
+}
+
+void D3DHandler::ClearSecondPassBuffer(const Color & color)
+{
+	mp_SecondPassRenderTarget->ClearRenderTarget(mp_DeviceContext, color);
 }
 
 void D3DHandler::PresentBuffer(bool vSync)
@@ -422,5 +342,32 @@ void D3DHandler::PresentBuffer(bool vSync)
 		mp_SwapChain->Present(1, 0);
 	// Present as fast as possible.
 	else
-		mp_SwapChain->Present(0, 0);
+	mp_SwapChain->Present(0, 0);
+}
+
+void D3DHandler::EnableAlpha()
+{
+	float blendFactor[4] = {0,0,0,0};
+
+	// Turn on the alpha blending.
+	mp_DeviceContext->OMSetBlendState(mp_BackBuffer->AlphaEnabledBlendingState(), blendFactor, 0xffffffff);
+}
+
+void D3DHandler::DisableAlpha()
+{
+	float blendFactor[4] = { 0,0,0,0 };
+
+	// Turn off the alpha blending.
+	mp_DeviceContext->OMSetBlendState(mp_BackBuffer->AlphaDisabledBlendingState(), blendFactor, 0xffffffff);
+
+}
+
+void D3DHandler::EnableDepth()
+{
+	mp_DeviceContext->OMSetDepthStencilState(mp_BackBuffer->DepthStencilState(), 1);
+}
+
+void D3DHandler::DisableDepth()
+{
+	mp_DeviceContext->OMSetDepthStencilState(mp_BackBuffer->DepthDisabledStencilState(), 1);
 }

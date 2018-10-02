@@ -2,13 +2,13 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Holden Profit>
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #include <Stdafx.h>
 
 CameraComponentManager::CameraComponentManager() {
-	m_Components = (std::vector<CameraComponent*>*)INFECT_MEMORY.GetComponentPool(CameraComponent::Type);
+	m_Components = (std::list<CameraComponent*>*)INFECT_MEMORY.GetComponentPool(CameraComponent::Type);
 }
 
 void CameraComponentManager::_CalcViewMatrix(CC comp)
@@ -21,7 +21,8 @@ void CameraComponentManager::_CalcViewMatrix(CC comp)
 void CameraComponentManager::Update(float dt)
 {
 	for each (CC cComp in *m_Components) {
-		if (!cComp->IsActive()) continue; // will be removed or modified later 
+		if (!cComp->IsActive()) break; 
+
 		cComp->m_UpdatedLastFrame = false;
 		if (cComp->IsDirty() || cComp->Parent()->GetComponent<TransformComponent>()->UpdatedLastFrame()) {
 			_CalcViewMatrix(cComp);
@@ -50,10 +51,11 @@ void CameraComponentManager::Update(float dt)
 void CameraComponentManager::HandleEvent(Event * pEvent)
 {
 	for each (CC tComp in *m_Components) {
+		if (!tComp->IsActive()) break;
 		tComp->HandleEvent(pEvent);
 	}
 }
 
 void CameraComponentManager::Init() {
-	INFECT_MEMORY.ComponentPoolInit<CameraComponent>(CameraComponent::Type);
+	INFECT_MEMORY.ComponentPoolInit<CameraComponent>(CameraComponent::Type, CameraComponent::CACHESIZE);
 }

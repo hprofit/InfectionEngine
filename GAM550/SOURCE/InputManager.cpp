@@ -9,12 +9,13 @@ Author: <Hyoyup Chung>
 #include <iostream>
 
 #define JoystickDeadZone 5500
+//#define DIRECTINPUT_VERSION 0x0800 
 #define SAFERELEASE(p) {if(p) {(p)->Release(); (p)=nullptr;}}
 #define SAFEDELETE(p)  {if(p) {delete (p); (p)=nullptr;}}
 
 InputManager::InputManager()
 	:	m_PrevLeftMouse(false), m_LeftMouse(false), 
-		m_PrevRightMouse(false), m_RightMouse(false), m_isJoystickControlsActive(false) {
+		m_PrevRightMouse(false), m_RightMouse(false) {
 	
 	// initialize mouse pos
 	m_MousePosX = 0;
@@ -29,15 +30,9 @@ InputManager::InputManager()
 	m_CurrentButtonStates = new BYTE[XBOX_NUM_SCANCODES];
 	memset(m_PreviousKeyStates, 0, XBOX_NUM_SCANCODES * sizeof(BYTE));
 	memset(m_CurrentKeyStates, 0, XBOX_NUM_SCANCODES * sizeof(BYTE));
-	//m_StickRightX, m_StickLeftX = 0;
-	//m_StickRightY, m_StickLeftY = 0;
+	m_StickRightX, m_StickLeftX = 0;
+	m_StickRightY, m_StickLeftY = 0;
 
-	// initialize for SDL_GameController
-	/*if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0) {
-		printf( "ERROR: SDL_Init() with SDL_INIT_JOYSTICK flag failed!\n");
-	}*/
-
-	//TETRA_EVENTS.Subscribe(EVENT_INPUT_TOGGLEJOYSTICK, this);
 }
 
 InputManager::~InputManager() {
@@ -49,6 +44,8 @@ InputManager::~InputManager() {
 	delete m_PreviousButtonStates;
 
 	FreeDirectInput();
+	if (IsControllerConnected())
+		VibrateController(0.0f, 0.0f);
 }
 
 void InputManager::FreeDirectInput() {
@@ -65,16 +62,16 @@ void InputManager::FreeDirectInput() {
 
 void InputManager::Init(HINSTANCE hInstance) {
 	// Connecting DirectInput Interface
-	DirectInput8Create(
-		GetModuleHandle(NULL),
+	HRESULT hr;
+	hr = DirectInput8Create(GetModuleHandle(NULL),
 		DIRECTINPUT_VERSION,
 		IID_IDirectInput8,
 		(void**)&DIRX_Interface,
 		NULL);
 	// DirectInput Connection Failed
-	if (DIRX_Interface == NULL) {
+	if (FAILED(hr) || DIRX_Interface == NULL) {
 		MessageBox(NULL, TEXT("DirectInput Interface Connection Failed"),
-					TEXT("InputManager: Init()"), MB_ICONERROR | MB_OK);
+			TEXT("InputManager: Init()"), MB_ICONERROR | MB_OK);
 		return;
 	}
 	// Creating Keyboard Device
@@ -86,7 +83,7 @@ void InputManager::Init(HINSTANCE hInstance) {
 	}
 	else {
 		MessageBox(NULL, TEXT("DirectInput keyboard init failed"),
-					TEXT("InputManager: Init()"), MB_ICONERROR | MB_OK);
+			TEXT("InputManager: Init()"), MB_ICONERROR | MB_OK);
 		return;
 	}
 	// Creating Mouse Device
@@ -101,6 +98,11 @@ void InputManager::Init(HINSTANCE hInstance) {
 			TEXT("InputManager: Init()"), MB_ICONERROR | MB_OK);
 		return;
 	}
+
+	// Creating Joystick Device
+	
+	// no initialization needed for joystick atm
+
 }
 
 void InputManager::Update() {
@@ -129,7 +131,6 @@ void InputManager::Update() {
 	
 	// update PreviousKeyStates
 	memcpy(m_PreviousKeyStates, m_CurrentKeyStates, 256 * sizeof(BYTE));
-	//memcpy(m_PreviousButtonStates, m_CurrentButtonStates, XBOX_NUM_SCANCODES * sizeof(Uint8));
 
 	// get new KeyStates
 	BYTE currentKeyStates[256];
@@ -142,30 +143,31 @@ void InputManager::Update() {
 	// update CurrentKeyStates
 	memcpy(m_CurrentKeyStates, &currentKeyStates, 256 * sizeof(BYTE));
 
-	//// update CurrentButtonStates // TODO Optimization: Ignore all this if joystick is not connected
-	//SDL_GameController *GameController;
-	//GameController = SDL_GameControllerOpen(0);
-	//m_CurrentButtonStates[XBOX_BTN_A] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_A);
-	//m_CurrentButtonStates[XBOX_BTN_B] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_B);
-	//m_CurrentButtonStates[XBOX_BTN_X] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_X);
-	//m_CurrentButtonStates[XBOX_BTN_Y] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_Y);
-	//m_CurrentButtonStates[XBOX_BTN_BACK] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_BACK);
-	//m_CurrentButtonStates[XBOX_BTN_GUIDE] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_GUIDE);
-	//m_CurrentButtonStates[XBOX_BTN_START] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_START);
-	//m_CurrentButtonStates[XBOX_BTN_LEFT_STICK] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_LEFTSTICK);
-	//m_CurrentButtonStates[XBOX_BTN_RIGHT_STICK] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_RIGHTSTICK);
-	//m_CurrentButtonStates[XBOX_BTN_LEFT_SHOULDER] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
-	//m_CurrentButtonStates[XBOX_BTN_RIGHT_SHOULDER] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
-	//m_CurrentButtonStates[XBOX_DPAD_UP] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_DPAD_UP);
-	//m_CurrentButtonStates[XBOX_DPAD_DOWN] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
-	//m_CurrentButtonStates[XBOX_DPAD_LEFT] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_DPAD_LEFT);
-	//m_CurrentButtonStates[XBOX_DPAD_RIGHT] = SDL_GameControllerGetButton(GameController, SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+	// update PreviousButtonStates
+	memcpy(m_PreviousButtonStates, m_CurrentButtonStates, XBOX_NUM_SCANCODES * sizeof(BYTE));
+	// update CurrentButtonStates
+	if (IsControllerConnected()) {
+		m_CurrentButtonStates[XBOX_BTN_A] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_A;
+		m_CurrentButtonStates[XBOX_BTN_B] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_B;
+		m_CurrentButtonStates[XBOX_BTN_X] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_X;
+		m_CurrentButtonStates[XBOX_BTN_Y] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_Y;
+		m_CurrentButtonStates[XBOX_BTN_BACK] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_BACK;
+		m_CurrentButtonStates[XBOX_BTN_START] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_START;
+		m_CurrentButtonStates[XBOX_BTN_LEFT_THUMB] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB;
+		m_CurrentButtonStates[XBOX_BTN_RIGHT_THUMB] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB;
+		m_CurrentButtonStates[XBOX_BTN_LEFT_SHOULDER] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER;
+		m_CurrentButtonStates[XBOX_BTN_RIGHT_SHOULDER] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER;
+		m_CurrentButtonStates[XBOX_DPAD_UP] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP;
+		m_CurrentButtonStates[XBOX_DPAD_DOWN] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN;
+		m_CurrentButtonStates[XBOX_DPAD_LEFT] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT;
+		m_CurrentButtonStates[XBOX_DPAD_RIGHT] = _xbox_state.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT;
 
-	//m_StickLeftX = SDL_GameControllerGetAxis(GameController, SDL_CONTROLLER_AXIS_LEFTX);
-	//m_StickLeftY = SDL_GameControllerGetAxis(GameController, SDL_CONTROLLER_AXIS_LEFTY);
-	//m_StickRightX = SDL_GameControllerGetAxis(GameController, SDL_CONTROLLER_AXIS_RIGHTX);
-	//m_StickRightY = SDL_GameControllerGetAxis(GameController, SDL_CONTROLLER_AXIS_RIGHTY);
-
+		m_StickLeftX = _xbox_state.Gamepad.sThumbLX;
+		m_StickLeftY = _xbox_state.Gamepad.sThumbLY;
+		m_StickRightX = _xbox_state.Gamepad.sThumbRX;
+		m_StickRightY = _xbox_state.Gamepad.sThumbRY;
+	}
+	
 	//FireEvents();
 }
 
@@ -297,36 +299,54 @@ int InputManager::MousePosY() { return m_MousePosY; }
 int InputManager::MousePosRelX() { return m_MousePosRelX; }
 int InputManager::MousePosRelY() { return m_MousePosRelY; }
 
+bool InputManager::IsControllerConnected() {
+	memset(&_xbox_state, 0, sizeof(XINPUT_STATE));
+	DWORD res = XInputGetState(0, &_xbox_state);
+	if (res == ERROR_SUCCESS)
+		return true;
+	memset(m_CurrentButtonStates, 0, XBOX_NUM_SCANCODES * sizeof(BYTE));
+	return false;
+}
 
-bool InputManager::IsKeyPressed(const XBOX_SCANCODE btn) {
+void InputManager::VibrateController(float leftamt, float rightamt) {
+	XINPUT_VIBRATION xinput_vib;
+	memset(&xinput_vib, 0, sizeof(XINPUT_VIBRATION));
+
+	xinput_vib.wLeftMotorSpeed = static_cast<int>(leftamt*65535.0f);
+	xinput_vib.wRightMotorSpeed = static_cast<int>(rightamt*65535.0f);
+
+	XInputSetState(0, &xinput_vib);
+}
+
+bool InputManager::IsButtonPressed(const XBOX_SCANCODE btn) {
 	return m_CurrentButtonStates[btn];
 }
-bool InputManager::IsKeyTriggered(const XBOX_SCANCODE btn) {
+bool InputManager::IsButtonTriggered(const XBOX_SCANCODE btn) {
 	return (m_CurrentButtonStates[btn] == 1 && m_PreviousButtonStates[btn] == 0);
 }
-bool InputManager::IsKeyReleased(const XBOX_SCANCODE btn) {
+bool InputManager::IsButtonReleased(const XBOX_SCANCODE btn) {
 	return (m_CurrentButtonStates[btn] == 0 && m_PreviousButtonStates[btn] == 1);
 }
 
 void InputManager::HandleEvent(Event* pEvent) {
-	switch (pEvent->Type()) {
-		/*case EVENT_INPUT_TOGGLEJOYSTICK: {
-			InputButtonData* pButtonData = pEvent->Data<InputButtonData>();
-			if (pButtonData->m_isTrigger) m_isJoystickControlsActive = !m_isJoystickControlsActive;
-			break;
-		}*/
-	}
+	//switch (pEvent->Type()) {
+	//	/*case EVENT_INPUT_TOGGLEJOYSTICK: {
+	//		InputButtonData* pButtonData = pEvent->Data<InputButtonData>();
+	//		if (pButtonData->m_isTrigger) m_isJoystickControlsActive = !m_isJoystickControlsActive;
+	//		break;
+	//	}*/
+	//}
 }
 
-//Sint16 InputManager::GetLeftAxisX() {
-//	return m_StickLeftX;
-//}
-//Sint16 InputManager::GetLeftAxisY() {
-//	return m_StickLeftY;
-//}
-//Sint16 InputManager::GetRightAxisX() {
-//	return m_StickRightX;
-//}
-//Sint16 InputManager::GetRightAxisY() {
-//	return m_StickRightY;
-//}
+SHORT InputManager::GetLeftAxisX() {
+	return m_StickLeftX;
+}
+SHORT InputManager::GetLeftAxisY() {
+	return m_StickLeftY;
+}
+SHORT InputManager::GetRightAxisX() {
+	return m_StickRightX;
+}
+SHORT InputManager::GetRightAxisY() {
+	return m_StickRightY;
+}

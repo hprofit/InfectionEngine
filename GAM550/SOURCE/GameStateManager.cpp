@@ -21,131 +21,25 @@ MSG GameStateManager::Update() {
 	// this struct holds Windows event messages
 	MSG msg;
 
-
-
-
-
-
+#pragma region Test Stuff
+  //// Phy Test 
+  //PhyTest tester;
+  //tester.PhyTest_Setup();
 
 
 	SeedRand(0);
 
-	GameObject* pGOSkyBox = INFECT_GOM.SpawnGameObject();
-	MeshComponent* pMeshComp = (MeshComponent*)INFECT_MEMORY.GetNewComponent(MeshComponent::Type);
-	pMeshComp->SetScene(SKYBOX_PRIMITIVE);
-	pMeshComp->SetDiffuseTexture("worldTexture2.jpg");
-	pMeshComp->SetIsLit(false);
+#pragma endregion
 
-	TransformComponent* pTransComp = (TransformComponent*)INFECT_MEMORY.GetNewComponent(TransformComponent::Type);
-	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
-	//pTransComp->SetAngleX(-90);
-	//pTransComp->SetAngleZ(45);
-	//pTransComp->SetScale(500.0f, 500.0f, 500.0f);
-	pTransComp->SetScale(500.0f, 500.0f, 500.0f);
-
-	pGOSkyBox->AddComponent(pMeshComp);
-	pGOSkyBox->AddComponent(pTransComp);
-	pGOSkyBox->LateInitialize();
-
-
-	GameObject* pGO = INFECT_GOM.SpawnGameObject();
-	pMeshComp = (MeshComponent*)INFECT_MEMORY.GetNewComponent(MeshComponent::Type);
-	//pMeshComp->SetScene("Suzy.fbx");
-	//pMeshComp->SetScene(PLANE_PRIMITIVE);
-	//pMeshComp->SetScene(CUBE_PRIMITIVE);
-	//pMeshComp->SetScene(SKYBOX_PRIMITIVE);
-	pMeshComp->SetScene(SPHERE_PRIMITIVE);
-	//pMeshComp->SetScene(POLAR_SPHERE_PRIMITIVE);
-	//pMeshComp->SetScene("test");
-	//pMeshComp->SetDiffuseTexture("worldTexture2.jpg");
-
-	pTransComp = (TransformComponent*)INFECT_MEMORY.GetNewComponent(TransformComponent::Type);
-	pTransComp->SetPosition(Vector3D(0, 0, 0, 1));
-	//pTransComp->SetAngleX(-90);
-	//pTransComp->SetAngleZ(45);
-	//pTransComp->SetScale(500.0f, 500.0f, 500.0f);
-	pTransComp->SetScale(10.0f, 10.0f, 10.0f);
-
-	pGO->AddComponent(pMeshComp);
-	pGO->AddComponent(pTransComp);
-	pGO->LateInitialize();
-
-	GameObject* pGOCamera = INFECT_GOM.SpawnGameObject();
-	TransformComponent* pTransComp2 = (TransformComponent*)INFECT_MEMORY.GetNewComponent(TransformComponent::Type);
-	pTransComp2->SetPosition(Vector3D(0, 0, 50, 1));
-
-	CameraComponent * pCamComp = (CameraComponent*)INFECT_MEMORY.GetNewComponent(CameraComponent::Type);
-	pGOCamera->AddComponent(pTransComp2);
-	pGOCamera->AddComponent(pCamComp);
-	pGOCamera->LateInitialize();
-
-	GameObject* pGOLight = INFECT_GOM.SpawnGameObject();
-	PointLightComponent *pLight = (PointLightComponent*)INFECT_MEMORY.GetNewComponent(PointLightComponent::Type);
-	TransformComponent* pTransComp3 = (TransformComponent*)INFECT_MEMORY.GetNewComponent(TransformComponent::Type);
-	pTransComp3->SetPosition(Vector3D(0, 10, 10, 1));
-	pGOLight->AddComponent(pLight);
-	pGOLight->AddComponent(pTransComp3);
-	pGOLight->LateInitialize();
-
-
-
-
-
-/*
-	TransformComponentManager* tcm = static_cast<TransformComponentManager*>(INFECT_CMC.GetCM(0));
-	tcm->Register(pGOSkyBox->GetComponent<TransformComponent>());
-	tcm->Register(pGO->GetComponent<TransformComponent>());
-	tcm->Register(pGOCamera->GetComponent<TransformComponent>());
-	tcm->Register(pGOLight->GetComponent<TransformComponent>());
-	CameraComponentManager* ccm = static_cast<CameraComponentManager*>(INFECT_CMC.GetCM(1));
-	ccm->Register(pGOCamera->GetComponent<CameraComponent>());
-	PointLightComponentManager* plcm = static_cast<PointLightComponentManager*>(INFECT_CMC.GetCM(2));
-	plcm->Register(pGOLight->GetComponent<PointLightComponent>());
-	MeshComponentManager* mcm = static_cast<MeshComponentManager*>(INFECT_CMC.GetCM(3));
-	mcm->Register(pGOSkyBox->GetComponent<MeshComponent>());
-	mcm->Register(pGO->GetComponent<MeshComponent>());
-*/
-
-
-
-
-	GameObject* pGOFOR[8];
-	Vector3D pos[8] = {
-		Vector3D(25, 25, 25, 1),
-		Vector3D(-25, 25, 25, 1),
-		Vector3D(25, -25, 25, 1),
-		Vector3D(-25, -25, 25, 1),
-
-		Vector3D(25, 25, -25, 1),
-		Vector3D(-25, 25, -25, 1),
-		Vector3D(25, -25, -25, 1),
-		Vector3D(-25, -25, -25, 1)
-	};
-	for (int i = 0; i<8; ++i)
-	{
-		pGOFOR[i] = INFECT_GOM.SpawnGameObject();
-		pMeshComp = (MeshComponent*)INFECT_MEMORY.GetNewComponent(MeshComponent::Type);
-		pMeshComp->SetScene(CUBE_PRIMITIVE);
-		pMeshComp->SetIsLit(false);
-
-		pTransComp = (TransformComponent*)INFECT_MEMORY.GetNewComponent(TransformComponent::Type);
-		pTransComp->SetPosition(pos[i]);
-		pTransComp->SetScale(1.0f, 1.0f, 1.0f);
-
-		pGOFOR[i]->AddComponent(pMeshComp);
-		pGOFOR[i]->AddComponent(pTransComp);
-		pGOFOR[i]->LateInitialize();
-
-		//tcm->Register(pGOFOR[i]->GetComponent<TransformComponent>());
-		//mcm->Register(pGOFOR[i]->GetComponent<MeshComponent>());
-	}
-
+	INFECT_LEVEL.LoadLevel(0); // Loading First Level
 
 	while (m_currentState != GameState::QUIT) {
 
 		m_currentState = GameState::CURRENT_LEVEL;
 		m_nextState = GameState::CURRENT_LEVEL;
 		
+		INFECT_THREAD_JOBS.AddNewJob(new StartSimulationCommand(*INFECT_THREAD_JOBS.GetThreadContainer<SimulationThreadContainer>(ThreadType::SimThread)));
+
 		// Game loop
 		// wait for the next message in the queue, store the result in 'msg'
 		while (m_currentState == m_nextState) {
@@ -156,56 +50,10 @@ MSG GameStateManager::Update() {
 				DispatchMessage(&msg);
 			}
 
-			Infect::FrameStart();
-
-			TransformComponent* tcpCamera = pGOCamera->GetComponent<TransformComponent>();
-			TransformComponent* tcpLight = pGOLight->GetComponent<TransformComponent>();
-			if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT) || INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
-				tcpLight->Move(Infect::GetFrameTime() *30.f*tcpLight->Right());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
-				tcpLight->Move(Infect::GetFrameTime() *-30.f*tcpLight->Right());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_UP)) {
-				tcpLight->Move(Infect::GetFrameTime() *30.f * tcpLight->Up());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
-				tcpLight->Move(Infect::GetFrameTime() *-30.f*tcpLight->Up());
-			}
-
-
-			int xMove = -INFECT_INPUT.MousePosX() / 4;
-			int yMove = -INFECT_INPUT.MousePosY() / 4;
-			if (xMove != 0)
-				tcpCamera->RotateY(float(xMove));
-			if (yMove != 0)
-				tcpCamera->RotateX(float(yMove));
-
-			if (INFECT_INPUT.IsKeyPressed(DIK_D)) {
-				tcpCamera->Move(Infect::GetFrameTime() *30.f*tcpCamera->Right());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_A)) {
-				tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Right());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_W)) {
-				tcpCamera->Move(Infect::GetFrameTime() *30.f * tcpCamera->Forward());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_S)) {
-				tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Forward());
-			}
-			if (INFECT_INPUT.IsKeyPressed(DIK_SPACE)) {
-				tcpCamera->SetPosition(Vector3D(0, 0, 50, 1));
-			}
-			// alt+f4
-			if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {
-				INFECT_GAME_STATE.SetGameState(GameState::QUIT);
-			}
-			pGOSkyBox->GetComponent<TransformComponent>()->SetPosition(tcpCamera->WorldPosition());
-			pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);
-			//pGO->GetComponent<TransformComponent>()->RotateZ(Infect::GetFrameTime() * 25.0f);
-			Infect::Update(Infect::GetFrameTime());			// Game loop
-
-			Infect::FrameEnd();
+			//Infect::FrameStart();
+			//Infect::Update(Infect::GetFrameTime());			// Game loop
+			//tester.PhyTest_Update();
+			//Infect::FrameEnd();
 		}
 
 		m_currentState = m_nextState;

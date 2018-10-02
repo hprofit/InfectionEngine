@@ -24,5 +24,11 @@ void RigidBodyComponent::HandleEvent(Event * pEvent)
 
 void RigidBodyComponent::LateInitialize()
 {
-	//INFECT_GOM.RegisterCamera(mp_Parent);
+	//FECT_GOM.RegisterCamera(mp_Parent);
+}
+
+void RigidBodyComponent::Update(float dt)
+{
+  // calculate physics
+  m_RigidBody.integrate(dt);
 }

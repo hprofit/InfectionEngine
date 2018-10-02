@@ -23,6 +23,15 @@ protected:
 	bool m_IsActive;
 public:
 	static const ComponentType Type = ComponentType::NUM_COMPONENTS;
+	static const unsigned CACHESIZE = 50;
+
+	Component() :
+		m_GUID(0),
+		mp_Parent(nullptr),
+		m_IsDirty(false),
+		m_UpdatedLastFrame(false),
+		m_IsActive(false)
+	{};
 
 	Component(InfectGUID guid) :
 		m_GUID(guid),
@@ -39,8 +48,7 @@ public:
 	virtual void LateUpdate(float dt) {};
 	virtual void Serialize(const json& j) = 0;
 	virtual void Deactivate() {};
-	//virtual void Override(const json& j) {};
-	virtual void Override() {};
+	virtual void Override(const json& j) {};
 	virtual void HandleEvent(Event* pEvent) {}
 
 	virtual ComponentType GetType() const { return Type; }
@@ -56,6 +64,10 @@ public:
 	inline bool UpdatedLastFrame() const { return m_UpdatedLastFrame; }
 	inline void SetActive(bool flag) { m_IsActive = flag; }
 	inline bool IsActive() const { return m_IsActive; }
+	//inline bool operator==(const Component& comp) const { return this->ID() == comp.ID(); }
 };
-
+bool operator== (Component & lhs, Component & rhs)
+{
+	return lhs.ID() == rhs.ID();
+}
 #endif

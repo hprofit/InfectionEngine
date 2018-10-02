@@ -152,7 +152,9 @@ void Matrix3x3::setInverse(const Matrix3x3 &m)
 
 Matrix3x3 Matrix3x3::inverse() const
 {
-  Matrix3x3 result;
+  Matrix3x3 result = Matrix3x3(0.f, 0.f, 0.f,
+    0.f, 0.f, 0.f,
+    0.f, 0.f, 0.f);;
   result.setInverse(*this);
   return result;
 }
@@ -164,7 +166,9 @@ void Matrix3x3::invert()
 
 Matrix3x3 Matrix3x3::linearInterpolate(const Matrix3x3& a, const Matrix3x3& b, real prop)
 {
-  Matrix3x3 result;
+  Matrix3x3 result = Matrix3x3(0.f, 0.f, 0.f,
+    0.f, 0.f, 0.f,
+    0.f, 0.f, 0.f);
   for (unsigned i = 0; i < 3; i++) {
     for (unsigned j = 0; j < 3; j++)
     {
@@ -189,7 +193,9 @@ void Matrix3x3::setTranspose(const Matrix3x3 &m)
 
 Matrix3x3 Matrix3x3::transpose() const
 {
-  Matrix3x3 result;
+  Matrix3x3 result = Matrix3x3(0.f, 0.f, 0.f,
+    0.f, 0.f, 0.f,
+    0.f, 0.f, 0.f);;
   result.setTranspose(*this);
   return result;
 }

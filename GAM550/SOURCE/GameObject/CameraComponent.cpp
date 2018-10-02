@@ -28,15 +28,17 @@ void CameraComponent::Deactivate() {
 
 void CameraComponent::Serialize(const json& j)
 {
-
+	m_fov = ParseFloat(j, "fov");
 }
+
+void Override(const json& j){}
 
 void CameraComponent::HandleEvent(Event * pEvent)
 {
-	switch (pEvent->Type()) {
-	default:
-		break;
-	}
+	//switch (pEvent->Type()) {
+	//default:
+	//	break;
+	//}
 }
 
 bool CameraComponent::LeftDepthGreaterThanRight(GameObject * left, GameObject * right)

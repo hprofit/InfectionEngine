@@ -19,7 +19,31 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SOURCE\AI\BrainComponent.cpp" />
+    <ClCompile Include="SOURCE\AI\BrainComponentManager.cpp" />
+    <ClCompile Include="SOURCE\AI\BT\Behavior.cpp" />
+    <ClCompile Include="SOURCE\AI\BT\BehaviorTree.cpp" />
+    <ClCompile Include="SOURCE\AI\FSM\AI_Combat.cpp" />
+    <ClCompile Include="SOURCE\AI\FSM\AI_Idle.cpp" />
+    <ClCompile Include="SOURCE\AI\FSM\AI_Move.cpp" />
+    <ClCompile Include="SOURCE\AI\FSM\AI_StateFactory.cpp" />
     <ClCompile Include="SOURCE\AudioManager.cpp" />
+    <ClCompile Include="SOURCE\BackBufferRenderTarget.cpp" />
+    <ClCompile Include="SOURCE\Command.cpp" />
+    <ClCompile Include="SOURCE\ConstantBuffer.cpp" />
+    <ClCompile Include="SOURCE\GameObject\CollisionComponent.cpp" />
+    <ClCompile Include="SOURCE\GameObject\CollisionComponentManager.cpp" />
+    <ClCompile Include="SOURCE\GameObject\CollisionTriggerComponent.cpp" />
+    <ClCompile Include="SOURCE\GameObject\CollisionTriggerComponentManager.cpp" />
+    <ClCompile Include="SOURCE\GameObject\RigidBodyComponent.cpp" />
+    <ClCompile Include="SOURCE\GameObject\RigidBodyComponentManager.cpp" />
+    <ClCompile Include="SOURCE\LevelManager.cpp" />
+    <ClCompile Include="SOURCE\RenderTarget.cpp" />
+    <ClCompile Include="SOURCE\RenderThreadContainer.cpp" />
+    <ClCompile Include="SOURCE\Shader.cpp" />
+    <ClCompile Include="SOURCE\ShaderProgram.cpp" />
+    <ClCompile Include="SOURCE\SimulationThreadContainer.cpp" />
+    <ClCompile Include="SOURCE\ThreadCommandList.cpp" />
     <ClCompile Include="SOURCE\Cube.cpp" />
     <ClCompile Include="SOURCE\D3DHandler.cpp" />
     <ClCompile Include="SOURCE\Event.cpp" />
@@ -42,6 +66,7 @@
     <ClCompile Include="SOURCE\InputManager.cpp" />
     <ClCompile Include="SOURCE\GameStateManager.cpp" />
     <ClCompile Include="SOURCE\InfectAPI.cpp" />
+    <ClCompile Include="SOURCE\JobManager.cpp" />
     <ClCompile Include="SOURCE\JsonReader.cpp" />
     <ClCompile Include="SOURCE\main.cpp" />
     <ClCompile Include="SOURCE\Math\MathFunctions.cpp" />
@@ -52,7 +77,11 @@
     <ClCompile Include="SOURCE\Math\Vector3D.cpp" />
     <ClCompile Include="SOURCE\MemoryManager.cpp" />
     <ClCompile Include="SOURCE\Mesh.cpp" />
+    <ClCompile Include="SOURCE\Physics\collide_coarse.cpp" />
+    <ClCompile Include="SOURCE\Physics\collide_fine.cpp" />
+    <ClCompile Include="SOURCE\Physics\contacts.cpp" />
     <ClCompile Include="SOURCE\Physics\particle.cpp" />
+    <ClCompile Include="SOURCE\Physics\PhysicsTest.cpp" />
     <ClCompile Include="SOURCE\Physics\physics_math.cpp" />
     <ClCompile Include="SOURCE\Physics\Quaternion.cpp" />
     <ClCompile Include="SOURCE\Physics\RigidBody.cpp" />
@@ -70,8 +99,35 @@
     <ClCompile Include="SOURCE\SubscriberTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SOURCE\AI\BrainComponent.h" />
+    <ClInclude Include="SOURCE\AI\BrainComponentManager.h" />
+    <ClInclude Include="SOURCE\AI\BT\Behavior.h" />
+    <ClInclude Include="SOURCE\AI\BT\BehaviorTree.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_Combat.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_Idle.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_Move.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_State.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_StateFactory.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_StateTypeNames.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_StateTypes.h" />
     <ClInclude Include="SOURCE\AudioManager.h" />
+    <ClInclude Include="SOURCE\BackBufferRenderTarget.h" />
     <ClInclude Include="SOURCE\Color.h" />
+    <ClInclude Include="SOURCE\Command.h" />
+    <ClInclude Include="SOURCE\GameObject\CollisionComponent.h" />
+    <ClInclude Include="SOURCE\GameObject\CollisionComponentManager.h" />
+    <ClInclude Include="SOURCE\GameObject\CollisionTriggerComponent.h" />
+    <ClInclude Include="SOURCE\GameObject\CollisionTriggerComponentManager.h" />
+    <ClInclude Include="SOURCE\GameObject\RigidBodyComponent.h" />
+    <ClInclude Include="SOURCE\GameObject\RigidBodyComponentManager.h" />
+    <ClInclude Include="SOURCE\LevelManager.h" />
+    <ClInclude Include="SOURCE\ConstantBuffer.h" />
+    <ClInclude Include="SOURCE\RenderTarget.h" />
+    <ClInclude Include="SOURCE\RenderThreadContainer.h" />
+    <ClInclude Include="SOURCE\Shader.h" />
+    <ClInclude Include="SOURCE\ShaderProgram.h" />
+    <ClInclude Include="SOURCE\SimulationThreadContainer.h" />
+    <ClInclude Include="SOURCE\ThreadCommandList.h" />
     <ClInclude Include="SOURCE\Cube.h" />
     <ClInclude Include="SOURCE\D3DHandler.h" />
     <ClInclude Include="SOURCE\Event.h" />
@@ -104,6 +160,7 @@
     <ClInclude Include="SOURCE\GUID.h" />
     <ClInclude Include="SOURCE\InputManager.h" />
     <ClInclude Include="SOURCE\InfectAPI.h" />
+    <ClInclude Include="SOURCE\JobManager.h" />
     <ClInclude Include="SOURCE\JsonReader.h" />
     <ClInclude Include="SOURCE\Math\MathDefs.h" />
     <ClInclude Include="SOURCE\Math\MathFunctions.h" />
@@ -114,7 +171,11 @@
     <ClInclude Include="SOURCE\Math\Vector3D.h" />
     <ClInclude Include="SOURCE\MemoryManager.h" />
     <ClInclude Include="SOURCE\Mesh.h" />
+    <ClInclude Include="SOURCE\Physics\collide_coarse.h" />
+    <ClInclude Include="SOURCE\Physics\collide_fine.h" />
+    <ClInclude Include="SOURCE\Physics\contacts.h" />
     <ClInclude Include="SOURCE\Physics\particle.h" />
+    <ClInclude Include="SOURCE\Physics\PhysicsTest.h" />
     <ClInclude Include="SOURCE\Physics\physics_math.h" />
     <ClInclude Include="SOURCE\Plane.h" />
     <ClInclude Include="SOURCE\RenderManager.h" />
@@ -124,6 +185,8 @@
     <ClInclude Include="SOURCE\Sphere.h" />
     <ClInclude Include="SOURCE\Subscriber.h" />
     <ClInclude Include="SOURCE\SubscriberTracker.h" />
+    <ClInclude Include="SOURCE\ThreadContainer.h" />
+    <ClInclude Include="SOURCE\ThreadType.h" />
     <ClInclude Include="SOURCE\WindowProc.h" />
     <ClInclude Include="SOURCE\WindowSettings.h" />
   </ItemGroup>

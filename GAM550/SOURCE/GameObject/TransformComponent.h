@@ -32,6 +32,7 @@ protected:
 	Vector3D m_up;							// Up vector of this transform
 
 public:
+	static const unsigned CACHESIZE = 300;
 	static const ComponentType Type = ComponentType::C_Transform;
 	virtual ComponentType GetType() const { return Type; }
 
@@ -43,7 +44,7 @@ public:
 	virtual void Update(float dt) {};
 	virtual void LateUpdate(float dt) {};
 	virtual void Serialize(const json& j);
-	virtual void Override();
+	virtual void Override(const json& j);
 
 	virtual void HandleEvent(Event * p_event);
 

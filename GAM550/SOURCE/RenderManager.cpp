@@ -1,3 +1,10 @@
+/* Start Header -------------------------------------------------------
+Copyright (C) 2018 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+Author: <Holden Profit>
+- End Header --------------------------------------------------------*/
+
 #include "Stdafx.h"
 
 // this is the main message handler for the program
@@ -9,6 +16,8 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 		// this message is read when the window is closed
 	case WM_DESTROY:
 	{
+		INFECT_THREAD_JOBS.AddNewJob(new RenderTerminateTerminate(*INFECT_THREAD_JOBS.GetThreadContainer<RenderThreadContainer>(ThreadType::RenderThread)));
+		INFECT_THREAD_JOBS.AddNewJob(new SimulationTerminateTerminate(*INFECT_THREAD_JOBS.GetThreadContainer<SimulationThreadContainer>(ThreadType::SimThread)));
 		INFECT_GAME_STATE.SetGameState(GameState::QUIT);
 		// close the application entirely
 		PostQuitMessage(0);
@@ -26,19 +35,29 @@ bool RenderManager::_GameObjectHasRenderableComponent(const GameObject & gameObj
 }
 
 RenderManager::RenderManager() :
-	m_ClearColor(Color(0.1f, 0.1f, 0.1f, 1)),
-	mp_D3D(new D3DHandler())
+	m_ClearColor(Color(0.0f, 0.0f, 0.0f, 1)),
+	mp_D3D(new D3DHandler()),
+	m_RenderMode(RenderMode::WorldPos)
 {
 }
 
 RenderManager::~RenderManager()
 {
-	if (mp_VS)
-		mp_VS->Release();
-	if (mp_PS)
-		mp_PS->Release();
-	if (mp_Cbuffer)
-		mp_Cbuffer->Release();
+	if (mp_ShaderProgramDeferred) {
+		mp_ShaderProgramDeferred->Release();
+		delete mp_ShaderProgramDeferred;
+		mp_ShaderProgramDeferred = nullptr;
+	}
+	if (mp_ShaderProgramQuad) {
+		mp_ShaderProgramQuad->Release();
+		delete mp_ShaderProgramQuad;
+		mp_ShaderProgramQuad = nullptr;
+	}
+	if (mp_ShaderProgramDeferredFinal) {
+		mp_ShaderProgramDeferredFinal->Release();
+		delete mp_ShaderProgramDeferredFinal;
+		mp_ShaderProgramDeferredFinal = nullptr;
+	}
 
 	// Show the mouse cursor.
 	ShowCursor(true);
@@ -71,17 +90,145 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 {
 	m_WindowSettings = settings;
 	m_hWnd = mp_D3D->InitWindow(hInstance, nCmdShow, settings);
-	return mp_D3D->InitD3D(m_hWnd, settings);
+	bool result = mp_D3D->InitD3D(m_hWnd, settings);
+
+	if (result)
+	{
+		mp_ShaderProgramDeferred = new ShaderProgram<MainCB>();
+		mp_ShaderProgramQuad = new ShaderProgram<QuadCB>();
+		mp_ShaderProgramDeferredFinal = new ShaderProgram<DeferredFinalCB>();
+	}
+	return result;
 }
 
-void RenderManager::FrameStart(void)
+void RenderManager::BindBackBuffer()
 {
-	// Clear the back buffer and then the depth buffer
-	mp_D3D->ClearBackBuffer(m_ClearColor);
-	mp_D3D->ClearDepthBuffer();
+	mp_D3D->BindBackBuffer();
 }
 
-void RenderManager::FrameEnd(void)
+void RenderManager::PrepDeferredPass()
+{
+	mp_D3D->BindDeferredBuffer();
+	mp_ShaderProgramDeferred->BindShader();
+
+	mp_D3D->EnableDepth();
+	mp_D3D->DisableAlpha();
+}
+
+void RenderManager::BindSecondPassBuffer()
+{
+	mp_D3D->BindSecondPassBuffer();
+}
+
+void RenderManager::PrepDeferredFinal()
+{
+	mp_ShaderProgramDeferredFinal->BindShader();
+	ID3D11ShaderResourceView** pTextures = mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews();
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, mp_D3D->GetDeferredRenderTarget()->GetNumViews(), pTextures);
+	
+	mp_D3D->DisableDepth();
+	mp_D3D->EnableAlpha();
+}
+
+// For Debug only
+void RenderManager::RenderDeferredBuffer()
+{
+	mp_D3D->BindBackBuffer();
+	mp_ShaderProgramQuad->BindShader();
+	mp_D3D->DisableDepth();
+	mp_D3D->DisableAlpha();
+	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
+	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
+	cb.ModelMatrix = Matrix4x4::Transpose(M);
+	cb.Ambient = Color(1, 1, 1, 1);
+	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+	
+	switch (m_RenderMode) {
+		case RenderMode::Final:
+		{
+			mp_D3D->mp_DeviceContext->PSSetShaderResources(
+				0,
+				mp_D3D->GetDeferredRenderTarget()->GetNumViews(),
+				mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()
+			);
+			break;
+		}
+		default:
+		{
+			mp_D3D->mp_DeviceContext->PSSetShaderResources(
+				0,
+				1,
+				&mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()[m_RenderMode]
+			);
+			break;
+		}
+	}
+
+	// set the new values for the constant buffer
+	mp_ShaderProgramQuad->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+	// do 3D rendering on the back buffer here
+	RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+}
+
+void RenderManager::RenderDeferredBufferAmbientOnly()
+{
+	mp_ShaderProgramQuad->BindShader();
+	mp_D3D->DisableDepth();
+	mp_D3D->DisableAlpha();
+
+	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
+	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
+	cb.ModelMatrix = Matrix4x4::Transpose(M);
+	cb.Ambient = Color(0.6f, 0.6f, 0.6f, 1);
+	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+
+	// set the new values for the constant buffer
+	mp_ShaderProgramQuad->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(
+		0,
+		1,
+		&mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()[RenderMode::Diffuse]
+	);
+
+	// do 3D rendering on the back buffer here
+	RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+}
+
+void RenderManager::RenderSecondPassBuffer()
+{
+	mp_ShaderProgramQuad->BindShader();
+	mp_D3D->DisableDepth();
+	mp_D3D->DisableAlpha();
+
+	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
+	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
+	cb.ModelMatrix = Matrix4x4::Transpose(M);
+	cb.Ambient = Color(0.6f, 0.6f, 0.6f, 1);
+	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+
+	// set the new values for the constant buffer
+	mp_ShaderProgramQuad->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(
+		0,
+		1,
+		&mp_D3D->GetSecondPassRenderTarget()->GetShaderResourceViews()[0]
+	);
+
+	// do 3D rendering on the back buffer here
+	RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+}
+
+void RenderManager::ClearScreen(void)
+{
+	mp_D3D->ClearBackBuffer(m_ClearColor);
+	mp_D3D->ClearDeferredBuffer(m_ClearColor);
+	mp_D3D->ClearSecondPassBuffer(m_ClearColor);
+}
+
+void RenderManager::PresentFrameToScreen(void)
 {
 	mp_D3D->PresentBuffer(m_WindowSettings.VSync);
 }
@@ -96,8 +243,7 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 
 	Matrix4x4 M = pGO.GetComponent<TransformComponent>()->GetTransform();
 	Matrix4x4 N = Matrix4x4::Transpose3x3(Matrix4x4::Inverse3x3(M));
-	Matrix4x4 I = Matrix4x4::Transpose(N) * M;
-	ConstantBuffer cb;
+	MainCB& cb = mp_ShaderProgramDeferred->CB()->BufferData();
 	cb.MatFinal = pCamComp->GetCameraMatrix() * pCamComp->GetViewMatrix() * M;
 	cb.MatFinal.Transpose();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
@@ -105,21 +251,53 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	cb.CastShadows = pMeshComp->CastShadows();
 	cb.ReceiveShadows = pMeshComp->ReceiveShadows();
 	cb.IsLit = pMeshComp->IsLit();
-	cb.Textured = pMeshComp->IsTextured();
-	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();// Vector3D(camPos.w, camPos.z, camPos.y, camPos.x);
-	// TODO: THIS IS A HACK, REMOVE IT
-	cb.LightPosition = INFECT_GOM.GetGameObject(2)->GetComponent<TransformComponent>()->WorldPosition();
+	cb.TextureFlags = pMeshComp->TexturedFlags();
+	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
 
-	mp_D3D->mp_DeviceContext->VSSetConstantBuffers(0, 1, &mp_Cbuffer);
-	mp_D3D->mp_DeviceContext->PSSetConstantBuffers(0, 1, &mp_Cbuffer);
-	ID3D11ShaderResourceView* ptex = pMeshComp->GetDiffuseTexture();
-	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &ptex);
+	mp_ShaderProgramDeferred->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+	// set the new values for the constant buffer
+	mp_ShaderProgramDeferred->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+	//ID3D11ShaderResourceView* ptex = pMeshComp->GetDiffuseTexture();
+	//mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &ptex);
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(0,
+		TextureType::NUM_TEXTURE_TYPES,
+		pMeshComp->GetTextures()
+	);
+
+	// do 3D rendering to the currently bound buffer here
+	RenderScene(pMeshComp->GetScene());
+}
+
+void RenderManager::RenderLight(const GameObject & pGOCamera, const GameObject & pGOLight)
+{
+	const CameraComponent * pCamComp = pGOCamera.GetComponent<CameraComponent>();
+	const TransformComponent * pTransComp = pGOLight.GetComponent<TransformComponent>();
+	const PointLightComponent * pPointLightComp = pGOLight.GetComponent<PointLightComponent>();
+	Matrix4x4 M = pTransComp->GetTransform();
+	DeferredFinalCB& cb = mp_ShaderProgramDeferredFinal->CB()->BufferData();
+
+	cb.MatFinal = pCamComp->GetCameraMatrix() * pCamComp->GetViewMatrix() * M;
+	cb.MatFinal.Transpose();
+	cb.ModelMatrix = Matrix4x4::Transpose(M);
+	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
+	cb.LightPosition = pTransComp->WorldPosition();
+	cb.LightPosition.w = pPointLightComp->LightA();
+	cb.LightColor = pPointLightComp->GetColor();
+	cb.LightColor.a = pPointLightComp->LightB();
+	cb.LIDHW.x = pPointLightComp->Intensity();
+	cb.LIDHW.y = pPointLightComp->Distance();
+	cb.LIDHW.z = float(m_WindowSettings.Height);
+	cb.LIDHW.w = float(m_WindowSettings.Width);
+	cb.Ambient = Color(0.4f, 0.4f, 0.4f, 1);
+
+	mp_ShaderProgramDeferredFinal->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 
 	// set the new values for the constant buffer
-	mp_D3D->mp_DeviceContext->UpdateSubresource(mp_Cbuffer, 0, 0, &cb, 0, 0);
+	mp_ShaderProgramDeferredFinal->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
 
-	// do 3D rendering on the back buffer here
-	RenderScene(pMeshComp->GetScene());
+	// do 3D rendering to the currently bound buffer here
+	RenderScene(pPointLightComp->GetScene());
 }
 
 void RenderManager::RenderScene(const Scene * pScene)
@@ -137,40 +315,31 @@ void RenderManager::RenderScene(const Scene * pScene)
 	}
 }
 
-bool RenderManager::LoadShader()
+bool RenderManager::LoadShader(std::string shaderName)
 {
-	// load and compile the shaders
-	int flag = D3D10_SHADER_WARNINGS_ARE_ERRORS;// | D3D10_SHADER_OPTIMIZATION_LEVEL3;
+	std::string filePath = INFECT_GAME_CONFIG.ShadersDir() + shaderName;
 
-	HRESULT result = D3DCompileFromFile(L"ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, flag, &mp_VSBlob, &mp_Errors);
-	//D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "VShader", "vs_4_0", flag, 0, 0, &mp_VSBlob, &mp_Errors, 0);
-	if (FAILED(result)) {
-		MessageBox(NULL, "The vertex shader failed to compile.", "Error", MB_OK);
-		return false;
+	// TODO: Made this less shitty
+	switch (mShaderCount) {
+		case 0:
+			mp_ShaderProgramDeferred->Initialize(mp_D3D->mp_Device, filePath);
+			break;
+		case 1:
+			mp_ShaderProgramQuad->Initialize(mp_D3D->mp_Device, filePath);
+			break;
+		case 2:
+			mp_ShaderProgramDeferredFinal->Initialize(mp_D3D->mp_Device, filePath);
+		default:
+			break;
 	}
-
-	result = D3DCompileFromFile(L"ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, flag, &mp_PSBlob, &mp_Errors);
-	//D3DX11CompileFromFile("ASSETS/SHADERS/base3D.shader", 0, 0, "PShader", "ps_4_0", flag, 0, 0, &mp_PSBlob, &mp_Errors, 0);
-	if (FAILED(result)) {
-		MessageBox(NULL, "The pixel shader failed to compile.", "Error", MB_OK);
-		return false;
-	}
-
-	// Encapsulate both shaders into shader objects
-	mp_D3D->mp_Device->CreateVertexShader(mp_VSBlob->GetBufferPointer(), mp_VSBlob->GetBufferSize(), NULL, &mp_VS);
-	mp_D3D->mp_Device->CreatePixelShader(mp_PSBlob->GetBufferPointer(), mp_PSBlob->GetBufferSize(), NULL, &mp_PS);
-
-	mp_D3D->mp_DeviceContext->VSSetShader(mp_VS, 0, 0);
-	mp_D3D->mp_DeviceContext->PSSetShader(mp_PS, 0, 0);
-
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(bd));
-
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(ConstantBuffer) + (16 - (sizeof(ConstantBuffer) % 16));
-	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-
-	mp_D3D->mp_Device->CreateBuffer(&bd, NULL, &mp_Cbuffer);
+	++mShaderCount;
 
 	return true;
+}
+
+void RenderManager::NextRenderMode()
+{
+	m_RenderMode = RenderMode(int(m_RenderMode) + 1);
+	if (m_RenderMode >= RenderMode::NUM_MODES)
+		m_RenderMode = RenderMode(0);
 }

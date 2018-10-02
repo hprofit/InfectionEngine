@@ -10,9 +10,10 @@ Author: <Holden Profit>
 #ifndef SPHERE_MESH_H
 #define SPHERE_MESH_H
 
-#define DEFAULT_SPHERE_SIZE 20
+#define DEFAULT_SPHERE_SIZE 40
 #define SPHERE_PRIMITIVE "Sphere"
-#define POLAR_SPHERE_PRIMITIVE "PolarSphere"
+#define SIMPLE_SPHERE_PRIMITIVE "SimpleSphere"
+//#define POLAR_SPHERE_PRIMITIVE "PolarSphere"
 
 class Sphere : 
 	public Mesh
@@ -30,5 +31,4 @@ public:
 	~PolarSphere();
 };
 
-#undef DEFAULT_SPHERE_SIZE
 #endif

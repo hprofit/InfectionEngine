@@ -16,6 +16,8 @@ class CM;
 class ComponentManagerContainer :
 	public Subscriber
 {
+private:
+	//bool m_isQuitSeq = false;
 protected:
 	std::vector<CM*> m_CMngrs;
 
@@ -29,7 +31,7 @@ public:
 	void RegisterCompMngr(CM* cMngr);
 
 	// TODO: Get rid of this
-	CM* GetCM(int idx) { return m_CMngrs[idx]; }
+	//CM* GetCM(int idx) { return m_CMngrs[idx]; }
 };
 
 #endif

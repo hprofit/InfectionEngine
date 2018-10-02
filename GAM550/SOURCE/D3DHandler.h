@@ -16,13 +16,11 @@ protected:
 	IDXGISwapChain *mp_SwapChain;
 	ID3D11Device *mp_Device;
 	ID3D11DeviceContext *mp_DeviceContext;
-	ID3D11RenderTargetView *mp_BackBuffer;
-	ID3D11RenderTargetView *mp_DepthBuffer;
 
-	ID3D11Texture2D* mp_DepthStencilBuffer;
-	ID3D11DepthStencilState* mp_DepthStencilState;
-	ID3D11DepthStencilView* mp_DepthStencilView;
-	ID3D11RasterizerState* mp_RasterState;
+	BackBufferRenderTarget* mp_BackBuffer;
+	RenderTarget* mp_DeferredRenderTarget;
+	RenderTarget* mp_SecondPassRenderTarget;
+	D3D11_VIEWPORT m_viewport;
 
 	int m_VideoCardMemory;
 	char m_VideoCardDescription[128];
@@ -35,8 +33,6 @@ public:
 	inline IDXGISwapChain * const SwapChain() { return mp_SwapChain; }
 	inline ID3D11Device * const Device() { return mp_Device; }
 	inline ID3D11DeviceContext * const DeviceContext() { return mp_DeviceContext; }
-	inline ID3D11RenderTargetView * const BackBuffer() { return mp_BackBuffer; }
-	inline ID3D11RenderTargetView * const DepthBuffer() { return mp_DepthBuffer; }
 
 	// Sets up and initializes window
 	HWND InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings settings);
@@ -45,11 +41,31 @@ public:
 	// Closes Direct3D and releases memory
 	void CleanD3D(void);
 
+	RenderTarget* GetDeferredRenderTarget() { return mp_DeferredRenderTarget; }
+	RenderTarget* GetSecondPassRenderTarget() { return mp_SecondPassRenderTarget; }
+
+	void BindBackBuffer() const;
+
+	void BindDeferredBuffer() const;
+
+	void BindSecondPassBuffer() const;
+
+	// Clear the currently bound render target and the depth buffer
 	void ClearBackBuffer(const Color& color);
 
-	void ClearDepthBuffer(void);
+	void ClearDeferredBuffer(const Color& color);
+
+	void ClearSecondPassBuffer(const Color& color);
 
 	void PresentBuffer(bool vSync);
+
+	void EnableAlpha();
+
+	void DisableAlpha();
+
+	void EnableDepth();
+
+	void DisableDepth();
 };
 
 #endif

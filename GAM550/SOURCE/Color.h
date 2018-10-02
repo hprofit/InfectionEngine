@@ -11,9 +11,10 @@ Author: <Holden Profit>
 #define TETRA_COLOR_H
 
 struct Color {
+	FLOAT r, g, b, a;
+
 	Color() : r(0), g(0), b(0), a(0) {}
 	Color(FLOAT _r, FLOAT _g, FLOAT _b, FLOAT _a) : r(_r), g(_g), b(_b), a(_a) {}
-	FLOAT r, g, b, a;
 
 	FLOAT operator[] (const int& idx) const {
 		return *(&r + idx);
@@ -24,7 +25,7 @@ struct Color {
 	}
 
 	operator const FLOAT*() const {
-		return (&r);
+		return &(r);
 	}
 };
 

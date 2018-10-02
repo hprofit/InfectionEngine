@@ -502,6 +502,47 @@ Matrix4x4 Matrix4x4::Orthographic(const float width, const float height, const f
 }
 
 //physics
+Matrix4x4 Matrix4x4::Phy_multiply_Matrix(const Matrix4x4 &o) const
+{
+  Matrix4x4 result = Matrix4x4(1.f, 0.f, 0.f, 0.f,
+    0.f, 1.f, 0.f, 0.f,
+    0.f, 0.f, 1.f, 0.f,
+    0.f, 0.f, 0.f, 0.f);
+  result.m_matrix[0][0] = (o.m_matrix[0][0] * m_matrix[0][0]) + (o.m_matrix[1][0] * m_matrix[0][1]) + (o.m_matrix[2][0] * m_matrix[0][2]);
+  result.m_matrix[1][0] = (o.m_matrix[0][0] * m_matrix[1][0]) + (o.m_matrix[1][0] * m_matrix[1][1]) + (o.m_matrix[2][0] * m_matrix[1][2]);
+  result.m_matrix[2][0] = (o.m_matrix[0][0] * m_matrix[2][0]) + (o.m_matrix[1][0] * m_matrix[2][1]) + (o.m_matrix[2][0] * m_matrix[2][2]);
+
+  result.m_matrix[0][1] = (o.m_matrix[0][1] * m_matrix[0][0]) + (o.m_matrix[1][1] * m_matrix[0][1]) + (o.m_matrix[2][1] * m_matrix[0][2]);
+  result.m_matrix[1][1] = (o.m_matrix[0][1] * m_matrix[1][0]) + (o.m_matrix[1][1] * m_matrix[1][1]) + (o.m_matrix[2][1] * m_matrix[1][2]);
+  result.m_matrix[2][1] = (o.m_matrix[0][1] * m_matrix[2][0]) + (o.m_matrix[1][1] * m_matrix[2][1]) + (o.m_matrix[2][1] * m_matrix[2][2]);
+
+  result.m_matrix[0][2] = (o.m_matrix[0][2] * m_matrix[0][0]) + (o.m_matrix[1][2] * m_matrix[0][1]) + (o.m_matrix[2][2] * m_matrix[0][2]);
+  result.m_matrix[1][2] = (o.m_matrix[0][2] * m_matrix[1][0]) + (o.m_matrix[1][2] * m_matrix[1][1]) + (o.m_matrix[2][2] * m_matrix[1][2]);
+  result.m_matrix[2][2] = (o.m_matrix[0][2] * m_matrix[2][0]) + (o.m_matrix[1][2] * m_matrix[2][1]) + (o.m_matrix[2][2] * m_matrix[2][2]);
+
+  result.m_matrix[0][3] = (o.m_matrix[0][3] * m_matrix[0][0]) + (o.m_matrix[1][3] * m_matrix[0][1]) + (o.m_matrix[2][3] * m_matrix[0][2]) + m_matrix[0][3];
+  result.m_matrix[1][3] = (o.m_matrix[0][3] * m_matrix[1][0]) + (o.m_matrix[1][3] * m_matrix[1][1]) + (o.m_matrix[2][3] * m_matrix[1][2]) + m_matrix[1][3];
+  result.m_matrix[2][3] = (o.m_matrix[0][3] * m_matrix[2][0]) + (o.m_matrix[1][3] * m_matrix[2][1]) + (o.m_matrix[2][3] * m_matrix[2][2]) + m_matrix[2][3];
+
+  return result;
+}
+Vector3D Matrix4x4::Phy_multiply_Vector3(const Vector3D &vector) const
+{
+  return Vector3D(
+    vector.x * m_matrix[0][0] +
+    vector.y * m_matrix[0][1] +
+    vector.z * m_matrix[0][2] + m_matrix[0][3],
+
+    vector.x * m_matrix[1][0] +
+    vector.y * m_matrix[1][1] +
+    vector.z * m_matrix[1][2] + m_matrix[1][3],
+
+    vector.x * m_matrix[2][0] +
+    vector.y * m_matrix[2][1] +
+    vector.z * m_matrix[2][2] + m_matrix[2][3]
+  );
+}
+
 void Matrix4x4::physicsConstructor()
 {
   m_matrix[0][1] = m_matrix[0][2] = m_matrix[0][3] = m_matrix[1][0] = m_matrix[1][2] =
@@ -577,7 +618,10 @@ void Matrix4x4::setInverse(const Matrix4x4 &m)
 
 Matrix4x4 Matrix4x4::inverse() const
 {
-  Matrix4x4 result;
+  Matrix4x4 result = Matrix4x4(1.f, 0.f, 0.f, 0.f,
+    0.f, 1.f, 0.f, 0.f,
+    0.f, 0.f, 1.f, 0.f,
+    0.f, 0.f, 0.f, 0.f);;
   result.setInverse(*this);
   return result;
 }

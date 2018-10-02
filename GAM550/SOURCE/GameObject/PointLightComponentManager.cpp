@@ -8,12 +8,13 @@ Author: <Holden Profit, Hyoyup Chung>
 #include <Stdafx.h>
 
 PointLightComponentManager::PointLightComponentManager() {
-	m_Components = (std::vector<PointLightComponent*>*)INFECT_MEMORY.GetComponentPool(PointLightComponent::Type);
+	m_Components = (std::list<PointLightComponent*>*)INFECT_MEMORY.GetComponentPool(PointLightComponent::Type);
 }
 
 void PointLightComponentManager::Update(float dt)
 {
 	for each (PLC plComp in *m_Components) {
+		if (!plComp->IsActive()) break; 
 		plComp->m_UpdatedLastFrame = false;
 		if (plComp->IsDirty()) {
 
@@ -27,10 +28,11 @@ void PointLightComponentManager::Update(float dt)
 void PointLightComponentManager::HandleEvent(Event * pEvent)
 {
 	for each (PLC plComp in *m_Components) {
+		if (!plComp->IsActive()) break;
 		plComp->HandleEvent(pEvent);
 	}
 }
 
 void PointLightComponentManager::Init() {
-	INFECT_MEMORY.ComponentPoolInit<PointLightComponent>(PointLightComponent::Type);
+	INFECT_MEMORY.ComponentPoolInit<PointLightComponent>(PointLightComponent::Type, PointLightComponent::CACHESIZE);
 }

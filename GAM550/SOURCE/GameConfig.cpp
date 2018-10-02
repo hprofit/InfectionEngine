@@ -2,7 +2,7 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-Author: <Holden Profit>
+Author: <Holden Profit, Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #include <Stdafx.h>
@@ -11,6 +11,7 @@ Author: <Holden Profit>
 #define RENDER_SETTINGS "RENDER_SETTINGS"
 #define INPUT_SETTINGS "INPUT_SETTINGS"
 #define WINDOW_SETTINGS "WINDOW_SETTINGS"
+#define LEVEL_SETTINGS "LEVEL_SETTINGS"
 
 GameConfig::GameConfig() : m_consoleEnabled(false){}
 
@@ -53,9 +54,14 @@ void GameConfig::LoadConfig(std::string s) {
 	//else
 	//	INFECT_RENDERER.DisableWindowsCursor();
 
+	// Set Level Settings
+	json levelSettings = j[LEVEL_SETTINGS];
+	INFECT_LEVEL.Init(levelSettings);
+
 }
 
 #undef GAME_SETTINGS 
 #undef RENDER_SETTINGS
 #undef INPUT_SETTINGS 
 #undef WINDOW_SETTINGS
+#undef LEVEL_SETTINGS
