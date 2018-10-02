@@ -17,8 +17,6 @@ class BrainComponent : public Component {
 protected:
 	friend BrainComponentManager;
 
-	AI_State* m_pCurrentState;
-	AI_State* m_pPreviousState;
 public:
 	static const unsigned CACHESIZE = 300;
 	static const ComponentType Type = ComponentType::C_Brain;
@@ -36,6 +34,9 @@ public:
 
 	virtual void HandleEvent(Event * p_event);
 
+	AIStateType m_pCurrentState;
+	AIStateType m_pPreviousState;
+	AI_State* m_States[NUM_AI_STATES];
 };
 
 #endif
