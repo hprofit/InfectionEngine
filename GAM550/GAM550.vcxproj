@@ -33,6 +33,8 @@
     <ClCompile Include="SOURCE\ConstantBuffer.cpp" />
     <ClCompile Include="SOURCE\GameObject\CollisionComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\CollisionComponentManager.cpp" />
+    <ClCompile Include="SOURCE\GameObject\CollisionTriggerComponent.cpp" />
+    <ClCompile Include="SOURCE\GameObject\CollisionTriggerComponentManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\RigidBodyComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\RigidBodyComponentManager.cpp" />
     <ClCompile Include="SOURCE\LevelManager.cpp" />
@@ -114,6 +116,8 @@
     <ClInclude Include="SOURCE\Command.h" />
     <ClInclude Include="SOURCE\GameObject\CollisionComponent.h" />
     <ClInclude Include="SOURCE\GameObject\CollisionComponentManager.h" />
+    <ClInclude Include="SOURCE\GameObject\CollisionTriggerComponent.h" />
+    <ClInclude Include="SOURCE\GameObject\CollisionTriggerComponentManager.h" />
     <ClInclude Include="SOURCE\GameObject\RigidBodyComponent.h" />
     <ClInclude Include="SOURCE\GameObject\RigidBodyComponentManager.h" />
     <ClInclude Include="SOURCE\LevelManager.h" />

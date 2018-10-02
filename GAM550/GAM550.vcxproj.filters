@@ -315,6 +315,12 @@
     <ClCompile Include="SOURCE\AI\BT\Behavior.cpp">
       <Filter>Source Files\AI\BehaviorTree</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\CollisionTriggerComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\CollisionTriggerComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOURCE\RenderManager.h">
@@ -580,6 +586,12 @@
     </ClInclude>
     <ClInclude Include="SOURCE\AI\BT\Behavior.h">
       <Filter>Source Files\AI\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\CollisionTriggerComponent.h">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\CollisionTriggerComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,6 +4,7 @@
 #define COLLISION_C_H
 class physics::RigidBody;
 class CollisionComponentManager;
+class CollisionTriggerComponent;
 class CollisionComponent : public Component
 {
 private:
@@ -11,6 +12,7 @@ private:
 
 public:
   friend CollisionComponentManager;
+  friend CollisionTriggerComponent;
 
   static const ComponentType Type = ComponentType::C_Collision;
   virtual ComponentType GetType() const { return Type; }
@@ -57,6 +59,8 @@ public:
   public:
     void setState(Vector3D direction_, real offset_);
   }m_Plane;
+
+
 };
 
 #endif
