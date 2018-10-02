@@ -54,7 +54,9 @@ Author: <Holden Profit>
 #include <cstdlib>
 #include <cstdint>
 #include <cstdio>
+#include <deque>
 #include <fstream>
+#include <functional>s
 #include <iostream>
 #include <sstream>
 #include <unordered_map>
@@ -62,7 +64,6 @@ Author: <Holden Profit>
 #include <string>
 #include <algorithm>
 #include <queue>
-#include <vector>
 #include <assert.h> 
 #include <conio.h>
 #include <chrono>
@@ -84,9 +85,9 @@ Author: <Holden Profit>
 #include <Math\Matrix4x4.h>
 #include <Math\MathFunctions.h>
 
-#include <Physics/physics_math.h>
-#include <Physics/particle.h>
-#include <Physics/Quaternion.h>
+#include <Physics\physics_math.h>
+#include <Physics\particle.h>
+#include <Physics\Quaternion.h>
 #pragma endregion
 
 #pragma region Resources
@@ -104,6 +105,7 @@ typedef unsigned int InfectGUID;
 #include <Face.h>
 #include <GameObject\GameObjectTags.h>
 #include <GameObject\ComponentTypes.h>
+#include <AI\FSM\AI_StateTypes.h>
 #include <ThreadType.h>
 #include <Command.h>
 #include <ThreadCommandList.h>
@@ -127,18 +129,15 @@ typedef unsigned int InfectGUID;
 #include <ShaderProgram.h>
 #include <Sorting.h>
 //#include <Shape.h>
-#include <Physics/RigidBody.h>
-#include <Physics/contacts.h>
-#include <Physics/collide_coarse.h>
-#include <Physics/collide_fine.h>
+#include <Physics\RigidBody.h>
+#include <Physics\contacts.h>
+#include <Physics\collide_coarse.h>
+#include <Physics\collide_fine.h>
 #pragma endregion
 
 #pragma region Game Object
 #include <GameObject\Component.h>
 #include <GameObject\GameObject.h>
-#pragma endregion
-
-#pragma region AI
 #pragma endregion
 
 #pragma region Components
@@ -167,17 +166,31 @@ typedef unsigned int InfectGUID;
 //#include <Microphone.h>
 //
 //Components - UI
+// Components - AI
+#include <AI\BrainComponent.h>
 #pragma endregion 
 
+#pragma region AI
+#include <AI\FSM\AI_State.h>
+#include <AI\FSM\AI_StateFactory.h>
+#include <AI\FSM\AI_Idle.h>
+#include <AI\FSM\AI_Move.h>
+#include <AI\FSM\AI_Combat.h>
+
+#include <AI\BT\Behavior.h>
+#include <AI\BT\BehaviorTree.h>
+#pragma endregion
+
 #pragma region Component Managers
-#include <GameObject/ComponentManager.h>
-#include <GameObject/ComponentManagerContainer.h>
-#include <GameObject/TransformComponentManager.h>
-#include <GameObject/CameraComponentManager.h>
-#include <GameObject/MeshComponentManager.h>
-#include <GameObject/PointLightComponentManager.h>
+#include <GameObject\ComponentManager.h>
+#include <GameObject\ComponentManagerContainer.h>
+#include <GameObject\TransformComponentManager.h>
+#include <GameObject\CameraComponentManager.h>
+#include <GameObject\MeshComponentManager.h>
+#include <GameObject\PointLightComponentManager.h>
 #include <GameObject\RigidBodyComponentManager.h>
 #include <GameObject\CollisionComponentManager.h>
+#include <AI\BrainComponentManager.h>
 #pragma endregion
 
 #pragma region Globals + API
@@ -203,7 +216,7 @@ typedef unsigned int InfectGUID;
 //#include <UIManager.h>
 //#include <PlayerStatsManager.h>
 //
-#include <Physics/PhysicsTest.h>
+#include <Physics\PhysicsTest.h>
 #include <Global.h>
 #include <InfectAPI.h> 
 #pragma endregion 

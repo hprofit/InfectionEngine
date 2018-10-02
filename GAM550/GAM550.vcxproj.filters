@@ -73,6 +73,30 @@
     <Filter Include="Source Files\GameObject\Components\Physics">
       <UniqueIdentifier>{8271eb0e-688c-4c7c-96c8-f20147b1f197}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\AI">
+      <UniqueIdentifier>{9de90c69-f198-4777-8c81-328e59394e0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\BehaviorTree">
+      <UniqueIdentifier>{2301d2d4-a6c1-4d62-887c-22a097f95c0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\Components\AI">
+      <UniqueIdentifier>{60eb4fb5-9356-44fb-8156-2b844fcae894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\BehaviorTree\Composites">
+      <UniqueIdentifier>{622340e5-da3a-45bd-b5e8-c7684148fc94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\BehaviorTree\Decorators">
+      <UniqueIdentifier>{70d068bd-7786-4ddc-aea7-04ad79b83b2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\BehaviorTree\Actions">
+      <UniqueIdentifier>{e387320d-f737-425c-9089-687bf21afd0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\FiniteStateMachine">
+      <UniqueIdentifier>{00b85c2d-8250-4df9-a13a-9ced50bbdca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\FiniteStateMachine\Base">
+      <UniqueIdentifier>{1b169d22-289f-4e79-9126-94c450c69392}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\main.cpp">
@@ -266,6 +290,30 @@
     </ClCompile>
     <ClCompile Include="SOURCE\GameObject\CollisionComponentManager.cpp">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BrainComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BrainComponent.cpp">
+      <Filter>Source Files\GameObject\Components\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\FSM\AI_StateFactory.cpp">
+      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\FSM\AI_Combat.cpp">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\FSM\AI_Idle.cpp">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\FSM\AI_Move.cpp">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\BehaviorTree.cpp">
+      <Filter>Source Files\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\Behavior.cpp">
+      <Filter>Source Files\AI\BehaviorTree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -499,6 +547,39 @@
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\CollisionComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BrainComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BrainComponent.h">
+      <Filter>Source Files\GameObject\Components\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_State.h">
+      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_StateFactory.h">
+      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_StateTypeNames.h">
+      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_StateTypes.h">
+      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_Combat.h">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_Idle.h">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_Move.h">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\BehaviorTree.h">
+      <Filter>Source Files\AI\BehaviorTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Behavior.h">
+      <Filter>Source Files\AI\BehaviorTree</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

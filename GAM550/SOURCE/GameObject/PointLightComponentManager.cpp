@@ -14,7 +14,7 @@ PointLightComponentManager::PointLightComponentManager() {
 void PointLightComponentManager::Update(float dt)
 {
 	for each (PLC plComp in *m_Components) {
-		if (!plComp->IsActive()) break; // will be removed or modified later 
+		if (!plComp->IsActive()) break; 
 		plComp->m_UpdatedLastFrame = false;
 		if (plComp->IsDirty()) {
 

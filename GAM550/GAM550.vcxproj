@@ -19,6 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SOURCE\AI\BrainComponent.cpp" />
+    <ClCompile Include="SOURCE\AI\BrainComponentManager.cpp" />
+    <ClCompile Include="SOURCE\AI\BT\Behavior.cpp" />
+    <ClCompile Include="SOURCE\AI\BT\BehaviorTree.cpp" />
+    <ClCompile Include="SOURCE\AI\FSM\AI_Combat.cpp" />
+    <ClCompile Include="SOURCE\AI\FSM\AI_Idle.cpp" />
+    <ClCompile Include="SOURCE\AI\FSM\AI_Move.cpp" />
+    <ClCompile Include="SOURCE\AI\FSM\AI_StateFactory.cpp" />
     <ClCompile Include="SOURCE\AudioManager.cpp" />
     <ClCompile Include="SOURCE\BackBufferRenderTarget.cpp" />
     <ClCompile Include="SOURCE\Command.cpp" />
@@ -89,6 +97,17 @@
     <ClCompile Include="SOURCE\SubscriberTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SOURCE\AI\BrainComponent.h" />
+    <ClInclude Include="SOURCE\AI\BrainComponentManager.h" />
+    <ClInclude Include="SOURCE\AI\BT\Behavior.h" />
+    <ClInclude Include="SOURCE\AI\BT\BehaviorTree.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_Combat.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_Idle.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_Move.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_State.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_StateFactory.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_StateTypeNames.h" />
+    <ClInclude Include="SOURCE\AI\FSM\AI_StateTypes.h" />
     <ClInclude Include="SOURCE\AudioManager.h" />
     <ClInclude Include="SOURCE\BackBufferRenderTarget.h" />
     <ClInclude Include="SOURCE\Color.h" />
