@@ -1,4 +1,4 @@
-#include <Stdafx.h>
+/*#include <Stdafx.h>
 
 CollisionComponent::CollisionComponent(InfectGUID guid) :
   Component(guid)
@@ -32,7 +32,7 @@ void CollisionComponent::Update(float dt)
   // calculate physics
   //m_RigidBody.integrate(dt);
 }
-
+/*
 CollisionComponent::Box::Box()
 {
   body = new physics::RigidBody;
@@ -111,3 +111,4 @@ void CollisionComponent::Plane::setState(Vector3D direction_, real offset_)
   direction = direction_;
   offset = offset_;
 }
+*/

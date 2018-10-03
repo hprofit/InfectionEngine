@@ -282,13 +282,7 @@
     <ClCompile Include="SOURCE\GameObject\RigidBodyComponent.cpp">
       <Filter>Source Files\GameObject\Components\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\CollisionComponent.cpp">
-      <Filter>Source Files\GameObject\Components\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\GameObject\RigidBodyComponentManager.cpp">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\CollisionComponentManager.cpp">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\AI\BrainComponentManager.cpp">
@@ -315,12 +309,6 @@
     <ClCompile Include="SOURCE\AI\BT\Behavior.cpp">
       <Filter>Source Files\AI\BehaviorTree</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\CollisionTriggerComponent.cpp">
-      <Filter>Source Files\GameObject\Components\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\CollisionTriggerComponentManager.cpp">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\AI\BT\Sequence.cpp">
       <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
     </ClCompile>
@@ -329,6 +317,9 @@
     </ClCompile>
     <ClCompile Include="SOURCE\AI\BT\SimpleParallel.cpp">
       <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\Physics\PhysicsManager.cpp">
+      <Filter>Source Files\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -554,13 +545,7 @@
     <ClInclude Include="SOURCE\GameObject\RigidBodyComponent.h">
       <Filter>Source Files\GameObject\Components\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\CollisionComponent.h">
-      <Filter>Source Files\GameObject\Components\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\GameObject\RigidBodyComponentManager.h">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\CollisionComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\AI\BrainComponentManager.h">
@@ -596,12 +581,6 @@
     <ClInclude Include="SOURCE\AI\BT\Behavior.h">
       <Filter>Source Files\AI\BehaviorTree</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\CollisionTriggerComponent.h">
-      <Filter>Source Files\GameObject\Components\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\CollisionTriggerComponentManager.h">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\AI\BT\Composite.h">
       <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
     </ClInclude>
@@ -613,6 +592,9 @@
     </ClInclude>
     <ClInclude Include="SOURCE\AI\BT\SimpleParallel.h">
       <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\Physics\PhysicsManager.h">
+      <Filter>Source Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
