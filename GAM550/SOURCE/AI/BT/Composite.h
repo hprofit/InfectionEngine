@@ -5,7 +5,19 @@ written consent of DigiPen Institute of Technology is prohibited.
 Author: <Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
-// States
-REGISTER_STATE(AI_State_Idle)
-REGISTER_STATE(AI_State_Move)
-REGISTER_STATE(AI_State_Combat)
+#ifndef BT_COMPOSITE_H
+#define BT_COMPOSITE_H
+
+class Composite: public Behavior{
+protected:
+	std::vector<Behavior*> m_childBehaviors;
+public:
+	Composite() {};
+	~Composite() {};
+
+	virtual void OnInitialize() = 0;
+	virtual BH_Status OnUpdate() = 0;
+	virtual void OnTerminate(BH_Status) = 0;
+};
+
+#endif

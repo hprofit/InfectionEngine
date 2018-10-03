@@ -23,6 +23,9 @@
     <ClCompile Include="SOURCE\AI\BrainComponentManager.cpp" />
     <ClCompile Include="SOURCE\AI\BT\Behavior.cpp" />
     <ClCompile Include="SOURCE\AI\BT\BehaviorTree.cpp" />
+    <ClCompile Include="SOURCE\AI\BT\Selector.cpp" />
+    <ClCompile Include="SOURCE\AI\BT\Sequence.cpp" />
+    <ClCompile Include="SOURCE\AI\BT\SimpleParallel.cpp" />
     <ClCompile Include="SOURCE\AI\FSM\AI_Combat.cpp" />
     <ClCompile Include="SOURCE\AI\FSM\AI_Idle.cpp" />
     <ClCompile Include="SOURCE\AI\FSM\AI_Move.cpp" />
@@ -103,6 +106,10 @@
     <ClInclude Include="SOURCE\AI\BrainComponentManager.h" />
     <ClInclude Include="SOURCE\AI\BT\Behavior.h" />
     <ClInclude Include="SOURCE\AI\BT\BehaviorTree.h" />
+    <ClInclude Include="SOURCE\AI\BT\Composite.h" />
+    <ClInclude Include="SOURCE\AI\BT\Selector.h" />
+    <ClInclude Include="SOURCE\AI\BT\Sequence.h" />
+    <ClInclude Include="SOURCE\AI\BT\SimpleParallel.h" />
     <ClInclude Include="SOURCE\AI\FSM\AI_Combat.h" />
     <ClInclude Include="SOURCE\AI\FSM\AI_Idle.h" />
     <ClInclude Include="SOURCE\AI\FSM\AI_Move.h" />

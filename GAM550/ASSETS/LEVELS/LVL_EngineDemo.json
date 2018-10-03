@@ -505,12 +505,24 @@
                 "z": -160.0
             }
         },
-		{
+        {
             "prefab": "PointLight",
             "position":{
                 "x": -160.0,
                 "y": 0.0,
                 "z": -160.0
+            }
+        },
+
+
+
+
+        {
+            "prefab": "AITestAgent",
+            "position":{
+                "x": -100.0,
+                "y": 80.0,
+                "z": -100.0
             }
         }
     ]

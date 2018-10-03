@@ -27,16 +27,16 @@ public:
 
 	static Component* CreateInstance(InfectGUID guid) { return new BrainComponent(guid);  }
 	virtual void Deactivate();
-	virtual void Update(float dt) {};
+	virtual void Update(float dt);
 	virtual void LateUpdate(float dt) {};
 	virtual void Serialize(const json& j);
 	virtual void Override(const json& j);
 
 	virtual void HandleEvent(Event * p_event);
 
-	AIStateType m_pCurrentState;
-	AIStateType m_pPreviousState;
-	AI_State* m_States[NUM_AI_STATES];
+	AIStateType m_currentState;
+	AIStateType m_previousState;
+	AI_State* m_states[NUM_AI_STATES];
 };
 
 #endif

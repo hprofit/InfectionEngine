@@ -43,7 +43,7 @@ MemoryManager::MemoryManager():
 		m_GameObjectPool.push_back( new GameObject(INFECT_GUID.GetGUID()));
 	}
 	m_GameObjectFirstDead = m_GameObjectPool.begin();
-	// Component preallocation
+	// ComponentPool preallocation, components will be preallocated by the comp mngrs
 	for (unsigned _enum = 0; _enum < NUM_COMPONENTS; _enum++) {
 		ComponentType type = static_cast<ComponentType>(_enum);
 		// TODO: ask each component for cache size

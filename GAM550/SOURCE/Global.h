@@ -15,7 +15,6 @@ Author: <Holden Profit>
 #define INFECT_CMC Singleton<ComponentManagerContainer>::GetInstance()
 #define INFECT_GAME_CONFIG Singleton<GameConfig>::GetInstance()
 #define INFECT_GOM Singleton<GameObjectManager>::GetInstance()
-//#define INFECT_COMPONENT_FACTORY Singleton<ComponentFactory>::GetInstance()
 #define INFECT_RENDERER Singleton<RenderManager>::GetInstance()
 #define INFECT_RESOURCES Singleton<ResourceManager>::GetInstance()
 #define INFECT_AUDIOMANAGER Singleton<AudioManager>::GetInstance()

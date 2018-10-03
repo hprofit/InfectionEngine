@@ -56,7 +56,7 @@ Author: <Holden Profit>
 #include <cstdio>
 #include <deque>
 #include <fstream>
-#include <functional>s
+#include <functional>
 #include <iostream>
 #include <sstream>
 #include <unordered_map>
@@ -167,18 +167,24 @@ typedef unsigned int InfectGUID;
 //#include <Microphone.h>
 //
 //Components - UI
+
 // Components - AI
 #include <AI\BrainComponent.h>
 #pragma endregion 
 
 #pragma region AI
+// Finite-State Machine
 #include <AI\FSM\AI_State.h>
 #include <AI\FSM\AI_StateFactory.h>
 #include <AI\FSM\AI_Idle.h>
 #include <AI\FSM\AI_Move.h>
 #include <AI\FSM\AI_Combat.h>
-
+// Behavior Tree
 #include <AI\BT\Behavior.h>
+#include <AI\BT\Composite.h>
+#include <AI\BT\Sequence.h>
+#include <AI\BT\Selector.h>
+#include <AI\BT\SimpleParallel.h>
 #include <AI\BT\BehaviorTree.h>
 #pragma endregion
 

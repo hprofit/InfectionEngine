@@ -25,6 +25,10 @@ public:
 		m_Behaviors.pop_front();
 		return next;
 	}
+
+	void Clear() {
+		m_Behaviors.clear();
+	}
 private:
 	std::deque<Behavior*> m_Behaviors;
 };

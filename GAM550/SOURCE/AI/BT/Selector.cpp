@@ -5,7 +5,16 @@ written consent of DigiPen Institute of Technology is prohibited.
 Author: <Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
-// States
-REGISTER_STATE(AI_State_Idle)
-REGISTER_STATE(AI_State_Move)
-REGISTER_STATE(AI_State_Combat)
+#include <Stdafx.h>
+
+void Selector::OnInitialize() {
+
+}
+
+BH_Status Selector::OnUpdate() {
+	return BH_FAILURE;
+}
+
+void Selector::OnTerminate(BH_Status) {
+
+}

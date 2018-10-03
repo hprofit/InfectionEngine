@@ -88,14 +88,14 @@
     <Filter Include="Source Files\AI\BehaviorTree\Decorators">
       <UniqueIdentifier>{70d068bd-7786-4ddc-aea7-04ad79b83b2b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\AI\BehaviorTree\Actions">
-      <UniqueIdentifier>{e387320d-f737-425c-9089-687bf21afd0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\AI\FiniteStateMachine">
       <UniqueIdentifier>{00b85c2d-8250-4df9-a13a-9ced50bbdca2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\AI\FiniteStateMachine\Base">
       <UniqueIdentifier>{1b169d22-289f-4e79-9126-94c450c69392}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\BehaviorTree\Actions">
+      <UniqueIdentifier>{e387320d-f737-425c-9089-687bf21afd0b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -320,6 +320,15 @@
     </ClCompile>
     <ClCompile Include="SOURCE\GameObject\CollisionTriggerComponentManager.cpp">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\Sequence.cpp">
+      <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\Selector.cpp">
+      <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\SimpleParallel.cpp">
+      <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -592,6 +601,18 @@
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\CollisionTriggerComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Composite.h">
+      <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Selector.h">
+      <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Sequence.h">
+      <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\SimpleParallel.h">
+      <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
