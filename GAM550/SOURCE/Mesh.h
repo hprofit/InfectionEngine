@@ -17,6 +17,7 @@ struct Vertex {
 	FLOAT bX, bY, bZ;	// bitangent
 	FLOAT u, v;			// texture coords
 	FLOAT r, g, b, a;	// color
+	UINT  VertexID;
 };
 
 //struct TexCoords {
@@ -41,6 +42,7 @@ public:
 };
 
 class Mesh;
+class Animations;
 class Scene {
 protected:
 	unsigned short m_numMeshes;
@@ -61,6 +63,27 @@ public:
 	std::vector< Mesh* >::iterator end() { return std::end(m_meshes); }
 };
 
+
+//=======================================================
+//Mesh And Bone Data
+//=======================================================
+struct VertexWeight
+{
+	UINT	VertexID;
+	float	Weight;
+};
+
+struct BoneData
+{
+	unsigned int			  mNumWeights;
+	std::string				  BoneName;
+	VertexWeight			  WightsList;
+	Matrix4x4				  OffsetMatrix;
+	//std::vector<VertexWeight> WightsList;
+
+};
+
+
 class Mesh
 {
 protected:
@@ -68,6 +91,9 @@ protected:
 
 	std::vector<Vertex> m_vertices;
 	std::vector<Face> m_faces;
+
+	unsigned int m_numBones;
+	std::vector<BoneData> m_BoneList;
 
 	ID3D11Buffer *mp_VBuffer;	// Vertex Buffer
 	ID3D11Buffer *mp_IBuffer;	// Index Buffer
@@ -94,5 +120,70 @@ public:
 	ID3D11Buffer * IBuffer() const { return mp_IBuffer; }
 	inline int NumFaces() const { return int(m_faces.size()); }
 };
+
+//=======================================================
+//Animation
+//=======================================================
+
+
+struct Node		//(aiNode)
+{
+	Node() { }
+	~Node() { }
+	std::string		  NodeName;				//Current Node name
+	Matrix4x4		  Transformations;		//transformation which is used to send it to the shader
+	Node			  *ParentNode;			//Parent of the current node
+	std::vector<Node> ChildNodeList;		//Array of children nodes
+
+};
+
+
+struct VQS
+{
+
+	std::string		 Name;		//name of node which is affected by this animation
+	Vector3D		Position;
+	Quaternion		Rotation;
+	Vector3D		Uniform_scale;
+
+	std::vector<Vector3D> PositionList;
+	std::vector<Quaternion> RotationList;
+	std::vector<Vector3D> UniformScaleList;
+
+};
+
+
+struct Animation	//(aiNodeAnimations)
+{
+	int m_numChannels;
+
+	std::string			Animation_Name;
+	double				Duration;
+	double				TicksPerSecond;
+	std::vector <VQS>  ChannelList;
+
+};
+
+
+class Animations	//(aiAnimations)
+{
+public:
+	friend class Scene;
+
+	int mNumAnimations = 0;
+
+	Animations(int numAnimations) : mNumAnimations(numAnimations)
+	{
+		AnimationList.resize(numAnimations);
+	}
+
+	~Animations() { }
+	//protected:
+	std::vector<Animation> AnimationList;
+	Node	   m_RootNode;
+
+};
+
+
 
 #endif
