@@ -114,7 +114,7 @@ void ReadRootNodeData(aiNode* aiRootNode, Node& RootNode, Matrix4x4 Transformati
 
 	for (i = 0; i < aiRootNode->mNumChildren; ++i)
 	{
-		cout << RootNode.ChildNodeList.size() << " "<< RootNode.NodeName << endl;
+		//cout << RootNode.ChildNodeList.size() << " "<< RootNode.NodeName << endl;
 		ReadRootNodeData(aiRootNode->mChildren[i], RootNode.ChildNodeList[i], RootNode.Transformations, &RootNode);
 
 	}
