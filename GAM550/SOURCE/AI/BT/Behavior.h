@@ -5,7 +5,6 @@ written consent of DigiPen Institute of Technology is prohibited.
 Author: <Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 #pragma once
-
 #ifndef BEHAVIOR_H
 #define BEHAVIOR_H
 
@@ -49,6 +48,7 @@ public:
 	BH_Observer m_Observer;
 protected:
 	BH_Status m_Status;
+
 };
 
 #endif

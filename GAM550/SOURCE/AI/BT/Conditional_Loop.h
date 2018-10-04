@@ -6,23 +6,24 @@ Author: <Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #pragma once
-#ifndef AI_MOVE_H
-#define AI_MOVE_H
+#ifndef BT_CONDITIONALLOOP_H
+#define BT_CONDITIONALLOOP_H
 
-class AI_Move : public AI_State {
+
+typedef std::function<bool ()>Condition;
+
+class ConditionalLoop: public Decorator{
+protected:
+	Condition m_CondiFunc;
 public:
-	AI_Move();
-	~AI_Move();
-	static AI_State* CreateInstance() { return new AI_Move(); }
+	ConditionalLoop();
+	~ConditionalLoop();
 
-	virtual void OnEnter();
-	virtual void OnUpdate(float);
-	virtual void OnExit();
-	virtual void HandleEvent(Event* pEvent);
-	virtual void Serialize(const json& j);
+	virtual void OnInitialize();
+	virtual BH_Status OnUpdate();
+	virtual void OnTerminate(BH_Status);
+	virtual void OnChildComplete(BH_Status);
 
-private:
-	
 };
 
 #endif

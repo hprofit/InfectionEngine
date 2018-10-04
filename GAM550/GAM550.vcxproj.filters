@@ -306,9 +306,6 @@
     <ClCompile Include="SOURCE\AI\FSM\AI_Idle.cpp">
       <Filter>Source Files\AI\FiniteStateMachine</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\AI\FSM\AI_Move.cpp">
-      <Filter>Source Files\AI\FiniteStateMachine</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\AI\BT\BehaviorTree.cpp">
       <Filter>Source Files\AI\BehaviorTree</Filter>
     </ClCompile>
@@ -329,6 +326,9 @@
     </ClCompile>
     <ClCompile Include="SOURCE\AI\BT\SimpleParallel.cpp">
       <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\Conditional_Loop.cpp">
+      <Filter>Source Files\AI\BehaviorTree\Decorators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -587,9 +587,6 @@
     <ClInclude Include="SOURCE\AI\FSM\AI_Idle.h">
       <Filter>Source Files\AI\FiniteStateMachine</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\AI\FSM\AI_Move.h">
-      <Filter>Source Files\AI\FiniteStateMachine</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\AI\BT\BehaviorTree.h">
       <Filter>Source Files\AI\BehaviorTree</Filter>
     </ClInclude>
@@ -613,6 +610,12 @@
     </ClInclude>
     <ClInclude Include="SOURCE\AI\BT\SimpleParallel.h">
       <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Conditional_Loop.h">
+      <Filter>Source Files\AI\BehaviorTree\Decorators</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Decorator.h">
+      <Filter>Source Files\AI\BehaviorTree\Decorators</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

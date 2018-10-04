@@ -20,6 +20,7 @@ void AI_Idle::OnEnter(){
 	// reset idle data
 	idleDuration = RandomFloat(1, 3); 
 	idledSoFar = 0.0f;
+	// Init
 }
 
 void AI_Idle::OnUpdate(float dt){

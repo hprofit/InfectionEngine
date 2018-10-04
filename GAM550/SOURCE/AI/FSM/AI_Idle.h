@@ -9,8 +9,6 @@ Author: <Hyoyup Chung>
 #ifndef AI_IDLE_H
 #define AI_IDLE_H
 
-//#include "AI_State.h"
-
 class AI_Idle : public AI_State {
 public:
 	AI_Idle();
@@ -26,6 +24,7 @@ public:
 private:
 	float idleDuration; // in seconds
 	float idledSoFar;
+	Behavior* m_pRootNode;
 };
 
 #endif

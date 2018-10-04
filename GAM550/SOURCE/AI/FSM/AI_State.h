@@ -9,6 +9,7 @@ Author: <Hyoyup Chung>
 #ifndef AI_STATE_H
 #define AI_STATE_H
 
+class Behavior;
 class BehaviorTree;
 
 class AI_State: public Subscriber{
@@ -27,8 +28,6 @@ public:
 	virtual void OnExit() = 0;
 	virtual void HandleEvent(Event* pEvent) = 0;
 	virtual void Serialize(const json& j) = 0;
-
-	AIStateType StateType() const { return m_StateType; }
 
 	BrainComponent *pAgent;
 };

@@ -5,6 +5,28 @@ written consent of DigiPen Institute of Technology is prohibited.
 Author: <Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
-// States
-REGISTER_STATE(AI_State_Idle)
-REGISTER_STATE(AI_State_Combat)
+#include <Stdafx.h>
+
+
+ConditionalLoop::ConditionalLoop() {
+
+}
+
+ConditionalLoop::~ConditionalLoop() {
+
+}
+
+void ConditionalLoop::OnInitialize() {
+
+}
+
+BH_Status ConditionalLoop::OnUpdate() {
+	return BH_FAILURE;
+}
+void ConditionalLoop::OnTerminate(BH_Status) {
+
+}
+
+void ConditionalLoop::OnChildComplete(BH_Status) {
+
+}

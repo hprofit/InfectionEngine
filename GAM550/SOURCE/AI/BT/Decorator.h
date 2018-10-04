@@ -5,32 +5,21 @@ written consent of DigiPen Institute of Technology is prohibited.
 Author: <Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
-#include <Stdafx.h>
+#pragma once
+#ifndef BT_DECORATOR_H
+#define BT_DECORATOR_H
 
-AI_Move::AI_Move()
-	: AI_State(AI_State_Move) {
+class Decorator: public Behavior{
+protected:
+	Behavior* m_pChildBehavior;
+public:
+	Decorator() {};
+	~Decorator() {};
 
-}
+	virtual void OnInitialize() = 0;
+	virtual BH_Status OnUpdate() = 0;
+	virtual void OnTerminate(BH_Status) = 0;
+	virtual void OnChildComplete(BH_Status) = 0;
+};
 
-AI_Move::~AI_Move() {
-}
-
-void AI_Move::OnEnter() {
-
-}
-
-void AI_Move::OnUpdate(float dt) {
-
-}
-
-void AI_Move::OnExit(){
-	
-}
-
-
-void AI_Move::HandleEvent(Event* pEvent) {
-
-}
-
-void AI_Move::Serialize(const json& j) {
-}
+#endif

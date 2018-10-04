@@ -177,14 +177,19 @@ typedef unsigned int InfectGUID;
 #include <AI\FSM\AI_State.h>
 #include <AI\FSM\AI_StateFactory.h>
 #include <AI\FSM\AI_Idle.h>
-#include <AI\FSM\AI_Move.h>
 #include <AI\FSM\AI_Combat.h>
 // Behavior Tree
 #include <AI\BT\Behavior.h>
+// Control Nodes
 #include <AI\BT\Composite.h>
 #include <AI\BT\Sequence.h>
 #include <AI\BT\Selector.h>
 #include <AI\BT\SimpleParallel.h>
+// Decorator Nodes
+#include <AI\BT\Decorator.h>
+#include <AI\BT\Conditional_Loop.h>
+// Action Nodes
+
 #include <AI\BT\BehaviorTree.h>
 #pragma endregion
 
