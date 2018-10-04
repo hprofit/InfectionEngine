@@ -7,27 +7,27 @@ Author: <Jiyun Ruan>
 
 #include <Stdafx.h>
 
-RigidBodyComponentManager::RigidBodyComponentManager() {
-  m_Components = (std::list<RigidBodyComponent*>*)INFECT_MEMORY.GetComponentPool(RigidBodyComponent::Type);
+FractureComponentManager::FractureComponentManager() {
+  m_Components = (std::list<FractureComponent*>*)INFECT_MEMORY.GetComponentPool(FractureComponent::Type);
 }
 
-void RigidBodyComponentManager::Update(float dt)
+void FractureComponentManager::Update(float dt)
 {
-  for each (RBC plComp in *m_Components) {
+  for each (FC plComp in *m_Components) {
     if (plComp)
       plComp->Update(dt);
   }
 }
 
 // TODO: Super naive attempt at this
-void RigidBodyComponentManager::HandleEvent(Event * pEvent)
+void FractureComponentManager::HandleEvent(Event * pEvent)
 {
-  for each (RBC plComp in *m_Components) {
+  for each (FC plComp in *m_Components) {
     if (!plComp->IsActive()) break;
     plComp->HandleEvent(pEvent);
   }
 }
 
-void RigidBodyComponentManager::Init() {
-  INFECT_MEMORY.ComponentPoolInit<RigidBodyComponent>(RigidBodyComponent::Type, RigidBodyComponent::CACHESIZE);
+void FractureComponentManager::Init() {
+  INFECT_MEMORY.ComponentPoolInit<FractureComponent>(FractureComponent::Type, FractureComponent::CACHESIZE);
 }
