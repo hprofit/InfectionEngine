@@ -38,6 +38,8 @@ public:
     void SetState(float mass, Vector3D position, Vector3D velocity = Vector3D(0, 0, 0), Vector3D rotation = Vector3D(0, 0, 0),
       Vector3D Acceleration = Vector3D(0, 0, 0), Vector3D halfSize_ = Vector3D(1, 1, 1),
       float LinearDamping = 0.95f, float AngularDamping = 0.8f);
+
+    void calculateMassProperties(real invDensity);
   }m_Box;
 
   class Sphere : public physics::CollisionSphere
