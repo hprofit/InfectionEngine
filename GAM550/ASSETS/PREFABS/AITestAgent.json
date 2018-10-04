@@ -1,0 +1,27 @@
+{
+  	"Tag": "Enemy",
+  	"COMPONENTS": [
+		{
+	 		"Component": "Transform",
+		  	"position": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+		  	},
+		  	"scale": {
+				"x": 20,
+				"y": 20,
+				"z": 20
+		  	},
+		  	"pivotOffset": {},
+		  	"rotation": {}
+		},
+		{
+			"Component": "Mesh",
+			"scene": "Sphere"
+		},
+		{
+			"Component": "Brain"
+		}
+  ]
+}

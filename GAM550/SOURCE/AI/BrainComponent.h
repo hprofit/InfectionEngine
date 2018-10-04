@@ -17,8 +17,6 @@ class BrainComponent : public Component {
 protected:
 	friend BrainComponentManager;
 
-	AI_State* m_pCurrentState;
-	AI_State* m_pPreviousState;
 public:
 	static const unsigned CACHESIZE = 300;
 	static const ComponentType Type = ComponentType::C_Brain;
@@ -29,13 +27,16 @@ public:
 
 	static Component* CreateInstance(InfectGUID guid) { return new BrainComponent(guid);  }
 	virtual void Deactivate();
-	virtual void Update(float dt) {};
+	virtual void Update(float dt);
 	virtual void LateUpdate(float dt) {};
 	virtual void Serialize(const json& j);
 	virtual void Override(const json& j);
 
 	virtual void HandleEvent(Event * p_event);
 
+	AIStateType m_currentState;
+	AIStateType m_previousState;
+	AI_State* m_states[NUM_AI_STATES];
 };
 
 #endif

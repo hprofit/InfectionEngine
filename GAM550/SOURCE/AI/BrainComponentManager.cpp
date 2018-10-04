@@ -12,9 +12,9 @@ BrainComponentManager::BrainComponentManager() {
 }
 
 void BrainComponentManager::Update(float dt) {
-	for each (BC cComp in *m_Components) {
-		if (!cComp->IsActive()) break;
-		cComp->Update(dt);
+	for each (BC bComp in *m_Components) {
+		if (!bComp->IsActive()) break;
+		bComp->Update(dt);
 	}
 }
 

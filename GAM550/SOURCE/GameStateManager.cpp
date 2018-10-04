@@ -33,8 +33,10 @@ MSG GameStateManager::Update() {
 
 	INFECT_LEVEL.LoadLevel(0); // Loading First Level
 
-	while (m_currentState != GameState::QUIT) {
 
+
+	while (m_currentState != GameState::QUIT) {
+  
 		m_currentState = GameState::CURRENT_LEVEL;
 		m_nextState = GameState::CURRENT_LEVEL;
 		
@@ -48,12 +50,16 @@ MSG GameStateManager::Update() {
 				TranslateMessage(&msg);
 				// send the message to the WindowProc function
 				DispatchMessage(&msg);
+
+        
 			}
 
 			//Infect::FrameStart();
 			//Infect::Update(Infect::GetFrameTime());			// Game loop
 			//tester.PhyTest_Update();
 			//Infect::FrameEnd();
+
+      
 		}
 
 		m_currentState = m_nextState;

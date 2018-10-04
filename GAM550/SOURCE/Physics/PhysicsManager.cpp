@@ -27,13 +27,13 @@ void PhysicsManager::ErrorCheck(FMOD_RESULT result)
 
 void PhysicsManager::Update(double deltaTime)
 {
-	for (std::list<CollisionComponent::Box *>::iterator it = m_BoxPool.begin(); it != m_BoxPool.end(); ++it)
+	for (std::list<RigidBodyComponent::Box *>::iterator it = m_BoxPool.begin(); it != m_BoxPool.end(); ++it)
 	{
 		(*it)->body->integrate(deltaTime);
 		(*it)->calculateInternals();
 	}
 
-	for (std::list<CollisionComponent::Sphere *>::iterator it = m_SpherePool.begin(); it != m_SpherePool.end(); ++it)
+	for (std::list<RigidBodyComponent::Sphere *>::iterator it = m_SpherePool.begin(); it != m_SpherePool.end(); ++it)
 	{
 		(*it)->body->integrate(deltaTime);
 		(*it)->calculateInternals();
@@ -59,10 +59,10 @@ void PhysicsManager::Update(double deltaTime)
 
 void PhysicsManager::CollisionTrigger()
 {
-	for (std::list<CollisionComponent::Box *>::iterator it = m_BoxPool.begin(); it != m_BoxPool.end(); ++it)
+	for (std::list<RigidBodyComponent::Box *>::iterator it = m_BoxPool.begin(); it != m_BoxPool.end(); ++it)
 	{
 		// check box and Sphere
-		for (std::list<CollisionComponent::Sphere *>::iterator it_other = m_SpherePool.begin(); it_other != m_SpherePool.end(); ++it_other)
+		for (std::list<RigidBodyComponent::Sphere *>::iterator it_other = m_SpherePool.begin(); it_other != m_SpherePool.end(); ++it_other)
 		{
 			// Check ground box-sphere collisions
 			if (!cData.hasMoreContacts()) return;
@@ -71,7 +71,7 @@ void PhysicsManager::CollisionTrigger()
 
 		// check box and box
 		if (!cData.hasMoreContacts()) return;
-		for (std::list<CollisionComponent::Box *>::iterator it_other = m_BoxPool.begin(); it_other != m_BoxPool.end(); ++it_other)
+		for (std::list<RigidBodyComponent::Box *>::iterator it_other = m_BoxPool.begin(); it_other != m_BoxPool.end(); ++it_other)
 		{
 			if (*it != *it_other)
 			{
@@ -81,16 +81,16 @@ void PhysicsManager::CollisionTrigger()
 		}
 
 		// check box and plane 
-		for (std::list<CollisionComponent::Plane *>::iterator it_other = m_PlanePool.begin(); it_other != m_PlanePool.end(); ++it_other)
+		for (std::list<RigidBodyComponent::Plane *>::iterator it_other = m_PlanePool.begin(); it_other != m_PlanePool.end(); ++it_other)
 		{
 			if (!cData.hasMoreContacts()) return;
 			physics::CollisionDetector::boxAndHalfSpace(*(*it), *(*it_other), &cData);
 		}
 	}
 
-	for (std::list<CollisionComponent::Sphere *>::iterator it = m_SpherePool.begin(); it != m_SpherePool.end(); ++it)
+	for (std::list<RigidBodyComponent::Sphere *>::iterator it = m_SpherePool.begin(); it != m_SpherePool.end(); ++it)
 	{
-		for (std::list<CollisionComponent::Sphere *>::iterator it_other = m_SpherePool.begin(); it_other != m_SpherePool.end(); ++it_other)
+		for (std::list<RigidBodyComponent::Sphere *>::iterator it_other = m_SpherePool.begin(); it_other != m_SpherePool.end(); ++it_other)
 		{
 			if (!cData.hasMoreContacts()) return;
 			// Check ground sphere-sphere collisions
@@ -99,7 +99,7 @@ void PhysicsManager::CollisionTrigger()
 		}
 
 		// check sphere and plane 
-		for (std::list<CollisionComponent::Plane *>::iterator it_other = m_PlanePool.begin(); it_other != m_PlanePool.end(); ++it_other)
+		for (std::list<RigidBodyComponent::Plane *>::iterator it_other = m_PlanePool.begin(); it_other != m_PlanePool.end(); ++it_other)
 		{
 			if (!cData.hasMoreContacts()) return;
 			physics::CollisionDetector::sphereAndHalfSpace(*(*it), *(*it_other), &cData);
@@ -108,17 +108,17 @@ void PhysicsManager::CollisionTrigger()
 
 }
 
-void PhysicsManager::AddToBoxPool(CollisionComponent::Box *box)
+void PhysicsManager::AddToBoxPool(RigidBodyComponent::Box *box)
 {
 	m_BoxPool.push_back(box);
 }
 
-void PhysicsManager::AddToSpherePool(CollisionComponent::Sphere *sphere)
+void PhysicsManager::AddToSpherePool(RigidBodyComponent::Sphere *sphere)
 {
 	m_SpherePool.push_back(sphere);
 }
 
-void PhysicsManager::AddToPlanePool(CollisionComponent::Plane *plane)
+void PhysicsManager::AddToPlanePool(RigidBodyComponent::Plane *plane)
 {
 	m_PlanePool.push_back(plane);
 }

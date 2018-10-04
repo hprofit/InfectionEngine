@@ -23,17 +23,17 @@ public:
 
 
 
-	std::list<CollisionComponent::Box *> m_BoxPool;
-	std::list<CollisionComponent::Sphere *> m_SpherePool;
-	std::list<CollisionComponent::Plane *> m_PlanePool;
+	std::list<RigidBodyComponent::Box *> m_BoxPool;
+	std::list<RigidBodyComponent::Sphere *> m_SpherePool;
+	std::list<RigidBodyComponent::Plane *> m_PlanePool;
 
 	void CollisionTrigger();
 
-	void AddToBoxPool(CollisionComponent::Box *box);
+	void AddToBoxPool(RigidBodyComponent::Box *box);
 
-	void AddToSpherePool(CollisionComponent::Sphere *sphere);
+	void AddToSpherePool(RigidBodyComponent::Sphere *sphere);
 
-	void AddToPlanePool(CollisionComponent::Plane *plane);
+	void AddToPlanePool(RigidBodyComponent::Plane *plane);
 
 
 	void SetCollisionData(real friction_ = (real)0.9, real restitution_ = (real)0.1, real tolerance_ = (real)0.1);

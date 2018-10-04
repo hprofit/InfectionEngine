@@ -23,9 +23,11 @@ public:
 	Behavior* NextBehavior() {
 		Behavior* next = m_Behaviors.front();
 		m_Behaviors.pop_front();
-		if (next == NULL) {
-			return nullptr;
-		}
+		return next;
+	}
+
+	void Clear() {
+		m_Behaviors.clear();
 	}
 private:
 	std::deque<Behavior*> m_Behaviors;

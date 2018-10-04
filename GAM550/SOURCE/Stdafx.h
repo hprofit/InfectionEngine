@@ -56,7 +56,7 @@ Author: <Holden Profit>
 #include <cstdio>
 #include <deque>
 #include <fstream>
-#include <functional>s
+#include <functional>
 #include <iostream>
 #include <sstream>
 #include <unordered_map>
@@ -158,8 +158,7 @@ typedef unsigned int InfectGUID;
 #include <GameObject\LightBaseComponent.h>
 #include <GameObject\PointLightComponent.h>
 #include <GameObject\RigidBodyComponent.h>
-#include <GameObject\CollisionComponent.h>
-#include <GameObject\CollisionTriggerComponent.h>
+#include <GameObject\FractureComponent.h>
 //#include <HeightMap.h>
 
 //Components - Audio
@@ -167,18 +166,24 @@ typedef unsigned int InfectGUID;
 //#include <Microphone.h>
 //
 //Components - UI
+
 // Components - AI
 #include <AI\BrainComponent.h>
 #pragma endregion 
 
 #pragma region AI
+// Finite-State Machine
 #include <AI\FSM\AI_State.h>
 #include <AI\FSM\AI_StateFactory.h>
 #include <AI\FSM\AI_Idle.h>
 #include <AI\FSM\AI_Move.h>
 #include <AI\FSM\AI_Combat.h>
-
+// Behavior Tree
 #include <AI\BT\Behavior.h>
+#include <AI\BT\Composite.h>
+#include <AI\BT\Sequence.h>
+#include <AI\BT\Selector.h>
+#include <AI\BT\SimpleParallel.h>
 #include <AI\BT\BehaviorTree.h>
 #pragma endregion
 
@@ -190,8 +195,7 @@ typedef unsigned int InfectGUID;
 #include <GameObject\MeshComponentManager.h>
 #include <GameObject\PointLightComponentManager.h>
 #include <GameObject\RigidBodyComponentManager.h>
-#include <GameObject\CollisionComponentManager.h>
-#include <GameObject\CollisionTriggerComponentManager.h>
+#include <GameObject\FractureComponentManager.h>
 #include <AI\BrainComponentManager.h>
 #pragma endregion
 
@@ -218,6 +222,7 @@ typedef unsigned int InfectGUID;
 //#include <UIManager.h>
 //#include <PlayerStatsManager.h>
 //
+#include <Physics\PhysicsManager.h>
 #include <Physics\PhysicsTest.h>
 #include <Global.h>
 #include <InfectAPI.h> 

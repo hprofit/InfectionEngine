@@ -1,5 +1,5 @@
-
-#pragma onces
+/*
+#pragma once
 #ifndef COLLISIONTRIGGER_C_H
 #define COLLISIONTRIGGER_C_H
 class CollisionComponent;
@@ -50,3 +50,4 @@ private:
 
 
 #endif
+*/

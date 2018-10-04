@@ -5,7 +5,17 @@ written consent of DigiPen Institute of Technology is prohibited.
 Author: <Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
-// States
-REGISTER_STATE(AI_State_Idle)
-REGISTER_STATE(AI_State_Move)
-REGISTER_STATE(AI_State_Combat)
+#include <Stdafx.h>
+
+
+void SimpleParallel::OnInitialize(){
+
+}
+
+BH_Status SimpleParallel::OnUpdate(){
+	return BH_FAILURE;
+}
+
+void SimpleParallel::OnTerminate(BH_Status){
+
+}

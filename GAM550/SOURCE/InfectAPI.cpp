@@ -35,8 +35,12 @@ namespace Infect {
 		INFECT_CMC.RegisterCompMngr(new CameraComponentManager());
 		INFECT_CMC.RegisterCompMngr(new PointLightComponentManager());
 		INFECT_CMC.RegisterCompMngr(new MeshComponentManager());
+		INFECT_CMC.RegisterCompMngr(new RigidBodyComponentManager());
+		INFECT_CMC.RegisterCompMngr(new BrainComponentManager());
 		INFECT_CMC.Init();
 		INFECT_MEMORY.LateInit();
+
+    INFECT_PHYSICS.Init();
 
 		INFECT_THREAD_JOBS.RegisterThreadContainer(new RenderThreadContainer());
 		INFECT_THREAD_JOBS.RegisterThreadContainer(new SimulationThreadContainer());
@@ -82,6 +86,8 @@ namespace Infect {
 		INFECT_THREAD_JOBS.AddNewJob(new StartRenderCommand(*INFECT_THREAD_JOBS.GetThreadContainer<RenderThreadContainer>(ThreadType::RenderThread)));
 		//INFECT_GOM.RenderCameras();						// Render all game objects
 		//INFECT_IMGUI.Update();						// Update all Imgui commands
+
+    INFECT_PHYSICS.Update(deltaTime);              // Update _PHYSICS
 	}
 
 	void FrameEnd()

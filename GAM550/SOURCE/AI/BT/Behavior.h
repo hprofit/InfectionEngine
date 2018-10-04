@@ -12,7 +12,7 @@ Author: <Hyoyup Chung>
 enum BH_Status {
 	BH_INVALID,
 	BH_SUCCESS,
-	BH_FAILRE,
+	BH_FAILURE,
 	BH_RUNNING,
 	BH_SUSPENDED,
 
@@ -23,7 +23,7 @@ enum BH_Status {
 typedef std::function<void(BH_Status)> BH_Observer;
 
 // Base Behavior Nodes
-class Behavior: public Subscriber{
+class Behavior: public Subscriber {
 public:
 	Behavior() {}
 	~Behavior() {}
@@ -39,9 +39,9 @@ public:
 		return m_Status;
 	}
 
-	virtual void OnInitialize(){}
+	virtual void OnInitialize() = 0;
 	virtual BH_Status OnUpdate() = 0;
-	virtual void OnTerminate(BH_Status){}
+	virtual void OnTerminate(BH_Status) = 0;
 
 	void SetStatus(BH_Status status) { m_Status = status; }
 	const BH_Status Status() { return m_Status; }

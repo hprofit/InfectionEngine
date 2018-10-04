@@ -5,7 +5,18 @@ written consent of DigiPen Institute of Technology is prohibited.
 Author: <Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
-// States
-REGISTER_STATE(AI_State_Idle)
-REGISTER_STATE(AI_State_Move)
-REGISTER_STATE(AI_State_Combat)
+#ifndef BT_SIMPLEPARALLEL_H
+#define BT_SIMPLEPARALLEL_H
+
+class SimpleParallel: public Composite{
+protected:
+public:
+	SimpleParallel() {};
+	~SimpleParallel() {};
+
+	virtual void OnInitialize();
+	virtual BH_Status OnUpdate();
+	virtual void OnTerminate(BH_Status);
+};
+
+#endif
