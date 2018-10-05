@@ -51,10 +51,10 @@ bool StartSimulationCommand::execute() const
 	//	tcpLight->Move(Infect::GetFrameTime() *-30.f*tcpLight->Up());
 	//}
 
-	if (INFECT_INPUT.IsKeyReleased(DIK_P)) {
+	if (INFECT_INPUT.IsKeyTriggered(DIK_P) || INFECT_INPUT.IsButtonTriggered(XBOX_BTN_BACK )) {
 		INFECT_RENDERER.NextRenderMode();
 	}
-
+	
 	int xMove = -INFECT_INPUT.MousePosX() / 4;
 	int yMove = -INFECT_INPUT.MousePosY() / 4;
 	if (xMove != 0)
@@ -62,16 +62,16 @@ bool StartSimulationCommand::execute() const
 	if (yMove != 0)
 		tcpCamera->RotateX(float(yMove));
 
-	if (INFECT_INPUT.IsKeyPressed(DIK_D)) {
+	if (INFECT_INPUT.IsKeyPressed(DIK_D) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_RIGHT)) {
 		tcpCamera->Move(Infect::GetFrameTime() *30.f*tcpCamera->Right());
 	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_A)) {
+	if (INFECT_INPUT.IsKeyPressed(DIK_A) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_LEFT)) {
 		tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Right());
 	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_W)) {
+	if (INFECT_INPUT.IsKeyPressed(DIK_W) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_UP)) {
 		tcpCamera->Move(Infect::GetFrameTime() *30.f * tcpCamera->Forward());
 	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_S)) {
+	if (INFECT_INPUT.IsKeyPressed(DIK_S) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_DOWN)) {
 		tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Forward());
 	}
 	if (INFECT_INPUT.IsKeyPressed(DIK_SPACE)) {

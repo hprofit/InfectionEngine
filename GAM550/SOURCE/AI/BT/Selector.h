@@ -16,7 +16,7 @@ Author: <Hyoyup Chung>
 ****************************************************/
 class Selector: public Composite{
 protected:
-	BehaviorTree* m_pBT;
+	BehaviorTree* pBT;
 	vector<Behavior*>::iterator m_currentNode;
 public:
 	Selector() {};

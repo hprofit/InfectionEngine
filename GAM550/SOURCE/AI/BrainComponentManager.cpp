@@ -14,7 +14,8 @@ BrainComponentManager::BrainComponentManager() {
 void BrainComponentManager::Update(float dt) {
 	for each (BC bComp in *m_Components) {
 		if (!bComp->IsActive()) break;
-		bComp->Update(dt);
+		if (bComp->IsDirty())
+			bComp->Update(dt);
 	}
 }
 

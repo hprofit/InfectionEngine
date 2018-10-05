@@ -43,6 +43,8 @@ public:
 	void UnloadTexture(const std::string& textureName);
 	// Returns a pointer to a json prefab data
 	json* GetPrefabFile(const std::string& prefabName);
+	// Returns a pointer to a BehaviorTree object
+	BehaviorTree* GetBehaviorTree(BrainComponent* pAgent, const std::string& treeFileName);
 	// Deletes the Resourcemanager's reference to all resource objects
 	void UnloadAll();
 };

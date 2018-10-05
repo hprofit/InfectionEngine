@@ -19,7 +19,7 @@ void BehaviorTree::Init(Behavior& b, BH_Observer* observer) {
 	if (observer != NULL) {
 		b.m_Observer = *observer;
 	}
-	m_pScheduler->ScheduleBehavior(&b);
+	m_Scheduler.ScheduleBehavior(&b);
 }
 
 void BehaviorTree::StopBehavior(Behavior& b, BH_Status res) {
@@ -31,15 +31,18 @@ void BehaviorTree::StopBehavior(Behavior& b, BH_Status res) {
 }
 
 void BehaviorTree::Tick() {
+	if (m_Scheduler.Empty())
+		m_Scheduler.ScheduleBehavior(m_pRootNode);
+	
 	// ending marker
-	m_pScheduler->ScheduleBehavior(NULL);
+	m_Scheduler.ScheduleBehavior(nullptr);
 
 	while (Step()) { continue; }
 }
 
 bool BehaviorTree::Step() {
-	Behavior* curBehavior = m_pScheduler->NextBehavior();
-	if (curBehavior == NULL) return false; // this frame's Tick finished
+	Behavior* curBehavior = m_Scheduler.NextBehavior();
+	if (curBehavior==nullptr) return false; // this frame's Tick finished
 
 	curBehavior->Tick(); // update current behavior
 
@@ -48,7 +51,7 @@ bool BehaviorTree::Step() {
 		curBehavior->m_Observer(curBehavior->Status());
 	}
 	else { // if still running, push to scheduler for next frame
-		m_pScheduler->ScheduleBehavior(curBehavior);
+		m_Scheduler.ScheduleBehavior(curBehavior);
 	}
 	return true;
 }

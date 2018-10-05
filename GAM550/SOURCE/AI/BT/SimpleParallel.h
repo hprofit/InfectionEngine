@@ -15,11 +15,11 @@ Author: <Hyoyup Chung>
 ****************************************************/
 class SimpleParallel: public Composite{
 protected:
-	BehaviorTree* m_pBT;
+	BehaviorTree* pBT;
 	vector<Behavior*>::iterator m_currentNode;
 public:
-	SimpleParallel() {};
-	~SimpleParallel() {};
+	SimpleParallel(BehaviorTree& tree, int size);
+	~SimpleParallel();
 
 	virtual void OnInitialize();
 	virtual BH_Status OnUpdate();

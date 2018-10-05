@@ -24,5 +24,6 @@ Author: <Holden Profit>
 #define INFECT_MEMORY Singleton<MemoryManager>::GetInstance()
 #define INFECT_THREAD_JOBS Singleton<JobManager>::GetInstance()
 #define INFECT_LEVEL Singleton<LevelManager>::GetInstance()
+#define INFECT_AI_FACTORY Singleton<AI_Factory>::GetInstance()
 
 #endif

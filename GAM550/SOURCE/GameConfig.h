@@ -21,6 +21,7 @@ protected:
 	std::string m_roomFilesDir;
 	std::string m_fontsDir;
 	std::string m_meshesDir;
+	std::string m_btDir;
 	
 	bool m_soundsMute;
 
@@ -45,6 +46,7 @@ public:
 	inline std::string RoomFilesDir() const { return m_roomFilesDir; }
 	inline std::string FontsDir() const { return m_fontsDir; }
 	inline std::string MeshesDir() const { return m_meshesDir; }
+	inline std::string BehaviorTreeDir() const { return m_btDir; }
 	inline WindowSettings WindowSettings() const { return m_windowSettings; }
 
 	inline bool GetsoundsMute(){ return m_soundsMute; }

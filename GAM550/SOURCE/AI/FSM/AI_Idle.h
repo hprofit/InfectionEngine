@@ -19,12 +19,11 @@ public:
 	virtual void OnUpdate(float);
 	virtual void OnExit();
 	virtual void HandleEvent(Event* pEvent);
-	virtual void Serialize(const json& j);
+	//virtual void Serialize(const json& j);
 
-private:
 	float idleDuration; // in seconds
 	float idledSoFar;
-	Behavior* m_pRootNode;
+private:
 };
 
 #endif

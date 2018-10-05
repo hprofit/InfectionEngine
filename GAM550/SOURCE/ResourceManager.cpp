@@ -191,6 +191,24 @@ json* ResourceManager::GetPrefabFile(const std::string& prefabName) {
 
 #pragma endregion
 
+#pragma region AI
+void ConstructTree(BrainComponent* pAgent, BehaviorTree& bt, std::string filePath) {
+	// hard coded tree generator for engine demo, TODO: make parser+treegenerator
+	bt.m_pRootNode = new MoveToRandom(&bt);
+	bt.m_pRootNode->SetAgent(pAgent);
+	//bt.m_Scheduler.ScheduleBehavior(bt.m_pRootNode);
+	// loop through each line and construct tree
+}
+
+BehaviorTree* ResourceManager::GetBehaviorTree(BrainComponent* pAgent, const std::string& treeFileName) {
+	std::string filePath = INFECT_GAME_CONFIG.BehaviorTreeDir() + treeFileName;
+	BehaviorTree* tree = new BehaviorTree();//static_cast<BehaviorTree*>(INFECT_MEMORY.Alloc(sizeof(BehaviorTree)));
+	ConstructTree(pAgent, *tree,filePath);
+	return tree;
+}
+
+#pragma endregion
+
 void ResourceManager::UnloadAll()
 {
 	for (auto comp : m_meshes) {

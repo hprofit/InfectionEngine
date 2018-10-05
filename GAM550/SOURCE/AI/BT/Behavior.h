@@ -45,10 +45,13 @@ public:
 	void SetStatus(BH_Status status) { m_Status = status; }
 	const BH_Status Status() { return m_Status; }
 
+	void SetAgent(BrainComponent* pBrain) { pAgent = pBrain; }
+	BrainComponent* GetAgent() { return pAgent; }
+
 	BH_Observer m_Observer;
 protected:
 	BH_Status m_Status;
-
+	BrainComponent* pAgent;
 };
 
 #endif

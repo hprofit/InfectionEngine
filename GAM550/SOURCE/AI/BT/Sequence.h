@@ -16,7 +16,7 @@ Author: <Hyoyup Chung>
 ****************************************************/
 class Sequence: public Composite{
 protected:
-	BehaviorTree* m_pBT;
+	BehaviorTree* pBT;
 	vector<Behavior*>::iterator m_currentNode;
 public:
 	Sequence(BehaviorTree& tree, int size);

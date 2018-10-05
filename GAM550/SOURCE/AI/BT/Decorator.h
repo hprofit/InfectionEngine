@@ -11,6 +11,7 @@ Author: <Hyoyup Chung>
 
 class Decorator: public Behavior{
 protected:
+	BehaviorTree* pBT;
 	Behavior* m_pChildBehavior;
 public:
 	Decorator() {};

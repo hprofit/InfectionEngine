@@ -21,12 +21,11 @@ void AI_Idle::OnEnter(){
 	idleDuration = RandomFloat(1, 3); 
 	idledSoFar = 0.0f;
 	// Init
+	m_pBT->Init(*m_pRootNode, nullptr);
 }
 
 void AI_Idle::OnUpdate(float dt){
-	if (idledSoFar < idleDuration) {
-		idledSoFar += dt;
-	}
+	m_pBT->Tick();
 }
 
 void AI_Idle::OnExit(){
@@ -38,6 +37,13 @@ void AI_Idle::HandleEvent(Event* pEvent) {
 
 }
 
-void AI_Idle::Serialize(const json& j) {
-
-}
+//void AI_Idle::Serialize(const json& j) {
+//	// hard coded remove later
+//	m_pBT = new BehaviorTree();
+//	//ConditionalLoop is3secPassed();
+//	MoveToRandom* mtr = new MoveToRandom();
+//	mtr->pBT = m_pBT;
+//	m_pRootNode = m_pBT->m_pRootNode = mtr;
+//	m_pBT->m_pScheduler = new BT_Scheduler();
+//	m_pBT->pAI_State = this;
+//}

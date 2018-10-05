@@ -8,7 +8,7 @@ Author: <Hyoyup Chung>
 #include <Stdafx.h>
 
 
-ConditionalLoop::ConditionalLoop() {
+ConditionalLoop::ConditionalLoop(BehaviorTree& tree, Condition& cond):pBT(&tree), m_CondiFunc(cond) {
 
 }
 
@@ -17,11 +17,14 @@ ConditionalLoop::~ConditionalLoop() {
 }
 
 void ConditionalLoop::OnInitialize() {
-
+	if (m_CondiFunc()) {
+		BH_Observer obs = std::bind(&ConditionalLoop::OnChildComplete, this, std::placeholders::_1);
+		pBT->Init(*m_pChildBehavior , &obs);
+	}
 }
 
 BH_Status ConditionalLoop::OnUpdate() {
-	return BH_FAILURE;
+	return BH_RUNNING;
 }
 void ConditionalLoop::OnTerminate(BH_Status) {
 

@@ -9,14 +9,16 @@ Author: <Hyoyup Chung>
 #ifndef BT_CONDITIONALLOOP_H
 #define BT_CONDITIONALLOOP_H
 
-
+// funtion pointer for condition
+// maybe define a functor class?
 typedef std::function<bool ()>Condition;
 
 class ConditionalLoop: public Decorator{
 protected:
+	BehaviorTree* pBT;
 	Condition m_CondiFunc;
 public:
-	ConditionalLoop();
+	ConditionalLoop(BehaviorTree& tree, Condition& cond);
 	~ConditionalLoop();
 
 	virtual void OnInitialize();

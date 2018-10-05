@@ -138,6 +138,7 @@ private:
 	std::unordered_map< ComponentType, std::list<Component*>* > m_ComponentPool;
 	std::unordered_map< ComponentType, std::list<Component*>::iterator> m_ComponentFirstDeadIter;
 	ComponentFactory* m_ComponentFactory;
+	AI_Factory* m_AIFactory;
 public:
 	MemoryManager();
 	~MemoryManager();
@@ -164,5 +165,9 @@ public:
 	std::list<Component*>* GetComponentPool(ComponentType cType) { return m_ComponentPool[cType]; }
 	Component* GetNewComponent(ComponentType type);
 	void DeleteComponent(Component* ptr);
+
+	// AI Factory
+	AI_State* GetNewState(std::string stateName);
+	void DeleteState(AI_State* ptr);
 };
 #endif

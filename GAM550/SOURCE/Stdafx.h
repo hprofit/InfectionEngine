@@ -173,12 +173,11 @@ typedef unsigned int InfectGUID;
 #pragma endregion 
 
 #pragma region AI
-// Finite-State Machine
+/* Finite-State Machine */
 #include <AI\FSM\AI_State.h>
-#include <AI\FSM\AI_StateFactory.h>
 #include <AI\FSM\AI_Idle.h>
 #include <AI\FSM\AI_Combat.h>
-// Behavior Tree
+/* Behavior Tree */
 #include <AI\BT\Behavior.h>
 // Control Nodes
 #include <AI\BT\Composite.h>
@@ -189,6 +188,8 @@ typedef unsigned int InfectGUID;
 #include <AI\BT\Decorator.h>
 #include <AI\BT\Conditional_Loop.h>
 // Action Nodes
+#include <AI\BT\Action.h>
+#include <AI\BT\MoveToRandom.h>
 
 #include <AI\BT\BehaviorTree.h>
 #pragma endregion
@@ -222,6 +223,7 @@ typedef unsigned int InfectGUID;
 //#include <DebugManager.h>
 #include <AudioManager.h>
 #include <GameObject\ComponentFactory.h>
+#include <AI\AI_Factory.h>
 #include <MemoryManager.h>
 //#include <ImguiManager.h>
 //#include <LevelEditor.h>
