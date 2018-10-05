@@ -168,7 +168,7 @@ struct Animation	//(aiNodeAnimations)
 class Animations	//(aiAnimations)
 {
 public:
-	friend class Scene;
+	//friend class Scene;
 
 	int mNumAnimations = 0;
 
