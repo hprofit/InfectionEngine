@@ -1,4 +1,4 @@
-#include <Stdafx.h>
+/*#include <Stdafx.h>
 
 
 CollisionTriggerComponent::CollisionTriggerComponent(InfectGUID guid) :
@@ -126,3 +126,4 @@ void CollisionTriggerComponent::SetCollisionData(real friction_, real restitutio
   m_CollisionData[1] = restitution_;
   m_CollisionData[2] = tolerance_;
 }
+*/

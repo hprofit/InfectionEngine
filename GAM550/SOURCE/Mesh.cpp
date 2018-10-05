@@ -24,20 +24,20 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 		v.y = mesh->mVertices[i].y;
 		v.z = mesh->mVertices[i].z;
 
-		v.nX = mesh->mNormals[i].x;
-		v.nY = mesh->mNormals[i].y;
-		v.nZ = mesh->mNormals[i].z;
+		//v.nX = mesh->mNormals[i].x;
+		//v.nY = mesh->mNormals[i].y;
+		//v.nZ = mesh->mNormals[i].z;
 
-		v.tX = mesh->mTangents[i].x;
-		v.tY = mesh->mTangents[i].y;
-		v.tZ = mesh->mTangents[i].z;
-
-		v.bX = mesh->mBitangents[i].x;
-		v.bY = mesh->mBitangents[i].y;
-		v.bZ = mesh->mBitangents[i].z;
-
-		v.u = mesh->mTextureCoords[0][i].x;
-		v.v = mesh->mTextureCoords[0][i].y;
+		//v.tX = mesh->mTangents[i].x;
+		//v.tY = mesh->mTangents[i].y;
+		//v.tZ = mesh->mTangents[i].z;
+		//
+		//v.bX = mesh->mBitangents[i].x;
+		//v.bY = mesh->mBitangents[i].y;
+		//v.bZ = mesh->mBitangents[i].z;
+		//
+		//v.u = mesh->mTextureCoords[0][i].x;
+		//v.v = mesh->mTextureCoords[0][i].y;
 
 		if (mesh->mColors && mesh->mColors[0]) {
 			aiColor4D color = mesh->mColors[0][i];
@@ -54,6 +54,46 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 	for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
 		m_faces.push_back(Face(mesh->mFaces[i]));
 	}
+
+#pragma region Bone Data
+
+	m_BoneList.resize(mesh->mNumBones);
+	for (unsigned int i = 0; i < mesh->mNumBones; ++i)
+	{
+		m_BoneList[i].BoneName = mesh->mBones[i]->mName.C_Str();
+		m_BoneList[i].mNumWeights = mesh->mBones[i]->mNumWeights;
+
+		//Offset Matrix Data
+
+		m_BoneList[i].OffsetMatrix.Set(0, 0, mesh->mBones[i]->mOffsetMatrix.a1);
+		m_BoneList[i].OffsetMatrix.Set(0, 1, mesh->mBones[i]->mOffsetMatrix.a2);
+		m_BoneList[i].OffsetMatrix.Set(0, 2, mesh->mBones[i]->mOffsetMatrix.a3);
+		m_BoneList[i].OffsetMatrix.Set(0, 3, mesh->mBones[i]->mOffsetMatrix.a4);
+
+		m_BoneList[i].OffsetMatrix.Set(1, 0, mesh->mBones[i]->mOffsetMatrix.b1);
+		m_BoneList[i].OffsetMatrix.Set(1, 1, mesh->mBones[i]->mOffsetMatrix.b2);
+		m_BoneList[i].OffsetMatrix.Set(1, 2, mesh->mBones[i]->mOffsetMatrix.b3);
+		m_BoneList[i].OffsetMatrix.Set(1, 3, mesh->mBones[i]->mOffsetMatrix.b4);
+
+		m_BoneList[i].OffsetMatrix.Set(2, 0, mesh->mBones[i]->mOffsetMatrix.c1);
+		m_BoneList[i].OffsetMatrix.Set(2, 1, mesh->mBones[i]->mOffsetMatrix.c2);
+		m_BoneList[i].OffsetMatrix.Set(2, 2, mesh->mBones[i]->mOffsetMatrix.c3);
+		m_BoneList[i].OffsetMatrix.Set(2, 3, mesh->mBones[i]->mOffsetMatrix.c4);
+
+		m_BoneList[i].OffsetMatrix.Set(3, 0, mesh->mBones[i]->mOffsetMatrix.d1);
+		m_BoneList[i].OffsetMatrix.Set(3, 1, mesh->mBones[i]->mOffsetMatrix.d2);
+		m_BoneList[i].OffsetMatrix.Set(3, 2, mesh->mBones[i]->mOffsetMatrix.d3);
+		m_BoneList[i].OffsetMatrix.Set(3, 3, mesh->mBones[i]->mOffsetMatrix.d4);
+
+
+		//Vertex Data
+		m_BoneList[i].WightsList.VertexID = mesh->mBones[i]->mWeights->mVertexId;
+		m_BoneList[i].WightsList.Weight = mesh->mBones[i]->mWeights->mWeight;
+
+
+	}
+#pragma endregion
+
 
 	FinishMesh();
 }

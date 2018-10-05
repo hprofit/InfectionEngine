@@ -19,8 +19,6 @@ ComponentFactory::ComponentFactory() {
 	m_creationFunctions[CameraComponent::Type] = CameraComponent::CreateInstance;
 	m_creationFunctions[PointLightComponent::Type] = PointLightComponent::CreateInstance;
 	m_creationFunctions[RigidBodyComponent::Type] = RigidBodyComponent::CreateInstance;
-	m_creationFunctions[CollisionComponent::Type] = CollisionComponent::CreateInstance;
-	m_creationFunctions[CollisionTriggerComponent::Type] = CollisionTriggerComponent::CreateInstance;
 	m_creationFunctions[BrainComponent::Type] = BrainComponent::CreateInstance;
 }
 

@@ -99,7 +99,28 @@ bool ResourceManager::Init()
 	return true;
 }
 
-#pragma region Mesh
+#pragma region Mesh,Animation Data
+
+
+//This is a recursive function to read the root node and all it's childern
+void ReadRootNodeData(aiNode* aiRootNode, Node& RootNode, Matrix4x4 Transformation, Node* ParentNode)
+{
+	int i;
+	RootNode.NodeName = aiRootNode->mName.C_Str();
+	RootNode.Transformations = Transformation * (RootNode.Transformations);
+	RootNode.ParentNode = ParentNode;
+
+	RootNode.ChildNodeList.resize(aiRootNode->mNumChildren);
+
+	for (i = 0; i < aiRootNode->mNumChildren; ++i)
+	{
+		//cout << RootNode.ChildNodeList.size() << " "<< RootNode.NodeName << endl;
+		ReadRootNodeData(aiRootNode->mChildren[i], RootNode.ChildNodeList[i], RootNode.Transformations, &RootNode);
+
+	}
+
+}
+
 
 Scene* ResourceManager::_LoadScene(const std::string& meshSceneName)
 {
@@ -118,6 +139,90 @@ Scene* ResourceManager::_LoadScene(const std::string& meshSceneName)
 			m_meshes[aiMeshPtr->mName.C_Str()] = new Mesh(aiMeshPtr);
 			(*meshScene)[i] = m_meshes[aiMeshPtr->mName.C_Str()];
 		}
+
+		if (scene->HasAnimations())
+		{
+			int i;
+			Animations animScene(scene->mNumAnimations);
+
+			//This is for the first time 
+			//for the root node
+			#pragma region Root Node Data
+			animScene.m_RootNode.ParentNode = NULL;
+			Matrix4x4 tempIdentityMatrix;
+			animScene.m_RootNode.Transformations = tempIdentityMatrix.Identity4D();
+
+			ReadRootNodeData(scene->mRootNode, animScene.m_RootNode, animScene.m_RootNode.Transformations, 0);
+			#pragma endregion
+
+
+			#pragma region Animation Data
+			int Animation_List_size = animScene.AnimationList.size();
+			for (i = 0; i < Animation_List_size; ++i)
+			{
+
+				animScene.AnimationList[i].Animation_Name = (scene->mAnimations[i]->mName.C_Str());
+				animScene.AnimationList[i].Duration = (scene->mAnimations[i]->mDuration);
+				animScene.AnimationList[i].TicksPerSecond = (scene->mAnimations[i]->mTicksPerSecond);
+
+				int num_channels = scene->mAnimations[i]->mNumChannels;
+				animScene.AnimationList[i].ChannelList.resize(num_channels);
+
+				int j;
+
+				for (j = 0; j < num_channels; ++j)
+				{
+					//Name of the node
+					animScene.AnimationList[i].ChannelList[j].Name = scene->mAnimations[i]->mChannels[j]->mNodeName.C_Str();
+
+					//Position of the node
+					int num_positions = scene->mAnimations[i]->mChannels[i]->mNumPositionKeys;
+					animScene.AnimationList[i].ChannelList[j].PositionList.resize(num_positions);
+
+					for (int k = 0; k < num_positions; ++k)
+					{
+						animScene.AnimationList[i].ChannelList[j].PositionList[k].x = scene->mAnimations[i]->mChannels[j]->mPositionKeys->mValue.x;
+						animScene.AnimationList[i].ChannelList[j].PositionList[k].y = scene->mAnimations[i]->mChannels[j]->mPositionKeys->mValue.y;
+						animScene.AnimationList[i].ChannelList[j].PositionList[k].z = scene->mAnimations[i]->mChannels[j]->mPositionKeys->mValue.z;
+
+					}
+
+					//Quaternion Rotation values of the node
+
+					int num_rotations = scene->mAnimations[i]->mChannels[i]->mNumRotationKeys;
+					animScene.AnimationList[i].ChannelList[j].RotationList.resize(num_rotations);
+
+					for (int k = 0; k < num_rotations; ++k)
+					{
+						animScene.AnimationList[i].ChannelList[j].RotationList[k].r = scene->mAnimations[i]->mChannels[j]->mRotationKeys->mValue.w;
+						animScene.AnimationList[i].ChannelList[j].RotationList[k].i = scene->mAnimations[i]->mChannels[j]->mRotationKeys->mValue.x;
+						animScene.AnimationList[i].ChannelList[j].RotationList[k].j = scene->mAnimations[i]->mChannels[j]->mRotationKeys->mValue.y;
+						animScene.AnimationList[i].ChannelList[j].RotationList[k].k = scene->mAnimations[i]->mChannels[j]->mRotationKeys->mValue.z;
+
+					}
+
+					//Scale values for the node
+
+					int num_scaling = scene->mAnimations[i]->mChannels[i]->mNumScalingKeys;
+					animScene.AnimationList[i].ChannelList[j].UniformScaleList.resize(num_scaling);
+
+					for (int k = 0; k < num_scaling; ++k)
+					{
+						animScene.AnimationList[i].ChannelList[j].UniformScaleList[k].x = scene->mAnimations[i]->mChannels[j]->mScalingKeys->mValue.x;
+						animScene.AnimationList[i].ChannelList[j].UniformScaleList[k].y = scene->mAnimations[i]->mChannels[j]->mScalingKeys->mValue.y;
+						animScene.AnimationList[i].ChannelList[j].UniformScaleList[k].z = scene->mAnimations[i]->mChannels[j]->mScalingKeys->mValue.z;
+
+					}
+				}
+
+			}
+			#pragma endregion
+
+
+
+		}
+
+
 		return meshScene;
 	}
 	else

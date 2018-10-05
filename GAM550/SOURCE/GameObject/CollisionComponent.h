@@ -1,4 +1,4 @@
-
+/*
 #pragma once
 #ifndef COLLISION_C_H
 #define COLLISION_C_H
@@ -28,7 +28,7 @@ public:
   virtual void HandleEvent(Event* pEvent);
 
   // collision info
-  const static unsigned maxContacts = 256;
+  /*const static unsigned maxContacts = 256;
   physics::Contact contacts[maxContacts];
   physics::CollisionData cData;
   physics::ContactResolver resolver = physics::ContactResolver(maxContacts * 8);
@@ -59,7 +59,7 @@ public:
   public:
     void setState(Vector3D direction_, real offset_);
   }m_Plane;
-
+  */
 
 };
 

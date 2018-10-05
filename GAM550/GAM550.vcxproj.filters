@@ -282,13 +282,7 @@
     <ClCompile Include="SOURCE\GameObject\RigidBodyComponent.cpp">
       <Filter>Source Files\GameObject\Components\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\CollisionComponent.cpp">
-      <Filter>Source Files\GameObject\Components\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\GameObject\RigidBodyComponentManager.cpp">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\CollisionComponentManager.cpp">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\AI\BrainComponentManager.cpp">
@@ -297,20 +291,23 @@
     <ClCompile Include="SOURCE\AI\BrainComponent.cpp">
       <Filter>Source Files\GameObject\Components\AI</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\AI\FSM\AI_StateFactory.cpp">
+      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
+    </ClCompile>
     <ClCompile Include="SOURCE\AI\FSM\AI_Combat.cpp">
       <Filter>Source Files\AI\FiniteStateMachine</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\AI\FSM\AI_Idle.cpp">
       <Filter>Source Files\AI\FiniteStateMachine</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\AI\FSM\AI_Move.cpp">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClCompile>
     <ClCompile Include="SOURCE\AI\BT\BehaviorTree.cpp">
       <Filter>Source Files\AI\BehaviorTree</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\CollisionTriggerComponent.cpp">
-      <Filter>Source Files\GameObject\Components\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\CollisionTriggerComponentManager.cpp">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    <ClCompile Include="SOURCE\AI\BT\Behavior.cpp">
+      <Filter>Source Files\AI\BehaviorTree</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\AI\BT\Sequence.cpp">
       <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
@@ -321,14 +318,14 @@
     <ClCompile Include="SOURCE\AI\BT\SimpleParallel.cpp">
       <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\AI\BT\Conditional_Loop.cpp">
-      <Filter>Source Files\AI\BehaviorTree\Decorators</Filter>
+    <ClCompile Include="SOURCE\Physics\PhysicsManager.cpp">
+      <Filter>Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\AI\BT\MoveToRandom.cpp">
-      <Filter>Source Files\AI\BehaviorTree\Actions</Filter>
+    <ClCompile Include="SOURCE\GameObject\FractureComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\AI\AI_Factory.cpp">
-      <Filter>Source Files\AI</Filter>
+    <ClCompile Include="SOURCE\GameObject\FractureComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -373,6 +370,9 @@
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\GameObject.h">
       <Filter>Source Files\GameObject\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\CameraComponent.h">
+      <Filter>Source Files\GameObject\Components</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\TransformComponent.h">
       <Filter>Source Files\GameObject\Components</Filter>
@@ -551,13 +551,7 @@
     <ClInclude Include="SOURCE\GameObject\RigidBodyComponent.h">
       <Filter>Source Files\GameObject\Components\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\CollisionComponent.h">
-      <Filter>Source Files\GameObject\Components\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\GameObject\RigidBodyComponentManager.h">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\CollisionComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\AI\BrainComponentManager.h">
@@ -567,6 +561,9 @@
       <Filter>Source Files\GameObject\Components\AI</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\AI\FSM\AI_State.h">
+      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_StateFactory.h">
       <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\AI\FSM\AI_StateTypeNames.h">
@@ -581,17 +578,14 @@
     <ClInclude Include="SOURCE\AI\FSM\AI_Idle.h">
       <Filter>Source Files\AI\FiniteStateMachine</Filter>
     </ClInclude>
+    <ClInclude Include="SOURCE\AI\FSM\AI_Move.h">
+      <Filter>Source Files\AI\FiniteStateMachine</Filter>
+    </ClInclude>
     <ClInclude Include="SOURCE\AI\BT\BehaviorTree.h">
       <Filter>Source Files\AI\BehaviorTree</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\AI\BT\Behavior.h">
       <Filter>Source Files\AI\BehaviorTree</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\CollisionTriggerComponent.h">
-      <Filter>Source Files\GameObject\Components\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\CollisionTriggerComponentManager.h">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\AI\BT\Composite.h">
       <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
@@ -605,23 +599,14 @@
     <ClInclude Include="SOURCE\AI\BT\SimpleParallel.h">
       <Filter>Source Files\AI\BehaviorTree\Composites</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\AI\BT\Conditional_Loop.h">
-      <Filter>Source Files\AI\BehaviorTree\Decorators</Filter>
+    <ClInclude Include="SOURCE\Physics\PhysicsManager.h">
+      <Filter>Source Files\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\AI\BT\Decorator.h">
-      <Filter>Source Files\AI\BehaviorTree\Decorators</Filter>
+    <ClInclude Include="SOURCE\GameObject\FractureComponent.h">
+      <Filter>Source Files\GameObject\Components\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\AI\BT\Action.h">
-      <Filter>Source Files\AI\BehaviorTree\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\AI\BT\MoveToRandom.h">
-      <Filter>Source Files\AI\BehaviorTree\Actions</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\AI\AI_Factory.h">
-      <Filter>Source Files\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\CameraComponent.h">
-      <Filter>Source Files\GameObject\Components</Filter>
+    <ClInclude Include="SOURCE\GameObject\FractureComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

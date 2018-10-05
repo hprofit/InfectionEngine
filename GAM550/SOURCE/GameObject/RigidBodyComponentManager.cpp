@@ -14,13 +14,8 @@ RigidBodyComponentManager::RigidBodyComponentManager() {
 void RigidBodyComponentManager::Update(float dt)
 {
   for each (RBC plComp in *m_Components) {
-    if (!plComp->IsActive()) break; // will be removed or modified later 
-    plComp->m_UpdatedLastFrame = false;
-    if (plComp->IsDirty()) {
-
-      plComp->m_IsDirty = false;
-      plComp->m_UpdatedLastFrame = true;
-    }
+    if (plComp)
+      plComp->Update(dt);
   }
 }
 
