@@ -291,22 +291,13 @@
     <ClCompile Include="SOURCE\AI\BrainComponent.cpp">
       <Filter>Source Files\GameObject\Components\AI</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\AI\FSM\AI_StateFactory.cpp">
-      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\AI\FSM\AI_Combat.cpp">
       <Filter>Source Files\AI\FiniteStateMachine</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\AI\FSM\AI_Idle.cpp">
       <Filter>Source Files\AI\FiniteStateMachine</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\AI\FSM\AI_Move.cpp">
-      <Filter>Source Files\AI\FiniteStateMachine</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\AI\BT\BehaviorTree.cpp">
-      <Filter>Source Files\AI\BehaviorTree</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\AI\BT\Behavior.cpp">
       <Filter>Source Files\AI\BehaviorTree</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\AI\BT\Sequence.cpp">
@@ -326,6 +317,15 @@
     </ClCompile>
     <ClCompile Include="SOURCE\GameObject\FractureComponentManager.cpp">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\Conditional_Loop.cpp">
+      <Filter>Source Files\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\MoveToRandom.cpp">
+      <Filter>Source Files\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\AI_Factory.cpp">
+      <Filter>Source Files\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -563,9 +563,6 @@
     <ClInclude Include="SOURCE\AI\FSM\AI_State.h">
       <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\AI\FSM\AI_StateFactory.h">
-      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\AI\FSM\AI_StateTypeNames.h">
       <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
     </ClInclude>
@@ -576,9 +573,6 @@
       <Filter>Source Files\AI\FiniteStateMachine</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\AI\FSM\AI_Idle.h">
-      <Filter>Source Files\AI\FiniteStateMachine</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\AI\FSM\AI_Move.h">
       <Filter>Source Files\AI\FiniteStateMachine</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\AI\BT\BehaviorTree.h">
@@ -607,6 +601,21 @@
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\FractureComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\AI_Factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Action.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Conditional_Loop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Decorator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\MoveToRandom.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
