@@ -148,10 +148,9 @@ typedef unsigned int InfectGUID;
 // Components - Rendering
 #include <GameObject\RenderableComponent.h>
 #include <GameObject\MeshComponent.h>
+#include <GameObject\ParticleEmitterComponent.h>
 //#include <FBOSprite.h>
 //#include <Sprite.h>
-//#include <ParticleEmitter.h>
-//#include <ParticleEmitterResizer.h>
 //#include <Text.h>
 //#include <Animation.h>
 #include <GameObject\CameraComponent.h>
@@ -199,6 +198,7 @@ typedef unsigned int InfectGUID;
 #include <GameObject\TransformComponentManager.h>
 #include <GameObject\CameraComponentManager.h>
 #include <GameObject\MeshComponentManager.h>
+#include <GameObject\ParticleEmitterComponentManager.h>
 #include <GameObject\PointLightComponentManager.h>
 #include <GameObject\RigidBodyComponentManager.h>
 #include <GameObject\FractureComponentManager.h>

@@ -30,7 +30,7 @@ protected:
 
 	Scene* mp_Scene;		// Pointer to a Scene that contains meshes for rendering
 	ID3D11ShaderResourceView * m_Textures[TextureType::NUM_TEXTURE_TYPES];
-	bool m_CastShadows;
+	bool m_CastShadows;			// Convert these to flags
 	bool m_ReceiveShadows;
 	bool m_IsLit;
 	unsigned int m_TextureFlags;

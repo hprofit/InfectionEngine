@@ -36,6 +36,8 @@
     <ClCompile Include="SOURCE\ConstantBuffer.cpp" />
     <ClCompile Include="SOURCE\GameObject\FractureComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\FractureComponentManager.cpp" />
+    <ClCompile Include="SOURCE\GameObject\ParticleEmitterComponent.cpp" />
+    <ClCompile Include="SOURCE\GameObject\ParticleEmitterComponentManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\RigidBodyComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\RigidBodyComponentManager.cpp" />
     <ClCompile Include="SOURCE\LevelManager.cpp" />
@@ -125,6 +127,8 @@
     <ClInclude Include="SOURCE\Command.h" />
     <ClInclude Include="SOURCE\GameObject\FractureComponent.h" />
     <ClInclude Include="SOURCE\GameObject\FractureComponentManager.h" />
+    <ClInclude Include="SOURCE\GameObject\ParticleEmitterComponent.h" />
+    <ClInclude Include="SOURCE\GameObject\ParticleEmitterComponentManager.h" />
     <ClInclude Include="SOURCE\GameObject\RigidBodyComponent.h" />
     <ClInclude Include="SOURCE\GameObject\RigidBodyComponentManager.h" />
     <ClInclude Include="SOURCE\LevelManager.h" />

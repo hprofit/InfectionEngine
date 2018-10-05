@@ -20,15 +20,6 @@ struct Vertex {
 	UINT  VertexID;
 };
 
-//struct TexCoords {
-//	FLOAT u, v;
-//	TexCoords(float _u, float _v) : u(_u), v(_v) {}
-//	TexCoords(const D3DVECTOR* uv) : u(uv->x), v(uv->y) {}
-//	FLOAT operator[](int idx) {
-//		return idx == 0 ? u : v;
-//	}
-//};
-
 class Material {
 protected:
 	const aiMaterial * m_pMaterial;

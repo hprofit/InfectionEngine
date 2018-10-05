@@ -38,8 +38,8 @@ static std::unordered_map<std::string, ComponentType> COMPONENT_NAMES = {
 	{ "RigidBody", C_RigidBody },
   { "Fracture", C_Fracture },
 	{ "CollisionTrigger", C_CollisionTrigger },
-	{ "Brain", C_Brain}
-
+	{ "Brain", C_Brain },
+	{ "ParticleEmitter", C_ParticleEmitter }
 };
 
 #endif // !COMPONENT_TYPES_H

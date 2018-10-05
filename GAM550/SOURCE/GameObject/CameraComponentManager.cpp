@@ -14,8 +14,7 @@ CameraComponentManager::CameraComponentManager() {
 void CameraComponentManager::_CalcViewMatrix(CC comp)
 {
 	TransformComponent* tComp = comp->Parent()->GetComponent<TransformComponent>();
-	Matrix4x4 rotM = tComp->GetRotationMatrix();
-	comp->m_viewMatrix = rotM * Matrix4x4::Translate(-1 * tComp->WorldPosition());
+	comp->m_viewMatrix = tComp->GetRotationMatrix() * Matrix4x4::Translate(-1 * tComp->WorldPosition());
 }
 
 void CameraComponentManager::Update(float dt)

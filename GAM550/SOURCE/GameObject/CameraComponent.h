@@ -17,7 +17,7 @@ enum class ProjectionType {
 
 class CameraComponent : public Component
 {
-private:
+protected:
 	friend CameraComponentManager;
 
 	float m_fov, m_aspectRatio;
