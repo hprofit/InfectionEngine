@@ -90,7 +90,7 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 		m_BoneList[i].WightsList.VertexID = mesh->mBones[i]->mWeights->mVertexId;
 		m_BoneList[i].WightsList.Weight = mesh->mBones[i]->mWeights->mWeight;
 
-
+		//cout << "Testing Yolo" << endl;
 	}
 #pragma endregion
 
