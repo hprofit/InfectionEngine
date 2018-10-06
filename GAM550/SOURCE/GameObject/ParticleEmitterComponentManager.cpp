@@ -63,7 +63,6 @@ void ParticleEmitterComponentManager::_SpawnParticle(PEC pec, TC tc)
 		pec->m_particles[idx].y = pos.y;
 		pec->m_particles[idx].z = pos.z;
 
-
 		float variationOffset = RandomFloat(-pec->m_angleVariation, pec->m_angleVariation);
 		// TODO: UPDATE THIS
 		float angleOffset = (pec->m_rotateToParentOnSpawn ? tc->GetAngleZ() : 0.f) + variationOffset;
