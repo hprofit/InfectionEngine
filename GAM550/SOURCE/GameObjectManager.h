@@ -44,10 +44,6 @@ public:
 
 	// TODO: Remove this
 	void RenderParticles();
-
-	void Update(float deltaTime);
-
-	void LateUpdate(float deltaTime);
 };
 
 #endif

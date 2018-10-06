@@ -129,24 +129,9 @@ void RigidBodyComponent::Serialize(const json& j)
 
 }
 
-void RigidBodyComponent::HandleEvent(Event * pEvent)
-{
-	switch (pEvent->Type()) {
-	default:
-		break;
-	}
-}
+void RigidBodyComponent::HandleEvent(Event * pEvent){}
 
-void RigidBodyComponent::LateInitialize()
-{
-	//FECT_GOM.RegisterCamera(mp_Parent);
-}
-
-void RigidBodyComponent::Update(float dt)
-{
-  // calculate physics
-  //m_RigidBody.integrate(dt);
-}
+void RigidBodyComponent::LateInitialize(){}
 
 
 RigidBodyComponent::Box::Box()

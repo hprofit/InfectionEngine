@@ -24,8 +24,6 @@ public:
 	static Component* CreateInstance(InfectGUID guid) { return new RigidBodyComponent(guid); }
 	virtual void Deactivate();
 	virtual void LateInitialize();
-	virtual void Update(float dt);
-	virtual void LateUpdate(float dt) {};
 	virtual void Serialize(const json& j);
 	virtual void HandleEvent(Event* pEvent);
 

@@ -18,24 +18,6 @@ void BrainComponent::Deactivate(){
 void BrainComponent::LateInitialize() {
 }
 
-void BrainComponent::Update(float dt) {
-	// Change of state
-	if (m_currentState != m_previousState) {
-		if (m_states[m_currentState]) {
-			m_states[m_previousState]->OnExit();
-			m_states[m_currentState]->OnEnter();
-			m_previousState = m_currentState;
-		}
-		else {
-			m_currentState = m_previousState;
-		}
-	}
-	// Update with currentState
-	if (m_states[m_currentState])
-		m_states[m_currentState]->OnUpdate(dt);
-	m_IsDirty = true;
-}
-
 void BrainComponent::Serialize(const json& j){
 	int stateSize = j["ai_states"].size();
 	

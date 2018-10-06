@@ -34,8 +34,6 @@ public:
 	static Component* CreateInstance(InfectGUID guid) { return new BrainComponent(guid);  }
 	virtual void Deactivate();
 	virtual void LateInitialize();
-	virtual void Update(float dt);
-	virtual void LateUpdate(float dt) {};
 	virtual void Serialize(const json& j);
 	virtual void Override(const json& j);
 

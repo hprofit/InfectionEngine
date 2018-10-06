@@ -25,13 +25,13 @@ public:
 	ComponentManagerContainer() {};
 	~ComponentManagerContainer() {};
 
+	/*
+		This sill call updated on every ComponentManager in the order they were registered in
+	*/
 	void Update(float dt);
 	void HandleEvent(Event* pEvent);
 	void Init();
 	void RegisterCompMngr(CM* cMngr);
-
-	// TODO: Get rid of this
-	//CM* GetCM(int idx) { return m_CMngrs[idx]; }
 };
 
 #endif

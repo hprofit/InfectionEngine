@@ -28,7 +28,6 @@ public:
 
 	static Component* CreateInstance(InfectGUID guid) { return new PointLightComponent(guid); }
 	virtual void Deactivate();
-	virtual void Update(float dt) {};
 	virtual void Serialize(const json& j);
 	virtual void Override(const json& j);
 

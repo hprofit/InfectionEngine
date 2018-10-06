@@ -95,20 +95,3 @@ void GameObjectManager::RenderParticles()
 		}
 	}
 }
-
-void GameObjectManager::Update(float deltaTime)
-{
-	for (unsigned int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {
-		if (mp_GameObjects[objIdx]->IsActive())
-			mp_GameObjects[objIdx]->Update(deltaTime);
-	}
-}
-
-void GameObjectManager::LateUpdate(float deltaTime)
-{
-	for (unsigned int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {
-		if (mp_GameObjects[objIdx]->IsActive())
-			mp_GameObjects[objIdx]->LateUpdate(deltaTime);
-	}
-}
-

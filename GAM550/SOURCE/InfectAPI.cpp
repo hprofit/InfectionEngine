@@ -71,15 +71,13 @@ namespace Infect {
 		INFECT_EVENTS.Update(deltaTime);				// Pump the event manager
 		//INFECT_AUDIO.Update(deltaTime);
 
-		INFECT_GOM.Update(deltaTime);					// Update game logic
-		INFECT_CMC.Update(deltaTime);
+		INFECT_CMC.Update(deltaTime);					// Updates all ComponentManagers
 
 
 
 		//INFECT_GOM.UpdateStatus();					// Update status of game objects
 		//INFECT_PHYSICS.Integrate(deltaTime);			// Move physics bodies
 		//INFECT_PHYSICS.ResolveCollisions();			// Resolve collisions on physics bodies
-		INFECT_GOM.LateUpdate(deltaTime);				// Update game logic that occurs after physics
 
 		//INFECT_RENDERER.RenderFrame(pGOCamera, pGO);
 

@@ -129,8 +129,6 @@ public:
 
 	static Component* CreateInstance(InfectGUID guid) { return new ParticleEmitterComponent(guid); }
 
-	virtual void Update(float dt) {};
-	virtual void LateUpdate(float dt) {};
 	virtual void Deactivate();
 	virtual void Serialize(const json& j);
 	virtual void Override(const json& j);

@@ -16,6 +16,11 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 		// this message is read when the window is closed
 	case WM_DESTROY:
 	{
+		/*
+			TODO:
+			Tell the game loop to quit and have it clean up the 
+			Job Manager and other threads before posting the quit message
+		*/
 		INFECT_THREAD_JOBS.AddNewJob(new RenderTerminateTerminate(*INFECT_THREAD_JOBS.GetThreadContainer<RenderThreadContainer>(ThreadType::RenderThread)));
 		INFECT_THREAD_JOBS.AddNewJob(new SimulationTerminateTerminate(*INFECT_THREAD_JOBS.GetThreadContainer<SimulationThreadContainer>(ThreadType::SimThread)));
 		INFECT_GAME_STATE.SetGameState(GameState::QUIT);
