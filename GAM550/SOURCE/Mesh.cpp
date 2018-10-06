@@ -87,10 +87,11 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 
 
 		//Vertex Data
+
 		m_BoneList[i].WightsList.VertexID = mesh->mBones[i]->mWeights->mVertexId;
 		m_BoneList[i].WightsList.Weight = mesh->mBones[i]->mWeights->mWeight;
 
-
+		
 	}
 #pragma endregion
 
