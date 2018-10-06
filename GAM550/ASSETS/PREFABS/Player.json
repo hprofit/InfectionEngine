@@ -18,7 +18,19 @@
 		},
 		{
 			"Component": "Mesh",
-			"scene": "Sphere"
+			"scene": "Sphere",
+			"color": {
+				"r": 0,
+				"g": 0,
+				"b": 255,
+				"a": 255
+			},
+			"specularValues": {
+				"r": 0.9,
+				"g": 0.9,
+				"b": 0.9,
+				"a": 100
+			}
 		}
   ]
 }

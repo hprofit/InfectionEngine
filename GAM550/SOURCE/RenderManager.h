@@ -26,6 +26,7 @@ private:
 	D3DHandler *mp_D3D;
 
 	Color m_ClearColor;
+	Color m_Ambient;	// Temporary, this will be replaced
 	WindowSettings m_WindowSettings;
 	HWND m_hWnd; 	// the handle for the window, filled by a function
 

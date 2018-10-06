@@ -36,6 +36,7 @@ bool RenderManager::_GameObjectHasRenderableComponent(const GameObject & gameObj
 
 RenderManager::RenderManager() :
 	m_ClearColor(Color(0.0f, 0.0f, 0.0f, 1)),
+	m_Ambient(Color(0.3f, 0.3f, 0.3f, 1)),
 	mp_D3D(new D3DHandler()),
 	m_RenderMode(RenderMode::Final)
 {
@@ -140,7 +141,7 @@ void RenderManager::RenderDeferredBuffer()
 	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
 	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
-	cb.Ambient = Color(1, 1, 1, 1);
+	cb.Ambient = m_Ambient;
 	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 	
 	switch (m_RenderMode) {
@@ -180,7 +181,7 @@ void RenderManager::RenderDeferredBufferAmbientOnly()
 	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
 	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
-	cb.Ambient = Color(0.1f, 0.1f, 0.1f, 1);
+	cb.Ambient = m_Ambient;
 	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 
 	// set the new values for the constant buffer
@@ -205,7 +206,7 @@ void RenderManager::RenderSecondPassBuffer()
 	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
 	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
-	cb.Ambient = Color(0.1f, 0.1f, 0.1f, 1);
+	cb.Ambient = m_Ambient;
 	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 
 	// set the new values for the constant buffer
@@ -252,6 +253,8 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	cb.ReceiveShadows = pMeshComp->ReceiveShadows();
 	cb.IsLit = pMeshComp->IsLit();
 	cb.TextureFlags = pMeshComp->TexturedFlags();
+	cb.OverrideColor = Color(pMeshComp->GetOverrideColor());
+	cb.SpecularValues = pMeshComp->GetSpecularValues();
 	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
 
 	mp_ShaderProgramDeferred->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
@@ -289,7 +292,7 @@ void RenderManager::RenderLight(const GameObject & pGOCamera, const GameObject &
 	cb.LIDHW.y = pPointLightComp->Distance();
 	cb.LIDHW.z = float(m_WindowSettings.Height);
 	cb.LIDHW.w = float(m_WindowSettings.Width);
-	cb.Ambient = Color(0.1f, 0.1f, 0.1f, 1);
+	cb.Ambient = m_Ambient;
 
 	mp_ShaderProgramDeferredFinal->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 

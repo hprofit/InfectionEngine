@@ -22,7 +22,13 @@
 			"Component": "Mesh",
 			"scene": "Quad",
 			"diffuse": "DirtDiffuse.tif",
-			"normal": "DirtNormal.tif"
+			"normal": "DirtNormal.tif",
+			"specularValues": {
+				"r": 0.878,
+				"g": 0.666,
+				"b": 0.172,
+				"a": 2
+			}
 		}
   ]
 }
