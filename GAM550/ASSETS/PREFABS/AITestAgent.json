@@ -21,7 +21,18 @@
 			"scene": "Sphere"
 		},
 		{
-			"Component": "Brain"
+			"Component": "Brain",
+			"ai_states": [
+				{
+					"state": "ai_state_idle",
+					"behaviorTree": "bt_idleEngineDemo"
+				},
+				{
+					"state": "ai_state_combat",
+					"behaviorTree": "bt_combatEngineDemo"
+				}
+			],
+			"detectionRadius": 20
 		}
   ]
 }

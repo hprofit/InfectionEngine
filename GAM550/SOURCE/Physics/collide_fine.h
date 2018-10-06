@@ -49,7 +49,7 @@ namespace physics {
       Matrix4x4 transform = Matrix4x4(1.f, 0.f, 0.f, 0.f,
         0.f, 1.f, 0.f, 0.f,
         0.f, 0.f, 1.f, 0.f,
-        0.f, 0.f, 0.f, 0.f);;
+        0.f, 0.f, 0.f, 0.f);
     };
 
     /**

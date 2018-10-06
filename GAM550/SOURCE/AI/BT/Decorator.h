@@ -6,23 +6,21 @@ Author: <Hyoyup Chung>
 - End Header --------------------------------------------------------*/
 
 #pragma once
-#ifndef AI_MOVE_H
-#define AI_MOVE_H
+#ifndef BT_DECORATOR_H
+#define BT_DECORATOR_H
 
-class AI_Move : public AI_State {
+class Decorator: public Behavior{
+protected:
+	BehaviorTree* pBT;
+	Behavior* m_pChildBehavior;
 public:
-	AI_Move();
-	~AI_Move();
-	static AI_State* CreateInstance() { return new AI_Move(); }
+	Decorator() {};
+	~Decorator() {};
 
-	virtual void OnEnter();
-	virtual void OnUpdate(float);
-	virtual void OnExit();
-	virtual void HandleEvent(Event* pEvent);
-	virtual void Serialize(const json& j);
-
-private:
-	
+	virtual void OnInitialize() = 0;
+	virtual BH_Status OnUpdate() = 0;
+	virtual void OnTerminate(BH_Status) = 0;
+	virtual void OnChildComplete(BH_Status) = 0;
 };
 
 #endif

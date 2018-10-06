@@ -15,7 +15,7 @@ class BrainComponentManager :
 {
 protected:
 	typedef BrainComponent* BC;
-
+	
 public:
 	BrainComponentManager();
 	virtual ~BrainComponentManager() {};

@@ -7,5 +7,4 @@ Author: <Hyoyup Chung>
 
 // States
 REGISTER_STATE(AI_State_Idle)
-REGISTER_STATE(AI_State_Move)
 REGISTER_STATE(AI_State_Combat)

@@ -9,7 +9,16 @@ cbuffer DeferredFinalConstantBuffer
 	float4 Ambient;
 };
 
-struct VOut
+struct VertexInput {
+	float4 position : POSITION;
+	float4 normal : NORMAL;
+	float4 tangent : TANGENT;
+	float4 bitangent : BITANGENT;
+	float2 texCoords : TEXCOORDS;
+	float4 color : COLOR;
+};
+
+struct PixelInput
 {
 	float4 position : SV_POSITION;
 };
@@ -21,21 +30,14 @@ Texture2D SpecularTexture : register(t3);
 SamplerState ss;
 
 
-VOut VShader(
-	float4 position : POSITION,
-	float4 normal : NORMAL,
-	float4 tangent : TANGENT,
-	float4 bitangent : BITANGENT,
-	float2 texCoords : TEXCOORDS,
-	float4 color : COLOR
-)
+PixelInput VShader(VertexInput input)
 {
-	VOut output;
-	position.w = 1;
+	PixelInput output;
+	input.position.w = 1;
 
-	float4 P = mul(ModelMatrix, position);
+	float4 P = mul(ModelMatrix, input.position);
 
-	output.position = mul(MatFinal, position);
+	output.position = mul(MatFinal, input.position);
 
 	return output;
 }
@@ -51,11 +53,9 @@ float attenuation(float dist, float lightRadius)
 	return clamp(val, 0.0f, 1.0f);
 }
 
-float4 PShader(
-	float4 position : SV_POSITION
-) : SV_TARGET
+float4 PShader(PixelInput input) : SV_TARGET
 {
-	float2 texCoords = float2(position.x / LIDHW.w, position.y / LIDHW.z);
+	float2 texCoords = float2(input.position.x / LIDHW.w, input.position.y / LIDHW.z);
 	float4 worldPos = WorldPosTexture.Sample(ss, texCoords);
 	float a = LightPosition.w;
 	float b = LightColor.a;

@@ -30,6 +30,8 @@ public:
 
 	GameObject* GetGameObject(unsigned int id) const { return mp_GameObjects[id]; }
 
+	GameObject* GetCamera() const { return mp_Cameras[0]; }
+
 	void RegisterCamera(GameObject* cameraGO);
 
 	void RegisterLight(GameObject* lightGO);
@@ -39,6 +41,9 @@ public:
 	void RenderCameras();
 
 	void RenderLights();
+
+	// TODO: Remove this
+	void RenderParticles();
 
 	void Update(float deltaTime);
 

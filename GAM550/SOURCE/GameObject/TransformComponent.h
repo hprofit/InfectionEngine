@@ -48,54 +48,93 @@ public:
 
 	virtual void HandleEvent(Event * p_event);
 
+	// Sets the GameObject's locatl position relative to the parent object
 	void SetPosition(const Vector3D& pos);
+	// Returns the GameObject's position relative to the parent object
+	// If there is no parent object, this will be the same as WorldPosition
 	inline Vector3D LocalPosition() const { return m_position; }
+	// Returns the GameObject's position relative to the origin
 	inline Vector3D WorldPosition() const { return m_worldPosition; }
+	// Translates the GameObject in the direction given
 	void Move(const Vector3D& amount);
+	// Translates the GameObject along it's own current lookat
 	void MoveAlongLookAt(Vector3D& amount);
+	// Returns the amount this GameObject has moved since the previous frame
 	Vector3D GetMovement() const { return m_worldPosition - m_prevPosition; }
 
+	// Sets the rotation around the x, y, and z axis, angles are in degrees
 	void SetAngles(float angleX, float angleY, float angleZ);
+	// Sets the rotation around the x axis, angle is in degrees
 	void SetAngleX(float angle);
+	// Sets the rotation around the y axis, angle is in degrees
 	void SetAngleY(float angle);
+	// Sets the rotation around the z axis, angle is in degrees
 	void SetAngleZ(float angle);
+	// Returns the rotation around the x axis in degrees
 	inline float GetAngleX() const { return m_angleX; }
+	// Returns the rotation around the y axis in degrees
 	inline float GetAngleY() const { return m_angleY; }
+	// Returns the rotation around the z axis in degrees
 	inline float GetAngleZ() const { return m_angleZ; }
 
+	// Sets the GameObject's pivot offset
 	void SetPivotOffset(Vector3D offset);
+	// Returns the GameObject's pivot offset
 	inline Vector3D GetPivotOffset() const { return m_pivotOffset; }
 
+	// Rotates the object about the x axis by the given amount in degrees
 	void RotateX(float amount);
+	// Rotates the object about the y axis by the given amount in degrees
 	void RotateY(float amount);
+	// Rotates the object about the z axis by the given amount in degrees
 	void RotateZ(float amount);
+	// Returns a Vector3D with the x rotation, y rotation, and z rotation as the x, y, and z components all in degrees
 	inline Vector3D GetRotVector() const { return Vector3D(m_angleX, m_angleY, m_angleZ); }
 
+	// Returns the GameObject's current lookat direction
+	inline Vector3D LookAt() const { return m_lookAt; }
+	// Returns the GameObject's current lookat direction
 	inline Vector3D Forward() const { return m_lookAt; }
+	// Returns the GameObject's current right direction
 	inline Vector3D Right() const { return m_right; }
+	// Returns the GameObject's current up direction
 	inline Vector3D Up() const { return m_up; }
 
-	inline Vector3D LookAt() const { return m_lookAt; }
-
+	// Returns the GameObject's scale along the x axis
 	inline float GetScaleX() const { return m_scaleX; }
+	// Sets the GameObject's scale along the x axis
 	void SetScaleX(float scaleX);
+	// Adds to the GameObject's scale along the x axis
 	void ScaleXby(float amount);
 
+	// Returns the GameObject's scale along the y axis
 	inline float GetScaleY() const { return m_scaleY; }
+	// Sets the GameObject's scale along the y axis
 	void SetScaleY(float scaleY);
+	// Adds to the GameObject's scale along the y axis
 	void ScaleYby(float amount);
 
+	// Returns the GameObject's scale along the z axis
 	inline float GetScaleZ() const { return m_scaleZ; }
+	// Sets the GameObject's scale along the z axis
 	void SetScaleZ(float scaleZ);
+	// Adds to the GameObject's scale along the z axis
 	void ScaleZby(float amount);
 
+	// Sets the GameObject's scale along all axis uniformly
 	void SetScaleUniform(float amount);
+	// Sets the GameObject's scale along all axis
 	void SetScale(float scaleX, float scaleY, float scaleZ);
+	// Sets the GameObject's scale along all axis using the x, y, and z components of the scale vector
 	void SetScale(const Vector3D& scale);
+	// Increases the scale of the GameObject in along all axis by the amoutn given
 	void ScaleUniform(float amount);
+	// Returns a Vector3D with the x scale, y scale, and z scale as the x, y, and z components
 	inline Vector3D GetScaleVector() const { return Vector3D(m_scaleX, m_scaleY, m_scaleZ, 0); }
 
+	// Returns the GameObject's current transform matrix calculated from the scale, rotation, and translation
 	inline Matrix4x4 GetTransform() const { return m_transform; }
+	// Returns the GameObject's current rotation matrix calculated from the rotation amounts
 	Matrix4x4 GetRotationMatrix() const;
 };
 

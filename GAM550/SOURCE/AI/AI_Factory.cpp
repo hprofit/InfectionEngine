@@ -7,14 +7,20 @@ Author: <Hyoyup Chung>
 
 #include <Stdafx.h>
 
-AIStateFactory::AIStateFactory(){
-	//m_CreationFunctions[StateText[NPC_State_Idle]] = AI_Idle::CreateInstance;
+AI_Factory::AI_Factory(){
+	m_CreationFunctions[AI_State_Idle] = AI_Idle::CreateInstance;
+	m_CreationFunctions[AI_State_Combat] = AI_Idle::CreateInstance;
 }
 
-AI_State* AIStateFactory::CreateState(std::string state){
-	CreationFunction *Create = m_CreationFunctions[state];
+AI_State* AI_Factory::CreateState(std::string state){
+	CreationFunction *Create = m_CreationFunctions[STATE_NAMES[state]];
 	if (Create){
 		return Create();
 	}
 	return nullptr;
 }
+
+
+//BehaviorTree* AI_Factory::CreateBT(std::string btName) {
+//	return INFECT_RESOURCES.GetBehaviorTree(btName);
+//}

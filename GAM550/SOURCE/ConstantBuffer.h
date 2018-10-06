@@ -10,15 +10,15 @@ Author: <Holden Profit>
 #ifndef CONSTANT_BUFFER_H
 #define CONSTANT_BUFFER_H
 
-struct ConstantBuffer {
-
-};
+struct ConstantBuffer {};
 
 struct MainCB : public ConstantBuffer {
 	Matrix4x4 MatFinal;
 	Matrix4x4 ModelMatrix;
 	Matrix4x4 NormalMatrix;
 	Vector3D CameraPosition;
+	Color OverrideColor;
+	Color SpecularValues;
 	int CastShadows;
 	int ReceiveShadows;
 	int IsLit;

@@ -10,7 +10,7 @@ Author: <Hyoyup Chung>
 #ifndef AI_STATETYPE_H
 #define AI_STATETYPE_H
 
-// Macro trick to make NPC state enums from the file NPCStateNames.h
+// Macro trick to make state enums from the file AI_StateTypeNames.h
 #define REGISTER_STATE(x) x,
 typedef enum
 {
@@ -27,5 +27,10 @@ static const char* StateText[] =
 };
 #undef REGISTER_STATE
 
+static std::unordered_map<std::string, AIStateType> STATE_NAMES = {
+	{ "ai_state_idle", AI_State_Idle },
+	{ "ai_state_combat", AI_State_Combat }
+
+};
 
 #endif

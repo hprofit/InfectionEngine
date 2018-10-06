@@ -26,6 +26,7 @@ private:
 	D3DHandler *mp_D3D;
 
 	Color m_ClearColor;
+	Color m_Ambient;	// Temporary, this will be replaced
 	WindowSettings m_WindowSettings;
 	HWND m_hWnd; 	// the handle for the window, filled by a function
 
@@ -34,6 +35,7 @@ private:
 	ShaderProgram<MainCB>* mp_ShaderProgramDeferred;
 	ShaderProgram<QuadCB>* mp_ShaderProgramQuad;
 	ShaderProgram<DeferredFinalCB>* mp_ShaderProgramDeferredFinal;
+	ShaderProgram<MainCB>* mp_ShaderProgramParticles;
 
 	RenderMode m_RenderMode;
 
@@ -95,6 +97,11 @@ public:
 	void NextRenderMode();
 
 	inline RenderMode CurrentRenderMode() const { return m_RenderMode; }
+
+
+	void PrepParticlePass();
+	// TODO: GET RID OF THIS
+	void RenderParticles(const GameObject& pGOCamera, const GameObject& pGO);
 };
 
 #endif

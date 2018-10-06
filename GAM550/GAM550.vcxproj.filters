@@ -97,6 +97,21 @@
     <Filter Include="Source Files\AI\BehaviorTree\Actions">
       <UniqueIdentifier>{e387320d-f737-425c-9089-687bf21afd0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameObject\ComponentManagers\AI">
+      <UniqueIdentifier>{198eeed6-21a4-4ebb-8de3-3ffd44e678b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\ComponentManagers\Light">
+      <UniqueIdentifier>{68766f3e-5fef-4ca3-88ae-c70e619632a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\ComponentManagers\Renderable">
+      <UniqueIdentifier>{9c369f85-28e5-4ccb-b1ce-cbe50ec89bcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\ComponentManagers\Physics">
+      <UniqueIdentifier>{c30d7f83-1f6a-446b-8853-29dab2137b6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\ComponentManagers\Base">
+      <UniqueIdentifier>{738ed45e-9d4a-4430-9087-6e95d9d6a3dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SOURCE\main.cpp">
@@ -198,16 +213,7 @@
     <ClCompile Include="SOURCE\GameObject\TransformComponentManager.cpp">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\ComponentManagerContainer.cpp">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\GameObject\CameraComponentManager.cpp">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\MeshComponentManager.cpp">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\PointLightComponentManager.cpp">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\Physics\RigidBody.cpp">
@@ -282,17 +288,8 @@
     <ClCompile Include="SOURCE\GameObject\RigidBodyComponent.cpp">
       <Filter>Source Files\GameObject\Components\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\GameObject\RigidBodyComponentManager.cpp">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\AI\BrainComponentManager.cpp">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\AI\BrainComponent.cpp">
       <Filter>Source Files\GameObject\Components\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\AI\FSM\AI_StateFactory.cpp">
-      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\AI\FSM\AI_Combat.cpp">
       <Filter>Source Files\AI\FiniteStateMachine</Filter>
@@ -300,13 +297,7 @@
     <ClCompile Include="SOURCE\AI\FSM\AI_Idle.cpp">
       <Filter>Source Files\AI\FiniteStateMachine</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\AI\FSM\AI_Move.cpp">
-      <Filter>Source Files\AI\FiniteStateMachine</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\AI\BT\BehaviorTree.cpp">
-      <Filter>Source Files\AI\BehaviorTree</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\AI\BT\Behavior.cpp">
       <Filter>Source Files\AI\BehaviorTree</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\AI\BT\Sequence.cpp">
@@ -324,8 +315,38 @@
     <ClCompile Include="SOURCE\GameObject\FractureComponent.cpp">
       <Filter>Source Files\GameObject\Components\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\Conditional_Loop.cpp">
+      <Filter>Source Files\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\MoveToRandom.cpp">
+      <Filter>Source Files\AI\BehaviorTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\AI_Factory.cpp">
+      <Filter>Source Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\ParticleEmitterComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\PointLightComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\MeshComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers\Renderable</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\ParticleEmitterComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers\Renderable</Filter>
+    </ClCompile>
     <ClCompile Include="SOURCE\GameObject\FractureComponentManager.cpp">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+      <Filter>Source Files\GameObject\ComponentManagers\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\RigidBodyComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BrainComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\ComponentManagerContainer.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -455,25 +476,13 @@
     <ClInclude Include="SOURCE\GameObject\PointLightComponent.h">
       <Filter>Source Files\GameObject\Components\Light</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\ComponentManager.h">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\GUID.h">
       <Filter>Source Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\TransformComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\ComponentManagerContainer.h">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\GameObject\CameraComponentManager.h">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\PointLightComponentManager.h">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\MeshComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\Color.h">
@@ -551,19 +560,10 @@
     <ClInclude Include="SOURCE\GameObject\RigidBodyComponent.h">
       <Filter>Source Files\GameObject\Components\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\GameObject\RigidBodyComponentManager.h">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\AI\BrainComponentManager.h">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\AI\BrainComponent.h">
       <Filter>Source Files\GameObject\Components\AI</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\AI\FSM\AI_State.h">
-      <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\AI\FSM\AI_StateFactory.h">
       <Filter>Source Files\AI\FiniteStateMachine\Base</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\AI\FSM\AI_StateTypeNames.h">
@@ -576,9 +576,6 @@
       <Filter>Source Files\AI\FiniteStateMachine</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\AI\FSM\AI_Idle.h">
-      <Filter>Source Files\AI\FiniteStateMachine</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\AI\FSM\AI_Move.h">
       <Filter>Source Files\AI\FiniteStateMachine</Filter>
     </ClInclude>
     <ClInclude Include="SOURCE\AI\BT\BehaviorTree.h">
@@ -605,8 +602,47 @@
     <ClInclude Include="SOURCE\GameObject\FractureComponent.h">
       <Filter>Source Files\GameObject\Components\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="SOURCE\AI\AI_Factory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Action.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Conditional_Loop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Decorator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\MoveToRandom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\ParticleEmitterComponent.h">
+      <Filter>Source Files\GameObject\Components\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\PointLightComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\MeshComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\ParticleEmitterComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\RigidBodyComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers\Physics</Filter>
+    </ClInclude>
     <ClInclude Include="SOURCE\GameObject\FractureComponentManager.h">
-      <Filter>Source Files\GameObject\ComponentManagers</Filter>
+      <Filter>Source Files\GameObject\ComponentManagers\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BrainComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\ComponentManagerContainer.h">
+      <Filter>Source Files\GameObject\ComponentManagers\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\ComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers\Base</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

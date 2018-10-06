@@ -26,6 +26,10 @@ public:
 		return next;
 	}
 
+	bool Empty() {
+		return m_Behaviors.empty();
+	}
+
 	void Clear() {
 		m_Behaviors.clear();
 	}
@@ -45,8 +49,14 @@ public:
 
 	void Tick(); // main entry point for this BT
 	bool Step(); // single stepping of behaviors
-protected:
-	BT_Scheduler* m_pScheduler; // keeps track of active nodes in the BT
+
+	void SetParent(AI_State* pState) { pAI_State = pState; }
+
+	BT_Scheduler m_Scheduler; // MOVE THESE TO PROTECTED LATER
+	//std::deque<Behavior*> m_behaviors;
+	Behavior* m_pRootNode;
+private:
+	AI_State* pAI_State;
 };
 
 #endif

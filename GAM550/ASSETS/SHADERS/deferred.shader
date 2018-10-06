@@ -4,13 +4,24 @@ cbuffer ConstantBuffer
 	float4x4 ModelMatrix;
 	float4x4 NormalMatrix;
 	float4 CameraPosition;
+	float4 OverrideColor;
+	float4 SpecularValues;
 	bool CastShadows;
 	bool ReceiveShadows;
 	bool IsLit;
 	unsigned int TextureFlags;
 };
 
-struct VOut
+struct VertexInput {
+	float4 position : POSITION;
+	float4 normal : NORMAL;
+	float4 tangent : TANGENT;
+	float4 bitangent : BITANGENT;
+	float2 texCoords : TEXCOORDS;
+	float4 color : COLOR;
+};
+
+struct PixelInput
 {
 	float4 position : SV_POSITION;
 	float4 worldPosition : WORLD_POS;
@@ -18,6 +29,12 @@ struct VOut
 	float3x3 tbn : TBN;
 	float4 color : COLOR;
 	float2 texCoords : TEXCOORDS;
+
+	bool hasDiffuseTexture : HAS_DIFFUSE_TEXTURE;
+	bool hasNormalMap : HAS_NORMAL_MAP;
+	bool hasSpecularMap : HAS_SPECULAR_MAP;
+	bool hasColorOverride : HAS_COLOR_OVERRIDE;
+	bool hasTint : HAS_TINT;
 };
 
 Texture2D DiffuseTexture : register(t0);
@@ -26,37 +43,38 @@ Texture2D SpecularMap : register(t2);
 SamplerState ss;
 
 
-VOut VShader(
-	float4 position : POSITION,
-	float4 normal : NORMAL,
-	float4 tangent : TANGENT,
-	float4 bitangent : BITANGENT,
-	float2 texCoords : TEXCOORDS,
-	float4 color : COLOR
-)
+PixelInput VShader(VertexInput input)
 {
-	VOut output;
-	position.w = 1;
-	normal.w = 0;
-	tangent.w = 0;
-	bitangent.w = 0;
+	PixelInput output;
+	input.position.w = 1;
+	input.normal.w = 0;
+	input.tangent.w = 0;
+	input.bitangent.w = 0;
 
-	float3 T = normalize(mul(NormalMatrix, tangent)).xyz;
-	float3 B = normalize(mul(NormalMatrix, bitangent)).xyz;
-	float3 N = normalize(mul(NormalMatrix, normal)).xyz;
+	float3 T = normalize(mul(NormalMatrix, input.tangent)).xyz;
+	float3 B = normalize(mul(NormalMatrix, input.bitangent)).xyz;
+	float3 N = normalize(mul(NormalMatrix, input.normal)).xyz;
 
-	output.worldPosition = mul(ModelMatrix, position);
-	output.position = mul(MatFinal, position);
-	output.normal = mul(NormalMatrix, normal);
+	output.worldPosition = mul(ModelMatrix, input.position);
+	output.position = mul(MatFinal, input.position);
+	output.normal = mul(NormalMatrix, input.normal);
 	output.tbn = transpose(float3x3(T, B, N));
-	output.color = color;
-	output.texCoords = texCoords;
+	output.color = input.color;
+	output.texCoords = input.texCoords;
+
+	unsigned int DIFFUSE_TEXTURE = 1;
+	unsigned int NORMAL_MAPPED = 2;
+	unsigned int SPECULAR_MAPPED = 4;
+	unsigned int COLOR_OVERRIDE = 8;
+	unsigned int TINT_COLOR = 16;
+	output.hasDiffuseTexture = TextureFlags & DIFFUSE_TEXTURE;
+	output.hasNormalMap = (TextureFlags & NORMAL_MAPPED) >> 1;
+	output.hasSpecularMap = (TextureFlags & SPECULAR_MAPPED) >> 2;
+	output.hasColorOverride = (TextureFlags * COLOR_OVERRIDE) >> 3;
+	output.hasTint = (TextureFlags * TINT_COLOR) >> 4;
 
 	return output;
 }
-
-
-
 
 
 struct POut
@@ -67,25 +85,12 @@ struct POut
 	float4 specular : SV_TARGET3;
 };
 
-POut PShader(
-	float4 position : SV_POSITION, 
-	float4 worldPosition : WORLD_POS,
-	float4 normal : NORMAL, 
-	float3x3 tbn : TBN,
-	float4 color : COLOR,
-	float2 texCoords : TEXCOORDS
-)
+POut PShader(PixelInput input)
 {
 	POut output;
-	unsigned int DIFFUSE_TEXTURE = 1;
-	unsigned int NORMAL_MAPPED = 2;
-	unsigned int SPECULAR_MAPPED = 4;
-	bool hasDiffuseTexture = TextureFlags & DIFFUSE_TEXTURE;
-	bool hasNormalMap = (TextureFlags & NORMAL_MAPPED)>>1;
-	bool hasSpecularMap = (TextureFlags & SPECULAR_MAPPED)>>2;
 
-	if (hasNormalMap) {
-		float3 normalMapValue = NormalMap.Sample(ss, texCoords).rgb;
+	if (input.hasNormalMap) {
+		float3 normalMapValue = NormalMap.Sample(ss, input.texCoords).rgb;
 		float3 nMapVal = normalize(
 			float3(
 				normalMapValue.r * 2.0 - 1.0,
@@ -93,25 +98,27 @@ POut PShader(
 				normalMapValue.b * 2.0 - 1.0
 			)
 		);
-		float3 m = normalize(mul(tbn, nMapVal));
+		float3 m = normalize(mul(input.tbn, nMapVal));
 
 		output.normal = float4(m.x, m.y, m.z, 0);
 		// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
 		output.normal.w = 1;
 	}
 	else {
-		normal.w = 0;
-		output.normal = normalize(normal);// float4(m.x, m.y, m.z, 0);
+		input.normal.w = 0;
+		output.normal = normalize(input.normal);// float4(m.x, m.y, m.z, 0);
 		// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
 		output.normal.w = 1;
 	}
 
 
-	output.worldPos = worldPosition;
+	output.worldPos = input.worldPosition;
 	// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
 	output.worldPos.w = 1;
-	output.diffuse = hasDiffuseTexture ? DiffuseTexture.Sample(ss, texCoords) : color;
-	output.specular = float4(0.9, 0.9, 0.9, 100);
+	output.diffuse = input.hasDiffuseTexture ? DiffuseTexture.Sample(ss, input.texCoords) : (input.hasColorOverride ? OverrideColor : input.color);
+	//if (input.hasTint)
+	//	output.diffuse *= TintColor;
+	output.specular = SpecularValues;
 
 	return output;
 }

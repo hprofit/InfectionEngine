@@ -175,6 +175,13 @@ void Vector3D::Print() const
 	std::cout << "<X: " << x << ", Y: " << y << ", Z: " << z << ", W: " << w << ">" << std::endl;
 }
 
+void Vector3D::FillValues(float & _x, float & _y, float & _z)
+{
+	_x = x;
+	_y = y;
+	_z = z;
+}
+
 void Vector3D::Zero()
 {
 	x = y = z = 0.0f;

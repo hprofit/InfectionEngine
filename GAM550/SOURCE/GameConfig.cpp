@@ -36,6 +36,7 @@ void GameConfig::LoadConfig(std::string s) {
 	m_roomFilesDir = assetDirectory + ParseString(gameSettings, "roomFilesDir");
 	m_fontsDir = assetDirectory + ParseString(gameSettings, "fontsDir");
 	m_meshesDir = assetDirectory + ParseString(gameSettings, "meshesDir");
+	m_btDir = assetDirectory + ParseString(gameSettings, "behaviorTreeDir");
 
 	m_debugEnabled = ParseBool(gameSettings, "debugMode");
 

@@ -32,5 +32,5 @@ void AI_Combat::HandleEvent(Event* pEvent) {
 
 }
 
-void AI_Combat::Serialize(const json& j) {
-}
+//void AI_Combat::Serialize(const json& j) {
+//}

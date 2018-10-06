@@ -9,12 +9,16 @@ Author: <Hyoyup Chung>
 #ifndef AI_STATE_H
 #define AI_STATE_H
 
+class Behavior;
 class BehaviorTree;
 
+// First Layer of Agent's AI - FSM
+// Acting blackboard of BT that runs the state logic
 class AI_State: public Subscriber{
 protected:
 	AIStateType m_StateType;
-	BehaviorTree *m_pBT;
+	Behavior* m_pRootNode;
+	BehaviorTree* m_pBT;
 public:	
 	static const AIStateType Type = AIStateType::NUM_AI_STATES;
 	virtual AIStateType GetType() const { return Type; }
@@ -26,9 +30,9 @@ public:
 	virtual void OnUpdate(float dt) = 0;
 	virtual void OnExit() = 0;
 	virtual void HandleEvent(Event* pEvent) = 0;
-	virtual void Serialize(const json& j) = 0;
 
-	AIStateType StateType() const { return m_StateType; }
+	void SetBehaviorTree(BehaviorTree* tree) { m_pBT = tree; }
+	BehaviorTree* GetBehaviorTree() { return m_pBT; }
 
 	BrainComponent *pAgent;
 };

@@ -9,6 +9,7 @@
 		"shadersDir": "SHADERS/",
 		"texturesDir": "TEXTURES/",
 		"fontsDir": "FONTS/",
+		"behaviorTreeDir": "BEHAVIOR_TREES/",
 		
 		"debugMode": true,
 		"soundsMute": false

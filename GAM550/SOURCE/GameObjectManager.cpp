@@ -86,6 +86,16 @@ void GameObjectManager::RenderLights()
 	}
 }
 
+void GameObjectManager::RenderParticles()
+{
+	for (unsigned int camIdx = 0; camIdx < mp_Cameras.size(); ++camIdx) {
+		for (unsigned int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {
+			if (mp_GameObjects[objIdx]->IsActive() && mp_Cameras[camIdx] != mp_GameObjects[objIdx])
+				INFECT_RENDERER.RenderObject((*mp_Cameras[camIdx]), (*mp_GameObjects[objIdx]));
+		}
+	}
+}
+
 void GameObjectManager::Update(float deltaTime)
 {
 	for (unsigned int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {

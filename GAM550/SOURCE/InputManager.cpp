@@ -322,10 +322,10 @@ bool InputManager::IsButtonPressed(const XBOX_SCANCODE btn) {
 	return m_CurrentButtonStates[btn];
 }
 bool InputManager::IsButtonTriggered(const XBOX_SCANCODE btn) {
-	return (m_CurrentButtonStates[btn] == 1 && m_PreviousButtonStates[btn] == 0);
+	return (m_CurrentButtonStates[btn] && !(m_PreviousButtonStates[btn]));
 }
 bool InputManager::IsButtonReleased(const XBOX_SCANCODE btn) {
-	return (m_CurrentButtonStates[btn] == 0 && m_PreviousButtonStates[btn] == 1);
+	return (!(m_CurrentButtonStates[btn]) && m_PreviousButtonStates[btn]);
 }
 
 void InputManager::HandleEvent(Event* pEvent) {

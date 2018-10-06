@@ -35,12 +35,13 @@ namespace Infect {
 		INFECT_CMC.RegisterCompMngr(new CameraComponentManager());
 		INFECT_CMC.RegisterCompMngr(new PointLightComponentManager());
 		INFECT_CMC.RegisterCompMngr(new MeshComponentManager());
+		INFECT_CMC.RegisterCompMngr(new ParticleEmitterComponentManager());
 		INFECT_CMC.RegisterCompMngr(new RigidBodyComponentManager());
 		INFECT_CMC.RegisterCompMngr(new BrainComponentManager());
 		INFECT_CMC.Init();
 		INFECT_MEMORY.LateInit();
 
-    INFECT_PHYSICS.Init();
+		INFECT_PHYSICS.Init();
 
 		INFECT_THREAD_JOBS.RegisterThreadContainer(new RenderThreadContainer());
 		INFECT_THREAD_JOBS.RegisterThreadContainer(new SimulationThreadContainer());

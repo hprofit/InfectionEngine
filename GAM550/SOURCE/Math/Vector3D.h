@@ -51,6 +51,7 @@ public:
 	void Mul(const float scalar);
 	void Div(const float divisor);
 	void Print() const;
+	void FillValues(float&, float&, float&);
 
 	float AngleRadians() const;
 	float AngleDegrees() const;

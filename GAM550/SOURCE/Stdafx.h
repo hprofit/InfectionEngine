@@ -148,10 +148,9 @@ typedef unsigned int InfectGUID;
 // Components - Rendering
 #include <GameObject\RenderableComponent.h>
 #include <GameObject\MeshComponent.h>
+#include <GameObject\ParticleEmitterComponent.h>
 //#include <FBOSprite.h>
 //#include <Sprite.h>
-//#include <ParticleEmitter.h>
-//#include <ParticleEmitterResizer.h>
 //#include <Text.h>
 //#include <Animation.h>
 #include <GameObject\CameraComponent.h>
@@ -172,18 +171,24 @@ typedef unsigned int InfectGUID;
 #pragma endregion 
 
 #pragma region AI
-// Finite-State Machine
+/* Finite-State Machine */
 #include <AI\FSM\AI_State.h>
-#include <AI\FSM\AI_StateFactory.h>
 #include <AI\FSM\AI_Idle.h>
-#include <AI\FSM\AI_Move.h>
 #include <AI\FSM\AI_Combat.h>
-// Behavior Tree
+/* Behavior Tree */
 #include <AI\BT\Behavior.h>
+// Control Nodes
 #include <AI\BT\Composite.h>
 #include <AI\BT\Sequence.h>
 #include <AI\BT\Selector.h>
 #include <AI\BT\SimpleParallel.h>
+// Decorator Nodes
+#include <AI\BT\Decorator.h>
+#include <AI\BT\Conditional_Loop.h>
+// Action Nodes
+#include <AI\BT\Action.h>
+#include <AI\BT\MoveToRandom.h>
+
 #include <AI\BT\BehaviorTree.h>
 #pragma endregion
 
@@ -193,6 +198,7 @@ typedef unsigned int InfectGUID;
 #include <GameObject\TransformComponentManager.h>
 #include <GameObject\CameraComponentManager.h>
 #include <GameObject\MeshComponentManager.h>
+#include <GameObject\ParticleEmitterComponentManager.h>
 #include <GameObject\PointLightComponentManager.h>
 #include <GameObject\RigidBodyComponentManager.h>
 #include <GameObject\FractureComponentManager.h>
@@ -215,6 +221,7 @@ typedef unsigned int InfectGUID;
 //#include <DebugManager.h>
 #include <AudioManager.h>
 #include <GameObject\ComponentFactory.h>
+#include <AI\AI_Factory.h>
 #include <MemoryManager.h>
 //#include <ImguiManager.h>
 //#include <LevelEditor.h>

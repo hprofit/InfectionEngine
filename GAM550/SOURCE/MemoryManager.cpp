@@ -38,6 +38,7 @@ MemoryManager::MemoryManager():
 	m_NumCachedBlock = 0;
 
 	m_ComponentFactory = new ComponentFactory();
+	m_AIFactory = new AI_Factory();
 	// GameObject preallocation
 	for (unsigned i = 0; i < MAX_GAMEOBJECT_CACHESIZE; i++) {
 		m_GameObjectPool.push_back( new GameObject(INFECT_GUID.GetGUID()));
@@ -69,6 +70,7 @@ MemoryManager::~MemoryManager() {
 	// maybe clear pools? 
 
 	delete m_ComponentFactory;
+	delete m_AIFactory;
 }
 
 void* MemoryManager::Alloc(std::size_t size) {
@@ -186,4 +188,11 @@ void MemoryManager::DeleteComponent(Component* ptr) {
 	std::list<Component*>* cList = m_ComponentPool[ptr->GetType()];
 	std::list<Component*>::iterator it = std::find(cList->begin(), cList->end(), ptr);
 	cList->splice(cList->end(), *cList, it);
+}
+
+AI_State* MemoryManager::GetNewState(std::string stateName) {
+	return m_AIFactory->CreateState(stateName);
+}
+void MemoryManager::DeleteState(AI_State* ptr) {
+	delete ptr;
 }

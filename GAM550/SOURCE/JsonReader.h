@@ -54,6 +54,9 @@ namespace JsonReader {
 	Color ParseColor(const json& j, const std::string&);
 	Color ParseColor(const json& j, const std::string&, const std::string&);
 
+	CompressedColor ParseCompColor(const json& j, const std::string&);
+	CompressedColor ParseCompColor(const json& j, const std::string&, const std::string&);
+
 	bool ValueExists(const json& j, const std::string&);
 	bool ValueExists(const json& j, const std::string&, const std::string&);
 	bool ValueExists(const json& j, const std::string&, const std::string&, const std::string&);

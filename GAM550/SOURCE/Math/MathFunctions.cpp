@@ -167,7 +167,8 @@ void SeedRand(unsigned int seed)
 int Rand()
 {
 	//return rand();
-	return (((holdrand = holdrand * 214012L + 2531011L) >> 16) & INFECT_RAND_MAX);
+	holdrand = (holdrand * 214012L + 2531011L) >> 16;
+	return holdrand & INFECT_RAND_MAX;
 }
 
 float Rand_Zero_One()
