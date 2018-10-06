@@ -21,10 +21,8 @@ protected:
 	Vector3D _GetSpawnPositionWithinShape();
 	void _SpawnParticle(PEC pec, TC tc);
 	void _SortParticles(PEC pec);
-	void _UpdateParticles(PEC pec, float deltaTime);
-	void _AllocateParticleArrays(PEC pec);
-	void _DeallocateParticleArrays(PEC pec);
-	void _AllocateVBOs(PEC pec);
+	void _UpdateParticles(PEC pec, TC tc, float deltaTime);
+	bool _UpdateParticleBuffers(PEC pec);
 	void _WarmSystem(PEC pec);
 public:
 	ParticleEmitterComponentManager();

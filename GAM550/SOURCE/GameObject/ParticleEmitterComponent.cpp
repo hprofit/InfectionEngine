@@ -9,6 +9,156 @@ Author: <Holden Profit>
 
 #define SHAPE_STR "SHAPE"
 
+void ParticleEmitterComponent::ParticleVertex::FillVert(const ParticleEmitterComponent::Particle & p, float _u, float _v, float _xDir, float _yDir)
+{
+	x = p.x + (p.scale * _xDir);
+	y = p.y + (p.scale * _yDir);
+	z = p.z;
+
+	scale = p.scale;
+	
+	u = _u;//p.u;
+	v = _v;// p.v;
+	
+	r = FLOAT(p.color.r) / 255.0f;
+	g = FLOAT(p.color.g) / 255.0f;
+	b = FLOAT(p.color.b) / 255.0f;
+	a = FLOAT(p.color.a) / 255.0f;
+}
+
+void ParticleEmitterComponent::_AllocateParticleArrays()
+{
+	_DeallocateParticleArrays();
+	m_particles.resize(m_maxParticles);
+	std::fill(m_particles.begin(), m_particles.end(), ParticleEmitterComponent::Particle());
+	m_positionsScales.resize(m_maxParticles * 4);
+	m_colors.resize(m_maxParticles * 4);
+	m_textureCoords.resize(m_maxParticles * 2);
+
+	for (int i = 0; i < m_maxParticles; ++i) {
+		m_particles[i].life = -1.f;
+		m_particles[i].angleOffset = 0.f;
+
+		m_particles[i].u = m_frameWidth / m_texWidth;
+		m_particles[i].v = m_frameHeight / m_texHeight;
+
+		int i4 = i * 4;
+		m_positionsScales[i4] = 0.f;
+		m_positionsScales[i4 + 1] = 0.f;
+		m_positionsScales[i4 + 2] = 0.f;
+		m_positionsScales[i4 + 3] = 0.f;
+
+		m_colors[i4] = 0;
+		m_colors[i4 + 1] = 0;
+		m_colors[i4 + 2] = 0;
+		m_colors[i4 + 3] = 0;
+
+		m_textureCoords[i * 2 + 0] = 0.f;
+		m_textureCoords[i * 2 + 1] = 0.f;
+	}
+}
+
+void ParticleEmitterComponent::_DeallocateParticleArrays()
+{
+	m_particles.clear();
+	m_positionsScales.clear();
+	m_colors.clear();
+	m_textureCoords.clear();
+}
+
+bool ParticleEmitterComponent::_CreateBuffers()
+{
+	unsigned long* indices;
+	int i;
+	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
+	D3D11_SUBRESOURCE_DATA vertexData, indexData;
+	HRESULT result;
+
+
+	// Set the maximum number of vertices in the vertex array.
+	m_vertexCount = m_maxParticles * 6;
+
+	// Set the maximum number of indices in the index array.
+	m_indexCount = m_vertexCount;
+
+	// Create the vertex array for the particles that will be rendered.
+	m_vertices = new ParticleVertex[m_vertexCount];
+	if (!m_vertices)	return false;
+
+	// Create the index array.
+	indices = new unsigned long[m_indexCount];
+	if (!indices)	return false;
+
+	// Initialize vertex array to zeros at first.
+	memset(m_vertices, 0, (sizeof(ParticleVertex) * m_vertexCount));
+
+	// Initialize the index array.
+	for (i = 0; i<m_indexCount; i++)
+	{
+		indices[i] = i;
+	}
+
+	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
+	// Set up the description of the dynamic vertex buffer.
+	vertexBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	vertexBufferDesc.ByteWidth = sizeof(ParticleVertex) * m_vertexCount;
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	vertexBufferDesc.MiscFlags = 0;
+	vertexBufferDesc.StructureByteStride = 0;
+
+	// Give the subresource structure a pointer to the vertex data.
+	vertexData.pSysMem = m_vertices;
+	vertexData.SysMemPitch = 0;
+	vertexData.SysMemSlicePitch = 0;
+
+	// Now finally create the vertex buffer.
+	if (FAILED(INFECT_RENDERER.Device()->CreateBuffer(&vertexBufferDesc, &vertexData, &mp_vertexBuffer)))
+		return false;
+
+	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
+	// Set up the description of the static index buffer.
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.ByteWidth = sizeof(unsigned long) * m_indexCount;
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = 0;
+	indexBufferDesc.MiscFlags = 0;
+	indexBufferDesc.StructureByteStride = 0;
+
+	// Give the subresource structure a pointer to the index data.
+	indexData.pSysMem = indices;
+	indexData.SysMemPitch = 0;
+	indexData.SysMemSlicePitch = 0;
+
+	// Create the index buffer.
+	if (FAILED(INFECT_RENDERER.Device()->CreateBuffer(&indexBufferDesc, &indexData, &mp_indexBuffer)))
+		return false;
+
+	// Release the index array since it is no longer needed.
+	delete[] indices;
+	indices = 0;
+
+	return true;
+}
+
+void ParticleEmitterComponent::_ReleaseBuffers()
+{
+	// Release the index buffer.
+	if (mp_indexBuffer)
+	{
+		mp_indexBuffer->Release();
+		mp_indexBuffer = nullptr;
+	}
+
+	// Release the vertex buffer.
+	if (mp_vertexBuffer)
+	{
+		mp_vertexBuffer->Release();
+		mp_vertexBuffer = nullptr;
+	}
+}
+
+
 ParticleEmitterComponent::ParticleEmitterComponent(InfectGUID guid) :
 	RenderableComponent(guid),
 	m_active(true),
@@ -22,12 +172,11 @@ ParticleEmitterComponent::ParticleEmitterComponent(InfectGUID guid) :
 	m_directionMod(1.f),
 	m_brightness(1.f)
 {
-	//TETRA_EVENTS.Subscribe(EVENT_OnLevelInitialized, this);
 }
 
 ParticleEmitterComponent::~ParticleEmitterComponent() 
 {
-	//_DeallocateParticleArrays();
+	_DeallocateParticleArrays();
 	//if (m_pSpawnShape)
 	//	delete m_pSpawnShape;
 }
@@ -43,7 +192,7 @@ void ParticleEmitterComponent::Deactivate()
 	mp_Parent = nullptr;
 	mp_texture = nullptr;
 
-	//_DeallocateParticleArrays();
+	_DeallocateParticleArrays();
 }
 
 void ParticleEmitterComponent::Serialize(const json & j)
@@ -122,7 +271,7 @@ void ParticleEmitterComponent::Serialize(const json & j)
 
 	m_emissionTime = m_loopDuration / float(m_emissionRate);
 
-	std::string shaderProgramName = ValueExists(j, "shader") ? JsonReader::ParseStringUnsafe(j, "shader") : "particle";
+	//std::string shaderProgramName = ValueExists(j, "shader") ? JsonReader::ParseStringUnsafe(j, "shader") : "particle";
 	//m_shaderProgramID = TETRA_RENDERER.GetShaderIDByName(shaderProgramName);
 	m_active = ValueExists(j, "isActive") ? j["isActive"] : true;
 
@@ -134,29 +283,14 @@ void ParticleEmitterComponent::Serialize(const json & j)
 
 	m_brightness = ValueExists(j, "brightness") ? j["brightness"] : m_brightness;
 
-	//_AllocateParticleArrays();
-	//_AllocateVBOs();
+	_AllocateParticleArrays();
+	_CreateBuffers();
 	m_liveParticleCount = 0;
 }
 
-void ParticleEmitterComponent::Override(const json & j)
-{
-}
+void ParticleEmitterComponent::Override(const json & j) {}
 
-void ParticleEmitterComponent::HandleEvent(Event * p_event)
-{
-	//switch (p_event->Type()) {
-	//	case EventType::EVENT_FlipScaleX: {
-	//		m_directionMod *= -1;
-	//		break;
-	//	}
-	//	case EventType::EVENT_OnLevelInitialized: {
-	//		if (m_prewarmed)
-	//			_WarmSystem();
-	//		break;
-	//	}
-	//}
-}
+void ParticleEmitterComponent::HandleEvent(Event * p_event) {}
 
 void ParticleEmitterComponent::BindBufferDatas() const
 {
@@ -170,6 +304,28 @@ void ParticleEmitterComponent::Reset()
 	for (int i = 0; i<m_lastUsedParticle; i++) {
 		m_particles[i].life = -1.f;
 	}
+	m_IsDirty = true;
+}
+
+void ParticleEmitterComponent::Render() const
+{
+	unsigned int stride;
+	unsigned int offset;
+
+
+	// Set vertex buffer stride and offset.
+	stride = sizeof(ParticleEmitterComponent::ParticleVertex);
+	offset = 0;
+
+	// Set the vertex buffer to active in the input assembler so it can be rendered.
+	INFECT_RENDERER.DeviceContext()->IASetVertexBuffers(0, 1, &mp_vertexBuffer, &stride, &offset);
+
+	// Set the index buffer to active in the input assembler so it can be rendered.
+	INFECT_RENDERER.DeviceContext()->IASetIndexBuffer(mp_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
+	// Set the type of primitive that should be rendered from this vertex buffer.
+	INFECT_RENDERER.DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 }
 
 #undef SHAPE_STR

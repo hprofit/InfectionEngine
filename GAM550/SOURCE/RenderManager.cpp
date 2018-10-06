@@ -37,7 +37,7 @@ bool RenderManager::_GameObjectHasRenderableComponent(const GameObject & gameObj
 RenderManager::RenderManager() :
 	m_ClearColor(Color(0.0f, 0.0f, 0.0f, 1)),
 	mp_D3D(new D3DHandler()),
-	m_RenderMode(RenderMode::WorldPos)
+	m_RenderMode(RenderMode::Final)
 {
 }
 
@@ -180,7 +180,7 @@ void RenderManager::RenderDeferredBufferAmbientOnly()
 	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
 	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
-	cb.Ambient = Color(0.6f, 0.6f, 0.6f, 1);
+	cb.Ambient = Color(0.1f, 0.1f, 0.1f, 1);
 	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 
 	// set the new values for the constant buffer
@@ -205,7 +205,7 @@ void RenderManager::RenderSecondPassBuffer()
 	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
 	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
 	cb.ModelMatrix = Matrix4x4::Transpose(M);
-	cb.Ambient = Color(0.6f, 0.6f, 0.6f, 1);
+	cb.Ambient = Color(0.1f, 0.1f, 0.1f, 1);
 	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 
 	// set the new values for the constant buffer
@@ -289,7 +289,7 @@ void RenderManager::RenderLight(const GameObject & pGOCamera, const GameObject &
 	cb.LIDHW.y = pPointLightComp->Distance();
 	cb.LIDHW.z = float(m_WindowSettings.Height);
 	cb.LIDHW.w = float(m_WindowSettings.Width);
-	cb.Ambient = Color(0.4f, 0.4f, 0.4f, 1);
+	cb.Ambient = Color(0.1f, 0.1f, 0.1f, 1);
 
 	mp_ShaderProgramDeferredFinal->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 
@@ -342,4 +342,13 @@ void RenderManager::NextRenderMode()
 	m_RenderMode = RenderMode(int(m_RenderMode) + 1);
 	if (m_RenderMode >= RenderMode::NUM_MODES)
 		m_RenderMode = RenderMode(0);
+}
+
+void RenderManager::PrepParticlePass()
+{
+}
+
+void RenderManager::RenderParticles(const GameObject& pGOCamera, const GameObject& pGO)
+{
+
 }

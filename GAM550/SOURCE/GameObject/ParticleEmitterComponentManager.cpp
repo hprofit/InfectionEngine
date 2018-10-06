@@ -8,7 +8,7 @@ Author: <Holden Profit, Hyoyup Chung>
 #include <Stdafx.h>
 
 ParticleEmitterComponentManager::ParticleEmitterComponentManager() {
-	m_Components = (std::list<ParticleEmitterComponent*>*)INFECT_MEMORY.GetComponentPool(ParticleEmitterComponent::Type);
+	m_Components = (std::list<PEC>*)INFECT_MEMORY.GetComponentPool(ParticleEmitterComponent::Type);
 }
 
 int ParticleEmitterComponentManager::_FindUnusedParticle(PEC pec)
@@ -49,7 +49,7 @@ Vector3D ParticleEmitterComponentManager::_GetSpawnPositionWithinShape()
 	//		return Matrix4x4::Rotate(rot, ZAXIS) * Vector3D( 0.f, 1.f * d, 0.f);
 	//	}
 	//	default:
-	return Vector3D();
+	return Vector3D(0,0,0,1);
 	//}
 }
 
@@ -66,8 +66,7 @@ void ParticleEmitterComponentManager::_SpawnParticle(PEC pec, TC tc)
 
 		float variationOffset = RandomFloat(-pec->m_angleVariation, pec->m_angleVariation);
 		// TODO: UPDATE THIS
-		float angleOffset = (pec->m_rotateToParentOnSpawn ? tc->GetAngleZ() : 0.f) +
-			variationOffset;
+		float angleOffset = (pec->m_rotateToParentOnSpawn ? tc->GetAngleZ() : 0.f) + variationOffset;
 
 		pec->m_particles[idx].angleOffset = angleOffset;
 		pec->m_particles[idx].rotation = angleOffset * DEG_TO_RAD;
@@ -96,15 +95,17 @@ void ParticleEmitterComponentManager::_SpawnParticle(PEC pec, TC tc)
 
 void ParticleEmitterComponentManager::_SortParticles(PEC pec)
 {
-	std::sort(&pec->m_particles[0], &pec->m_particles[pec->m_maxParticles]);
+	std::sort(&pec->m_particles[0], &pec->m_particles[pec->m_maxParticles-1]);
 }
 
-void ParticleEmitterComponentManager::_UpdateParticles(PEC pec, float deltaTime)
+void ParticleEmitterComponentManager::_UpdateParticles(PEC pec, TC tc, float deltaTime)
 {
 	const Vector3D Gravity = Vector3D(0, -98.f * pec->m_gravityMod, 0);
 	// TODO: FIX THIS
 	const Vector3D cameraPos = INFECT_GOM.GetCamera()->GetComponent<TransformComponent>()->WorldPosition();
 	pec->m_liveParticleCount = 0;
+	// Reset the vertex array
+	memset(pec->m_vertices, 0, (sizeof(ParticleEmitterComponent::ParticleVertex) * pec->m_vertexCount));
 	float t = 0.f;
 	for (int i = 0; i < pec->m_maxParticles; i++) {
 
@@ -125,15 +126,14 @@ void ParticleEmitterComponentManager::_UpdateParticles(PEC pec, float deltaTime)
 					);
 				Vector3D newVelocity = (velocityOffset * (p.speed * pec->m_directionMod)) + Gravity;
 				Vector3D newPos = Vector3D(p.x, p.y, p.z, 1) + (newVelocity * deltaTime);
+
+				if (pec->m_particlesFollowParent) {
+					Vector3D movement = tc->GetMovement();
+					newPos += movement;
+				}
 				// put the updated values into the particle
 				newPos.FillValues(p.x, p.y, p.z);
 				newVelocity.FillValues(p.vX, p.vY, p.vZ);
-
-				if (pec->m_particlesFollowParent) {
-					//Vector3D movement = m_pTransform->GetMovement();
-					//movement.z = 0.f;
-					//p.m_pos_rot_animRow += movement;
-				}
 
 				p.scale = BezierInterpolation(pec->m_scale.points, t) * pec->m_scale.amplitude;
 
@@ -159,21 +159,6 @@ void ParticleEmitterComponentManager::_UpdateParticles(PEC pec, float deltaTime)
 					p.u = float(p.animCol) * pec->m_frameWidth;
 					p.v = float(p.animRow) * pec->m_frameHeight;
 				}
-
-				// Fill the GPU buffer
-				//m_positionsScales[4 * m_liveParticleCount + 0] = p.m_pos_rot_animRow.x;	// Location
-				//m_positionsScales[4 * m_liveParticleCount + 1] = p.m_pos_rot_animRow.y;	// Location
-				//m_positionsScales[4 * m_liveParticleCount + 2] = p.m_pos_rot_animRow.z;	// Rotation
-
-				//m_positionsScales[4 * m_liveParticleCount + 3] = p.m_scale;
-
-				//m_colors[4 * m_liveParticleCount + 0] = p.m_color.r;
-				//m_colors[4 * m_liveParticleCount + 1] = p.m_color.g;
-				//m_colors[4 * m_liveParticleCount + 2] = p.m_color.b;
-				//m_colors[4 * m_liveParticleCount + 3] = p.m_color.a;
-
-				//m_textureCoords[2 * m_liveParticleCount + 0] = p.m_texCoords[0];
-				//m_textureCoords[2 * m_liveParticleCount + 1] = p.m_texCoords[1];
 			}
 			else {
 				// Particles that just died will be put at the end of the buffer in SortParticles();
@@ -182,53 +167,80 @@ void ParticleEmitterComponentManager::_UpdateParticles(PEC pec, float deltaTime)
 			++pec->m_liveParticleCount;
 		}
 	}
+
+
+	//pec->m_vertices[pec->m_liveParticleCount].FillVert(p);
+
+	//// Fill the GPU buffer
+	////m_positionsScales[4 * m_liveParticleCount + 0] = p.m_pos_rot_animRow.x;	// Location
+	////m_positionsScales[4 * m_liveParticleCount + 1] = p.m_pos_rot_animRow.y;	// Location
+	////m_positionsScales[4 * m_liveParticleCount + 2] = p.m_pos_rot_animRow.z;	// Rotation
+
+	////m_positionsScales[4 * m_liveParticleCount + 3] = p.m_scale;
+
+	////m_colors[4 * m_liveParticleCount + 0] = p.m_color.r;
+	////m_colors[4 * m_liveParticleCount + 1] = p.m_color.g;
+	////m_colors[4 * m_liveParticleCount + 2] = p.m_color.b;
+	////m_colors[4 * m_liveParticleCount + 3] = p.m_color.a;
+
+	////m_textureCoords[2 * m_liveParticleCount + 0] = p.m_texCoords[0];
+	////m_textureCoords[2 * m_liveParticleCount + 1] = p.m_texCoords[1];
 }
 
-void ParticleEmitterComponentManager::_AllocateParticleArrays(PEC pec)
+bool ParticleEmitterComponentManager::_UpdateParticleBuffers(PEC pec)
 {
-	_DeallocateParticleArrays(pec);
-	pec->m_particles.resize(pec->m_maxParticles);
-	std::fill(pec->m_particles.begin(), pec->m_particles.end(), ParticleEmitterComponent::Particle());
-	pec->m_positionsScales.resize(pec->m_maxParticles * 4);
-	pec->m_colors.resize(pec->m_maxParticles * 4);
-	pec->m_textureCoords.resize(pec->m_maxParticles * 2);	
+	int index, i;
+	HRESULT result;
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	ParticleEmitterComponent::ParticleVertex* verticesPtr;
 
-	for (int i = 0; i < pec->m_maxParticles; ++i) {
-		pec->m_particles[i].life = -1.f;
-		pec->m_particles[i].angleOffset = 0.f;
+	// Initialize vertex array to zeros at first.
+	memset(pec->m_vertices, 0, (sizeof(ParticleEmitterComponent::ParticleVertex) * pec->m_vertexCount));
 
-		pec->m_particles[i].u = pec->m_frameWidth / pec->m_texWidth;
-		pec->m_particles[i].v = pec->m_frameHeight / pec->m_texHeight;
+	// Now build the vertex array from the particle list array.  Each particle is a quad made out of two triangles.
+	index = 0;
 
-		int i4 = i * 4;
-		pec->m_positionsScales[i4] = 0.f;
-		pec->m_positionsScales[i4 + 1] = 0.f;
-		pec->m_positionsScales[i4 + 2] = 0.f;
-		pec->m_positionsScales[i4 + 3] = 0.f;
+	for (i = 0; i<pec->m_liveParticleCount; i++)
+	{
+		// Bottom left.
+		pec->m_vertices[index].FillVert(pec->m_particles[i], 0.f, 1.f, -1, -1);
+		index++;
 
-		pec->m_colors[i4] = 0;
-		pec->m_colors[i4 + 1] = 0;
-		pec->m_colors[i4 + 2] = 0;
-		pec->m_colors[i4 + 3] = 0;
+		// Top left.
+		pec->m_vertices[index].FillVert(pec->m_particles[i], 0.f, 0.f, -1, 1);
+		index++;
 
-		pec->m_textureCoords[i * 2 + 0] = 0.f;
-		pec->m_textureCoords[i * 2 + 1] = 0.f;
+		// Bottom right.
+		pec->m_vertices[index].FillVert(pec->m_particles[i], 1.f, 1.f, 1, -1);
+		index++;
+
+		// Bottom right.
+		pec->m_vertices[index].FillVert(pec->m_particles[i], 1.f, 1.f, 1, -1);
+		index++;
+
+		// Top left.
+		pec->m_vertices[index].FillVert(pec->m_particles[i], 0.f, 0.f, -1, 1);
+		index++;
+
+		// Top right.
+		pec->m_vertices[index].FillVert(pec->m_particles[i], 1.f, 0.f, 1, 1);
+		index++;
 	}
-}
 
-void ParticleEmitterComponentManager::_DeallocateParticleArrays(PEC pec)
-{
-	pec->m_particles.clear();
-	pec->m_positionsScales.clear();
-	pec->m_colors.clear();
-	pec->m_textureCoords.clear();
-}
+	// Lock the vertex buffer.
+	if (FAILED(INFECT_RENDERER.DeviceContext()->Map(pec->mp_vertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
+		return false;
 
-void ParticleEmitterComponentManager::_AllocateVBOs(PEC pec)
-{
-	//m_positionsScalesBuffer = TETRA_RENDERER.GenerateStreamingVBO(m_maxParticles * 4 * sizeof(GLfloat));
-	//m_colorsBuffer = TETRA_RENDERER.GenerateStreamingVBO(m_maxParticles * 4 * sizeof(GLubyte));
-	//m_textureCoordsBuffer = TETRA_RENDERER.GenerateStreamingVBO(m_maxParticles * 2 * sizeof(GLfloat));
+	// Get a pointer to the data in the vertex buffer.
+	verticesPtr = (ParticleEmitterComponent::ParticleVertex*)mappedResource.pData;
+
+	// Copy the data into the vertex buffer.
+	memcpy(verticesPtr, (void*)pec->m_vertices, (sizeof(ParticleEmitterComponent::ParticleVertex) * pec->m_vertexCount));
+
+	// Unlock the vertex buffer.
+	INFECT_RENDERER.DeviceContext()->Unmap(pec->mp_vertexBuffer, 0);
+
+	return true;
 }
 
 void ParticleEmitterComponentManager::_WarmSystem(PEC pec)
@@ -243,7 +255,7 @@ void ParticleEmitterComponentManager::_WarmSystem(PEC pec)
 			pec->m_emissionTimer -= pec->m_emissionTime;
 		}
 
-		_UpdateParticles(pec, step);
+		_UpdateParticles(pec, tc, step);
 	}
 }
 
@@ -254,7 +266,7 @@ void ParticleEmitterComponentManager::Update(float dt)
 
 		pec->m_UpdatedLastFrame = false;
 		if (pec->IsDirty()) {
-
+			TC tc = pec->Parent()->GetComponent<TransformComponent>();
 			if (pec->m_startDelay > 0.f) {
 				pec->m_startDelay -= dt;
 				return;
@@ -265,7 +277,6 @@ void ParticleEmitterComponentManager::Update(float dt)
 				pec->m_emissionTimer += dt;
 
 				if (pec->m_active) {
-					TC tc = pec->Parent()->GetComponent<TransformComponent>();
 					while (pec->m_emissionTimer > pec->m_emissionTime) {
 						_SpawnParticle(pec, tc);
 						pec->m_emissionTimer -= pec->m_emissionTime;
@@ -276,11 +287,12 @@ void ParticleEmitterComponentManager::Update(float dt)
 					pec->m_currentTime = 0.f;
 			}
 
-			_UpdateParticles(pec, dt);
+			_UpdateParticles(pec, tc, dt);
 			_SortParticles(pec);
+			_UpdateParticleBuffers(pec);
 
 
-			pec->m_IsDirty = false;
+			pec->m_IsDirty = true;
 			pec->m_UpdatedLastFrame = true;
 		}
 	}
@@ -296,5 +308,5 @@ void ParticleEmitterComponentManager::HandleEvent(Event * pEvent)
 }
 
 void ParticleEmitterComponentManager::Init() {
-	INFECT_MEMORY.ComponentPoolInit<CameraComponent>(CameraComponent::Type, CameraComponent::CACHESIZE);
+	INFECT_MEMORY.ComponentPoolInit<ParticleEmitterComponent>(ParticleEmitterComponent::Type, ParticleEmitterComponent::CACHESIZE);
 }

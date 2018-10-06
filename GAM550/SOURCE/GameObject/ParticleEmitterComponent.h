@@ -39,6 +39,18 @@ protected:
 		}
 	};
 
+	struct ParticleVertex {
+		FLOAT x, y, z;
+		FLOAT scale;
+		FLOAT u, v;
+		FLOAT r, g, b, a;
+
+		void FillVert(
+			const ParticleEmitterComponent::Particle& p, 
+			float _u, float _v,
+			float _xDir, float _yDir);
+	};
+
 
 	// Emitter Configuration Properties
 	float m_loopDuration;						// Time it takes for the Emitter to complete a cycle in seconds
@@ -90,12 +102,23 @@ protected:
 	//GLuint m_colorsBuffer;						// OpenGL Buffer where colors are to be streamed
 	//GLuint m_textureCoordsBuffer;				// OpenGL Buffer where texture coords are to be streamed
 
+	int m_vertexCount, m_indexCount;
+	ParticleVertex* m_vertices;
+	ID3D11Buffer * mp_vertexBuffer;
+	ID3D11Buffer * mp_indexBuffer;
+
+
 	std::vector<FLOAT> m_positionsScales;		// Array of positions and sizes (xyz pos, w is uniform scale)
 	std::vector<unsigned char> m_colors;		// Array of Colors split up into it's components
 	std::vector<FLOAT> m_textureCoords;			// Array of texture coords
-	int m_liveParticleCount;					// Indicates how many particles are currently alive, set each Update loop
+	UINT m_liveParticleCount;					// Indicates how many particles are currently alive, set each Update loop
 	int m_lastUsedParticle;						// An index into m_particles, represents the index of the last used particle
 	
+
+	void _AllocateParticleArrays();
+	void _DeallocateParticleArrays();
+	bool _CreateBuffers();
+	void _ReleaseBuffers();
 public:
 	static const unsigned CACHESIZE = 300;
 	static const ComponentType Type = ComponentType::C_ParticleEmitter;
@@ -135,6 +158,16 @@ public:
 
 	inline float Brightness() const { return m_brightness; }
 	inline bool ShouldRenderLast() const { return m_renderedOnTop; }
+
+
+
+
+
+
+
+
+	// TODO: GET RID OF THIS
+	void Render() const;
 };
 
 #endif

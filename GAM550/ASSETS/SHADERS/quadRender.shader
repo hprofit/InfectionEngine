@@ -4,7 +4,16 @@ cbuffer ConstantBuffer
 	float4 Ambient;
 };
 
-struct VOut
+struct VertexInput {
+	float4 position : POSITION;
+	float4 normal : NORMAL;
+	float4 tangent : TANGENT;
+	float4 bitangent : BITANGENT;
+	float2 texCoords : TEXCOORDS;
+	float4 color : COLOR;
+};
+
+struct PixelInput
 {
 	float4 position : SV_POSITION;
 	float2 texCoords : TEXCOORDS;
@@ -14,28 +23,18 @@ Texture2D Texture;
 SamplerState ss;
 
 
-VOut VShader(
-	float4 position : POSITION,
-	float4 normal : NORMAL,
-	float4 tangent : TANGENT,
-	float4 bitangent : BITANGENT,
-	float2 texCoords : TEXCOORDS,
-	float4 color : COLOR
-)
+PixelInput VShader(VertexInput input)
 {
-	VOut output;
+	PixelInput output;
 
-	output.position = mul(ModelMatrix, position);
+	output.position = mul(ModelMatrix, input.position);
 	output.texCoords.x = output.position.x * 0.5 + 0.5;
 	output.texCoords.y = output.position.y * -0.5 + 0.5;
 
 	return output;
 }
 
-float4 PShader(
-	float4 position : SV_POSITION,
-	float2 texCoords : TEXCOORDS
-) : SV_TARGET
+float4 PShader(PixelInput input) : SV_TARGET
 {
-	return Texture.Sample(ss, texCoords) * Ambient;
+	return Texture.Sample(ss, input.texCoords) * Ambient;
 }
