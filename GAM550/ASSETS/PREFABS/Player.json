@@ -9,16 +9,16 @@
 				"z": 0
 		  	},
 		  	"scale": {
-				"x": 20,
-				"y": 20,
-				"z": 20
+				"x": 0.11,
+				"y": 0.11,
+				"z": 0.11
 		  	},
 		  	"pivotOffset": {},
 		  	"rotation": {}
 		},
 		{
 			"Component": "Mesh",
-			"scene": "Sphere"
+			"scene": "soldier.fbx"
 		}
   ]
 }
