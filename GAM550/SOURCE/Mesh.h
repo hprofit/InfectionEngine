@@ -58,7 +58,7 @@ public:
 //=======================================================
 //Mesh And Bone Data
 //=======================================================
-struct VertexWeight
+struct VertexWeightData
 {
 	UINT	VertexID;
 	float	Weight;
@@ -68,7 +68,7 @@ struct BoneData
 {
 	unsigned int			  mNumWeights;
 	std::string				  BoneName;
-	VertexWeight			  WightsList;
+	VertexWeightData		  WightsList;
 	Matrix4x4				  OffsetMatrix;
 	//std::vector<VertexWeight> WightsList;
 
@@ -137,9 +137,9 @@ struct VQS
 	Quaternion		Rotation;
 	Vector3D		Uniform_scale;
 
-	std::vector<Vector3D> PositionList;
+	std::vector<Vector3D>	PositionList;
 	std::vector<Quaternion> RotationList;
-	std::vector<Vector3D> UniformScaleList;
+	std::vector<Vector3D>	UniformScaleList;
 
 };
 
