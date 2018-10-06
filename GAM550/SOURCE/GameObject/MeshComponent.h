@@ -31,12 +31,42 @@ protected:
 	friend MeshComponentManager;
 
 	Scene* mp_Scene;		// Pointer to a Scene that contains meshes for rendering
+
+	/*
+		Contains textures pertinent to rendering this GameObject
+		1. Diffuse - will override Mesh vertex colors and m_Color
+		2. Normal Map - will move the normals of the Mesh
+		3. Specular map - will override the m_Specular values
+	*/
 	ID3D11ShaderResourceView * m_Textures[TextureType::NUM_TEXTURE_TYPES];
+
+	/*
+		This color will override vertex colors of the Meshes of this GameObject
+		The GameObject's Diffuse texture will override this value if one is present
+	*/
 	CompressedColor m_Color;
+
+	/*
+		r, g, b are all specular color values
+		a is the specular coefficient, determines the roughness of the object
+		2-5 for rough objects
+		10-20 for smooth objects
+		100+ for mirror like objects
+	*/
 	Color m_Specular;
+
 	bool m_CastShadows;			// Convert these to flags
 	bool m_ReceiveShadows;
 	bool m_IsLit;
+
+	/*
+		A set of flags specifying certain things about the Mesh to be rendered
+		1. Does it have a diffuse texture?
+		2. Does it have a normal map texture?
+		3. Does it have a specular map texture?
+		4. Does it have a color override? (diffuse textures will override this value)
+		5. Does it have a tint color? (m_Color or the value from the diffuse texture will be multiplied by the tint color)
+	*/
 	unsigned int m_TextureFlags;
 
 public:
