@@ -15,6 +15,7 @@ enum RenderMode {
 	Normal,
 	Diffuse,
 	Specular,
+	Depth,
 	Final,
 
 	NUM_MODES

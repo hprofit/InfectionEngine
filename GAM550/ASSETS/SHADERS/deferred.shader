@@ -46,7 +46,6 @@ SamplerState ss;
 PixelInput VShader(VertexInput input)
 {
 	PixelInput output;
-	input.position.w = 1;
 	input.normal.w = 0;
 	input.tangent.w = 0;
 	input.bitangent.w = 0;
@@ -110,7 +109,6 @@ POut PShader(PixelInput input)
 		// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
 		output.normal.w = 1;
 	}
-
 
 	output.worldPos = input.worldPosition;
 	// Set the alpha channel to 1 so we can see it when GBuffer is rendered 

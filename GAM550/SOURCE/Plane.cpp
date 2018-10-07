@@ -20,6 +20,7 @@ Plane::Plane(unsigned int size)
 			v.x = x * 0.5f;
 			v.y = y * 0.5f;
 			v.z = 0;
+			v.w = 1;
 
 			v.nX = 0;
 			v.nY = 0;

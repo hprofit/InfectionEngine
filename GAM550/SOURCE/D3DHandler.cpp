@@ -236,7 +236,7 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 		NULL,
 		D3D_DRIVER_TYPE_HARDWARE,
 		NULL,
-		0,
+		0,//D3D11_CREATE_DEVICE_DEBUG, // 0
 		&featureLevel,
 		1,
 		D3D11_SDK_VERSION,

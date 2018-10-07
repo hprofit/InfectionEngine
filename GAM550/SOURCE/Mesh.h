@@ -11,7 +11,7 @@ Author: <Holden Profit>
 #define MESH_H
 
 struct Vertex {
-	FLOAT x, y, z;		// position
+	FLOAT x, y, z, w;	// position
 	FLOAT nX, nY, nZ;	// normal
 	FLOAT tX, tY, tZ;	// tangent
 	FLOAT bX, bY, bZ;	// bitangent
