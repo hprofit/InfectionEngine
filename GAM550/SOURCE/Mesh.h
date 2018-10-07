@@ -17,7 +17,8 @@ struct Vertex {
 	FLOAT bX, bY, bZ;	// bitangent
 	FLOAT u, v;			// texture coords
 	FLOAT r, g, b, a;	// color
-	UINT  VertexID;
+	UINT BoneID[4];
+	float BoneWeights[4];
 };
 
 class Material {

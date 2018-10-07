@@ -47,6 +47,7 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 			v.a = color.a;
 		}
 
+	
 		m_vertices.push_back(v);
 	}
 
@@ -95,6 +96,8 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 	}
 #pragma endregion
 
+	cout << "The size of Bone data : " << mesh->mNumBones << endl;
+	cout << "The size of Vertices data : " << mesh->mNumVertices * mesh->mNumBones << endl;
 
 	FinishMesh();
 }
