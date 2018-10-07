@@ -64,38 +64,6 @@ bool ResourceManager::Init()
 	//m_scenes[POLAR_SPHERE_PRIMITIVE] = pScenePolarSphere;
 
 
-
-
-	Mesh* pMesh = new Mesh();
-
-	pMesh->AddVertex(-1.0f, 1.0f, -1.0f, Color(1.0f, 0.0f, 0.0f, 1.0f));
-	pMesh->AddVertex(1.0f, 1.0f, -1.0f, Color(0.0f, 1.0f, 0.0f, 1.0f));
-	pMesh->AddVertex(-1.0f, -1.0f, -1.0f, Color(0.0f, 0.0f, 1.0f, 1.0f));
-	pMesh->AddVertex(1.0f, -1.0f, -1.0f, Color(1.0f, 0.0f, 1.0f, 1.0f));
-	pMesh->AddVertex(-1.0f, 1.0f, 1.0f, Color(0.0f, 1.0f, 1.0f, 1.0f));
-	pMesh->AddVertex(1.0f, 1.0f, 1.0f, Color(1.0f, 0.0f, 1.0f, 1.0f));
-	pMesh->AddVertex(-1.0f, -1.0f, 1.0f, Color(1.0f, 1.0f, 0.0f, 1.0f));
-	pMesh->AddVertex(1.0f, -1.0f, 1.0f, Color(1.0f, 1.0f, 1.0f, 1.0f));
-
-	pMesh->AddFace(0, 1, 2);
-	pMesh->AddFace(2, 1, 3);
-	pMesh->AddFace(4, 0, 6);
-	pMesh->AddFace(6, 0, 2);
-	pMesh->AddFace(7, 5, 6);
-	pMesh->AddFace(6, 5, 4);
-	pMesh->AddFace(3, 1, 7);
-	pMesh->AddFace(7, 1, 5);
-	pMesh->AddFace(4, 5, 0);
-	pMesh->AddFace(0, 5, 1);
-	pMesh->AddFace(3, 7, 2);
-	pMesh->AddFace(2, 7, 6);
-
-	pMesh->FinishMesh();
-	Scene* pScene = new Scene(1);
-	(*pScene)[0] = pMesh;
-	m_scenes["test"] = pScene;
-
-
 	return true;
 }
 
