@@ -38,6 +38,7 @@ namespace Infect {
 		INFECT_CMC.RegisterCompMngr(new ParticleEmitterComponentManager());
 		INFECT_CMC.RegisterCompMngr(new RigidBodyComponentManager());
 		INFECT_CMC.RegisterCompMngr(new BrainComponentManager());
+		INFECT_CMC.RegisterCompMngr(new ControllerComponentManager());
 		INFECT_CMC.Init();
 		INFECT_MEMORY.LateInit();
 

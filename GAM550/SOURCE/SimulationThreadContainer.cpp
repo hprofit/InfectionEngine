@@ -35,6 +35,7 @@ bool StartSimulationCommand::execute() const
 
 
 #pragma region TestStuff
+
 	TransformComponent* tcpCamera = INFECT_GOM.GetGameObject(0)->GetComponent<TransformComponent>();  // 2
 
 	//TransformComponent* tcpLight = INFECT_GOM.GetGameObject(2)->GetComponent<TransformComponent>();	// 3
@@ -74,9 +75,7 @@ bool StartSimulationCommand::execute() const
 	if (INFECT_INPUT.IsKeyPressed(DIK_S) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_DOWN)) {
 		tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Forward());
 	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_SPACE)) {
-		tcpCamera->SetPosition(Vector3D(0, 0, 50, 1));
-	}
+
 	// alt+f4
 	if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {
 		//INFECT_GAME_STATE.SetGameState(GameState::QUIT);
@@ -106,7 +105,7 @@ bool StartSimulationCommand::execute() const
 	//INFECT_PHYSICS.Integrate(deltaTime);			// Move physics bodies
 	//INFECT_PHYSICS.ResolveCollisions();			// Resolve collisions on physics bodies
 	//INFECT_GOM.LateUpdate(deltaTime);				// Update game logic that occurs after physics
-  INFECT_PHYSICS.Update(deltaTime);
+	INFECT_PHYSICS.Update(deltaTime);
 	INFECT_THREAD_JOBS.AddNewJob(new StartRenderCommand(*INFECT_THREAD_JOBS.GetThreadContainer<RenderThreadContainer>(ThreadType::RenderThread)));
 	//INFECT_IMGUI.Update();						// Update all Imgui commands
 	return true;

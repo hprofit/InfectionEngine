@@ -1,0 +1,59 @@
+{
+  	"Tag": "Bullet",
+  	"COMPONENTS": [
+		{
+	 		"Component": "Transform",
+		  	"position": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+		  	},
+		  	"scale": {
+				"x": 1,
+				"y": 1,
+				"z": 1
+		  	},
+		  	"pivotOffset": {},
+		  	"rotation": {}
+		},
+		{
+			"Component": "Mesh",
+			"scene": "Cube",
+			"color": {
+				"r": 200,
+				"g": 255,
+				"b": 0,
+				"a": 255
+			},
+			"specularValues": {
+				"r": 0.9,
+				"g": 0.9,
+				"b": 0.9,
+				"a": 100
+			}
+		},
+
+	    {
+	      "Component": "RigidBody",
+	      "Box": null,
+	      "mass": 5.0,
+	      "velocity": {
+	        "x": 0,
+	        "y": 50,
+	        "z": -10
+	      },
+	      "rotation": {
+	        "x": 0,
+	        "y": 0,
+	        "z": 0
+	      },
+	      "acceleration": {
+	        "x": 0,
+	        "y": 0,
+	        "z": 0
+	      },
+	      "linearDamping": 0.95,
+	      "angularDamping": 0.8
+	    }
+  ]
+}
