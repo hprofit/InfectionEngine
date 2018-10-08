@@ -20,20 +20,7 @@ GameStateManager::~GameStateManager() {}
 MSG GameStateManager::Update() {
 	// this struct holds Windows event messages
 	MSG msg;
-
-#pragma region Test Stuff
-  //// Phy Test 
-  //PhyTest tester;
-  //tester.PhyTest_Setup();
-
-
-	SeedRand(0);
-
-#pragma endregion
-
 	INFECT_LEVEL.LoadLevel(0); // Loading First Level
-
-
 
 	while (m_currentState != GameState::QUIT) {
   
@@ -50,16 +37,7 @@ MSG GameStateManager::Update() {
 				TranslateMessage(&msg);
 				// send the message to the WindowProc function
 				DispatchMessage(&msg);
-
-        
 			}
-
-			//Infect::FrameStart();
-			//Infect::Update(Infect::GetFrameTime());			// Game loop
-			//tester.PhyTest_Update();
-			//Infect::FrameEnd();
-
-      
 		}
 
 		m_currentState = m_nextState;

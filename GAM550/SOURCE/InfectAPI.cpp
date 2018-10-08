@@ -38,6 +38,7 @@ namespace Infect {
 		INFECT_CMC.RegisterCompMngr(new ParticleEmitterComponentManager());
 		INFECT_CMC.RegisterCompMngr(new RigidBodyComponentManager());
 		INFECT_CMC.RegisterCompMngr(new BrainComponentManager());
+		INFECT_CMC.RegisterCompMngr(new ControllerComponentManager());
 		INFECT_CMC.Init();
 		INFECT_MEMORY.LateInit();
 
@@ -64,6 +65,7 @@ namespace Infect {
 		
 	}
 
+	// NO LONGER IN USE
 	void Update(float deltaTime)
 	{
 		INFECT_INPUT.Update();							// Update input keys
@@ -71,15 +73,13 @@ namespace Infect {
 		INFECT_EVENTS.Update(deltaTime);				// Pump the event manager
 		//INFECT_AUDIO.Update(deltaTime);
 
-		INFECT_GOM.Update(deltaTime);					// Update game logic
-		INFECT_CMC.Update(deltaTime);
+		INFECT_CMC.Update(deltaTime);					// Updates all ComponentManagers
 
 
 
 		//INFECT_GOM.UpdateStatus();					// Update status of game objects
 		//INFECT_PHYSICS.Integrate(deltaTime);			// Move physics bodies
 		//INFECT_PHYSICS.ResolveCollisions();			// Resolve collisions on physics bodies
-		INFECT_GOM.LateUpdate(deltaTime);				// Update game logic that occurs after physics
 
 		//INFECT_RENDERER.RenderFrame(pGOCamera, pGO);
 
@@ -88,7 +88,7 @@ namespace Infect {
 		//INFECT_GOM.RenderCameras();						// Render all game objects
 		//INFECT_IMGUI.Update();						// Update all Imgui commands
 
-    INFECT_PHYSICS.Update(deltaTime);              // Update _PHYSICS
+		INFECT_PHYSICS.Update(deltaTime);              // Update _PHYSICS
 	}
 
 	void FrameEnd()

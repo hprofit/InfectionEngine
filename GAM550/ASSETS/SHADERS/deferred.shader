@@ -29,6 +29,7 @@ struct PixelInput
 	float3x3 tbn : TBN;
 	float4 color : COLOR;
 	float2 texCoords : TEXCOORDS;
+	float depth : DEPTH;
 
 	bool hasDiffuseTexture : HAS_DIFFUSE_TEXTURE;
 	bool hasNormalMap : HAS_NORMAL_MAP;
@@ -62,6 +63,8 @@ PixelInput VShader(VertexInput input)
 	output.color = input.color;
 	output.texCoords = input.texCoords;
 
+	output.depth = output.position.z / 500.0f;
+
 	unsigned int DIFFUSE_TEXTURE = 1;
 	unsigned int NORMAL_MAPPED = 2;
 	unsigned int SPECULAR_MAPPED = 4;
@@ -83,6 +86,7 @@ struct POut
 	float4 normal : SV_TARGET1;
 	float4 diffuse : SV_TARGET2;
 	float4 specular : SV_TARGET3;
+	float4 depth : SV_TARGET4;
 };
 
 POut PShader(PixelInput input)
@@ -111,7 +115,6 @@ POut PShader(PixelInput input)
 		output.normal.w = 1;
 	}
 
-
 	output.worldPos = input.worldPosition;
 	// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
 	output.worldPos.w = 1;
@@ -119,6 +122,8 @@ POut PShader(PixelInput input)
 	//if (input.hasTint)
 	//	output.diffuse *= TintColor;
 	output.specular = SpecularValues;
+
+	output.depth = float4(0, 0, input.depth, 1);
 
 	return output;
 }

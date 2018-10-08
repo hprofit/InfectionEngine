@@ -18,26 +18,8 @@ void BrainComponent::Deactivate(){
 void BrainComponent::LateInitialize() {
 }
 
-void BrainComponent::Update(float dt) {
-	// Change of state
-	if (m_currentState != m_previousState) {
-		if (m_states[m_currentState]) {
-			m_states[m_previousState]->OnExit();
-			m_states[m_currentState]->OnEnter();
-			m_previousState = m_currentState;
-		}
-		else {
-			m_currentState = m_previousState;
-		}
-	}
-	// Update with currentState
-	if (m_states[m_currentState])
-		m_states[m_currentState]->OnUpdate(dt);
-	m_IsDirty = true;
-}
-
 void BrainComponent::Serialize(const json& j){
-	int stateSize = j["ai_states"].size();
+	unsigned stateSize = static_cast<unsigned>(j["ai_states"].size());
 	
 	for (unsigned i = 0; i < stateSize; i++) {
 		std::string stateName = ParseString(j["ai_states"][i], "state");
@@ -49,7 +31,7 @@ void BrainComponent::Serialize(const json& j){
 	}
 
 	m_detectionRadius = ParseFloat(j, "detectionRadius");
-	m_IdleMovementRadius = 30;
+	m_movementRadius = 30;
 	// hard coded for ai system test (engine demo)
 	//m_currentState = m_previousState = AI_State_Idle;
 	//m_states[0]= new AI_Idle() ;
@@ -59,33 +41,35 @@ void BrainComponent::Serialize(const json& j){
 
 void BrainComponent::Override(const json& j){
 	//m_ActiveAreaRadius = 20;
-	m_InitPos = Vector3D(Parent()->GetComponent<TransformComponent>()->WorldPosition());
+	m_InitPos = Vector3D(Parent()->GetComponent<TransformComponent>()->LocalPosition());
 }
 
 void BrainComponent::HandleEvent(Event * p_event){
 
 }
 
-bool BrainComponent::isDestinationReached(const Vector3D& targetPos){
-	return Vector3D::SquareDistance(Parent()->GetComponent<TransformComponent>()->WorldPosition(), targetPos) < 200.0f;
-	//return (targetPos == Parent()->GetComponent<TransformComponent>()->WorldPosition());
-}
+/* CURRENTLY MOVED TO "AI_Commands.h*/
 
-void BrainComponent::GetRandomPos(Vector3D& targetPos){
-	float offset1 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX)*2.0f - 1.0f;
-	float offset2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX)*2.0f - 1.0f;
-	float offset3 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX)*2.0f - 1.0f;
-	targetPos.Set(	m_InitPos.x + m_IdleMovementRadius * offset1 ,
-					m_InitPos.y + m_IdleMovementRadius * offset2 ,
-					m_InitPos.z + m_IdleMovementRadius * offset3	);
-	//targetPos.Print();
-}
-
-void BrainComponent::MoveTo(const Vector3D& targetPos) { 
-	// TODO: do it through physics component
-	TransformComponent* pTrans = Parent()->GetComponent<TransformComponent>();
-	Vector3D moveVec = (targetPos - pTrans->WorldPosition());
-	moveVec.Normalize();
-	float spd = 20.0f;
-	pTrans->Move(moveVec*INFECT_FRAMERATE.GetFrameTime()*spd);  
-}
+//bool BrainComponent::isDestinationReached(const Vector3D& targetPos){
+//	return Vector3D::SquareDistance(Parent()->GetComponent<TransformComponent>()->WorldPosition(), targetPos) < 200.0f;
+//	//return (targetPos == Parent()->GetComponent<TransformComponent>()->WorldPosition());
+//}
+//
+//void BrainComponent::GetRandomPos(Vector3D& targetPos){
+//	float offset1 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX)*2.0f - 1.0f;
+//	float offset2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX)*2.0f - 1.0f;
+//	float offset3 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX)*2.0f - 1.0f;
+//	targetPos.Set(	m_InitPos.x + m_IdleMovementRadius * offset1 ,
+//					m_InitPos.y + m_IdleMovementRadius * offset2 ,
+//					m_InitPos.z + m_IdleMovementRadius * offset3	);
+//	//targetPos.Print();
+//}
+//
+//void BrainComponent::MoveTo(const Vector3D& targetPos) { 
+//	// TODO: do it through physics component
+//	TransformComponent* pTrans = Parent()->GetComponent<TransformComponent>();
+//	Vector3D moveVec = (targetPos - pTrans->WorldPosition());
+//	moveVec.Normalize();
+//	float spd = 20.0f;
+//	pTrans->Move(moveVec*INFECT_FRAMERATE.GetFrameTime()*spd);  
+//}

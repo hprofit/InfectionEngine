@@ -1,3 +1,4 @@
+
 /* Start Header -------------------------------------------------------
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
@@ -17,13 +18,13 @@ public:
 	~PhysicsManager();
 
 	 void Init();
-	 void Update(double deltaTime);
+	 void Update(float deltaTime);
      void ErrorCheck(FMOD_RESULT result);
 
 
 
 
-	std::list<RigidBodyComponent::Box *> m_BoxPool;
+	std::vector<RigidBodyComponent::Box *> m_BoxPool;
 	std::list<RigidBodyComponent::Sphere *> m_SpherePool;
 	std::list<RigidBodyComponent::Plane *> m_PlanePool;
 
@@ -38,6 +39,8 @@ public:
 
 	void SetCollisionData(real friction_ = (real)0.9, real restitution_ = (real)0.1, real tolerance_ = (real)0.1);
 
+	physics::Contact& GetFractureContact() {return cData.contactArray[fracture_contact];}
+
 private:
 	real m_CollisionData[3];
 	// collision info
@@ -45,6 +48,9 @@ private:
 	physics::Contact contacts[maxContacts];
 	physics::CollisionData cData;
 	physics::ContactResolver resolver = physics::ContactResolver(maxContacts * 8);
+
+	// fracture
+	unsigned fracture_contact;
 
 };
 

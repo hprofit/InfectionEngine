@@ -41,8 +41,6 @@ public:
 
 	static Component* CreateInstance(InfectGUID guid) { return new TransformComponent(guid);  }
 	virtual void Deactivate();
-	virtual void Update(float dt) {};
-	virtual void LateUpdate(float dt) {};
 	virtual void Serialize(const json& j);
 	virtual void Override(const json& j);
 
@@ -136,6 +134,7 @@ public:
 	inline Matrix4x4 GetTransform() const { return m_transform; }
 	// Returns the GameObject's current rotation matrix calculated from the rotation amounts
 	Matrix4x4 GetRotationMatrix() const;
+
 };
 
 #endif

@@ -1,0 +1,26 @@
+{
+  	"Tag": "None",
+  	"COMPONENTS": [
+		{
+	 		"Component": "Transform",
+		  	"position": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+		  	},
+		  	"scale": {
+				"x": 500,
+				"y": 500,
+				"z": 500
+		  	},
+		  	"pivotOffset": {},
+		  	"rotation": {}
+		},
+		{
+			"Component": "Mesh",
+			"scene": "SkyBox",
+			"texture": "worldTexture2.jpg",
+			"isLit": false
+		}
+  ]
+}

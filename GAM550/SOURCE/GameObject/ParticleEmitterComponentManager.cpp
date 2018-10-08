@@ -13,14 +13,14 @@ ParticleEmitterComponentManager::ParticleEmitterComponentManager() {
 
 int ParticleEmitterComponentManager::_FindUnusedParticle(PEC pec)
 {
-	for (int i = pec->m_lastUsedParticle; i < pec->m_maxParticles; i++) {
+	for (UINT i = pec->m_lastUsedParticle; i < pec->m_maxParticles; i++) {
 		if (pec->m_particles[i].life <= 0.f) {
 			pec->m_lastUsedParticle = i;
 			return i;
 		}
 	}
 	// Cycle around to the start of the array
-	for (int i = 0; i < pec->m_lastUsedParticle; i++) {
+	for (UINT i = 0; i < pec->m_lastUsedParticle; i++) {
 		if (pec->m_particles[i].life <= 0.f) {
 			pec->m_lastUsedParticle = i;
 			return i;
@@ -188,8 +188,7 @@ void ParticleEmitterComponentManager::_UpdateParticles(PEC pec, TC tc, float del
 
 bool ParticleEmitterComponentManager::_UpdateParticleBuffers(PEC pec)
 {
-	int index, i;
-	HRESULT result;
+	UINT index, i;
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	ParticleEmitterComponent::ParticleVertex* verticesPtr;
 
@@ -199,7 +198,7 @@ bool ParticleEmitterComponentManager::_UpdateParticleBuffers(PEC pec)
 	// Now build the vertex array from the particle list array.  Each particle is a quad made out of two triangles.
 	index = 0;
 
-	for (i = 0; i<pec->m_liveParticleCount; i++)
+	for (i = 0; i < pec->m_liveParticleCount; i++)
 	{
 		// Bottom left.
 		pec->m_vertices[index].FillVert(pec->m_particles[i], 0.f, 1.f, -1, -1);

@@ -13,3 +13,4 @@ turned into entries within the GameObjectTags enum
 REGISTER_TAG_NAME(T_Player)
 REGISTER_TAG_NAME(T_Camera)
 REGISTER_TAG_NAME(T_Light)
+REGISTER_TAG_NAME(T_Bullet)

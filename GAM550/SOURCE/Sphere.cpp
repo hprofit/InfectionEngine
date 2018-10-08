@@ -45,6 +45,7 @@ Sphere::Sphere(unsigned int size)
 		m_vertices[index].x = m_vertices[index].nX * 0.5f;
 		m_vertices[index].y = m_vertices[index].nY * 0.5f;
 		m_vertices[index].z = m_vertices[index].nZ * 0.5f;
+		m_vertices[index].w = 1;
 
 		m_vertices[index].r = m_vertices[index].a = 1;
 		m_vertices[index].g = m_vertices[index].b = 0;

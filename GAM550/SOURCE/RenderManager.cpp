@@ -16,6 +16,11 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 		// this message is read when the window is closed
 	case WM_DESTROY:
 	{
+		/*
+			TODO:
+			Tell the game loop to quit and have it clean up the 
+			Job Manager and other threads before posting the quit message
+		*/
 		INFECT_THREAD_JOBS.AddNewJob(new RenderTerminateTerminate(*INFECT_THREAD_JOBS.GetThreadContainer<RenderThreadContainer>(ThreadType::RenderThread)));
 		INFECT_THREAD_JOBS.AddNewJob(new SimulationTerminateTerminate(*INFECT_THREAD_JOBS.GetThreadContainer<SimulationThreadContainer>(ThreadType::SimThread)));
 		INFECT_GAME_STATE.SetGameState(GameState::QUIT);
@@ -134,7 +139,6 @@ void RenderManager::PrepDeferredFinal()
 // For Debug only
 void RenderManager::RenderDeferredBuffer()
 {
-	mp_D3D->BindBackBuffer();
 	mp_ShaderProgramQuad->BindShader();
 	mp_D3D->DisableDepth();
 	mp_D3D->DisableAlpha();
@@ -144,6 +148,7 @@ void RenderManager::RenderDeferredBuffer()
 	cb.Ambient = m_Ambient;
 	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 	
+	ID3D11ShaderResourceView* pResource = nullptr;
 	switch (m_RenderMode) {
 		case RenderMode::Final:
 		{
@@ -154,11 +159,24 @@ void RenderManager::RenderDeferredBuffer()
 			);
 			break;
 		}
+		//case RenderMode::Depth:
+		//{
+		//	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+		//	shaderResourceViewDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;// DXGI_FORMAT_D24_UNORM_S8_UINT;
+		//	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		//	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+		//	shaderResourceViewDesc.Texture2D.MipLevels = 1;
+		//
+		//	ID3D11Texture2D* db = mp_D3D->GetDeferredRenderTarget()->DepthStencilBuffer();
+		//
+		//	mp_D3D->mp_Device->CreateShaderResourceView(db, &shaderResourceViewDesc, &pResource);
+		//
+		//	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pResource);
+		//	break;
+		//}
 		default:
 		{
-			mp_D3D->mp_DeviceContext->PSSetShaderResources(
-				0,
-				1,
+			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1,
 				&mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()[m_RenderMode]
 			);
 			break;
@@ -170,6 +188,9 @@ void RenderManager::RenderDeferredBuffer()
 
 	// do 3D rendering on the back buffer here
 	RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+
+	if (pResource)
+		pResource->Release();
 }
 
 void RenderManager::RenderDeferredBufferAmbientOnly()

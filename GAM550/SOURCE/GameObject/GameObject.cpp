@@ -84,23 +84,6 @@ void GameObject::OverrideComponents(const json &j)
 	}
 }
 
-void GameObject::Update(float dt) {
-	for (unsigned int i = 0; i < m_activeComponents.size(); ++i) {
-		mComponents[(int)m_activeComponents[i]]->Update(dt);
-	}
-
-	if (m_isSetToDestroy) {
-		//if (TETRA_FRAMERATE.GetElapsedTime() - m_destroySetTimeStamp > m_destroyTimer)
-		//	Destroy();
-	}
-}
-
-void GameObject::LateUpdate(float dt) {
-	for (unsigned int i = 0; i < m_activeComponents.size(); ++i) {
-		mComponents[(int)m_activeComponents[i]]->LateUpdate(dt);
-	}
-}
-
 void GameObject::LateInitialize() {
 	for (unsigned int i = 0; i < m_activeComponents.size(); ++i) {
 		mComponents[(int)m_activeComponents[i]]->LateInitialize();

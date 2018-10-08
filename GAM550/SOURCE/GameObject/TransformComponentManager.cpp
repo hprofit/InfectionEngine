@@ -50,7 +50,7 @@ void TransformComponentManager::_UpdateTransform(TC tComp)
 void TransformComponentManager::Update(float dt)
 {
 	for each (TransformComponent * tComp in *m_Components) {
-		if (!tComp->IsActive()) break; // will be removed or modified later 
+		if (!tComp->IsActive()) break;
 		tComp->m_UpdatedLastFrame = false;
 		if (tComp->IsDirty()) {
 			tComp->m_prevPosition = tComp->m_position;

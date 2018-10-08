@@ -32,8 +32,6 @@ void MeshComponent::Deactivate()
 	}
 }
 
-void MeshComponent::Update(float dt) {}
-
 #define SCENE_STRING "scene"
 #define DIFFUSE_TEXTURE_STRING "diffuse"
 #define NORMAL_TEXTURE_STRING "normal"

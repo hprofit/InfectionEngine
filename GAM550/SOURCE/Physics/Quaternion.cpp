@@ -220,3 +220,32 @@ void Quaternion::QuatNegation()
 	Q.k = -Q.k;
 
 }
+
+Quaternion Quaternion::DegreeToQuaternion(Vector3D angle)
+{
+  float x = sin(angle.y / 2.f * DEG_TO_RAD) * sin(angle.z / 2.f * DEG_TO_RAD) * cos(angle.x / 2.f * DEG_TO_RAD) + cos(angle.y / 2.f * DEG_TO_RAD)* cos(angle.z / 2.f * DEG_TO_RAD)* sin(angle.x / 2.f * DEG_TO_RAD);
+  float y = sin(angle.y / 2.f * DEG_TO_RAD)* cos(angle.z / 2.f * DEG_TO_RAD)* cos(angle.x / 2.f * DEG_TO_RAD) + cos(angle.y / 2.f * DEG_TO_RAD)* sin(angle.z / 2.f * DEG_TO_RAD)* sin(angle.x / 2.f * DEG_TO_RAD);
+  float z = cos(angle.y / 2.f * DEG_TO_RAD)* sin(angle.z / 2.f * DEG_TO_RAD)* cos(angle.x / 2.f * DEG_TO_RAD) - sin(angle.y / 2.f * DEG_TO_RAD)* cos(angle.z / 2.f * DEG_TO_RAD)* sin(angle.x / 2.f * DEG_TO_RAD);
+  float w = cos(angle.y / 2.f * DEG_TO_RAD)* cos(angle.z / 2.f * DEG_TO_RAD)* cos(angle.x / 2.f * DEG_TO_RAD) - sin(angle.y / 2.f * DEG_TO_RAD)* sin(angle.z / 2.f * DEG_TO_RAD)* sin(angle.x / 2.f * DEG_TO_RAD);
+
+  return Quaternion(w, x, y, z); //r(1), i(0), j(0), k(0) 
+}
+
+Vector3D Quaternion::QuaternionToDegree(Quaternion q)
+{
+  Vector3D result;
+  float ysqr = q.j * q.j;
+  float t0 = -2.0f * (ysqr + q.k * q.k) + 1.0f;
+  float t1 = +2.0f * (q.i * q.j - q.r * q.k);
+  float t2 = -2.0f * (q.i * q.k + q.r * q.j);
+  float t3 = +2.0f * (q.j * q.k - q.r * q.i);
+  float t4 = -2.0f * (q.i * q.i + ysqr) + 1.0f;
+
+  t2 = t2 > 1.0f ? 1.0f : t2;
+  t2 = t2 < -1.0f ? -1.0f : t2;
+
+  result.y = std::asin(t2) * RAD_TO_DEG;
+  result.x = std::atan2(t3, t4) * RAD_TO_DEG;
+  result.z = std::atan2(t1, t0) * RAD_TO_DEG;
+  return result;
+}

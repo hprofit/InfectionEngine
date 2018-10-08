@@ -63,14 +63,14 @@ bool RenderTarget::_CreateDepthAndStencilBuffer(ID3D11Device * device)
 	depthBufferDesc.Height = m_TextureHeight;
 	depthBufferDesc.MipLevels = 1;
 	depthBufferDesc.ArraySize = 1;
-	depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthBufferDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;// DXGI_FORMAT_D24_UNORM_S8_UINT;
 	depthBufferDesc.SampleDesc.Count = 1;
 	depthBufferDesc.SampleDesc.Quality = 0;
 	depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
 	depthBufferDesc.CPUAccessFlags = 0;
 	depthBufferDesc.MiscFlags = 0;
-
+	
 	// Create the texture for the depth buffer using the filled out description.
 	if (FAILED(device->CreateTexture2D(&depthBufferDesc, NULL, &mp_DepthStencilBuffer)))
 		return false;
@@ -117,6 +117,7 @@ bool RenderTarget::_CreateDepthStencilView(ID3D11Device * device)
 	ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
 
 	// Set up the depth stencil view description.
+	depthStencilViewDesc.Flags = 0;
 	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	depthStencilViewDesc.Texture2D.MipSlice = 0;
@@ -221,14 +222,14 @@ void RenderTarget::BindToRead() const
 
 void RenderTarget::BindRenderTarget(ID3D11DeviceContext* deviceContext) const
 {
-	// Set the depth stencil state.
-	deviceContext->OMSetDepthStencilState(mp_DepthStencilState, 1);
-
 	// Bind the render target view and depth stencil buffer to the output render pipeline.
 	deviceContext->OMSetRenderTargets(m_NumTargets, m_renderTargetViews, mp_DepthStencilView);
 
 	// Now set the rasterizer state.
 	deviceContext->RSSetState(mp_RasterState);
+
+	// Set the depth stencil state.
+	deviceContext->OMSetDepthStencilState(mp_DepthStencilState, 1);
 
 	deviceContext->RSSetViewports(1, &m_viewport);
 }
@@ -243,5 +244,5 @@ void RenderTarget::ClearRenderTarget(ID3D11DeviceContext* deviceContext, const C
 	for (unsigned int i = 0; i < m_NumTargets; ++i) {
 		deviceContext->ClearRenderTargetView(m_renderTargetViews[i], color);
 	}
-	deviceContext->ClearDepthStencilView(mp_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	deviceContext->ClearDepthStencilView(mp_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }

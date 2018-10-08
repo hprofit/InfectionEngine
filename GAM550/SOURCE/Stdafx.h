@@ -168,9 +168,12 @@ typedef unsigned int InfectGUID;
 
 // Components - AI
 #include <AI\BrainComponent.h>
+#include <AI\ControllerComponent.h>
 #pragma endregion 
 
 #pragma region AI
+/* AI Command Library */
+#include <AI\AI_Commands.h>
 /* Finite-State Machine */
 #include <AI\FSM\AI_State.h>
 #include <AI\FSM\AI_Idle.h>
@@ -203,6 +206,7 @@ typedef unsigned int InfectGUID;
 #include <GameObject\RigidBodyComponentManager.h>
 #include <GameObject\FractureComponentManager.h>
 #include <AI\BrainComponentManager.h>
+#include <AI\ControllerComponentManager.h>
 #pragma endregion
 
 #pragma region Globals + API

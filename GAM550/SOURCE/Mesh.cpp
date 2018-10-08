@@ -54,6 +54,7 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 		v.x = mesh->mVertices[i].x;
 		v.y = mesh->mVertices[i].y;
 		v.z = mesh->mVertices[i].z;
+		v.w = 1;
 
 		//v.nX = mesh->mNormals[i].x;
 		//v.nY = mesh->mNormals[i].y;
@@ -176,6 +177,7 @@ void Mesh::AddVertex(FLOAT x, FLOAT y, FLOAT z, const float* color)
 	vert.x = x;
 	vert.y = y;
 	vert.z = z;
+	vert.w = 1;
 
 	vert.r = color[0];
 	vert.g = color[1];
@@ -206,6 +208,7 @@ void Mesh::AddVertex(FLOAT x, FLOAT y, FLOAT z, FLOAT nx, FLOAT ny, FLOAT nz, FL
 	vert.x = x;
 	vert.y = y;
 	vert.z = z;
+	vert.w = 1;
 
 	vert.r = color[0];
 	vert.g = color[1];
@@ -276,7 +279,7 @@ void Mesh::FinishMesh()
 	ID3D11InputLayout *pLayout;
 	D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "BITANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },

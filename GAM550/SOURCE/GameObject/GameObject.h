@@ -39,8 +39,6 @@ public:
 	bool operator!=(const GameObject& rhs) const;
 
 	virtual void HandleEvent(Event* pEvent);
-	void Update(float dt);
-	void LateUpdate(float dt);
 	void LateInitialize();
 	void Destroy();
 	void DestroyIn(float time);
