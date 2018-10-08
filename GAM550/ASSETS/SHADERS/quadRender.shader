@@ -37,8 +37,6 @@ PixelInput VShader(VertexInput input)
 float4 PShader(PixelInput input) : SV_TARGET
 {
 	float4 color = Texture.Sample(ss, input.texCoords);
-	//color.a = 1;
-	//color.g = color.b = 0;
 	return color * Ambient;
 	
 }

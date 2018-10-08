@@ -59,6 +59,7 @@ void GameConfig::LoadConfig(std::string s) {
 	json levelSettings = j[LEVEL_SETTINGS];
 	INFECT_LEVEL.Init(levelSettings);
 
+	SeedRand(0);
 }
 
 #undef GAME_SETTINGS 
