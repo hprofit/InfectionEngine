@@ -34,7 +34,7 @@ void TransformComponent::Serialize(const json& j) {
 	m_position.x = ParseFloat(j[POSITION_STRING], "x");
 	m_position.y = ParseFloat(j[POSITION_STRING], "y");
 	m_position.z = ParseFloat(j[POSITION_STRING], "z");
-	m_worldPosition = m_position;
+	//m_worldPosition = m_position;
 
 	m_scaleX = ParseFloat(j[SCALE_STRING], "x");
 	m_scaleY = ParseFloat(j[SCALE_STRING], "y");
@@ -57,7 +57,7 @@ void TransformComponent::Override(const json& j)
 		m_position.x = ValueExists(j[POSITION_STRING], "x") ? j[POSITION_STRING]["x"] : m_position.x;
 		m_position.y = ValueExists(j[POSITION_STRING], "y") ? j[POSITION_STRING]["y"] : m_position.y;
 		m_position.z = ValueExists(j[POSITION_STRING], "z") ? j[POSITION_STRING]["z"] : m_position.z;
-		m_worldPosition = m_position;
+		//m_worldPosition = m_position;
 	}
 	if (ValueExists(j, SCALE_STRING)) {
 		m_scaleX = ValueExists(j[SCALE_STRING], "x") ? j[SCALE_STRING]["x"] : m_scaleX;

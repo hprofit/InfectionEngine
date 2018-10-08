@@ -315,12 +315,6 @@
     <ClCompile Include="SOURCE\GameObject\FractureComponent.cpp">
       <Filter>Source Files\GameObject\Components\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\AI\BT\Conditional_Loop.cpp">
-      <Filter>Source Files\AI\BehaviorTree</Filter>
-    </ClCompile>
-    <ClCompile Include="SOURCE\AI\BT\MoveToRandom.cpp">
-      <Filter>Source Files\AI\BehaviorTree</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\AI\AI_Factory.cpp">
       <Filter>Source Files\AI</Filter>
     </ClCompile>
@@ -347,6 +341,15 @@
     </ClCompile>
     <ClCompile Include="SOURCE\GameObject\ComponentManagerContainer.cpp">
       <Filter>Source Files\GameObject\ComponentManagers\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\Conditional_Loop.cpp">
+      <Filter>Source Files\AI\BehaviorTree\Decorators</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\MoveToRandom.cpp">
+      <Filter>Source Files\AI\BehaviorTree\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\AI_Commands.cpp">
+      <Filter>Source Files\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -602,21 +605,6 @@
     <ClInclude Include="SOURCE\GameObject\FractureComponent.h">
       <Filter>Source Files\GameObject\Components\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="SOURCE\AI\AI_Factory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\AI\BT\Action.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\AI\BT\Conditional_Loop.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\AI\BT\Decorator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SOURCE\AI\BT\MoveToRandom.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\GameObject\ParticleEmitterComponent.h">
       <Filter>Source Files\GameObject\Components\Renderable</Filter>
     </ClInclude>
@@ -643,6 +631,24 @@
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\ComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\AI_Factory.h">
+      <Filter>Source Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Action.h">
+      <Filter>Source Files\AI\BehaviorTree\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\MoveToRandom.h">
+      <Filter>Source Files\AI\BehaviorTree\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Decorator.h">
+      <Filter>Source Files\AI\BehaviorTree\Decorators</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Conditional_Loop.h">
+      <Filter>Source Files\AI\BehaviorTree\Decorators</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\AI_Commands.h">
+      <Filter>Source Files\AI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
