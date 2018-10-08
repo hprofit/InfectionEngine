@@ -35,7 +35,7 @@ void ParticleEmitterComponent::_AllocateParticleArrays()
 	m_colors.resize(m_maxParticles * 4);
 	m_textureCoords.resize(m_maxParticles * 2);
 
-	for (int i = 0; i < m_maxParticles; ++i) {
+	for (unsigned int i = 0; i < m_maxParticles; ++i) {
 		m_particles[i].life = -1.f;
 		m_particles[i].angleOffset = 0.f;
 
@@ -72,8 +72,6 @@ bool ParticleEmitterComponent::_CreateBuffers()
 	int i;
 	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData, indexData;
-	HRESULT result;
-
 
 	// Set the maximum number of vertices in the vertex array.
 	m_vertexCount = m_maxParticles * 6;

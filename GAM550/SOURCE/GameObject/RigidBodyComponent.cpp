@@ -298,17 +298,10 @@ void RigidBodyComponent::Override(const json& j)
 }
 
 void RigidBodyComponent::HandleEvent(Event * pEvent)
-{
-	switch (pEvent->Type()) {
-	default:
-		break;
-	}
-}
+{}
 
 void RigidBodyComponent::LateInitialize()
-{
-	//FECT_GOM.RegisterCamera(mp_Parent);
-}
+{}
 
 
 
@@ -373,7 +366,7 @@ void RigidBodyComponent::Box::calculateMassProperties(real invDensity)
   else
   {
     // Otherwise we need to calculate the mass
-    real volume = halfSize.Length() * 2.0;
+    real volume = halfSize.Length() * 2.0f;
     real mass = volume / invDensity;
 
     body->setMass(mass);

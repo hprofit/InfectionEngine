@@ -110,7 +110,6 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 	int error;
 	DXGI_SWAP_CHAIN_DESC swapChainDesc; // create a struct to hold information about the swap chain
 	D3D_FEATURE_LEVEL featureLevel;
-	D3D11_VIEWPORT viewport;
 
 #pragma region Refresh Rate and Video Card Info
 	// Create a DirectX graphics interface factory.

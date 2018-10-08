@@ -73,7 +73,7 @@ bool ResourceManager::Init()
 //This is a recursive function to read the root node and all it's childern
 void ReadRootNodeData(aiNode* aiRootNode, Node& RootNode, Matrix4x4 Transformation, Node* ParentNode)
 {
-	int i;
+	UINT i;
 	RootNode.NodeName = aiRootNode->mName.C_Str();
 	RootNode.Transformations = Transformation * (RootNode.Transformations);
 	RootNode.ParentNode = ParentNode;
@@ -110,7 +110,7 @@ Scene* ResourceManager::_LoadScene(const std::string& meshSceneName)
 
 		if (scene->HasAnimations())
 		{
-			int i;
+			UINT i;
 			Animations animScene(scene->mNumAnimations);
 
 			//This is for the first time 
@@ -125,7 +125,7 @@ Scene* ResourceManager::_LoadScene(const std::string& meshSceneName)
 
 
 			#pragma region Animation Data
-			int Animation_List_size = animScene.AnimationList.size();
+			UINT Animation_List_size = UINT(animScene.AnimationList.size());
 			for (i = 0; i < Animation_List_size; ++i)
 			{
 
@@ -133,10 +133,10 @@ Scene* ResourceManager::_LoadScene(const std::string& meshSceneName)
 				animScene.AnimationList[i].Duration = (scene->mAnimations[i]->mDuration);
 				animScene.AnimationList[i].TicksPerSecond = (scene->mAnimations[i]->mTicksPerSecond);
 
-				int num_channels = scene->mAnimations[i]->mNumChannels;
+				UINT num_channels = UINT(scene->mAnimations[i]->mNumChannels);
 				animScene.AnimationList[i].ChannelList.resize(num_channels);
 
-				int j;
+				UINT j;
 
 				for (j = 0; j < num_channels; ++j)
 				{
