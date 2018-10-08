@@ -77,12 +77,18 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 			v.b = color.b;
 			v.a = color.a;
 		}
-		for (int j = 0; j < 4; ++j)
-		{
-			v.BoneID[j] = m_BoneVertexDataList[i].BoneID[j];
-			v.BoneWeights[j] = m_BoneVertexDataList[i].BoneWeights[j];
 
-		}
+		v.BoneID0 = m_BoneVertexDataList[i].BoneID[0];
+		v.BoneID1 = m_BoneVertexDataList[i].BoneID[1];
+		v.BoneID2 = m_BoneVertexDataList[i].BoneID[2];
+		v.BoneID3 = m_BoneVertexDataList[i].BoneID[3];
+
+		v.BoneWeights0 = m_BoneVertexDataList[i].BoneWeights[0];
+		v.BoneWeights1 = m_BoneVertexDataList[i].BoneWeights[1];
+		v.BoneWeights2 = m_BoneVertexDataList[i].BoneWeights[2];
+		v.BoneWeights3 = m_BoneVertexDataList[i].BoneWeights[3];
+
+			
 
 		m_vertices.push_back(v);
 	}
@@ -272,6 +278,8 @@ void Mesh::FinishMesh()
 		{ "BITANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORDS", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "BONEID", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "BONEWEIGHTS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
 	ID3D10Blob * const vs = INFECT_RENDERER.VSBlob();

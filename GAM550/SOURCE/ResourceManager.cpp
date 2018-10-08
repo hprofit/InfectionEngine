@@ -219,7 +219,6 @@ Scene* ResourceManager::_LoadScene(const std::string& meshSceneName)
 			#pragma endregion
 
 
-
 		}
 
 
