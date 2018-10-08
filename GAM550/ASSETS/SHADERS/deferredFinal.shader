@@ -16,8 +16,6 @@ struct VertexInput {
 	float4 bitangent : BITANGENT;
 	float2 texCoords : TEXCOORDS;
 	float4 color : COLOR;
-	float4 boneid : BONEID;
-	float4 boneweights : BONEWEIGHTS;
 };
 
 struct PixelInput
