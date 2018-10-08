@@ -17,11 +17,39 @@ Scene::~Scene() {}
 
 //Please Dont remove this at any point
 
-int temp_index = 0;
+void Mesh::ReadBoneVertexWeight(const aiMesh * mesh)
+{
+
+	int temp_index = -1;
+	int size_list = mesh->mNumVertices;
+	m_BoneVertexDataList.resize(size_list);
+
+	for (int i = 0; i < mesh->mNumVertices; ++i)
+	{
+		
+		for (int j = 0; j < mesh->mNumBones; ++j)
+		{
+			for (int k = 0; k < mesh->mBones[j]->mNumWeights; ++k)
+			{
+				if (mesh->mBones[j]->mWeights[k].mVertexId == i)
+				{
+					m_BoneVertexDataList[i].BoneID[temp_index++] = j;
+					m_BoneVertexDataList[i].BoneWeights[temp_index++] = mesh->mBones[j]->mWeights[k].mWeight;
+				}
+			}
+		}
+		temp_index = 0;
+	}
+
+
+}
+
+
 void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 {
 	m_vertices.reserve(mesh->mNumVertices);
-	for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
+	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
+	{
 		Vertex v;
 		v.x = mesh->mVertices[i].x;
 		v.y = mesh->mVertices[i].y;
@@ -49,8 +77,12 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 			v.b = color.b;
 			v.a = color.a;
 		}
+		for (int j = 0; j < 4; ++j)
+		{
+			v.BoneID[j] = m_BoneVertexDataList[i].BoneID[j];
+			v.BoneWeights[j] = m_BoneVertexDataList[i].BoneWeights[j];
 
-		
+		}
 
 		m_vertices.push_back(v);
 	}
@@ -63,31 +95,7 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 
 #pragma region Bone Data
 
-
-		#pragma region BoneID & BoneWeight
-
-
-	for (int i = 0; i < m_vertices.size(); ++i)
-	{
-		BoneDataVertex B;
-		for (int j = 0; j < mesh->mNumBones; ++j)
-		{
-			for (int k = 0; k < mesh->mBones[j]->mNumWeights; ++k)
-			{
-				if (mesh->mBones[j]->mWeights[k].mVertexId == i)
-				{
-					B.BoneID[temp_index] = j;
-					B.BoneWeights[temp_index] = mesh->mBones[j]->mWeights[k].mWeight;
-					++temp_index;
-				}
-			}
-		}
-		temp_index = 0;
-	}
-		#pragma	endregion
-
-
-
+		
 	m_BoneList.resize(mesh->mNumBones);
 	for (unsigned int i = 0; i < mesh->mNumBones; ++i)
 	{
@@ -135,10 +143,13 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 
 Mesh::Mesh()
 {
+
 }
 
 Mesh::Mesh(const aiMesh * mesh)
 {
+	
+	ReadBoneVertexWeight(mesh);
 	_CreateFromAiMesh(mesh);
 }
 

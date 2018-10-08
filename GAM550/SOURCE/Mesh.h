@@ -17,7 +17,8 @@ struct Vertex {
 	FLOAT bX, bY, bZ;		// bitangent
 	FLOAT u, v;				// texture coords
 	FLOAT r, g, b, a;		// color
-
+	UINT  BoneID[4] = { 0 };
+	float BoneWeights[4] = { 0 };
 };
 
 
@@ -97,8 +98,10 @@ protected:
 	ID3D11Buffer *mp_VBuffer;	// Vertex Buffer
 	ID3D11Buffer *mp_IBuffer;	// Index Buffer
 
-	void _CreateFromAiMesh(const aiMesh* mesh);
+	std::vector<BoneDataVertex> m_BoneVertexDataList;
 
+	void ReadBoneVertexWeight(const aiMesh * mesh); 
+	void _CreateFromAiMesh(const aiMesh* mesh);
 public:
 	Mesh();
 	Mesh(const aiMesh* mesh);
