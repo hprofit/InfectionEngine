@@ -68,7 +68,21 @@ MemoryManager::~MemoryManager() {
 	free(m_Buffer);
 
 	// maybe clear pools? 
-
+	for (unsigned i = 0; i < NUM_COMPONENTS; i++) {
+		std::list<Component*>* pCompPool = m_ComponentPool[static_cast<ComponentType>(i)];
+		std::list<Component*>::iterator iter = pCompPool->begin();
+		while (iter != pCompPool->end()) {
+			Component* pComp = *iter;
+			delete pComp;
+			iter++;
+		}
+	}
+	std::list<GameObject*>::iterator iter = m_GameObjectPool.begin();
+	while (iter != m_GameObjectPool.end()) {
+		delete *iter;
+		iter++;
+	}
+	
 	delete m_ComponentFactory;
 	delete m_AIFactory;
 }

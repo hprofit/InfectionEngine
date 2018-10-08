@@ -35,9 +35,9 @@ GameObject::GameObject(InfectGUID id) :
 GameObject::~GameObject() {
 	for (int i = 0; i < ComponentType::NUM_COMPONENTS; ++i) {
 		if (mComponents[i])
-			INFECT_MEMORY.DeleteComponent(mComponents[i]);
+			//INFECT_MEMORY.DeleteComponent(mComponents[i]);
+			mComponents[i] = nullptr;
 	}
-
 	m_activeComponents.clear();
 }
 
@@ -70,6 +70,7 @@ void GameObject::Deactivate() {
 	m_isSetToDestroy = false;
 	for (int i = 0; i < ComponentType::NUM_COMPONENTS; ++i) {
 		if (mComponents[i]) {
+			mComponents[i]->Deactivate();
 			mComponents[i] = nullptr;
 		}
 	}

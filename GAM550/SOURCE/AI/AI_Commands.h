@@ -8,6 +8,8 @@ Author: <Hyoyup Chung>
 #ifndef AI_COMMANDS_H
 #define AI_COMMANDS_H
 
+class BrainComponent;
+
 namespace AI_Commands{
 	// check if agent has reached the targetPos specified
 	bool isDestinationReached(BrainComponent* pAgent, const Vector3D& targetPos);

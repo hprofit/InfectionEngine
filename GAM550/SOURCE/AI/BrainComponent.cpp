@@ -11,8 +11,15 @@ BrainComponent::BrainComponent(InfectGUID guid):
 	Component(guid){
 }
 
-void BrainComponent::Deactivate(){
+BrainComponent::~BrainComponent() {
+	for (unsigned i = 0; i < NUM_AI_STATES; i++) {
+		if (m_states[i] == nullptr) continue;
+		INFECT_MEMORY.DeleteState(m_states[i]);
+	}
+}
 
+void BrainComponent::Deactivate(){
+	mp_Parent = nullptr;
 }
 
 void BrainComponent::LateInitialize() {

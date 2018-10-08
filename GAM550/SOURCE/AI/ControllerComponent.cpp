@@ -12,7 +12,7 @@ ControllerComponent::ControllerComponent(InfectGUID guid) :
 }
 
 void ControllerComponent::Deactivate() {
-
+	mp_Parent = nullptr;
 }
 
 void ControllerComponent::LateInitialize() {
