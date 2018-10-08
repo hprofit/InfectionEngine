@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SOURCE\AI\AI_Commands.cpp" />
     <ClCompile Include="SOURCE\AI\AI_Factory.cpp" />
     <ClCompile Include="SOURCE\AI\BrainComponent.cpp" />
     <ClCompile Include="SOURCE\AI\BrainComponentManager.cpp" />
@@ -103,6 +104,7 @@
     <ClCompile Include="SOURCE\SubscriberTracker.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SOURCE\AI\AI_Commands.h" />
     <ClInclude Include="SOURCE\AI\AI_Factory.h" />
     <ClInclude Include="SOURCE\AI\BrainComponent.h" />
     <ClInclude Include="SOURCE\AI\BrainComponentManager.h" />

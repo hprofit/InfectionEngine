@@ -171,6 +171,8 @@ typedef unsigned int InfectGUID;
 #pragma endregion 
 
 #pragma region AI
+/* AI Command Library */
+#include <AI\AI_Commands.h>
 /* Finite-State Machine */
 #include <AI\FSM\AI_State.h>
 #include <AI\FSM\AI_Idle.h>

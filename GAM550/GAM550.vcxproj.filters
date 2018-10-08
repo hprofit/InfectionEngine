@@ -348,6 +348,9 @@
     <ClCompile Include="SOURCE\AI\BT\MoveToRandom.cpp">
       <Filter>Source Files\AI\BehaviorTree\Actions</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\AI\AI_Commands.cpp">
+      <Filter>Source Files\AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOURCE\RenderManager.h">
@@ -643,6 +646,9 @@
     </ClInclude>
     <ClInclude Include="SOURCE\AI\BT\Conditional_Loop.h">
       <Filter>Source Files\AI\BehaviorTree\Decorators</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\AI_Commands.h">
+      <Filter>Source Files\AI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

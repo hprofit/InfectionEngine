@@ -13,15 +13,18 @@ MoveToRandom::MoveToRandom(BehaviorTree* tree):m_destination(Vector3D(0,0,0)){
 }
 
 void MoveToRandom::OnInitialize() {
-	pAgent->GetRandomPos(m_destination);
+	//pAgent->GetRandomPos(m_destination);
+	AI_Commands::getRandomPos(	pAgent->GetInitPos(), 
+								pAgent->GetMovementRadius(),
+								m_destination);
 }
 
 BH_Status MoveToRandom::OnUpdate() {
-	if (pAgent->isDestinationReached(m_destination)) {
+	if (AI_Commands::isDestinationReached(pAgent, m_destination)) {
 		return BH_SUCCESS;
 	}
 	else {
-		pAgent->MoveTo(m_destination);
+		AI_Commands::moveTo(pAgent, m_destination);
 		return BH_RUNNING;
 	}
 }

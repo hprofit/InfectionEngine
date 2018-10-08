@@ -17,7 +17,7 @@ class BrainComponent : public Component {
 private:
 	Vector3D m_InitPos;
 	float m_detectionRadius;
-	float m_IdleMovementRadius;
+	float m_movementRadius;
 	AIStateType m_currentState;
 	AIStateType m_previousState;
 	AI_State* m_states[NUM_AI_STATES];
@@ -39,9 +39,14 @@ public:
 
 	virtual void HandleEvent(Event * p_event);
 
-	bool isDestinationReached(const Vector3D& targetPos);	// true if targetPos is reached
-	void GetRandomPos(Vector3D& targetPos);					// set targetPos to random position within the m_IdleMovementRadius
-	void MoveTo(const Vector3D& targetPos);					// move TransformComponent every frame to targetPos
+	inline Vector3D& GetInitPos() { return m_InitPos; }
+	inline float GetDetectionRadius() { return m_detectionRadius; }
+	inline float GetMovementRadius() { return m_movementRadius; }
+
+	/* CURRENTLY MOVED TO "AI_Commands.h" */
+	//bool isDestinationReached(const Vector3D& targetPos);	// true if targetPos is reached
+	//void GetRandomPos(Vector3D& targetPos);					// set targetPos to random position within the m_IdleMovementRadius
+	//void MoveTo(const Vector3D& targetPos);					// move TransformComponent every frame to targetPos
 };
 
 #endif
