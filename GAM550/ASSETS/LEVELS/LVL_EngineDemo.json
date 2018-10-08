@@ -514,6 +514,14 @@
       }
     },
     {
+      "prefab": "AITestAgent",
+      "position": {
+        "x": -160.0,
+        "y": 50.0,
+        "z": -160.0
+      }
+    },
+    {
       "prefab": "PhysicsTestPlane"
     },
 

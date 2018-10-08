@@ -27,7 +27,7 @@ void PhysicsManager::ErrorCheck(FMOD_RESULT result)
 
 }
 
-void PhysicsManager::Update(double deltaTime)
+void PhysicsManager::Update(float deltaTime)
 {
 	for (std::list<RigidBodyComponent::Box *>::iterator it = m_BoxPool.begin(); it != m_BoxPool.end(); ++it)
 	{

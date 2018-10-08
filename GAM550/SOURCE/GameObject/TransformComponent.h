@@ -134,6 +134,7 @@ public:
 	inline Matrix4x4 GetTransform() const { return m_transform; }
 	// Returns the GameObject's current rotation matrix calculated from the rotation amounts
 	Matrix4x4 GetRotationMatrix() const;
+
 };
 
 #endif

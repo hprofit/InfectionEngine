@@ -29,7 +29,7 @@ public:
 	virtual ComponentType GetType() const { return Type; }
 
 	BrainComponent(InfectGUID guid);
-	~BrainComponent() {};
+	~BrainComponent();
 
 	static Component* CreateInstance(InfectGUID guid) { return new BrainComponent(guid);  }
 	virtual void Deactivate();

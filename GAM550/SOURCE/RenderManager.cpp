@@ -139,7 +139,6 @@ void RenderManager::PrepDeferredFinal()
 // For Debug only
 void RenderManager::RenderDeferredBuffer()
 {
-	mp_D3D->BindBackBuffer();
 	mp_ShaderProgramQuad->BindShader();
 	mp_D3D->DisableDepth();
 	mp_D3D->DisableAlpha();
@@ -149,6 +148,7 @@ void RenderManager::RenderDeferredBuffer()
 	cb.Ambient = m_Ambient;
 	mp_ShaderProgramQuad->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 	
+	ID3D11ShaderResourceView* pResource = nullptr;
 	switch (m_RenderMode) {
 		case RenderMode::Final:
 		{
@@ -159,11 +159,24 @@ void RenderManager::RenderDeferredBuffer()
 			);
 			break;
 		}
+		//case RenderMode::Depth:
+		//{
+		//	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+		//	shaderResourceViewDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;// DXGI_FORMAT_D24_UNORM_S8_UINT;
+		//	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		//	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+		//	shaderResourceViewDesc.Texture2D.MipLevels = 1;
+		//
+		//	ID3D11Texture2D* db = mp_D3D->GetDeferredRenderTarget()->DepthStencilBuffer();
+		//
+		//	mp_D3D->mp_Device->CreateShaderResourceView(db, &shaderResourceViewDesc, &pResource);
+		//
+		//	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pResource);
+		//	break;
+		//}
 		default:
 		{
-			mp_D3D->mp_DeviceContext->PSSetShaderResources(
-				0,
-				1,
+			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1,
 				&mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()[m_RenderMode]
 			);
 			break;
@@ -175,6 +188,9 @@ void RenderManager::RenderDeferredBuffer()
 
 	// do 3D rendering on the back buffer here
 	RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+
+	if (pResource)
+		pResource->Release();
 }
 
 void RenderManager::RenderDeferredBufferAmbientOnly()

@@ -123,7 +123,7 @@ public:
 class MemoryManager :public MemoryManagerInterface {
 private:
 	// RAW MEMORY STACK 
-	static void* m_Buffer;						// Block of memory where all data exists
+	static void* m_Buffer;						// Stack memory where all data exists
 	const size_t m_TotalBufferSize;				// How big the buffer is in bytes
 	MemoryBlock* m_pHead;						// First MemoryBlock in the linked list
 	MemoryBlock* m_Cache[MAX_CACHE_SIZE_NUM];	// Stores MemoryBlocks to be deleted, when full all will be deleted at once

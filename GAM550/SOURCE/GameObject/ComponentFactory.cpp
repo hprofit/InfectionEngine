@@ -21,6 +21,7 @@ ComponentFactory::ComponentFactory() {
 	m_creationFunctions[RigidBodyComponent::Type] = RigidBodyComponent::CreateInstance;
 	m_creationFunctions[BrainComponent::Type] = BrainComponent::CreateInstance;
 	m_creationFunctions[ParticleEmitterComponent::Type] = ParticleEmitterComponent::CreateInstance;
+	m_creationFunctions[ControllerComponent::Type] = ControllerComponent::CreateInstance;
 }
 
 void ComponentFactory::RegisterComponent(ComponentType cType) {

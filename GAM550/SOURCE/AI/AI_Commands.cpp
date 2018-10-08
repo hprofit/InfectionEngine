@@ -8,7 +8,6 @@ Author: <Hyoyup Chung>
 
 bool AI_Commands::isDestinationReached(BrainComponent* pAgent, const Vector3D& targetPos) {
 	return Vector3D::SquareDistance(pAgent->Parent()->GetComponent<TransformComponent>()->WorldPosition(), targetPos) < 200.0f;
-
 }
 
 void AI_Commands::getRandomPos(const Vector3D& initialPos, const float moveRadius, Vector3D& targetPos) {

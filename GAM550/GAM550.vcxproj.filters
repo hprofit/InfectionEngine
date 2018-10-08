@@ -351,6 +351,12 @@
     <ClCompile Include="SOURCE\AI\AI_Commands.cpp">
       <Filter>Source Files\AI</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\AI\ControllerComponent.cpp">
+      <Filter>Source Files\GameObject\Components\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\AI\ControllerComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers\AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOURCE\RenderManager.h">
@@ -649,6 +655,12 @@
     </ClInclude>
     <ClInclude Include="SOURCE\AI\AI_Commands.h">
       <Filter>Source Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\ControllerComponent.h">
+      <Filter>Source Files\GameObject\Components\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\ControllerComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers\AI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

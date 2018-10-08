@@ -29,6 +29,8 @@
     <ClCompile Include="SOURCE\AI\BT\Selector.cpp" />
     <ClCompile Include="SOURCE\AI\BT\Sequence.cpp" />
     <ClCompile Include="SOURCE\AI\BT\SimpleParallel.cpp" />
+    <ClCompile Include="SOURCE\AI\ControllerComponent.cpp" />
+    <ClCompile Include="SOURCE\AI\ControllerComponentManager.cpp" />
     <ClCompile Include="SOURCE\AI\FSM\AI_Combat.cpp" />
     <ClCompile Include="SOURCE\AI\FSM\AI_Idle.cpp" />
     <ClCompile Include="SOURCE\AudioManager.cpp" />
@@ -118,6 +120,8 @@
     <ClInclude Include="SOURCE\AI\BT\Selector.h" />
     <ClInclude Include="SOURCE\AI\BT\Sequence.h" />
     <ClInclude Include="SOURCE\AI\BT\SimpleParallel.h" />
+    <ClInclude Include="SOURCE\AI\ControllerComponent.h" />
+    <ClInclude Include="SOURCE\AI\ControllerComponentManager.h" />
     <ClInclude Include="SOURCE\AI\FSM\AI_Combat.h" />
     <ClInclude Include="SOURCE\AI\FSM\AI_Idle.h" />
     <ClInclude Include="SOURCE\AI\FSM\AI_State.h" />

@@ -112,7 +112,7 @@ protected:
 	std::vector<unsigned char> m_colors;		// Array of Colors split up into it's components
 	std::vector<FLOAT> m_textureCoords;			// Array of texture coords
 	UINT m_liveParticleCount;					// Indicates how many particles are currently alive, set each Update loop
-	int m_lastUsedParticle;						// An index into m_particles, represents the index of the last used particle
+	UINT m_lastUsedParticle;					// An index into m_particles, represents the index of the last used particle
 	
 
 	void _AllocateParticleArrays();
