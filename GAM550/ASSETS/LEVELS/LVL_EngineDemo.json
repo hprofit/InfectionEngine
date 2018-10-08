@@ -516,18 +516,25 @@
     {
       "prefab": "PhysicsTestPlane"
     },
-    
+
+
     {
       "prefab": "PhysicsTestCube"
     },
+ 
+
     {
       "prefab": "PhysicsTestCube",
       "Box": null,
       "position": {
-        "x": 20,
-        "y": 10,
-        "z": -10
+        "x": 13,
+        "y": 30,
+        "z": 0
       }
+    },
+
+    {
+      "prefab": "PhysicsTestSphere"
     }
 
   ]

@@ -29,7 +29,7 @@ void PhysicsManager::ErrorCheck(FMOD_RESULT result)
 
 void PhysicsManager::Update(double deltaTime)
 {
-	for (std::vector<RigidBodyComponent::Box *>::iterator it = m_BoxPool.begin(); it != m_BoxPool.end(); ++it)
+	for (std::list<RigidBodyComponent::Box *>::iterator it = m_BoxPool.begin(); it != m_BoxPool.end(); ++it)
 	{
 		(*it)->body->integrate(deltaTime);
 		(*it)->calculateInternals();
@@ -77,7 +77,7 @@ void PhysicsManager::CollisionTrigger()
 
   //physics::CollisionDetector::boxAndBox(*m_BoxPool[0], *m_BoxPool[1], &cData);
   
-	for (std::vector<RigidBodyComponent::Box *>::iterator it = m_BoxPool.begin(); it != m_BoxPool.end(); ++it)
+	for (std::list<RigidBodyComponent::Box *>::iterator it = m_BoxPool.begin(); it != m_BoxPool.end(); ++it)
 	{
 		// check box and Sphere
 		for (std::list<RigidBodyComponent::Sphere *>::iterator it_other = m_SpherePool.begin(); it_other != m_SpherePool.end(); ++it_other)
@@ -92,7 +92,7 @@ void PhysicsManager::CollisionTrigger()
 
 		// check box and box
 		//if (!cData.hasMoreContacts()) return;
-		for (std::vector<RigidBodyComponent::Box *>::iterator it_other = m_BoxPool.begin(); it_other != m_BoxPool.end(); ++it_other)
+		for (std::list<RigidBodyComponent::Box *>::iterator it_other = m_BoxPool.begin(); it_other != m_BoxPool.end(); ++it_other)
 		{
 			if (*it != *it_other)
 			{

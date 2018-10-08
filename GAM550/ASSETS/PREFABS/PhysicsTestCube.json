@@ -1,12 +1,12 @@
 {
-  "Tag": "box",
+  "Tag": "None",
   "COMPONENTS": [
     {
       "Component": "Transform",
       "position": {
-        "x": 20,
-        "y": 0,
-        "z": -10
+        "x": 15,
+        "y": 23,
+        "z": 0
       },
       "scale": {
         "x": 5,

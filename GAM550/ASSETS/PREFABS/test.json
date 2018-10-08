@@ -4,8 +4,8 @@
     {
       "Component": "Transform",
       "position": {
-        "x": 14,
-        "y": 50,
+        "x": 13,
+        "y": 30,
         "z": 0
       },
       "scale": {
@@ -14,19 +14,22 @@
         "z": 5
       },
       "pivotOffset": {},
-      "rotation": {}
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
     },
 
     {
       "Component": "Mesh",
-      "scene": "Sphere"
+      "scene": "Cube"
     },
 
     {
       "Component": "RigidBody",
-      "Sphere": null,
-      "mass": 50.0,
-      "radius": 2.5,
+      "Box": null,
+      "mass": 5.0,
       "velocity": {
         "x": 0,
         "y": 0,

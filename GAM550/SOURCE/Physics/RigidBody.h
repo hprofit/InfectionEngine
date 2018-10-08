@@ -564,4 +564,8 @@ namespace physics {
 
 } 
 
+
+void PrintMatrix4x4(const Matrix4x4 & mat);
+Vector3D RotationMatrixToEulerAngles(Matrix4x4 R);
+
 #endif 

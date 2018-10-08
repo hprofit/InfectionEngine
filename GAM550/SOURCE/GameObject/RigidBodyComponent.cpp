@@ -11,26 +11,10 @@ void RigidBodyComponent::Deactivate() {
 	mp_Parent = nullptr;
 }
 
-int y = 0;
-int x = 20;
+
 void RigidBodyComponent::Serialize(const json& j)
 {
-	/*if (ValueExists(j, "Box"))
-	{
-		cur_type = RigidBodyType::BoxRigidBody;
-		mp_newbox = new Box();
-		//mp_newbox->SetState(5, Vector3D(21, 25, -10));
-		mp_newbox->SetState(5, Vector3D(x, y, -10), Vector3D(0, 0, 0), Vector3D(0, 0, 0),
-			Vector3D(0, 0, 0), Vector3D(2.5, 2.5, 2.5), 0.95f, 0.8f);
-		INFECT_PHYSICS.m_BoxPool.push_back(mp_newbox);
-
-		y += 25;
-		x++;
-		return;
-	}*/
-	
-
-	m_position = Parent()->GetComponent<TransformComponent>()->WorldPosition();
+	m_position = Parent()->GetComponent<TransformComponent>()->LocalPosition();
 	m_halfSize = Parent()->GetComponent<TransformComponent>()->GetScaleVector()*0.5;
 	m_rotation = Parent()->GetComponent<TransformComponent>()->GetRotVector();
   // is box 
@@ -40,7 +24,7 @@ void RigidBodyComponent::Serialize(const json& j)
       rotation_ = m_rotation, acceleration_ = Vector3D(0, 0, 0), halfSize_ = m_halfSize;
     float mass_ = 1., LinearDamping_ = 0.95f, AngularDamping_ = 0.8f;
     
-	cur_type = RigidBodyType::BoxRigidBody;
+	 cur_type = RigidBodyType::BoxRigidBody;
       //position_.x = ParseFloat(j["position"], "x");
       //position_.y = ParseFloat(j["position"], "y");
       //position_.z = ParseFloat(j["position"], "z");
@@ -332,15 +316,16 @@ void RigidBodyComponent::Box::SetState(float mass, Vector3D position, Vector3D v
 {
   body->setPosition(position.x, position.y, position.z);
   Quaternion temp;
-  //body->setOrientation(temp.DegreeToQuaternion(Vector3D(45, 45, 45)));
-
+  //body->setOrientation(temp.DegreeToQuaternion(Vector3D(10, 10, 15)));
+  //temp = temp.DegreeToQuaternion(Vector3D(10, 10, 15));
   body->setOrientation(1, 0, 0, 0);
 
   body->setVelocity(velocity.x, velocity.y, velocity.z);
-  body->setRotation(rotation);
+  //body->setRotation(rotation);
+  body->setRotation(Vector3D(0,0,0));// todo_phy
 
   halfSize = halfSize_;
-  real mass_ = halfSize.x * halfSize.y * halfSize.z * mass;
+  real mass_ = mass;
   body->setMass(mass_);
 
   Matrix3x3 tensor;
@@ -350,7 +335,10 @@ void RigidBodyComponent::Box::SetState(float mass, Vector3D position, Vector3D v
   body->setLinearDamping(LinearDamping);
   body->setAngularDamping(AngularDamping);
   body->clearAccumulators();
-  body->setAcceleration(Vector3D::GRAVITY + Acceleration);
+  if(Acceleration.IsVectorZero())
+    body->setAcceleration(Vector3D::GRAVITY + Acceleration);
+  else
+    body->setAcceleration(Acceleration);
   //body->setAcceleration(Acceleration);
   body->setCanSleep(false);
   body->setAwake();
@@ -407,7 +395,11 @@ void RigidBodyComponent::Sphere::setState(float mass, float radius_, Vector3D po
 {
   body->setMass(mass);
   body->setVelocity(velocity.x, velocity.y, velocity.z);
-  body->setAcceleration(Vector3D::GRAVITY + Acceleration);
+
+  if (Acceleration.IsVectorZero())
+    body->setAcceleration(Vector3D::GRAVITY + Acceleration);
+  else
+    body->setAcceleration(Acceleration);
 
   body->setDamping(LinearDamping, AngularDamping);
   body->clearAccumulators();
