@@ -32,10 +32,11 @@ std::thread & RenderThreadContainer::Spawn()
 bool StartRenderCommand::execute() const
 {
 	INFECT_RENDERER.ClearScreen();					// Clear the window buffer
-	// DATED
+	
+	// Forward Rendering, DO NOT USE
 	//INFECT_RENDERER.BindBackBuffer();
 	//INFECT_GOM.RenderCameras();						// Render all game objects
-
+	// END DO NOT USE
 
 	INFECT_RENDERER.PrepDeferredPass();
 	INFECT_GOM.RenderCameras();

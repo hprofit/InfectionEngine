@@ -65,6 +65,7 @@ namespace Infect {
 		
 	}
 
+	// NO LONGER IN USE
 	void Update(float deltaTime)
 	{
 		INFECT_INPUT.Update();							// Update input keys
@@ -87,7 +88,7 @@ namespace Infect {
 		//INFECT_GOM.RenderCameras();						// Render all game objects
 		//INFECT_IMGUI.Update();						// Update all Imgui commands
 
-    INFECT_PHYSICS.Update(deltaTime);              // Update _PHYSICS
+		INFECT_PHYSICS.Update(deltaTime);              // Update _PHYSICS
 	}
 
 	void FrameEnd()

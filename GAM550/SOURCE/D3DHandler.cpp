@@ -110,12 +110,6 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 	int error;
 	DXGI_SWAP_CHAIN_DESC swapChainDesc; // create a struct to hold information about the swap chain
 	D3D_FEATURE_LEVEL featureLevel;
-	//ID3D11Texture2D* backBufferPtr;
-	//D3D11_TEXTURE2D_DESC depthBufferDesc;
-	//D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-	//D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
-	//D3D11_RASTERIZER_DESC rasterDesc;
-	D3D11_VIEWPORT viewport;
 
 #pragma region Refresh Rate and Video Card Info
 	// Create a DirectX graphics interface factory.
@@ -236,7 +230,7 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 		NULL,
 		D3D_DRIVER_TYPE_HARDWARE,
 		NULL,
-		0,
+		0,//D3D11_CREATE_DEVICE_DEBUG, // 0
 		&featureLevel,
 		1,
 		D3D11_SDK_VERSION,
@@ -254,7 +248,7 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 	mp_BackBuffer = new BackBufferRenderTarget();
 	mp_BackBuffer->Initialize(settings, mp_Device, mp_SwapChain);
 
-	mp_DeferredRenderTarget = new RenderTarget(settings.Width, settings.Height, 4);
+	mp_DeferredRenderTarget = new RenderTarget(settings.Width, settings.Height, 5);
 	mp_DeferredRenderTarget->Initialize(mp_Device);
 
 	mp_SecondPassRenderTarget = new RenderTarget(settings.Width, settings.Height, 1);

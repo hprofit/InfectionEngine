@@ -18,7 +18,7 @@ public:
 	~PhysicsManager();
 
 	 void Init();
-	 void Update(double deltaTime);
+	 void Update(float deltaTime);
      void ErrorCheck(FMOD_RESULT result);
 
 
