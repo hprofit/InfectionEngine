@@ -11,15 +11,22 @@ Author: <Holden Profit>
 #define MESH_H
 
 struct Vertex {
-	FLOAT x, y, z;		// position
-	FLOAT nX, nY, nZ;	// normal
-	FLOAT tX, tY, tZ;	// tangent
-	FLOAT bX, bY, bZ;	// bitangent
-	FLOAT u, v;			// texture coords
-	FLOAT r, g, b, a;	// color
-	UINT BoneID[4];
-	float BoneWeights[4];
+	FLOAT x, y, z;			// position
+	FLOAT nX, nY, nZ;		// normal
+	FLOAT tX, tY, tZ;		// tangent
+	FLOAT bX, bY, bZ;		// bitangent
+	FLOAT u, v;				// texture coords
+	FLOAT r, g, b, a;		// color
+
 };
+
+
+struct BoneDataVertex
+{
+	UINT  BoneID[4] = { 0 };	//Bone id's effected by this vertex
+	float BoneWeights[4] = { 0 };	//It's corresponding weight
+};
+
 
 class Material {
 protected:
@@ -71,7 +78,7 @@ struct BoneData
 	std::string				  BoneName;
 	VertexWeightData		  WightsList;
 	Matrix4x4				  OffsetMatrix;
-	//std::vector<VertexWeight> WightsList;
+	
 
 };
 
@@ -152,7 +159,7 @@ struct Animation	//(aiNodeAnimations)
 	std::string			Animation_Name;
 	double				Duration;
 	double				TicksPerSecond;
-	std::vector <VQS>  ChannelList;
+	std::vector <VQS>   ChannelList;
 
 };
 

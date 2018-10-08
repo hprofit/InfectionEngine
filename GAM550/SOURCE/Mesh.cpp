@@ -15,6 +15,9 @@ Scene::Scene(unsigned short numMeshes) :
 
 Scene::~Scene() {}
 
+//Please Dont remove this at any point
+
+int temp_index = 0;
 void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 {
 	m_vertices.reserve(mesh->mNumVertices);
@@ -47,16 +50,43 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 			v.a = color.a;
 		}
 
-	
+		
+
 		m_vertices.push_back(v);
 	}
 
 	m_faces.reserve(mesh->mNumFaces);
-	for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
+	for (unsigned int i = 0; i < mesh->mNumFaces; ++i)
+	{
 		m_faces.push_back(Face(mesh->mFaces[i]));
 	}
 
 #pragma region Bone Data
+
+
+		#pragma region BoneID & BoneWeight
+
+
+	for (int i = 0; i < m_vertices.size(); ++i)
+	{
+		BoneDataVertex B;
+		for (int j = 0; j < mesh->mNumBones; ++j)
+		{
+			for (int k = 0; k < mesh->mBones[j]->mNumWeights; ++k)
+			{
+				if (mesh->mBones[j]->mWeights[k].mVertexId == i)
+				{
+					B.BoneID[temp_index] = j;
+					B.BoneWeights[temp_index] = mesh->mBones[j]->mWeights[k].mWeight;
+					++temp_index;
+				}
+			}
+		}
+		temp_index = 0;
+	}
+		#pragma	endregion
+
+
 
 	m_BoneList.resize(mesh->mNumBones);
 	for (unsigned int i = 0; i < mesh->mNumBones; ++i)
@@ -96,8 +126,9 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 	}
 #pragma endregion
 
-	cout << "The size of Bone data : " << mesh->mNumBones << endl;
-	cout << "The size of Vertices data : " << mesh->mNumVertices * mesh->mNumBones << endl;
+	//cout << "The size of Bone data : " << mesh->mNumBones << endl;
+	//cout << "The size of Vertices data : " << mesh->mNumVertices * mesh->mNumBones << endl;
+	//cout << temp_index << endl;
 
 	FinishMesh();
 }
