@@ -25,14 +25,14 @@ bool VertexShader::LoadFromFile(std::string shaderFilePath, std::string shaderFu
 
 	HRESULT result = D3DCompileFromFile(std::wstring(shaderFilePath.begin(), shaderFilePath.end()).c_str(), 0, 0, shaderFunc.c_str(), "vs_4_0", flag, flag, &mp_ShaderBlob, &pErrors);
 	if (FAILED(result)) {
-		MessageBox(NULL, "The vertex shader failed to compile,", "Error", MB_OK);
+		CreateErrorDialog(pErrors, "The vertex shader failed to compile:\n ");
 		return false;
 	}
 
 	// Encapsulate the shaders into a shader object
 	result = INFECT_RENDERER.Device()->CreateVertexShader(mp_ShaderBlob->GetBufferPointer(), mp_ShaderBlob->GetBufferSize(), NULL, &mp_VS);
 	if (FAILED(result)) {
-		MessageBox(NULL, "The vertex shader failed to be created.", "Error", MB_OK);
+		CreateErrorDialog(nullptr, "The vertex shader failed to be created.");
 		return false;
 	}
 
@@ -75,14 +75,14 @@ bool PixelShader::LoadFromFile(std::string shaderFilePath, std::string shaderFun
 
 	HRESULT result = D3DCompileFromFile(std::wstring(shaderFilePath.begin(), shaderFilePath.end()).c_str(), 0, 0, shaderFunc.c_str(), "ps_4_0", flag, flag, &mp_ShaderBlob, &pErrors);
 	if (FAILED(result)) {
-		MessageBox(NULL, "The pixel shader failed to compile.", "Error", MB_OK);
+		CreateErrorDialog(pErrors, "The pixel shader failed to compile:\n ");
 		return false;
 	}
 
 	// Encapsulate the shaders into a shader object
 	result = INFECT_RENDERER.Device()->CreatePixelShader(mp_ShaderBlob->GetBufferPointer(), mp_ShaderBlob->GetBufferSize(), NULL, &mp_PS);
 	if (FAILED(result)) {
-		MessageBox(NULL, "The pixel shader failed to be created.", "Error", MB_OK);
+		CreateErrorDialog(nullptr, "The pixel shader failed to be created.");
 		return false;
 	}
 

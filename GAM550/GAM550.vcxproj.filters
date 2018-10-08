@@ -120,9 +120,6 @@
     <ClCompile Include="SOURCE\Stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\RenderManager.cpp">
-      <Filter>Source Files\Managers</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\EventManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
@@ -279,9 +276,6 @@
     <ClCompile Include="SOURCE\Shader.cpp">
       <Filter>Source Files\Rendering\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="SOURCE\ShaderProgram.cpp">
-      <Filter>Source Files\Rendering\Shaders</Filter>
-    </ClCompile>
     <ClCompile Include="SOURCE\ConstantBuffer.cpp">
       <Filter>Source Files\Rendering\Shaders</Filter>
     </ClCompile>
@@ -356,12 +350,15 @@
     </ClCompile>
     <ClCompile Include="SOURCE\AI\ControllerComponentManager.cpp">
       <Filter>Source Files\GameObject\ComponentManagers\AI</Filter>
+	</ClCompile>
+    <ClCompile Include="SOURCE\RenderManager.cpp">
+      <Filter>Source Files\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\UtilFunctions.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SOURCE\RenderManager.h">
-      <Filter>Source Files\Managers</Filter>
-    </ClInclude>
     <ClInclude Include="SOURCE\EventManager.h">
       <Filter>Source Files\Managers</Filter>
     </ClInclude>
@@ -661,6 +658,12 @@
     </ClInclude>
     <ClInclude Include="SOURCE\AI\ControllerComponentManager.h">
       <Filter>Source Files\GameObject\ComponentManagers\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\RenderManager.h">
+      <Filter>Source Files\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\UtilFunctions.h">
+      <Filter>Source Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -63,7 +63,7 @@ PixelInput VShader(VertexInput input)
 	output.color = input.color;
 	output.texCoords = input.texCoords;
 
-	output.depth = output.position.z / 500.0f;
+	output.depth = output.position.z / 1000.f;
 
 	unsigned int DIFFUSE_TEXTURE = 1;
 	unsigned int NORMAL_MAPPED = 2;
@@ -123,7 +123,7 @@ POut PShader(PixelInput input)
 	//	output.diffuse *= TintColor;
 	output.specular = SpecularValues;
 
-	output.depth = float4(0, 0, input.depth, 1);
+	output.depth = float4(input.depth, input.depth, input.depth, 1);
 
 	return output;
 }

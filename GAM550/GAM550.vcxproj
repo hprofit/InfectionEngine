@@ -48,7 +48,6 @@
     <ClCompile Include="SOURCE\RenderTarget.cpp" />
     <ClCompile Include="SOURCE\RenderThreadContainer.cpp" />
     <ClCompile Include="SOURCE\Shader.cpp" />
-    <ClCompile Include="SOURCE\ShaderProgram.cpp" />
     <ClCompile Include="SOURCE\SimulationThreadContainer.cpp" />
     <ClCompile Include="SOURCE\ThreadCommandList.cpp" />
     <ClCompile Include="SOURCE\Cube.cpp" />
@@ -104,6 +103,7 @@
     </ClCompile>
     <ClCompile Include="SOURCE\Subscriber.cpp" />
     <ClCompile Include="SOURCE\SubscriberTracker.cpp" />
+    <ClCompile Include="SOURCE\UtilFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOURCE\AI\AI_Commands.h" />
@@ -205,6 +205,7 @@
     <ClInclude Include="SOURCE\SubscriberTracker.h" />
     <ClInclude Include="SOURCE\ThreadContainer.h" />
     <ClInclude Include="SOURCE\ThreadType.h" />
+    <ClInclude Include="SOURCE\UtilFunctions.h" />
     <ClInclude Include="SOURCE\WindowProc.h" />
     <ClInclude Include="SOURCE\WindowSettings.h" />
   </ItemGroup>

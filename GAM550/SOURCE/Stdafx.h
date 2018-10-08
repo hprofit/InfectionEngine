@@ -93,6 +93,7 @@ Author: <Holden Profit>
 #pragma region Resources
 #include <Singleton.h>
 #include <Color.h>
+#include <UtilFunctions.h>
 
 using json = nlohmann::json;
 #include <JsonReader.h>

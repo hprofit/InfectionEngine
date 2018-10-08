@@ -7,8 +7,8 @@ Author: <Holden Profit>
 
 #pragma once
 
-#ifndef TETRA_COLOR_H
-#define TETRA_COLOR_H
+#ifndef INFECT_COLOR_H
+#define INFECT_COLOR_H
 
 typedef unsigned char UByte;
 
