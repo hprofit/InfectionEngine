@@ -21,6 +21,7 @@ void Mesh::ReadBoneVertexWeight(const aiMesh * mesh)
 {
 
 	int temp_index = -1;
+
 	int size_list = mesh->mNumVertices;
 	m_BoneVertexDataList.resize(size_list);
 
@@ -33,8 +34,8 @@ void Mesh::ReadBoneVertexWeight(const aiMesh * mesh)
 			{
 				if (mesh->mBones[j]->mWeights[k].mVertexId == i)
 				{
-					m_BoneVertexDataList[i].BoneID[temp_index++] = j;
-					m_BoneVertexDataList[i].BoneWeights[temp_index++] = mesh->mBones[j]->mWeights[k].mWeight;
+					m_BoneVertexDataList[i].BoneID[++temp_index] = j;
+					m_BoneVertexDataList[i].BoneWeights[temp_index] = mesh->mBones[j]->mWeights[k].mWeight;
 				}
 			}
 		}
@@ -160,6 +161,7 @@ Mesh::Mesh()
 Mesh::Mesh(const aiMesh * mesh)
 {
 	
+
 	ReadBoneVertexWeight(mesh);
 	_CreateFromAiMesh(mesh);
 }

@@ -99,11 +99,14 @@ Scene* ResourceManager::_LoadScene(const std::string& meshSceneName)
 		aiProcess_SortByPType
 	);
 
-	if (scene->HasMeshes()) {
+	if (scene->HasMeshes()) 
+	{
 		Scene* meshScene = new Scene(scene->mNumMeshes);
 		m_scenes[meshSceneName] = meshScene;
-		for (unsigned int i = 0; i < scene->mNumMeshes; ++i) {
+		for (unsigned int i = 0; i < scene->mNumMeshes; ++i)
+		{
 			const aiMesh* aiMeshPtr = scene->mMeshes[i];
+			
 			m_meshes[aiMeshPtr->mName.C_Str()] = new Mesh(aiMeshPtr);
 			(*meshScene)[i] = m_meshes[aiMeshPtr->mName.C_Str()];
 		}
