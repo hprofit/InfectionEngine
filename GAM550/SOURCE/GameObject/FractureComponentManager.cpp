@@ -46,7 +46,7 @@ void FractureComponentManager::_DivideBlock(FC fc, RigidBodyComponent::Box * blo
 		fc->mp_Target->halfSize.Length() * 8 * body->getInverseMass();
 
 	// Remove the old block
-	INFECT_PHYSICS.m_BoxPool.remove(fc->mp_Target);
+	//INFECT_PHYSICS.m_BoxPool.remove(fc->mp_Target);
 
 
 	// Now split the block into eight.

@@ -106,7 +106,7 @@ bool StartSimulationCommand::execute() const
 	//INFECT_PHYSICS.Integrate(deltaTime);			// Move physics bodies
 	//INFECT_PHYSICS.ResolveCollisions();			// Resolve collisions on physics bodies
 	//INFECT_GOM.LateUpdate(deltaTime);				// Update game logic that occurs after physics
-
+  INFECT_PHYSICS.Update(deltaTime);
 	INFECT_THREAD_JOBS.AddNewJob(new StartRenderCommand(*INFECT_THREAD_JOBS.GetThreadContainer<RenderThreadContainer>(ThreadType::RenderThread)));
 	//INFECT_IMGUI.Update();						// Update all Imgui commands
 	return true;

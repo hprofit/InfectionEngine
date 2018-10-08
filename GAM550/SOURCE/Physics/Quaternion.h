@@ -28,6 +28,9 @@ public:
 
   void rotateByVector(const Vector3D& vector);
 
+  Quaternion DegreeToQuaternion(Vector3D angle);
+
+  Vector3D QuaternionToDegree(Quaternion q);
   //========================================================
   //Additional Quaternion Functions
   //========================================================

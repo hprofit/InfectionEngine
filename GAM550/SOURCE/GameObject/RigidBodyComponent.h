@@ -1,4 +1,5 @@
 
+
 #pragma once
 #ifndef RIGIDBODY_C_H
 #define RIGIDBODY_C_H
@@ -8,8 +9,19 @@ class PhysicsManager;
 class RigidBodyComponent : public Component
 {
 private:
+	Vector3D m_position;
+	Vector3D m_halfSize;
+	Vector3D m_rotation;
 
+	enum RigidBodyType
+	{
+		BoxRigidBody,
+		SphereRigidBody,
+		PlaneRigidBody
+	} cur_type;	
 	
+	
+
 public:
   friend RigidBodyComponentManager;
   friend PhysicsManager;
@@ -25,7 +37,9 @@ public:
 	virtual void Deactivate();
 	virtual void LateInitialize();
 	virtual void Serialize(const json& j);
+	virtual void Override(const json& j);
 	virtual void HandleEvent(Event* pEvent);
+
 
   // collision type
   class Box : public physics::CollisionBox
@@ -38,8 +52,13 @@ public:
       float LinearDamping = 0.95f, float AngularDamping = 0.8f);
 
     void calculateMassProperties(real invDensity);
-  }m_Box;
 
+	// use for fractureComponent 
+	bool m_Breaker = false;
+	bool m_CanBeBroken = false;
+	bool m_hit = false;
+  };
+  
   class Sphere : public physics::CollisionSphere
   {
   public:
@@ -48,13 +67,31 @@ public:
     void setState(float mass, float radius_, Vector3D position, Vector3D velocity,
       Vector3D Acceleration = Vector3D(0, 0, 0),
       float LinearDamping = 0.99f, float AngularDamping = 0.8f);
-  }m_Sphere;
+
+	// use for fractureComponent 
+	bool m_Breaker = false;
+	bool m_CanBeBroken = false;
+	bool m_hit = false;
+  };
 
   class Plane : public physics::CollisionPlane
   {
   public:
     void setState(Vector3D direction_, real offset_);
-  }m_Plane;
+
+	// use for fractureComponent 
+	bool m_Breaker = false;
+	bool m_CanBeBroken = false;
+	bool m_hit = false;
+  };
+
+  Box *GetBoxPointer() { return mp_newbox; }
+  Sphere *GetSpherePointer() { return mp_newSphere; }
+  Plane *GetPlanePointer() { return mp_newPlane; }
+//private:
+	Box *mp_newbox;
+	Sphere *mp_newSphere;
+	Plane *mp_newPlane;
 };
 
 #endif
