@@ -55,3 +55,8 @@ bool BehaviorTree::Step() {
 	}
 	return true;
 }
+
+
+void BehaviorTree::ClearScheduler() {
+	m_Scheduler.Clear();
+}

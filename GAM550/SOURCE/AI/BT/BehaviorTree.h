@@ -38,6 +38,11 @@ private:
 };
 
 class BehaviorTree: public Subscriber{
+private:	
+	BT_Scheduler m_Scheduler;
+	Behavior* m_pRootNode;
+	AI_State* pAI_State;
+
 public:
 	BehaviorTree();
 	~BehaviorTree();
@@ -51,12 +56,10 @@ public:
 	bool Step(); // single stepping of behaviors
 
 	void SetParent(AI_State* pState) { pAI_State = pState; }
+	void ClearScheduler();
 
-	BT_Scheduler m_Scheduler; // MOVE THESE TO PROTECTED LATER
-	//std::deque<Behavior*> m_behaviors;
-	Behavior* m_pRootNode;
-private:
-	AI_State* pAI_State;
+	Behavior* GetRootNode() { return m_pRootNode; }
+	void SetRootNode(Behavior* pRoot) { m_pRootNode = pRoot; }
 };
 
 #endif

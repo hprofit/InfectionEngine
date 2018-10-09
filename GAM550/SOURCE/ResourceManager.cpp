@@ -267,9 +267,8 @@ json* ResourceManager::GetPrefabFile(const std::string& prefabName) {
 #pragma region AI
 void ConstructTree(BrainComponent* pAgent, BehaviorTree& bt, std::string filePath) {
 	// hard coded tree generator for engine demo, TODO: make parser+treegenerator
-	bt.m_pRootNode = new MoveToRandom(&bt);
-	bt.m_pRootNode->SetAgent(pAgent);
-	//bt.m_Scheduler.ScheduleBehavior(bt.m_pRootNode);
+	bt.SetRootNode(new MoveToRandom(&bt));
+	bt.GetRootNode()->SetAgent(pAgent);
 	// loop through each line and construct tree
 }
 

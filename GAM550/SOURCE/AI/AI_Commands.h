@@ -17,6 +17,10 @@ namespace AI_Commands{
 	void getRandomPos(const Vector3D& initialPos, const float moveRadius, Vector3D& targetPos );
 	// move agent toward the targetPos
 	void moveTo (BrainComponent* pAgent, const Vector3D& targetPos);
+	//// change agent's currentState
+	//void changeState(BrainComponent* pAgent, AIStateType statetype);
+	//// change color of component's mesh
+	//void changeColor(BrainComponent* pAgent, float r, float g, float b, float a);
 }
 
 #endif

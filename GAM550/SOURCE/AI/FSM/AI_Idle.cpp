@@ -21,7 +21,7 @@ void AI_Idle::OnEnter(){
 	idleDuration = RandomFloat(1, 3); 
 	idledSoFar = 0.0f;
 	// Init
-	m_pBT->Init(*m_pBT->m_pRootNode, nullptr);
+	m_pBT->Init(*m_pBT->GetRootNode(), nullptr);
 }
 
 void AI_Idle::OnUpdate(float dt){
@@ -29,7 +29,7 @@ void AI_Idle::OnUpdate(float dt){
 }
 
 void AI_Idle::OnExit(){
-	
+	m_pBT->ClearScheduler();
 }
 
 
