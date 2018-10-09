@@ -18,8 +18,8 @@
             "Component": "Camera",
             "fov": 70.0
         },
-        {
-        	"Component": "Controller"
-        }
+		{
+			"Component": "Controller"
+		}
     ]
 }
