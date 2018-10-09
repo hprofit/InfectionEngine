@@ -11,7 +11,7 @@ Author: <Holden Profit>
 #define MESH_H
 
 struct Vertex {
-	FLOAT x, y, z ,w;			// position
+	FLOAT x, y, z , w;			// position
 	FLOAT nX, nY, nZ;		// normal
 	FLOAT tX, tY, tZ;		// tangent
 	FLOAT bX, bY, bZ;		// bitangent
@@ -20,8 +20,8 @@ struct Vertex {
 	UINT BoneID0, BoneID1, BoneID2, BoneID3;
 	float BoneWeights0, BoneWeights1, BoneWeights2, BoneWeights3;
 
-	UINT  BoneID[4] = { 0 };
-	float BoneWeights[4] = { 0 };
+	//UINT  BoneID[4] = { 0 };
+	//float BoneWeights[4] = { 0 };
 };
 
 
