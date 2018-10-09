@@ -91,8 +91,7 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 			v.BoneWeights2 = m_BoneVertexDataList[i].BoneWeights[2];
 			v.BoneWeights3 = m_BoneVertexDataList[i].BoneWeights[3];
 
-			//v.BoneID[j] = m_BoneVertexDataList[i].BoneID[j];
-			//v.BoneWeights[j] = m_BoneVertexDataList[i].BoneWeights[j];
+			
 
 		}
 
@@ -105,11 +104,11 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 		m_faces.push_back(Face(mesh->mFaces[i]));
 	}
 
-#pragma region Bone Data
-
-		
-	m_BoneList.resize(mesh->mNumBones);
-	for (unsigned int i = 0; i < mesh->mNumBones; ++i)
+	#pragma region Bone Data
+	
+			
+	 m_BoneList.resize(mesh->mNumBones);
+	 for (unsigned int i = 0; i < mesh->mNumBones; ++i)
 	{
 		m_BoneList[i].BoneName = mesh->mBones[i]->mName.C_Str();
 		m_BoneList[i].mNumWeights = mesh->mBones[i]->mNumWeights;
@@ -144,7 +143,8 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 
 		
 	}
-#pragma endregion
+	
+	#pragma endregion
 
 	//cout << "The size of Bone data : " << mesh->mNumBones << endl;
 	//cout << "The size of Vertices data : " << mesh->mNumVertices * mesh->mNumBones << endl;
@@ -274,7 +274,11 @@ void Mesh::FinishMesh()
 
 	D3D11_MAPPED_SUBRESOURCE iMS;
 	INFECT_RENDERER.DeviceContext()->Map(mp_IBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &iMS);   // map the buffer
-	memcpy(iMS.pData, &(m_faces[0]), indexSize);	// copy the data
+	memcpy(iMS.pData, &(m_faces[0]), indexSize);	// copy the data//Example to call audio 
+//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+
+//Example to load Audio
+//INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/rosey.wav)", true, false, false);
 	INFECT_RENDERER.DeviceContext()->Unmap(mp_IBuffer, NULL);					// unmap the buffer
 
 

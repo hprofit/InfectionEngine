@@ -193,9 +193,9 @@ Scene* ResourceManager::_LoadScene(const std::string& meshSceneName)
 
 			meshScene->m_Animation = animScene;
 
-			cout << "yolo" << endl;
 		}
 
+		//	cout << meshScene->m_Animation.mNumAnimations << endl;
 
 		return meshScene;
 	}
