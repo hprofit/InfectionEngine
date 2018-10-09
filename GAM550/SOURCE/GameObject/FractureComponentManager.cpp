@@ -7,20 +7,21 @@ Author: <Jiyun Ruan>
 
 #include <Stdafx.h>
 
-void FractureComponentManager::_DivideBlock(FC fc, RigidBodyComponent::Box * blocks)
+void FractureComponentManager::_DivideBlock(FC fc, const physics::Contact& contact, RigidBodyComponent::Box * blocks)
 {
 	// Find out if block one or two in the contact structure,
-	Vector3D normal = fc->mp_Contact->contactNormal;
-	physics::RigidBody *body = fc->mp_Contact->body[0];
+  
+	Vector3D normal = contact.contactNormal;
+	physics::RigidBody *body = contact.body[0];
 	if (body != fc->mp_Target->body)
 	{
 		normal.Negate();
-		body = fc->mp_Contact->body[1];
+		body = contact.body[1];
 	}
 
 	// Work out where on the body (in body coordinates) the contact is
 	// and its direction.
-	Vector3D point = body->getPointInLocalSpace(fc->mp_Contact->contactPoint);
+	Vector3D point = body->getPointInLocalSpace(contact.contactPoint);
 	normal = body->getDirectionInLocalSpace(normal);
 
 	// Work out the centre of the split:
@@ -46,8 +47,8 @@ void FractureComponentManager::_DivideBlock(FC fc, RigidBodyComponent::Box * blo
 		fc->mp_Target->halfSize.Length() * 8 * body->getInverseMass();
 
 	// Remove the old block
-	//INFECT_PHYSICS.m_BoxPool.remove(fc->mp_Target);
-
+	INFECT_PHYSICS.m_BoxPool.remove(fc->mp_Target);
+  fc->mp_Target->body->setPosition(Vector3D(100, 100, 110));
 
 	// Now split the block into eight.
 	for (unsigned i = 0; i < 8; i++)
@@ -89,7 +90,7 @@ void FractureComponentManager::_DivideBlock(FC fc, RigidBodyComponent::Box * blo
 		newPos = tempBody.getPointInWorldSpace(newPos);
 
 		// Work out the direction to the impact.
-		Vector3D direction = newPos - fc->mp_Contact->contactPoint;
+		Vector3D direction = newPos - contact.contactPoint;
 		direction.normalise();
 
 		// Set the body's properties (we assume the block has a body
@@ -115,7 +116,14 @@ void FractureComponentManager::_DivideBlock(FC fc, RigidBodyComponent::Box * blo
 
 		//add to box pool
 		INFECT_PHYSICS.m_BoxPool.push_back(&blocks[i]);
+
+
+    GameObject* pGO = INFECT_GOM.SpawnGameObject("FractureCube");
+    pGO->GetComponent<TransformComponent>()->SetPosition(newPos);
+    pGO->GetComponent<TransformComponent>()->SetScale(halfSize * 2);
+    pGO->GetComponent<RigidBodyComponent>()->mp_newbox = &blocks[i];
 	}
+  
 }
 
 FractureComponentManager::FractureComponentManager() {
@@ -126,12 +134,13 @@ void FractureComponentManager::Update(float dt)
 {
 	for each (FC plComp in *m_Components) {
 		if (!plComp->IsActive()) break;
-		if (plComp->IsDirty()) {
+		//if (plComp->IsDirty()) 
+    {
 
 			if (plComp->m_Hit)
 			{
 				RigidBodyComponent::Box* blocks = new RigidBodyComponent::Box[8];
-				_DivideBlock(plComp, blocks);
+				_DivideBlock(plComp, INFECT_PHYSICS.GetFractureContact(), blocks);
 				plComp->m_Hit = false;
 			}
 

@@ -527,22 +527,15 @@
 
 
     {
-      "prefab": "PhysicsTestCube"
-    },
- 
-
-    {
       "prefab": "PhysicsTestCube",
       "Box": null,
-      "position": {
-        "x": 13,
-        "y": 30,
-        "z": 0
-      }
+      "CanBeBroken": null
     },
 
     {
-      "prefab": "PhysicsTestSphere"
+      "prefab": "PhysicsTestSphere",
+      "Sphere": null,
+      "Breaker": null
     }
 
   ]

@@ -9,9 +9,9 @@
         "z": 0
       },
       "scale": {
-        "x": 5,
-        "y": 5,
-        "z": 5
+        "x": 15,
+        "y": 15,
+        "z": 15
       },
       "pivotOffset": {},
       "rotation": {
@@ -47,6 +47,10 @@
       },
       "linearDamping": 0.95,
       "angularDamping": 0.8
+    },
+
+    {
+      "Component": "Fracture"
     }
   ]
 }
