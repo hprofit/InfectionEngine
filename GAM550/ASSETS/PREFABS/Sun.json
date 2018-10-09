@@ -9,26 +9,31 @@
 			"z": 0
 	  	},
 	  	"scale": {
-			"x": 30,
-			"y": 30,
-			"z": 30
+			"x": 1,
+			"y": 1,
+			"z": 1
 		},
 	  	"pivotOffset": {},
-	  	"rotation": {}
+	  	"rotation": {
+			"x": -45
+		}
 	},
 	{
-		"Component": "PointLight",
+		"Component": "DirectionalLight",
 		"color": {
 			"r": 1,
 			"g": 1,
 			"b": 1,
 			"a": 1
 		},
-		"distance": 15,
+		"distance": 1000,
 		"a": -0.3,
 		"b": 0.2,
-		"intensity": 3,
-		"volumeShape": "SimpleSphere"
+		"intensity": 1,
+		"fov": 100,
+		"far": 1000,
+		"width": 2048,
+		"height": 2048
 	}
   ]
 }

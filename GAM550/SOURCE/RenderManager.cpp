@@ -39,6 +39,21 @@ bool RenderManager::_GameObjectHasRenderableComponent(const GameObject & gameObj
 	return gameObject.HasComponent(ComponentType::C_Mesh);
 }
 
+void RenderManager::_RenderScene(const Scene * pScene)
+{
+	UINT stride = sizeof(Vertex);
+	UINT offset = 0;
+	for (int i = 0; i < pScene->NumMeshes(); ++i) {
+		const Mesh* pMesh = (*pScene)[i];
+		ID3D11Buffer* buffers[] = { pMesh->VBuffer() };
+		mp_D3D->mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
+		mp_D3D->mp_DeviceContext->IASetIndexBuffer(pMesh->IBuffer(), DXGI_FORMAT_R32_UINT, 0);
+
+		mp_D3D->mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		mp_D3D->mp_DeviceContext->DrawIndexed(pMesh->NumFaces()*3, 0, 0);
+	}
+}
+
 RenderManager::RenderManager() :
 	m_ClearColor(Color(0.0f, 0.0f, 0.0f, 1)),
 	m_Ambient(Color(0.3f, 0.3f, 0.3f, 1)),
@@ -103,6 +118,7 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 		mp_ShaderProgramDeferred = new ShaderProgram<MainCB>();
 		mp_ShaderProgramQuad = new ShaderProgram<QuadCB>();
 		mp_ShaderProgramDeferredFinal = new ShaderProgram<DeferredFinalCB>();
+		mp_ShaderProgramShadowCastingLight = new ShaderProgram<ShadowCB>();
 	}
 	return result;
 }
@@ -137,7 +153,7 @@ void RenderManager::PrepDeferredFinal()
 }
 
 // For Debug only
-void RenderManager::RenderDeferredBuffer()
+void RenderManager::RenderDebugBuffers()
 {
 	mp_ShaderProgramQuad->BindShader();
 	mp_D3D->DisableDepth();
@@ -156,6 +172,14 @@ void RenderManager::RenderDeferredBuffer()
 				mp_D3D->GetDeferredRenderTarget()->GetNumViews(),
 				mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()
 			);
+			break;
+		}
+		case RenderMode::Light: {
+			ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[0];
+			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1,
+				&pSRV
+			);
+			cb.Ambient = Color(1, 1, 1, 1);
 			break;
 		}
 		//case RenderMode::Depth:
@@ -189,7 +213,7 @@ void RenderManager::RenderDeferredBuffer()
 	mp_ShaderProgramQuad->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
 
 	// do 3D rendering on the back buffer here
-	RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+	_RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
 
 	if (pResource)
 		pResource->Release();
@@ -217,7 +241,7 @@ void RenderManager::RenderDeferredBufferAmbientOnly()
 	);
 
 	// do 3D rendering on the back buffer here
-	RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+	_RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
 }
 
 void RenderManager::RenderSecondPassBuffer()
@@ -242,7 +266,14 @@ void RenderManager::RenderSecondPassBuffer()
 	);
 
 	// do 3D rendering on the back buffer here
-	RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+	_RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+}
+
+void RenderManager::PrepShadowCastingLightPass()
+{
+	mp_ShaderProgramShadowCastingLight->BindShader();
+	mp_D3D->EnableDepth();
+	mp_D3D->DisableAlpha();
 }
 
 void RenderManager::ClearScreen(void)
@@ -292,7 +323,7 @@ void RenderManager::RenderObject(const GameObject& pGOCamera, const GameObject& 
 	);
 
 	// do 3D rendering to the currently bound buffer here
-	RenderScene(pMeshComp->GetScene());
+	_RenderScene(pMeshComp->GetScene());
 }
 
 void RenderManager::RenderLight(const GameObject & pGOCamera, const GameObject & pGOLight)
@@ -323,22 +354,29 @@ void RenderManager::RenderLight(const GameObject & pGOCamera, const GameObject &
 	mp_ShaderProgramDeferredFinal->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
 
 	// do 3D rendering to the currently bound buffer here
-	RenderScene(pPointLightComp->GetScene());
+	_RenderScene(pPointLightComp->GetScene());
 }
 
-void RenderManager::RenderScene(const Scene * pScene)
+void RenderManager::RenderShadowCastingLight(const GameObject& goLight, const GameObject& go)
 {
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-	for (int i = 0; i < pScene->NumMeshes(); ++i) {
-		const Mesh* pMesh = (*pScene)[i];
-		ID3D11Buffer* buffers[] = { pMesh->VBuffer() };
-		mp_D3D->mp_DeviceContext->IASetVertexBuffers(0, 1, &(buffers[0]), &stride, &offset);
-		mp_D3D->mp_DeviceContext->IASetIndexBuffer(pMesh->IBuffer(), DXGI_FORMAT_R32_UINT, 0);
+	if (!_GameObjectHasRenderableComponent(go))
+		return;
 
-		mp_D3D->mp_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		mp_D3D->mp_DeviceContext->DrawIndexed(pMesh->NumFaces()*3, 0, 0);
-	}
+	const TransformComponent * pTransComp = go.GetComponent<TransformComponent>();
+	const MeshComponent * pMeshComp = go.GetComponent<MeshComponent>();
+
+	const DirectionalLightComponent * pDirLightComp = goLight.GetComponent<DirectionalLightComponent>();
+
+	ShadowCB& cb = mp_ShaderProgramShadowCastingLight->CB()->BufferData();
+	cb.MatFinal = pDirLightComp->GetViewPerspMatrix() * pTransComp->GetTransform();
+	cb.MatFinal.Transpose();
+
+	mp_ShaderProgramShadowCastingLight->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+	// set the new values for the constant buffer
+	mp_ShaderProgramShadowCastingLight->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+	// do 3D rendering to the currently bound buffer here
+	_RenderScene(pMeshComp->GetScene());
 }
 
 bool RenderManager::LoadShader(std::string shaderName)
@@ -355,6 +393,10 @@ bool RenderManager::LoadShader(std::string shaderName)
 			break;
 		case 2:
 			mp_ShaderProgramDeferredFinal->Initialize(mp_D3D->mp_Device, filePath);
+			break;
+		case 3:
+			mp_ShaderProgramShadowCastingLight->Initialize(mp_D3D->mp_Device, filePath);
+			break;
 		default:
 			break;
 	}

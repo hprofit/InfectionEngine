@@ -7,6 +7,11 @@ Author: <Holden Profit, Hyoyup Chung>
 
 #include "Stdafx.h"
 
+bool GameObjectManager::_HasShadowCastingLight(const GameObject & lightGO)
+{
+	return lightGO.HasComponent(ComponentType::C_DirectionalLight);;
+}
+
 GameObjectManager::GameObjectManager()
 {
 }
@@ -58,11 +63,24 @@ void GameObjectManager::RegisterLight(GameObject * lightGO)
 	mp_Lights.push_back(lightGO);
 }
 
+void GameObjectManager::RegisterShadowCastingLight(GameObject * lightGO)
+{
+	mp_ShadowCastingLights.push_back(lightGO);
+}
+
 void GameObjectManager::UnregisterLight(GameObject * lightGO)
 {
 	mp_Lights.erase(
 		std::remove(mp_Lights.begin(), mp_Lights.end(), lightGO),
 		mp_Lights.end()
+	);
+}
+
+void GameObjectManager::UnregisterShadowCastingLight(GameObject * lightGO)
+{
+	mp_ShadowCastingLights.erase(
+		std::remove(mp_ShadowCastingLights.begin(), mp_ShadowCastingLights.end(), lightGO),
+		mp_ShadowCastingLights.end()
 	);
 }
 
@@ -80,8 +98,29 @@ void GameObjectManager::RenderLights()
 {
 	for (unsigned int camIdx = 0; camIdx < mp_Cameras.size(); ++camIdx) {
 		for (unsigned int lightIdx = 0; lightIdx < mp_Lights.size(); ++lightIdx) {
-			if (mp_Lights[lightIdx]->IsActive() && mp_Cameras[camIdx] != mp_Lights[lightIdx])
+			if (mp_Lights[lightIdx]->IsActive() && 
+				mp_Cameras[camIdx] != mp_Lights[lightIdx])
 				INFECT_RENDERER.RenderLight((*mp_Cameras[camIdx]), (*mp_Lights[lightIdx]));
+		}
+	}
+}
+
+void GameObjectManager::RenderShadowCastingLights()
+{
+	for (unsigned int lightIdx = 0; lightIdx < mp_ShadowCastingLights.size(); ++lightIdx) {
+		if (!mp_ShadowCastingLights[lightIdx]->IsActive())	continue;
+		DirectionalLightComponent* pDLComp = mp_ShadowCastingLights[lightIdx]->GetComponent<DirectionalLightComponent>();
+
+		// Clear this light's render target from previous frame
+		pDLComp->ClearRenderTarget();
+
+		// Bind this light's render target for rendering to it's depth buffer
+		pDLComp->BindRenderTarget();
+
+		// Render all objects to fill out light's depth buffer
+		for (unsigned int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {
+			if (mp_GameObjects[objIdx]->IsActive() && mp_ShadowCastingLights[lightIdx] != mp_GameObjects[objIdx])
+				INFECT_RENDERER.RenderShadowCastingLight((*mp_ShadowCastingLights[lightIdx]), (*mp_GameObjects[objIdx]));
 		}
 	}
 }

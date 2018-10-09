@@ -350,12 +350,18 @@
     </ClCompile>
     <ClCompile Include="SOURCE\AI\ControllerComponentManager.cpp">
       <Filter>Source Files\GameObject\ComponentManagers\AI</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="SOURCE\RenderManager.cpp">
       <Filter>Source Files\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="SOURCE\UtilFunctions.cpp">
       <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\DirectionalLightComponentManager.cpp">
+      <Filter>Source Files\GameObject\ComponentManagers\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SOURCE\GameObject\DirectionalLightComponent.cpp">
+      <Filter>Source Files\GameObject\Components\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -664,6 +670,12 @@
     </ClInclude>
     <ClInclude Include="SOURCE\UtilFunctions.h">
       <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\DirectionalLightComponentManager.h">
+      <Filter>Source Files\GameObject\ComponentManagers\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\GameObject\DirectionalLightComponent.h">
+      <Filter>Source Files\GameObject\Components\Light</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

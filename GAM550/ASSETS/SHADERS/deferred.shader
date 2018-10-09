@@ -47,7 +47,6 @@ SamplerState ss;
 PixelInput VShader(VertexInput input)
 {
 	PixelInput output;
-	input.position.w = 1;
 	input.normal.w = 0;
 	input.tangent.w = 0;
 	input.bitangent.w = 0;
@@ -63,7 +62,7 @@ PixelInput VShader(VertexInput input)
 	output.color = input.color;
 	output.texCoords = input.texCoords;
 
-	output.depth = output.position.z / 1000.f;
+	output.depth = output.position.z / output.position.w;
 
 	unsigned int DIFFUSE_TEXTURE = 1;
 	unsigned int NORMAL_MAPPED = 2;
@@ -86,7 +85,7 @@ struct POut
 	float4 normal : SV_TARGET1;
 	float4 diffuse : SV_TARGET2;
 	float4 specular : SV_TARGET3;
-	float4 depth : SV_TARGET4;
+	float4 depth : SV_TARGET4;  // <- Get rid of this when done testing
 };
 
 POut PShader(PixelInput input)
@@ -110,20 +109,20 @@ POut PShader(PixelInput input)
 	}
 	else {
 		input.normal.w = 0;
-		output.normal = normalize(input.normal);// float4(m.x, m.y, m.z, 0);
+		output.normal = normalize(input.normal);
 		// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
 		output.normal.w = 1;
 	}
 
 	output.worldPos = input.worldPosition;
 	// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
-	output.worldPos.w = 1;
+	output.worldPos.w = 1; // input.depth; <- put this back when done testing
+	output.depth = float4(input.depth, input.depth, input.depth, 1); // <- Get rid of this when done testing
+
 	output.diffuse = input.hasDiffuseTexture ? DiffuseTexture.Sample(ss, input.texCoords) : (input.hasColorOverride ? OverrideColor : input.color);
 	//if (input.hasTint)
 	//	output.diffuse *= TintColor;
 	output.specular = SpecularValues;
-
-	output.depth = float4(input.depth, input.depth, input.depth, 1);
 
 	return output;
 }

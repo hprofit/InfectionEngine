@@ -23,7 +23,8 @@ void CameraComponentManager::Update(float dt)
 		if (!cComp->IsActive()) break; 
 
 		cComp->m_UpdatedLastFrame = false;
-		if (cComp->IsDirty() || cComp->Parent()->GetComponent<TransformComponent>()->UpdatedLastFrame()) {
+		if (cComp->IsDirty() || cComp->Parent()->GetComponent<TransformComponent>()->UpdatedLastFrame()) 
+		{
 			_CalcViewMatrix(cComp);
 			switch (cComp->m_projectionType) {
 				case ProjectionType::PT_Orthographic: {

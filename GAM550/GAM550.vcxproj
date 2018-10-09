@@ -37,6 +37,8 @@
     <ClCompile Include="SOURCE\BackBufferRenderTarget.cpp" />
     <ClCompile Include="SOURCE\Command.cpp" />
     <ClCompile Include="SOURCE\ConstantBuffer.cpp" />
+    <ClCompile Include="SOURCE\GameObject\DirectionalLightComponent.cpp" />
+    <ClCompile Include="SOURCE\GameObject\DirectionalLightComponentManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\FractureComponent.cpp" />
     <ClCompile Include="SOURCE\GameObject\FractureComponentManager.cpp" />
     <ClCompile Include="SOURCE\GameObject\ParticleEmitterComponent.cpp" />
@@ -131,6 +133,8 @@
     <ClInclude Include="SOURCE\BackBufferRenderTarget.h" />
     <ClInclude Include="SOURCE\Color.h" />
     <ClInclude Include="SOURCE\Command.h" />
+    <ClInclude Include="SOURCE\GameObject\DirectionalLightComponent.h" />
+    <ClInclude Include="SOURCE\GameObject\DirectionalLightComponentManager.h" />
     <ClInclude Include="SOURCE\GameObject\FractureComponent.h" />
     <ClInclude Include="SOURCE\GameObject\FractureComponentManager.h" />
     <ClInclude Include="SOURCE\GameObject\ParticleEmitterComponent.h" />

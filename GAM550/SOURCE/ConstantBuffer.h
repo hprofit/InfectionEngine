@@ -40,6 +40,9 @@ struct DeferredFinalCB : public ConstantBuffer {
 	Color Ambient;
 };
 
+struct ShadowCB : public ConstantBuffer {
+	Matrix4x4 MatFinal;
+};
 
 class CBW {
 protected:
