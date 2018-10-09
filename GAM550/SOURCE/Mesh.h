@@ -11,14 +11,26 @@ Author: <Holden Profit>
 #define MESH_H
 
 struct Vertex {
-	FLOAT x, y, z, w;	// position
-	FLOAT nX, nY, nZ;	// normal
-	FLOAT tX, tY, tZ;	// tangent
-	FLOAT bX, bY, bZ;	// bitangent
-	FLOAT u, v;			// texture coords
-	FLOAT r, g, b, a;	// color
-	UINT  VertexID;
+	FLOAT x, y, z , w;			// position
+	FLOAT nX, nY, nZ;		// normal
+	FLOAT tX, tY, tZ;		// tangent
+	FLOAT bX, bY, bZ;		// bitangent
+	FLOAT u, v;				// texture coords
+	FLOAT r, g, b, a;		// color
+	UINT BoneID0, BoneID1, BoneID2, BoneID3;
+	float BoneWeights0, BoneWeights1, BoneWeights2, BoneWeights3;
+
+	//UINT  BoneID[4] = { 0 };
+	//float BoneWeights[4] = { 0 };
 };
+
+
+struct BoneDataVertex
+{
+	UINT  BoneID[4] = { 0 };	//Bone id's effected by this vertex
+	float BoneWeights[4] = { 0 };	//It's corresponding weight
+};
+
 
 class Material {
 protected:
@@ -70,7 +82,7 @@ struct BoneData
 	std::string				  BoneName;
 	VertexWeightData		  WightsList;
 	Matrix4x4				  OffsetMatrix;
-	//std::vector<VertexWeight> WightsList;
+	
 
 };
 
@@ -89,8 +101,10 @@ protected:
 	ID3D11Buffer *mp_VBuffer;	// Vertex Buffer
 	ID3D11Buffer *mp_IBuffer;	// Index Buffer
 
-	void _CreateFromAiMesh(const aiMesh* mesh);
+	std::vector<BoneDataVertex> m_BoneVertexDataList;
 
+	void ReadBoneVertexWeight(const aiMesh * mesh); 
+	void _CreateFromAiMesh(const aiMesh* mesh);
 public:
 	Mesh();
 	Mesh(const aiMesh* mesh);
@@ -151,7 +165,7 @@ struct Animation	//(aiNodeAnimations)
 	std::string			Animation_Name;
 	double				Duration;
 	double				TicksPerSecond;
-	std::vector <VQS>  ChannelList;
+	std::vector <VQS>   ChannelList;
 
 };
 
