@@ -20,8 +20,7 @@ struct Vertex {
 	UINT BoneID0, BoneID1, BoneID2, BoneID3;
 	float BoneWeights0, BoneWeights1, BoneWeights2, BoneWeights3;
 
-	//UINT  BoneID[4] = { 0 };
-	//float BoneWeights[4] = { 0 };
+	
 };
 
 
