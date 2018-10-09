@@ -10,6 +10,9 @@ Author: <Holden Profit>
 #ifndef MESH_H
 #define MESH_H
 
+
+
+
 struct Vertex {
 	FLOAT x, y, z , w;			// position
 	FLOAT nX, nY, nZ;		// normal
@@ -43,14 +46,97 @@ public:
 	inline void SetMaterial(const aiMaterial * pAiMaterial) { m_pMaterial = pAiMaterial; }
 };
 
+
+
+
+
+//===============================================================================
+//===============================================================================
+
+
+//=======================================================
+//Animation
+//=======================================================
+
+
+struct Node		//(aiNode)
+{
+	Node() { }
+	~Node() { }
+	std::string		  NodeName;				//Current Node name
+	Matrix4x4		  Transformations;		//transformation which is used to send it to the shader
+	Node			  *ParentNode;			//Parent of the current node
+	std::vector<Node> ChildNodeList;		//Array of children nodes
+
+};
+
+
+struct VQS
+{
+
+	std::string		 Name;		//name of node which is affected by this animation
+	Vector3D		Position;
+	Quaternion		Rotation;
+	Vector3D		Uniform_scale;
+
+	std::vector<Vector3D>	PositionList;
+	std::vector<Quaternion> RotationList;
+	std::vector<Vector3D>	UniformScaleList;
+
+};
+
+
+struct Animation	//(aiNodeAnimations)
+{
+	int m_numChannels;
+
+	std::string			Animation_Name;
+	double				Duration;
+	double				TicksPerSecond;
+	std::vector <VQS>   ChannelList;
+
+};
+
+//WORK ON CHANGING TO THE PROTECTED
+class Animations	//(aiAnimations)
+{
+public:
+	friend class Scene;
+
+	int mNumAnimations = 0;
+
+	Animations(int numAnimations) : mNumAnimations(numAnimations)
+	{
+		AnimationList.resize(numAnimations);
+	}
+
+	Animations() {}
+
+	~Animations() { }
+	//protected:
+	std::vector<Animation> AnimationList;
+	Node	   m_RootNode;
+
+};
+
+
+//===============================================================================
+//===============================================================================
+
+
+
 class Mesh;
-class Animations;
+
 class Scene {
 protected:
 	unsigned short m_numMeshes;
 	std::vector< Mesh* > m_meshes;
 
+
 public:
+	
+	Animations m_Animation;
+	Scene() {}
 	Scene(unsigned short numMeshes);
 	virtual ~Scene();
 
@@ -125,68 +211,6 @@ public:
 	inline int NumFaces() const { return int(m_faces.size()); }
 };
 
-//=======================================================
-//Animation
-//=======================================================
-
-
-struct Node		//(aiNode)
-{
-	Node() { }
-	~Node() { }
-	std::string		  NodeName;				//Current Node name
-	Matrix4x4		  Transformations;		//transformation which is used to send it to the shader
-	Node			  *ParentNode;			//Parent of the current node
-	std::vector<Node> ChildNodeList;		//Array of children nodes
-
-};
-
-
-struct VQS
-{
-
-	std::string		 Name;		//name of node which is affected by this animation
-	Vector3D		Position;
-	Quaternion		Rotation;
-	Vector3D		Uniform_scale;
-
-	std::vector<Vector3D>	PositionList;
-	std::vector<Quaternion> RotationList;
-	std::vector<Vector3D>	UniformScaleList;
-
-};
-
-
-struct Animation	//(aiNodeAnimations)
-{
-	int m_numChannels;
-
-	std::string			Animation_Name;
-	double				Duration;
-	double				TicksPerSecond;
-	std::vector <VQS>   ChannelList;
-
-};
-
-
-class Animations	//(aiAnimations)
-{
-public:
-	//friend class Scene;
-
-	int mNumAnimations = 0;
-
-	Animations(int numAnimations) : mNumAnimations(numAnimations)
-	{
-		AnimationList.resize(numAnimations);
-	}
-
-	~Animations() { }
-	//protected:
-	std::vector<Animation> AnimationList;
-	Node	   m_RootNode;
-
-};
 
 
 
