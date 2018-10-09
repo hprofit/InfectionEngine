@@ -24,7 +24,7 @@ public:
 
 
 
-	std::vector<RigidBodyComponent::Box *> m_BoxPool;
+	std::list<RigidBodyComponent::Box *> m_BoxPool;
 	std::list<RigidBodyComponent::Sphere *> m_SpherePool;
 	std::list<RigidBodyComponent::Plane *> m_PlanePool;
 

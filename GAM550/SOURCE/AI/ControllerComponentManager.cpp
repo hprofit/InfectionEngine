@@ -25,8 +25,8 @@ void ControllerComponentManager::Update(float dt) {
 			Vector3D pos = pCam->GetComponent<TransformComponent>()->WorldPosition();
 
 			pGO->GetComponent<TransformComponent>()->SetPosition(pos);
-			pGO->GetComponent<RigidBodyComponent>()->mp_newbox->body->setPosition(pos);
-			pGO->GetComponent<RigidBodyComponent>()->mp_newbox->body->setVelocity(direction*100.0f);
+			pGO->GetComponent<RigidBodyComponent>()->GetBoxPointer()->body->setPosition(pos);
+			pGO->GetComponent<RigidBodyComponent>()->GetBoxPointer()->body->setVelocity(direction*100.0f);
 			
 			if (pGO) {
 				int i = 0;

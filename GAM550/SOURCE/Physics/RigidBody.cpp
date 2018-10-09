@@ -575,3 +575,35 @@ Vector3D RigidBody::getAcceleration() const
 {
     return acceleration;
 }
+
+
+void PrintMatrix4x4(const Matrix4x4 & mat)
+{
+  cout << setprecision(2);
+  cout.setf(ios::fixed, ios::floatfield);
+  std::cout << " " << mat.m_matrix[0][0] << " " << mat.m_matrix[0][1] << " " << mat.m_matrix[0][2] << " " << mat.m_matrix[0][3] << std::endl
+    << " " << mat.m_matrix[1][0] << " " << mat.m_matrix[1][1] << " " << mat.m_matrix[1][2] << " " << mat.m_matrix[1][3] << std::endl
+    << " " << mat.m_matrix[2][0] << " " << mat.m_matrix[2][1] << " " << mat.m_matrix[2][2] << " " << mat.m_matrix[2][3] << std::endl
+    << " " << mat.m_matrix[3][0] << " " << mat.m_matrix[3][1] << " " << mat.m_matrix[3][2] << " " << mat.m_matrix[3][3] << std::endl;
+}
+Vector3D RotationMatrixToEulerAngles(Matrix4x4 R)
+{
+  float sy = sqrt(R.m_matrix[0][0] * R.m_matrix[0][0] + R.m_matrix[1][0] * R.m_matrix[1][0]);
+
+  bool singular = sy < 1e-6; // If
+
+  float x, y, z;
+  if (!singular)
+  {
+    x = atan2(R.m_matrix[2][1], R.m_matrix[2][2]);
+    y = atan2(-R.m_matrix[2][0], sy);
+    z = atan2(R.m_matrix[1][0], R.m_matrix[0][0]);
+  }
+  else
+  {
+    x = atan2(-R.m_matrix[1][2], R.m_matrix[1][1]);
+    y = atan2(-R.m_matrix[2][0], sy);
+    z = 0;
+  }
+  return Vector3D(x, y, z) * RAD_TO_DEG;
+}

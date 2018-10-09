@@ -4,14 +4,14 @@
     {
       "Component": "Transform",
       "position": {
-        "x": 26,
-        "y": 50,
-        "z": -9
+        "x": 50,
+        "y": 7,
+        "z": 0
       },
       "scale": {
-        "x": 5,
-        "y": 5,
-        "z": 5
+        "x": 3,
+        "y": 3,
+        "z": 3
       },
       "pivotOffset": {},
       "rotation": {}
@@ -26,10 +26,10 @@
       "Component": "RigidBody",
       "Sphere": null,
       "mass": 50.0,
-      "radius": 2.5,
+      "radius": 1.5,
       "velocity": {
-        "x": 0,
-        "y": 0,
+        "x": -25,
+        "y": 12,
         "z": 0
       },
       "rotation": {
@@ -44,6 +44,9 @@
       },
       "linearDamping": 0.95,
       "angularDamping": 0.8
+    },
+    {
+      "Component": "Fracture"
     }
   ]
 }

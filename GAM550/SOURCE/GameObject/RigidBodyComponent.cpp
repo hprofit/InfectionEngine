@@ -11,26 +11,10 @@ void RigidBodyComponent::Deactivate() {
 	mp_Parent = nullptr;
 }
 
-int y = 0;
-int x = 20;
+
 void RigidBodyComponent::Serialize(const json& j)
 {
-	/*if (ValueExists(j, "Box"))
-	{
-		cur_type = RigidBodyType::BoxRigidBody;
-		mp_newbox = new Box();
-		//mp_newbox->SetState(5, Vector3D(21, 25, -10));
-		mp_newbox->SetState(5, Vector3D(x, y, -10), Vector3D(0, 0, 0), Vector3D(0, 0, 0),
-			Vector3D(0, 0, 0), Vector3D(2.5, 2.5, 2.5), 0.95f, 0.8f);
-		INFECT_PHYSICS.m_BoxPool.push_back(mp_newbox);
-
-		y += 25;
-		x++;
-		return;
-	}*/
-	
-
-	m_position = Parent()->GetComponent<TransformComponent>()->WorldPosition();
+	m_position = Parent()->GetComponent<TransformComponent>()->LocalPosition();
 	m_halfSize = Parent()->GetComponent<TransformComponent>()->GetScaleVector()*0.5;
 	m_rotation = Parent()->GetComponent<TransformComponent>()->GetRotVector();
   // is box 
@@ -40,7 +24,7 @@ void RigidBodyComponent::Serialize(const json& j)
       rotation_ = m_rotation, acceleration_ = Vector3D(0, 0, 0), halfSize_ = m_halfSize;
     float mass_ = 1., LinearDamping_ = 0.95f, AngularDamping_ = 0.8f;
     
-	cur_type = RigidBodyType::BoxRigidBody;
+	 cur_type = RigidBodyType::BoxRigidBody;
       //position_.x = ParseFloat(j["position"], "x");
       //position_.y = ParseFloat(j["position"], "y");
       //position_.z = ParseFloat(j["position"], "z");
@@ -82,8 +66,9 @@ void RigidBodyComponent::Serialize(const json& j)
       AngularDamping_ = ParseFloat(j, "angularDamping");
     }
 
-	mp_newbox = new Box();
-	mp_newbox->SetState(mass_, position_, velocity_, rotation_, acceleration_, halfSize_, LinearDamping_, AngularDamping_);
+	  mp_newbox = new Box();
+	  mp_newbox->SetState(mass_, position_, velocity_, rotation_, acceleration_, halfSize_, LinearDamping_, AngularDamping_);
+
     INFECT_PHYSICS.m_BoxPool.push_back(mp_newbox);
   }
 
@@ -91,9 +76,9 @@ void RigidBodyComponent::Serialize(const json& j)
   {
     Vector3D position_ = m_position, velocity_ = Vector3D(0, 0, 0),
        acceleration_ = Vector3D(0, 0, 0);
-    float mass_ = 1., LinearDamping_ = 0.95f, AngularDamping_ = 0.8f, radius_ = 0.5f;
+    float mass_ = 1., LinearDamping_ = 0.95f, AngularDamping_ = 0.8f, radius_ = m_halfSize.x;
 
-	cur_type = RigidBodyType::SphereRigidBody;
+	  cur_type = RigidBodyType::SphereRigidBody;
 
     if (ValueExists(j, "position")) {
       position_.x = ValueExists(j["position"], "x") ? j["position"]["x"] : position_.x;
@@ -112,14 +97,14 @@ void RigidBodyComponent::Serialize(const json& j)
     }   
 
     if (ValueExists(j, "acceleration")) {
-      acceleration_.x = ValueExists(j["rotation"], "x") ? j["rotation"]["x"] : acceleration_.x;
-      acceleration_.y = ValueExists(j["rotation"], "y") ? j["rotation"]["y"] : acceleration_.y;
-      acceleration_.z = ValueExists(j["rotation"], "z") ? j["rotation"]["z"] : acceleration_.z;
+      acceleration_.x = ValueExists(j["acceleration"], "x") ? j["acceleration"]["x"] : acceleration_.x;
+      acceleration_.y = ValueExists(j["acceleration"], "y") ? j["acceleration"]["y"] : acceleration_.y;
+      acceleration_.z = ValueExists(j["acceleration"], "z") ? j["acceleration"]["z"] : acceleration_.z;
     }
 
-    if (ValueExists(j, "radius")) {
+    /*if (ValueExists(j, "radius")) {
       radius_ = ParseFloat(j, "radius");
-    }
+    }*/
 
     if (ValueExists(j, "linearDamping")) {
       LinearDamping_ = ParseFloat(j, "linearDamping");
@@ -261,9 +246,13 @@ void RigidBodyComponent::Override(const json& j)
 			acceleration_.z = ValueExists(j["acceleration"], "z") ? j["acceleration"]["z"] : acceleration_.z;
 		}
 
-		if (ValueExists(j, "radius")) {
+		/*if (ValueExists(j, "radius")) {
 			radius_ = ParseFloat(j, "radius");
-		}
+		}*/
+
+    if (ValueExists(j, "scale")) {
+      radius_ = ValueExists(j["scale"], "x") ? j["scale"]["x"] : radius_;
+    }
 
 		if (ValueExists(j, "linearDamping")) {
 			LinearDamping_ = ParseFloat(j, "linearDamping");
@@ -325,15 +314,16 @@ void RigidBodyComponent::Box::SetState(float mass, Vector3D position, Vector3D v
 {
   body->setPosition(position.x, position.y, position.z);
   Quaternion temp;
-  //body->setOrientation(temp.DegreeToQuaternion(Vector3D(45, 45, 45)));
-
+  //body->setOrientation(temp.DegreeToQuaternion(Vector3D(10, 10, 15)));
+  //temp = temp.DegreeToQuaternion(Vector3D(10, 10, 15));
   body->setOrientation(1, 0, 0, 0);
 
   body->setVelocity(velocity.x, velocity.y, velocity.z);
-  body->setRotation(rotation);
+  //body->setRotation(rotation);
+  body->setRotation(Vector3D(0,0,0));// todo_phy
 
   halfSize = halfSize_;
-  real mass_ = halfSize.x * halfSize.y * halfSize.z * mass;
+  real mass_ = mass;
   body->setMass(mass_);
 
   Matrix3x3 tensor;
@@ -343,13 +333,17 @@ void RigidBodyComponent::Box::SetState(float mass, Vector3D position, Vector3D v
   body->setLinearDamping(LinearDamping);
   body->setAngularDamping(AngularDamping);
   body->clearAccumulators();
-  body->setAcceleration(Vector3D::GRAVITY + Acceleration);
+  if(Acceleration.IsVectorZero())
+    body->setAcceleration(Vector3D::GRAVITY + Acceleration);
+  else
+    body->setAcceleration(Acceleration);
   //body->setAcceleration(Acceleration);
   body->setCanSleep(false);
   body->setAwake();
 
   body->calculateDerivedData();
   calculateInternals();
+  
 }
 
 void RigidBodyComponent::Box::calculateMassProperties(real invDensity)
@@ -400,7 +394,11 @@ void RigidBodyComponent::Sphere::setState(float mass, float radius_, Vector3D po
 {
   body->setMass(mass);
   body->setVelocity(velocity.x, velocity.y, velocity.z);
-  body->setAcceleration(Vector3D::GRAVITY + Acceleration);
+
+  if (Acceleration.IsVectorZero())
+    body->setAcceleration(Vector3D::GRAVITY + Acceleration);
+  else
+    body->setAcceleration(Acceleration);
 
   body->setDamping(LinearDamping, AngularDamping);
   body->clearAccumulators();
@@ -426,4 +424,10 @@ void RigidBodyComponent::Plane::setState(Vector3D direction_, real offset_)
 {
   direction = direction_;
   offset = offset_;
+}
+
+void  RigidBodyComponent::SetFractureHit()
+{
+  Parent()->GetComponent<FractureComponent>()->m_Hit = true;
+  mp_newbox->m_hit = false;
 }

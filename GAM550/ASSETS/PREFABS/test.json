@@ -4,14 +4,14 @@
     {
       "Component": "Transform",
       "position": {
-        "x": 15,
-        "y": 23,
+        "x": 13,
+        "y": 30,
         "z": 0
       },
       "scale": {
-        "x": 15,
-        "y": 15,
-        "z": 15
+        "x": 5,
+        "y": 5,
+        "z": 5
       },
       "pivotOffset": {},
       "rotation": {
@@ -47,10 +47,6 @@
       },
       "linearDamping": 0.95,
       "angularDamping": 0.8
-    },
-
-    {
-      "Component": "Fracture"
     }
   ]
 }
