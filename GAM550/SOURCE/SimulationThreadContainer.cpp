@@ -75,6 +75,16 @@ bool StartSimulationCommand::execute() const
 	if (INFECT_INPUT.IsKeyPressed(DIK_S) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_DOWN)) {
 		tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Forward());
 	}
+	if (INFECT_INPUT.IsKeyReleased(DIK_T) ) {
+		INFECT_AUDIOMANAGER.TestingAudio();
+	}
+	if (INFECT_INPUT.IsKeyPressed(DIK_ESCAPE))
+	{
+		INFECT_AUDIOMANAGER.PauseAudio(true);
+	}
+
+	//Audio Testing
+
 
 	// alt+f4
 	if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {
@@ -94,7 +104,8 @@ bool StartSimulationCommand::execute() const
 	INFECT_INPUT.Update();							// Update input keys
 													//INFECT_DEBUG.Update();						// Toggles debug drawing if needed
 	INFECT_EVENTS.Update(deltaTime);				// Pump the event manager
-													//INFECT_AUDIO.Update(deltaTime);
+	//Audio Update
+	INFECT_AUDIOMANAGER.Update();
 
 	//INFECT_GOM.Update(deltaTime);					// Update game logic
 	INFECT_CMC.Update(deltaTime);

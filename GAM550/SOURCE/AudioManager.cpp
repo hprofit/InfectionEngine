@@ -3,6 +3,7 @@
 Implementation *implementation = nullptr;
 AudioManager::AudioManager()
 {
+	m_Channel = NULL;
 }
 
 
@@ -145,6 +146,7 @@ int AudioManager::PlaySounds(const string & Sound_name, const Vector3 & Position
 		implementation->channel_map_[channel_id] = pchannel;
 
 	}
+	m_Channel = pchannel;
 	return channel_id;
 }
 
@@ -185,6 +187,32 @@ void AudioManager::SetChannelVolume(int channel_id, float volume_db)
 		return;
 
 	AudioManager::ErrorCheck(found_it->second->setVolume(dbToVolume(volume_db)));
+}
+
+void AudioManager::PauseAudio(bool is_Enabled)
+{
+	if (is_Enabled)
+	{
+		m_Channel->setPaused(true);
+	}
+	else
+	{
+		m_Channel->setPaused(false);
+	}
+}
+
+void AudioManager::Set3dListener(const Vector3D & pos, const Vector3D & look, const Vector3D & up, const Vector3D & velocity)
+{
+	//int listener = 0;
+
+	//implementation->system_->set3DListenerAttributes(listener)
+}
+
+
+
+void AudioManager::TestingAudio()
+{
+	INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
 }
 
 //Example to call audio 

@@ -33,6 +33,10 @@ namespace Infect {
 		INFECT_INPUT.Init(hInstance);
 		INFECT_RESOURCES.Init();
 
+		//Audio INIT and Load Sounds
+		INFECT_AUDIOMANAGER.Init();
+		INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/rosey.wav)", true, false, false);
+
 
 		INFECT_CMC.RegisterCompMngr(new TransformComponentManager());
 		INFECT_CMC.RegisterCompMngr(new CameraComponentManager());
@@ -41,7 +45,7 @@ namespace Infect {
 		INFECT_CMC.RegisterCompMngr(new MeshComponentManager());
 		INFECT_CMC.RegisterCompMngr(new ParticleEmitterComponentManager());
 		INFECT_CMC.RegisterCompMngr(new RigidBodyComponentManager());
-    INFECT_CMC.RegisterCompMngr(new FractureComponentManager());
+		INFECT_CMC.RegisterCompMngr(new FractureComponentManager());
 		INFECT_CMC.RegisterCompMngr(new BrainComponentManager());
 		INFECT_CMC.RegisterCompMngr(new ControllerComponentManager());
 		INFECT_CMC.Init();
