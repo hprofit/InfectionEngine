@@ -6,6 +6,7 @@
 class physics::RigidBody;
 class RigidBodyComponentManager;
 class PhysicsManager;
+class FractureComponent;
 class RigidBodyComponent : public Component
 {
 private:
@@ -20,13 +21,12 @@ private:
 		PlaneRigidBody
 	} cur_type;	
 	
-	
+
+  void SetFractureHit();
 
 public:
   friend RigidBodyComponentManager;
   friend PhysicsManager;
-
-	physics::RigidBody m_RigidBody;
 
   static const ComponentType Type = ComponentType::C_RigidBody;
 	virtual ComponentType GetType() const { return Type; }
@@ -70,28 +70,24 @@ public:
 
 	// use for fractureComponent 
 	bool m_Breaker = false;
-	bool m_CanBeBroken = false;
-	bool m_hit = false;
+	//bool m_CanBeBroken = false;
+	//bool m_hit = false;
   };
 
   class Plane : public physics::CollisionPlane
   {
   public:
     void setState(Vector3D direction_, real offset_);
-
-	// use for fractureComponent 
-	bool m_Breaker = false;
-	bool m_CanBeBroken = false;
-	bool m_hit = false;
   };
 
   Box *GetBoxPointer() { return mp_newbox; }
   Sphere *GetSpherePointer() { return mp_newSphere; }
   Plane *GetPlanePointer() { return mp_newPlane; }
-//private:
+public:
 	Box *mp_newbox;
 	Sphere *mp_newSphere;
 	Plane *mp_newPlane;
+
 };
 
 #endif

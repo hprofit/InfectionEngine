@@ -19,6 +19,7 @@ REGISTER_COMPONENT_TYPE(C_Camera)
 
 // Light Components
 REGISTER_COMPONENT_TYPE(C_PointLight)
+REGISTER_COMPONENT_TYPE(C_DirectionalLight)
 
 //physics
 REGISTER_COMPONENT_TYPE(C_Collision)

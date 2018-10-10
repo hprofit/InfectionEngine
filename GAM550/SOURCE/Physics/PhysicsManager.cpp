@@ -84,10 +84,23 @@ void PhysicsManager::CollisionTrigger()
 		{
 			// Check ground box-sphere collisions
 			if (!cData.hasMoreContacts()) return;
-			physics::CollisionDetector::boxAndSphere(*(*it), *(*it_other), &cData);
+			//physics::CollisionDetector::boxAndSphere(*(*it), *(*it_other), &cData);
+      if (((*it)->m_CanBeBroken == true && (*it_other)->m_Breaker == true))
+      {
+        if (physics::CollisionDetector::boxAndSphere(*(*it), *(*it_other), &cData))
+        {
+          if ((*it)->m_CanBeBroken)
+          {
+            (*it)->m_hit = true;
+            (*it)->m_CanBeBroken = false;
+            fracture_contact = cData.contactCount - 1;
+          }
+        }
+      }
+      else
+        physics::CollisionDetector::boxAndSphere(*(*it), *(*it_other), &cData);
 
-			
-			
+
 		}
 
 		// check box and box

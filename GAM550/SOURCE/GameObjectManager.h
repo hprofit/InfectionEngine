@@ -18,7 +18,9 @@ private:
 	std::vector<GameObject *> mp_GameObjects;
 	std::vector<GameObject *> mp_Cameras;
 	std::vector<GameObject *> mp_Lights;
+	std::vector<GameObject *> mp_ShadowCastingLights;
 
+	bool _HasShadowCastingLight(const GameObject& lightGO);
 public:
 	GameObjectManager();
 	~GameObjectManager();
@@ -35,12 +37,17 @@ public:
 	void RegisterCamera(GameObject* cameraGO);
 
 	void RegisterLight(GameObject* lightGO);
-
 	void UnregisterLight(GameObject* lightGO);
+
+	void RegisterShadowCastingLight(GameObject* lightGO);
+	void UnregisterShadowCastingLight(GameObject* lightGO);
+	GameObject* GetShadowCastingLight(UINT index) { return mp_ShadowCastingLights[index]; }
 
 	void RenderCameras();
 
 	void RenderLights();
+
+	void RenderShadowCastingLights();
 
 	// TODO: Remove this
 	void RenderParticles();

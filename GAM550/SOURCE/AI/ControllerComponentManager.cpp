@@ -27,9 +27,7 @@ void ControllerComponentManager::Update(float dt) {
 			pGO->GetComponent<TransformComponent>()->SetPosition(pos);
 			pGO->GetComponent<RigidBodyComponent>()->mp_newbox->body->setPosition(pos);
 			pGO->GetComponent<RigidBodyComponent>()->mp_newbox->body->setVelocity(direction*100.0f);
-
 		}
-		///////////////////////////////////////////////
 	}
 }
 

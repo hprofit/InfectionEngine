@@ -15,10 +15,42 @@ Scene::Scene(unsigned short numMeshes) :
 
 Scene::~Scene() {}
 
+//Please Dont remove this at any point
+
+void Mesh::ReadBoneVertexWeight(const aiMesh * mesh)
+{
+
+	int temp_index = -1;
+
+	int size_list = mesh->mNumVertices;
+	m_BoneVertexDataList.resize(size_list);
+
+	for (int i = 0; i < mesh->mNumVertices; ++i)
+	{
+		
+		for (int j = 0; j < mesh->mNumBones; ++j)
+		{
+			for (int k = 0; k < mesh->mBones[j]->mNumWeights; ++k)
+			{
+				if (mesh->mBones[j]->mWeights[k].mVertexId == i)
+				{
+					m_BoneVertexDataList[i].BoneID[++temp_index] = j;
+					m_BoneVertexDataList[i].BoneWeights[temp_index] = mesh->mBones[j]->mWeights[k].mWeight;
+				}
+			}
+		}
+		temp_index = 0;
+	}
+
+
+}
+
+
 void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 {
 	m_vertices.reserve(mesh->mNumVertices);
-	for (unsigned int i = 0; i < mesh->mNumVertices; ++i) {
+	for (unsigned int i = 0; i < mesh->mNumVertices; ++i)
+	{
 		Vertex v;
 		v.x = mesh->mVertices[i].x;
 		v.y = mesh->mVertices[i].y;
@@ -47,17 +79,35 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 			v.b = color.b;
 			v.a = color.a;
 		}
+		for (int j = 0; j < 4; ++j)
+		{
+			v.BoneID0 = m_BoneVertexDataList[i].BoneID[0];
+			v.BoneID1 = m_BoneVertexDataList[i].BoneID[1];
+			v.BoneID2 = m_BoneVertexDataList[i].BoneID[2];
+			v.BoneID3 = m_BoneVertexDataList[i].BoneID[3];
+
+			v.BoneWeights0 = m_BoneVertexDataList[i].BoneWeights[0];
+			v.BoneWeights1 = m_BoneVertexDataList[i].BoneWeights[1];
+			v.BoneWeights2 = m_BoneVertexDataList[i].BoneWeights[2];
+			v.BoneWeights3 = m_BoneVertexDataList[i].BoneWeights[3];
+
+			//v.BoneID[j] = m_BoneVertexDataList[i].BoneID[j];
+			//v.BoneWeights[j] = m_BoneVertexDataList[i].BoneWeights[j];
+
+		}
 
 		m_vertices.push_back(v);
 	}
 
 	m_faces.reserve(mesh->mNumFaces);
-	for (unsigned int i = 0; i < mesh->mNumFaces; ++i) {
+	for (unsigned int i = 0; i < mesh->mNumFaces; ++i)
+	{
 		m_faces.push_back(Face(mesh->mFaces[i]));
 	}
 
 #pragma region Bone Data
 
+		
 	m_BoneList.resize(mesh->mNumBones);
 	for (unsigned int i = 0; i < mesh->mNumBones; ++i)
 	{
@@ -96,16 +146,23 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 	}
 #pragma endregion
 
+	//cout << "The size of Bone data : " << mesh->mNumBones << endl;
+	//cout << "The size of Vertices data : " << mesh->mNumVertices * mesh->mNumBones << endl;
+	//cout << temp_index << endl;
 
 	FinishMesh();
 }
 
 Mesh::Mesh()
 {
+
 }
 
 Mesh::Mesh(const aiMesh * mesh)
 {
+	
+
+	ReadBoneVertexWeight(mesh);
 	_CreateFromAiMesh(mesh);
 }
 
@@ -230,6 +287,8 @@ void Mesh::FinishMesh()
 		{ "BITANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "TEXCOORDS", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "BONEID", 0, DXGI_FORMAT_R32G32B32A32_UINT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "BONEWEIGHT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
 	ID3D10Blob * const vs = INFECT_RENDERER.VSBlob();

@@ -21,6 +21,9 @@ void RigidBodyComponentManager::Update(float dt)
 	  switch (rgbComp->cur_type)
 	  {
 	  case RigidBodyComponent::RigidBodyType::BoxRigidBody:
+      if (rgbComp->GetBoxPointer()->m_hit)
+        rgbComp->SetFractureHit();
+
 		  rgbComp->Parent()->GetComponent<TransformComponent>()->SetPosition(rgbComp->GetBoxPointer()->body->getPosition());
       rotation = RotationMatrixToEulerAngles(rgbComp->GetBoxPointer()->body->getTransform());
       rgbComp->Parent()->GetComponent<TransformComponent>()->SetAngles(rotation.x, rotation.y, rotation.z);

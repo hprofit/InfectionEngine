@@ -15,7 +15,7 @@ class FractureComponentManager :
 protected:
   typedef FractureComponent* FC;
 
-  void _DivideBlock(FC fc, RigidBodyComponent::Box* blocks);
+  void _DivideBlock(FC fc, const physics::Contact& contact, RigidBodyComponent::Box * blocks);
 public:
   FractureComponentManager();
   virtual ~FractureComponentManager() {};

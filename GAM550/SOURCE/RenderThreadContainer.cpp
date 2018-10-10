@@ -38,13 +38,16 @@ bool StartRenderCommand::execute() const
 	//INFECT_GOM.RenderCameras();						// Render all game objects
 	// END DO NOT USE
 
-	INFECT_RENDERER.PrepDeferredPass();
-	INFECT_GOM.RenderCameras();
+	INFECT_RENDERER.PrepShadowCastingLightPass();
+	INFECT_GOM.RenderShadowCastingLights();		// Requires visibility check
 
-	// Render the G BUffers individually
+	INFECT_RENDERER.PrepDeferredPass();
+	INFECT_GOM.RenderCameras();					// Requires visibility check
+
+	// Render the G BUffers individually OR first shadow casting light's depth map - DEBUG ONLY
 	if (INFECT_RENDERER.CurrentRenderMode() != RenderMode::Final) {
 		INFECT_RENDERER.BindBackBuffer();
-		INFECT_RENDERER.RenderDeferredBuffer();
+		INFECT_RENDERER.RenderDebugBuffers();
 	}
 	// Render the whole deferred shading and lighting
 	else {

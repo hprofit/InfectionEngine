@@ -93,6 +93,7 @@ Author: <Holden Profit>
 #pragma region Resources
 #include <Singleton.h>
 #include <Color.h>
+#include <UtilFunctions.h>
 
 using json = nlohmann::json;
 #include <JsonReader.h>
@@ -156,6 +157,7 @@ typedef unsigned int InfectGUID;
 #include <GameObject\CameraComponent.h>
 #include <GameObject\LightBaseComponent.h>
 #include <GameObject\PointLightComponent.h>
+#include <GameObject\DirectionalLightComponent.h>
 #include <GameObject\RigidBodyComponent.h>
 #include <GameObject\FractureComponent.h>
 //#include <HeightMap.h>
@@ -203,6 +205,7 @@ typedef unsigned int InfectGUID;
 #include <GameObject\MeshComponentManager.h>
 #include <GameObject\ParticleEmitterComponentManager.h>
 #include <GameObject\PointLightComponentManager.h>
+#include <GameObject\DirectionalLightComponentManager.h>
 #include <GameObject\RigidBodyComponentManager.h>
 #include <GameObject\FractureComponentManager.h>
 #include <AI\BrainComponentManager.h>

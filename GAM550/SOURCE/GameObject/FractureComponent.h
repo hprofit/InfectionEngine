@@ -9,12 +9,10 @@ class FractureComponentManager;
 
 class FractureComponent : public Component
 {
-protected:
-	physics::Contact* mp_Contact;
+public:
+	//physics::Contact* mp_Contact;
 	RigidBodyComponent::Box* mp_Target;
 	bool m_Hit = false;
-
-	physics::RigidBody m_RigidBody;
 
 public:
   friend PhysicsManager;
@@ -29,7 +27,11 @@ public:
   virtual void Deactivate();
   virtual void LateInitialize();
   virtual void Serialize(const json& j);
+  virtual void Override(const json& j);
   virtual void HandleEvent(Event* pEvent);
+
+  void SetFractureHit(bool val) { m_Hit = val; }
+  void SetFractureTarget(RigidBodyComponent::Box* val) { mp_Target = val; }
 };
 
 #endif
