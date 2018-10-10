@@ -1,17 +1,21 @@
 #include "Stdafx.h"
 
-LightBaseComponent::LightBaseComponent(InfectGUID guid) :
+LightBaseComponent::LightBaseComponent(InfectGUID guid, bool castsShadows) :
 	Component(guid),
 	m_color(Color(1, 1, 1, 1)),
 	m_distance(1.0f),
 	m_a(0.25f), m_b(0.1f),
-	m_intensity(1.0f)
+	m_intensity(1.0f),
+	m_CastsShadows(castsShadows)
 {
 }
 
 void LightBaseComponent::LateInitialize()
 {
-	INFECT_GOM.RegisterLight(mp_Parent);
+	if (m_CastsShadows)
+		INFECT_GOM.RegisterShadowCastingLight(mp_Parent);
+	else 
+		INFECT_GOM.RegisterLight(mp_Parent);
 }
 
 void LightBaseComponent::Serialize(const json & j)

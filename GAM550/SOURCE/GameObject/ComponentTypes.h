@@ -34,6 +34,7 @@ static std::unordered_map<std::string, ComponentType> COMPONENT_NAMES = {
 	{ "Mesh", C_Mesh },
 	{ "Camera", C_Camera },
 	{ "PointLight", C_PointLight },
+	{ "DirectionalLight", C_DirectionalLight },
 	{ "Collision", C_Collision },
 	{ "RigidBody", C_RigidBody },
 	{ "Fracture", C_Fracture },

@@ -27,6 +27,9 @@ namespace Infect {
 			return 1;
 		if (!INFECT_RENDERER.LoadShader("deferredFinal.shader"))  // TODO: MOVE THIS
 			return 1;
+		if (!INFECT_RENDERER.LoadShader("shadowCastingLight.shader"))  // TODO: MOVE THIS
+			return 1;
+
 		INFECT_INPUT.Init(hInstance);
 		INFECT_RESOURCES.Init();
 
@@ -34,6 +37,7 @@ namespace Infect {
 		INFECT_CMC.RegisterCompMngr(new TransformComponentManager());
 		INFECT_CMC.RegisterCompMngr(new CameraComponentManager());
 		INFECT_CMC.RegisterCompMngr(new PointLightComponentManager());
+		INFECT_CMC.RegisterCompMngr(new DirectionalLightComponentManager());
 		INFECT_CMC.RegisterCompMngr(new MeshComponentManager());
 		INFECT_CMC.RegisterCompMngr(new ParticleEmitterComponentManager());
 		INFECT_CMC.RegisterCompMngr(new RigidBodyComponentManager());

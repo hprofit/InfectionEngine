@@ -1,0 +1,39 @@
+{
+	"Tag": "Light",
+	"COMPONENTS": [
+		{
+			"Component": "Transform",
+			"position": {
+				"x": 0,
+				"y": 0,
+				"z": 0
+			},
+			"scale": {
+				"x": 1,
+				"y": 1,
+				"z": 1
+			},
+			"pivotOffset": {},
+			"rotation": {
+				"x": -45
+			}
+		},
+		{
+			"Component": "DirectionalLight",
+			"color": {
+				"r": 1,
+				"g": 1,
+				"b": 1,
+				"a": 1
+			},
+			"distance": 1000,
+			"a": -0.3,
+			"b": 0.2,
+			"intensity": 1,
+			"fov": 100,
+			"far": 1000,
+			"width": 2048,
+			"height": 2048
+		}
+	]
+}

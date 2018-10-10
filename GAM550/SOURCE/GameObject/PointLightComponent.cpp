@@ -8,7 +8,7 @@ Author: <Holden Profit>
 #include <Stdafx.h>
 
 PointLightComponent::PointLightComponent(InfectGUID guid) :
-	LightBaseComponent(guid),
+	LightBaseComponent(guid, false),
 	mp_Scene(INFECT_RESOURCES.GetScene(SPHERE_PRIMITIVE))
 {
 }
@@ -21,19 +21,14 @@ void PointLightComponent::Deactivate()
 void PointLightComponent::Serialize(const json & j)
 {
 	LightBaseComponent::Serialize(j);
-	if (ValueExists(j, "volumeShape")) {
-		mp_Scene = INFECT_RESOURCES.GetScene(ParseString(j, "volumeShape"));
-		m_IsDirty = true;
-	}
+	SetScene(ParseString(j, "volumeShape"));
 }
 
 void PointLightComponent::Override(const json & j)
 {
 	LightBaseComponent::Serialize(j);
-	if (ValueExists(j, "volumeShape")) {
-		mp_Scene = INFECT_RESOURCES.GetScene(ParseString(j, "volumeShape"));
-		m_IsDirty = true;
-	}
+	if (ValueExists(j, "volumeShape")) 
+		SetScene(ParseString(j, "volumeShape"));
 }
 
 void PointLightComponent::SetScene(const std::string & sceneName)

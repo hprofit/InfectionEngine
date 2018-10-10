@@ -16,12 +16,13 @@ protected:
 	float m_distance;	// How far before the light falls off entirely
 	float m_a, m_b;		// Light fall off  (1 / (1 + a * d + b^2 * d) )
 	float m_intensity;	// Intensity of the light
+	bool m_CastsShadows;	// Determines whether or not this light will cast shadows on the scene
 
 public:
 	static const ComponentType Type = ComponentType::C_Transform;
 	virtual ComponentType GetType() const { return Type; }
 
-	LightBaseComponent(InfectGUID guid);
+	LightBaseComponent(InfectGUID guid, bool castsShadows);
 	~LightBaseComponent() {};
 
 	virtual void LateInitialize();
@@ -44,6 +45,8 @@ public:
 
 	inline float Intensity() const { return m_intensity; }
 	void SetIntensity(float intensity);
+
+	inline bool CastsShadows() const { return m_CastsShadows; }
 };
 
 #endif

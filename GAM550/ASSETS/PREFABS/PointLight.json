@@ -9,9 +9,9 @@
 			"z": 0
 	  	},
 	  	"scale": {
-			"x": 50,
-			"y": 50,
-			"z": 50
+			"x": 30,
+			"y": 30,
+			"z": 30
 		},
 	  	"pivotOffset": {},
 	  	"rotation": {}
@@ -24,10 +24,10 @@
 			"b": 1,
 			"a": 1
 		},
-		"distance": 25,
+		"distance": 15,
 		"a": -0.3,
 		"b": 0.2,
-		"intensity": 4,
+		"intensity": 3,
 		"volumeShape": "SimpleSphere"
 	}
   ]
