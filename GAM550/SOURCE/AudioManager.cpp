@@ -203,16 +203,16 @@ void AudioManager::PauseAudio(bool is_Enabled)
 
 void AudioManager::Set3dListener(const Vector3D & pos, const Vector3D & look, const Vector3D & up, const Vector3D & velocity)
 {
-	//int listener = 0;
+	int listener = 0;
 
-	//implementation->system_->set3DListenerAttributes(listener)
+	implementation->system_->set3DListenerAttributes(listener, &VectorToFmod(pos), &VectorToFmod(velocity), &VectorToFmod(look), &VectorToFmod(up));
 }
 
 
 
 void AudioManager::TestingAudio()
 {
-	INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3D(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+	PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3D(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
 	//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/swish.wav)", vector3D(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
 	//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/Blackouts.mp3)", vector3D(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
 }

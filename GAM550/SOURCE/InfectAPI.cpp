@@ -35,7 +35,8 @@ namespace Infect {
 
 		//Audio INIT and Load Sounds
 		INFECT_AUDIOMANAGER.Init();
-		INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/rosey.wav)", true, false, false);
+																   //3D	//loop //Audio-Stream
+		INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/rosey.wav)", true, true, false);
 		INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/Blackouts.mp3)", true, false, false);
 
 

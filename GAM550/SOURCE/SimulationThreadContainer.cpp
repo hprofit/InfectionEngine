@@ -65,15 +65,20 @@ bool StartSimulationCommand::execute() const
 
 	if (INFECT_INPUT.IsKeyPressed(DIK_D) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_RIGHT)) {
 		tcpCamera->Move(Infect::GetFrameTime() *30.f*tcpCamera->Right());
+		INFECT_AUDIOMANAGER.Set3dListener(Infect::GetFrameTime() *-30.f*tcpCamera->Right(), Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0));
 	}
 	if (INFECT_INPUT.IsKeyPressed(DIK_A) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_LEFT)) {
 		tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Right());
+		INFECT_AUDIOMANAGER.Set3dListener(Infect::GetFrameTime() *30.f*tcpCamera->Right(), Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0));
+
 	}
 	if (INFECT_INPUT.IsKeyPressed(DIK_W) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_UP)) {
 		tcpCamera->Move(Infect::GetFrameTime() *30.f * tcpCamera->Forward());
+		INFECT_AUDIOMANAGER.Set3dListener(Infect::GetFrameTime() *-30.f * tcpCamera->Forward(), Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0));
 	}
 	if (INFECT_INPUT.IsKeyPressed(DIK_S) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_DOWN)) {
 		tcpCamera->Move(Infect::GetFrameTime() *-30.f*tcpCamera->Forward());
+		INFECT_AUDIOMANAGER.Set3dListener(Infect::GetFrameTime() *30.f*tcpCamera->Forward(), Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0));
 	}
 	if (INFECT_INPUT.IsKeyReleased(DIK_T) ) {
 		INFECT_AUDIOMANAGER.TestingAudio();
@@ -82,7 +87,7 @@ bool StartSimulationCommand::execute() const
 	{
 		INFECT_AUDIOMANAGER.PauseAudio(true);
 	}
-
+	
 	//Audio Testing
 
 
