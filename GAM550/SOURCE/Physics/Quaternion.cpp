@@ -221,6 +221,17 @@ void Quaternion::QuatNegation()
 
 }
 
+Matrix3x3 Quaternion::GetMatrixRepresentation()
+{
+	Quaternion& Q = *this;
+	Matrix3x3 result(
+		(1.0) - (2.0) * (Q.j * Q.j + Q.k * Q.k), (2.0) * (Q.i * Q.j - Q.k * Q.r),			(2.0) * (Q.i * Q.k + Q.j * Q.r),
+		(2.0) * (Q.i * Q.j + Q.k * Q.r),		 (1.0) - (2.0) * (Q.i * Q.i + Q.k * Q.k),	(2.0) * (Q.j * Q.k - Q.i * Q.r),
+		(2.0) * (Q.i * Q.k - Q.j * Q.r),		 (2.0) * (Q.j * Q.k + Q.i * Q.r),			(1.0) - (2.0) * (Q.i * Q.i + Q.j * Q.j) );
+
+	return result;
+}
+
 Quaternion Quaternion::DegreeToQuaternion(Vector3D angle)
 {
   float x = sin(angle.y / 2.f * DEG_TO_RAD) * sin(angle.z / 2.f * DEG_TO_RAD) * cos(angle.x / 2.f * DEG_TO_RAD) + cos(angle.y / 2.f * DEG_TO_RAD)* cos(angle.z / 2.f * DEG_TO_RAD)* sin(angle.x / 2.f * DEG_TO_RAD);

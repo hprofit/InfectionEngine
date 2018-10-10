@@ -310,7 +310,14 @@ void Mesh::FinishMesh()
 
 
 void ReadBoneHeirarchyTransforms(float AnimationTime, const Node Root_Node
-	, Matrix4x4 ParentTransform, Animations Anim);
+	, Matrix4x4 ParentTransform, Animations Anim, Mesh mesh);
+
+void ScalingInterpolation(Vector3D& out, float AnimationTime, const VQS VQS_Node);
+
+void RotationInterpolation(Quaternion& out, float AnimationTime, const VQS VQS_Node);
+
+void TranslationInterpolation(Vector3D& out, float AnimationTime, const VQS VQS_Node);
+
 
 UINT FindRotation(float AnimationTime, const VQS vqs_node);
 
@@ -331,7 +338,7 @@ void BoneTransform(float Time, std::vector<Matrix4x4>& Transforms, Animations An
 	float TimeinTicks = TicksperSeconds * Time;
 	float AnimationTime = Anim.AnimationList[0].Duration * TimeinTicks;
 
-	ReadBoneHeirarchyTransforms(AnimationTime, Anim.m_RootNode, InitialMat, Anim);
+	ReadBoneHeirarchyTransforms(AnimationTime, Anim.m_RootNode, InitialMat, Anim, mesh);
 	
 	//==========================================================
 	//send the nunmber of bones 
@@ -352,7 +359,7 @@ void BoneTransform(float Time, std::vector<Matrix4x4>& Transforms, Animations An
 }
 
 void ReadBoneHeirarchyTransforms(float AnimationTime, const Node Root_Node 
-	,Matrix4x4 ParentTransform, Animations Anim)
+	,Matrix4x4 ParentTransform, Animations Anim, Mesh mesh)
 {
 
 	//Get the name of the current node
@@ -370,22 +377,53 @@ void ReadBoneHeirarchyTransforms(float AnimationTime, const Node Root_Node
 	const VQS VQS_Node = curr_anim.FindAnimationNode(NodeName);
 
 	//Interpolate the scalling and generate the transformation matrix
-	Vector3D scaling_matrix;
+	Vector3D scaling;
+	ScalingInterpolation(scaling, AnimationTime, VQS_Node);
+	Matrix4x4 ScalingM;
+	ScalingM.Scale(scaling);
 	
 	//Interpolate the rotation and generate the transformation matrix
-	
+	Quaternion rotationquat;
+	RotationInterpolation(rotationquat, AnimationTime, VQS_Node);
+	Matrix4x4 RotationM = rotationquat.GetMatrixRepresentation();
 	
 	//Interpolate the translation and generate the transformation matrix
+	Vector3D Translation;
+	TranslationInterpolation(Translation, AnimationTime, VQS_Node);
+	Matrix4x4 TranslationM;
+	TranslationM.Translate(Translation);
+
+	//Combining all the Matrices
+	NodeTransform = TranslationM * RotationM * ScalingM;
 
 
-
+	Matrix4x4 GlobalTransform = ParentTransform * NodeTransform;
+	
+	//if()
 
 }
 
 //Translation Interpolation
 void TranslationInterpolation(Vector3D& out, float AnimationTime , const VQS VQS_Node)
 {
-	
+	if (VQS_Node.numpositionkeys == 1)
+	{
+		out = VQS_Node.PositionList[0].Position;
+		return;
+	}
+
+	UINT PositionIndex = FindTranslation(AnimationTime, VQS_Node);
+	UINT NextPositionIndex = PositionIndex + 1;
+	assert(NextPositionIndex < VQS_Node.numpositionkeys);
+	float deltatime = (float)(VQS_Node.PositionList[NextPositionIndex].time - VQS_Node.PositionList[PositionIndex].time);
+	float factor = AnimationTime - (float)VQS_Node.PositionList[PositionIndex].time / deltatime;
+	assert(factor >= 0.0f && factor <= 1.0f);
+	const Vector3D& start = VQS_Node.PositionList[PositionIndex].Position;
+	const Vector3D& end = VQS_Node.PositionList[NextPositionIndex].Position;
+
+	Vector3D delta = end - start;
+	out = start + factor * delta;
+
 }
 
 
@@ -400,14 +438,38 @@ void RotationInterpolation(Quaternion& out, float AnimationTime , const VQS VQS_
 	}
 
 	UINT RotationIndex = FindRotation(AnimationTime, VQS_Node);
+	UINT NextRotationIndex = RotationIndex + 1;
+	assert(NextRotationIndex < VQS_Node.numrotationkeys);
+	float deltatime = (float)(VQS_Node.RotationList[NextRotationIndex].time - VQS_Node.RotationList[RotationIndex].time);
+	float factor = AnimationTime - (float)VQS_Node.RotationList[RotationIndex].time / deltatime;
+	assert(factor >= 0.0f && factor <= 1.0f);
+	const Quaternion& StartRotationQuat = VQS_Node.RotationList[RotationIndex].rotation;
+	const Quaternion& EndRotationQuat = VQS_Node.RotationList[NextRotationIndex].rotation;
 
-
+	out = QuatSlerp(StartRotationQuat, EndRotationQuat, factor);
+	out.normalise();
 }
 
 //Scaling Interpolation
 void ScalingInterpolation(Vector3D& out, float AnimationTime , const VQS VQS_Node)
 {
+	if (VQS_Node.numscalekeys == 1)
+	{
+		out = VQS_Node.UniformScaleList[0].Scale;
+		return;
+	}
 
+	UINT ScalingIndex = FindScale(AnimationTime, VQS_Node);
+	UINT NextScalingIndex = ScalingIndex + 1;
+	assert(NextScalingIndex < VQS_Node.numscalekeys);
+	float deltatime = (float)(VQS_Node.UniformScaleList[NextScalingIndex].time - VQS_Node.UniformScaleList[ScalingIndex].time);
+	float factor = AnimationTime - (float)VQS_Node.UniformScaleList[ScalingIndex].time / deltatime;
+	assert(factor >= 0.0f && factor <= 1.0f);
+	const Vector3D& start = VQS_Node.UniformScaleList[ScalingIndex].Scale;
+	const Vector3D& end = VQS_Node.UniformScaleList[NextScalingIndex].Scale;
+
+	Vector3D delta = end - start;
+	out = start + factor * delta;
 }
 
 
