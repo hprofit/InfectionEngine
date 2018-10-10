@@ -189,3 +189,6 @@ void AudioManager::SetChannelVolume(int channel_id, float volume_db)
 
 //Example to call audio 
 //INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+
+//Example to load Audio
+//INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/rosey.wav)", true, false, false);

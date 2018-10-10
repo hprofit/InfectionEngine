@@ -56,22 +56,29 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 		v.y = mesh->mVertices[i].y;
 		v.z = mesh->mVertices[i].z;
 		v.w = 1;
+		if (mesh->HasNormals())
+		{
+			v.nX = mesh->mNormals[i].x;
+			v.nY = mesh->mNormals[i].y;
+			v.nZ = mesh->mNormals[i].z;
+		}
 
-		//v.nX = mesh->mNormals[i].x;
-		//v.nY = mesh->mNormals[i].y;
-		//v.nZ = mesh->mNormals[i].z;
+		if (mesh->HasTangentsAndBitangents())
+		{
 
-		//v.tX = mesh->mTangents[i].x;
-		//v.tY = mesh->mTangents[i].y;
-		//v.tZ = mesh->mTangents[i].z;
-		//
-		//v.bX = mesh->mBitangents[i].x;
-		//v.bY = mesh->mBitangents[i].y;
-		//v.bZ = mesh->mBitangents[i].z;
-		//
-		//v.u = mesh->mTextureCoords[0][i].x;
-		//v.v = mesh->mTextureCoords[0][i].y;
-
+			v.tX = mesh->mTangents[i].x;
+			v.tY = mesh->mTangents[i].y;
+			v.tZ = mesh->mTangents[i].z;
+		
+			v.bX = mesh->mBitangents[i].x;
+			v.bY = mesh->mBitangents[i].y;
+			v.bZ = mesh->mBitangents[i].z;
+		
+		}
+		
+		v.u = mesh->mTextureCoords[0][i].x;
+		v.v = mesh->mTextureCoords[0][i].y;
+		
 		if (mesh->mColors && mesh->mColors[0]) {
 			aiColor4D color = mesh->mColors[0][i];
 			v.r = color.r;
@@ -79,23 +86,23 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 			v.b = color.b;
 			v.a = color.a;
 		}
-		for (int j = 0; j < 4; ++j)
+		if (mesh->HasBones())
 		{
-			v.BoneID0 = m_BoneVertexDataList[i].BoneID[0];
-			v.BoneID1 = m_BoneVertexDataList[i].BoneID[1];
-			v.BoneID2 = m_BoneVertexDataList[i].BoneID[2];
-			v.BoneID3 = m_BoneVertexDataList[i].BoneID[3];
+			for (int j = 0; j < 4; ++j)
+			{
+				v.BoneID0 = m_BoneVertexDataList[i].BoneID[0];
+				v.BoneID1 = m_BoneVertexDataList[i].BoneID[1];
+				v.BoneID2 = m_BoneVertexDataList[i].BoneID[2];
+				v.BoneID3 = m_BoneVertexDataList[i].BoneID[3];
 
-			v.BoneWeights0 = m_BoneVertexDataList[i].BoneWeights[0];
-			v.BoneWeights1 = m_BoneVertexDataList[i].BoneWeights[1];
-			v.BoneWeights2 = m_BoneVertexDataList[i].BoneWeights[2];
-			v.BoneWeights3 = m_BoneVertexDataList[i].BoneWeights[3];
+				v.BoneWeights0 = m_BoneVertexDataList[i].BoneWeights[0];
+				v.BoneWeights1 = m_BoneVertexDataList[i].BoneWeights[1];
+				v.BoneWeights2 = m_BoneVertexDataList[i].BoneWeights[2];
+				v.BoneWeights3 = m_BoneVertexDataList[i].BoneWeights[3];
 
-			//v.BoneID[j] = m_BoneVertexDataList[i].BoneID[j];
-			//v.BoneWeights[j] = m_BoneVertexDataList[i].BoneWeights[j];
-
+			}
 		}
-
+		//Push all the vertices data in the list 
 		m_vertices.push_back(v);
 	}
 
@@ -105,11 +112,11 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 		m_faces.push_back(Face(mesh->mFaces[i]));
 	}
 
-#pragma region Bone Data
-
-		
-	m_BoneList.resize(mesh->mNumBones);
-	for (unsigned int i = 0; i < mesh->mNumBones; ++i)
+	#pragma region Bone Data
+	
+			
+	 m_BoneList.resize(mesh->mNumBones);
+	 for (unsigned int i = 0; i < mesh->mNumBones; ++i)
 	{
 		m_BoneList[i].BoneName = mesh->mBones[i]->mName.C_Str();
 		m_BoneList[i].mNumWeights = mesh->mBones[i]->mNumWeights;
@@ -144,7 +151,8 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 
 		
 	}
-#pragma endregion
+	
+	#pragma endregion
 
 	//cout << "The size of Bone data : " << mesh->mNumBones << endl;
 	//cout << "The size of Vertices data : " << mesh->mNumVertices * mesh->mNumBones << endl;
@@ -274,7 +282,11 @@ void Mesh::FinishMesh()
 
 	D3D11_MAPPED_SUBRESOURCE iMS;
 	INFECT_RENDERER.DeviceContext()->Map(mp_IBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &iMS);   // map the buffer
-	memcpy(iMS.pData, &(m_faces[0]), indexSize);	// copy the data
+	memcpy(iMS.pData, &(m_faces[0]), indexSize);	// copy the data//Example to call audio 
+//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+
+//Example to load Audio
+//INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/rosey.wav)", true, false, false);
 	INFECT_RENDERER.DeviceContext()->Unmap(mp_IBuffer, NULL);					// unmap the buffer
 
 
@@ -294,4 +306,222 @@ void Mesh::FinishMesh()
 	ID3D10Blob * const vs = INFECT_RENDERER.VSBlob();
 	INFECT_RENDERER.Device()->CreateInputLayout(ied, 6, vs->GetBufferPointer(), vs->GetBufferSize(), &pLayout);
 	INFECT_RENDERER.DeviceContext()->IASetInputLayout(pLayout);
+}
+
+
+void ReadBoneHeirarchyTransforms(float AnimationTime, const Node Root_Node
+	, Matrix4x4 ParentTransform, Animations Anim, Mesh mesh);
+
+void ScalingInterpolation(Vector3D& out, float AnimationTime, const VQS VQS_Node);
+
+void RotationInterpolation(Quaternion& out, float AnimationTime, const VQS VQS_Node);
+
+void TranslationInterpolation(Vector3D& out, float AnimationTime, const VQS VQS_Node);
+
+
+UINT FindRotation(float AnimationTime, const VQS vqs_node);
+
+UINT FindScale(float AnimationTime, const VQS vqs_node);
+
+UINT FindTranslation(float AnimationTime, const VQS vqs_node);
+
+void BoneTransform(float Time, std::vector<Matrix4x4>& Transforms, Animations Anim,
+	Mesh mesh)
+{
+	Matrix4x4 InitialMat;
+	InitialMat.Identity4D();
+	//Search for the required Animation which we want
+	//Here it is temporarily set to AnimationList[0] which points 
+	//to the only animation we have
+	float TicksperSeconds = Anim.AnimationList[0].TicksPerSecond != 0 ?
+		Anim.AnimationList[0].TicksPerSecond : 25.0f;
+	float TimeinTicks = TicksperSeconds * Time;
+	float AnimationTime = Anim.AnimationList[0].Duration * TimeinTicks;
+
+	ReadBoneHeirarchyTransforms(AnimationTime, Anim.m_RootNode, InitialMat, Anim, mesh);
+	
+	//==========================================================
+	//send the nunmber of bones 
+	//Here we take 109 for testing
+	// TO DO :CHANGE IT LATER
+	//==========================================================
+	int number_bones = mesh.m_numBones;
+	Transforms.resize(number_bones);
+
+	for (int i = 0; i < number_bones; ++i)
+	{
+		//Might Change to the offset matrix to Transformation matrix
+		Transforms[i] = mesh.m_BoneList[i].OffsetMatrix;
+	}
+
+
+	
+}
+
+void ReadBoneHeirarchyTransforms(float AnimationTime, const Node Root_Node 
+	,Matrix4x4 ParentTransform, Animations Anim, Mesh mesh)
+{
+
+	//Get the name of the current node
+	string NodeName(Root_Node.NodeName);
+
+	//Find the Animation we want
+	//Or give the default one which is at 
+	//[0] here
+	Animation curr_anim = Anim.AnimationList[0];
+	
+	//Takes the initial node transformation
+	Matrix4x4 NodeTransform(Root_Node.Transformations);
+
+	//TO DO :CHECK AGAIN
+	const VQS VQS_Node = curr_anim.FindAnimationNode(NodeName);
+
+	//Interpolate the scalling and generate the transformation matrix
+	Vector3D scaling;
+	ScalingInterpolation(scaling, AnimationTime, VQS_Node);
+	Matrix4x4 ScalingM;
+	ScalingM.Scale(scaling);
+	
+	//Interpolate the rotation and generate the transformation matrix
+	Quaternion rotationquat;
+	RotationInterpolation(rotationquat, AnimationTime, VQS_Node);
+	Matrix4x4 RotationM = rotationquat.GetMatrixRepresentation();
+	
+	//Interpolate the translation and generate the transformation matrix
+	Vector3D Translation;
+	TranslationInterpolation(Translation, AnimationTime, VQS_Node);
+	Matrix4x4 TranslationM;
+	TranslationM.Translate(Translation);
+
+	//Combining all the Matrices
+	NodeTransform = TranslationM * RotationM * ScalingM;
+
+
+	Matrix4x4 GlobalTransform = ParentTransform * NodeTransform;
+	
+	//if()
+
+}
+
+//Translation Interpolation
+void TranslationInterpolation(Vector3D& out, float AnimationTime , const VQS VQS_Node)
+{
+	if (VQS_Node.numpositionkeys == 1)
+	{
+		out = VQS_Node.PositionList[0].Position;
+		return;
+	}
+
+	UINT PositionIndex = FindTranslation(AnimationTime, VQS_Node);
+	UINT NextPositionIndex = PositionIndex + 1;
+	assert(NextPositionIndex < VQS_Node.numpositionkeys);
+	float deltatime = (float)(VQS_Node.PositionList[NextPositionIndex].time - VQS_Node.PositionList[PositionIndex].time);
+	float factor = AnimationTime - (float)VQS_Node.PositionList[PositionIndex].time / deltatime;
+	assert(factor >= 0.0f && factor <= 1.0f);
+	const Vector3D& start = VQS_Node.PositionList[PositionIndex].Position;
+	const Vector3D& end = VQS_Node.PositionList[NextPositionIndex].Position;
+
+	Vector3D delta = end - start;
+	out = start + factor * delta;
+
+}
+
+
+//Rotation Interpolation
+
+void RotationInterpolation(Quaternion& out, float AnimationTime , const VQS VQS_Node)
+{
+	if (VQS_Node.numrotationkeys == 1)
+	{
+		out = VQS_Node.RotationList[0].rotation;
+		return;
+	}
+
+	UINT RotationIndex = FindRotation(AnimationTime, VQS_Node);
+	UINT NextRotationIndex = RotationIndex + 1;
+	assert(NextRotationIndex < VQS_Node.numrotationkeys);
+	float deltatime = (float)(VQS_Node.RotationList[NextRotationIndex].time - VQS_Node.RotationList[RotationIndex].time);
+	float factor = AnimationTime - (float)VQS_Node.RotationList[RotationIndex].time / deltatime;
+	assert(factor >= 0.0f && factor <= 1.0f);
+	const Quaternion& StartRotationQuat = VQS_Node.RotationList[RotationIndex].rotation;
+	const Quaternion& EndRotationQuat = VQS_Node.RotationList[NextRotationIndex].rotation;
+
+	out = QuatSlerp(StartRotationQuat, EndRotationQuat, factor);
+	out.normalise();
+}
+
+//Scaling Interpolation
+void ScalingInterpolation(Vector3D& out, float AnimationTime , const VQS VQS_Node)
+{
+	if (VQS_Node.numscalekeys == 1)
+	{
+		out = VQS_Node.UniformScaleList[0].Scale;
+		return;
+	}
+
+	UINT ScalingIndex = FindScale(AnimationTime, VQS_Node);
+	UINT NextScalingIndex = ScalingIndex + 1;
+	assert(NextScalingIndex < VQS_Node.numscalekeys);
+	float deltatime = (float)(VQS_Node.UniformScaleList[NextScalingIndex].time - VQS_Node.UniformScaleList[ScalingIndex].time);
+	float factor = AnimationTime - (float)VQS_Node.UniformScaleList[ScalingIndex].time / deltatime;
+	assert(factor >= 0.0f && factor <= 1.0f);
+	const Vector3D& start = VQS_Node.UniformScaleList[ScalingIndex].Scale;
+	const Vector3D& end = VQS_Node.UniformScaleList[NextScalingIndex].Scale;
+
+	Vector3D delta = end - start;
+	out = start + factor * delta;
+}
+
+
+UINT FindRotation(float AnimationTime, const VQS vqs_node)
+{
+	assert(vqs_node.numrotationkeys > 0);
+
+	for (UINT i = 0; i < vqs_node.numrotationkeys; ++i)
+	{
+		if (AnimationTime < (float)vqs_node.RotationList[i + 1].time)
+		{
+			return i;
+		}
+	}
+
+	assert(0);
+
+	return 0;
+}
+
+
+UINT FindTranslation(float AnimationTime, const VQS vqs_node)
+{
+	assert(vqs_node.numpositionkeys > 0);
+
+	for (UINT i = 0; i < vqs_node.numpositionkeys; ++i)
+	{
+		if (AnimationTime < (float)vqs_node.PositionList[i + 1].time)
+		{
+			return i;
+		}
+	}
+
+	assert(0);
+
+	return 0;
+}
+
+
+UINT FindScale(float AnimationTime, const VQS vqs_node)
+{
+	assert(vqs_node.numscalekeys > 0);
+
+	for (UINT i = 0; i < vqs_node.numscalekeys; ++i)
+	{
+		if (AnimationTime < (float)vqs_node.UniformScaleList[i + 1].time)
+		{
+			return i;
+		}
+	}
+
+	assert(0);
+
+	return 0;
 }

@@ -148,40 +148,49 @@ Scene* ResourceManager::_LoadScene(const std::string& meshSceneName)
 
 					//Position of the node
 					int num_positions = scene->mAnimations[i]->mChannels[i]->mNumPositionKeys;
+					animScene.AnimationList[i].ChannelList[j].numpositionkeys = num_positions;
 					animScene.AnimationList[i].ChannelList[j].PositionList.resize(num_positions);
 
 					for (int k = 0; k < num_positions; ++k)
 					{
-						animScene.AnimationList[i].ChannelList[j].PositionList[k].x = scene->mAnimations[i]->mChannels[j]->mPositionKeys->mValue.x;
-						animScene.AnimationList[i].ChannelList[j].PositionList[k].y = scene->mAnimations[i]->mChannels[j]->mPositionKeys->mValue.y;
-						animScene.AnimationList[i].ChannelList[j].PositionList[k].z = scene->mAnimations[i]->mChannels[j]->mPositionKeys->mValue.z;
+						animScene.AnimationList[i].ChannelList[j].PositionList[k].Position.x = scene->mAnimations[i]->mChannels[j]->mPositionKeys->mValue.x;
+						animScene.AnimationList[i].ChannelList[j].PositionList[k].Position.y = scene->mAnimations[i]->mChannels[j]->mPositionKeys->mValue.y;
+						animScene.AnimationList[i].ChannelList[j].PositionList[k].Position.z = scene->mAnimations[i]->mChannels[j]->mPositionKeys->mValue.z;
+						
+						animScene.AnimationList[i].ChannelList[j].PositionList[k].time = scene->mAnimations[i]->mChannels[j]->mPositionKeys->mTime;
 
 					}
 
 					//Quaternion Rotation values of the node
 
 					int num_rotations = scene->mAnimations[i]->mChannels[i]->mNumRotationKeys;
+					animScene.AnimationList[i].ChannelList[j].numrotationkeys = num_rotations;
 					animScene.AnimationList[i].ChannelList[j].RotationList.resize(num_rotations);
 
 					for (int k = 0; k < num_rotations; ++k)
 					{
-						animScene.AnimationList[i].ChannelList[j].RotationList[k].r = scene->mAnimations[i]->mChannels[j]->mRotationKeys->mValue.w;
-						animScene.AnimationList[i].ChannelList[j].RotationList[k].i = scene->mAnimations[i]->mChannels[j]->mRotationKeys->mValue.x;
-						animScene.AnimationList[i].ChannelList[j].RotationList[k].j = scene->mAnimations[i]->mChannels[j]->mRotationKeys->mValue.y;
-						animScene.AnimationList[i].ChannelList[j].RotationList[k].k = scene->mAnimations[i]->mChannels[j]->mRotationKeys->mValue.z;
+						animScene.AnimationList[i].ChannelList[j].RotationList[k].rotation.r = scene->mAnimations[i]->mChannels[j]->mRotationKeys->mValue.w;
+						animScene.AnimationList[i].ChannelList[j].RotationList[k].rotation.i = scene->mAnimations[i]->mChannels[j]->mRotationKeys->mValue.x;
+						animScene.AnimationList[i].ChannelList[j].RotationList[k].rotation.j = scene->mAnimations[i]->mChannels[j]->mRotationKeys->mValue.y;
+						animScene.AnimationList[i].ChannelList[j].RotationList[k].rotation.k = scene->mAnimations[i]->mChannels[j]->mRotationKeys->mValue.z;
+						
+						animScene.AnimationList[i].ChannelList[j].RotationList[k].time = scene->mAnimations[i]->mChannels[j]->mRotationKeys->mTime;
 
 					}
 
 					//Scale values for the node
 
 					int num_scaling = scene->mAnimations[i]->mChannels[i]->mNumScalingKeys;
+					animScene.AnimationList[i].ChannelList[j].numscalekeys = num_scaling;
 					animScene.AnimationList[i].ChannelList[j].UniformScaleList.resize(num_scaling);
 
 					for (int k = 0; k < num_scaling; ++k)
 					{
-						animScene.AnimationList[i].ChannelList[j].UniformScaleList[k].x = scene->mAnimations[i]->mChannels[j]->mScalingKeys->mValue.x;
-						animScene.AnimationList[i].ChannelList[j].UniformScaleList[k].y = scene->mAnimations[i]->mChannels[j]->mScalingKeys->mValue.y;
-						animScene.AnimationList[i].ChannelList[j].UniformScaleList[k].z = scene->mAnimations[i]->mChannels[j]->mScalingKeys->mValue.z;
+						animScene.AnimationList[i].ChannelList[j].UniformScaleList[k].Scale.x = scene->mAnimations[i]->mChannels[j]->mScalingKeys->mValue.x;
+						animScene.AnimationList[i].ChannelList[j].UniformScaleList[k].Scale.y = scene->mAnimations[i]->mChannels[j]->mScalingKeys->mValue.y;
+						animScene.AnimationList[i].ChannelList[j].UniformScaleList[k].Scale.z = scene->mAnimations[i]->mChannels[j]->mScalingKeys->mValue.z;
+
+						animScene.AnimationList[i].ChannelList[j].UniformScaleList[k].time = scene->mAnimations[i]->mChannels[j]->mScalingKeys->mTime;
 
 					}
 				}
@@ -191,8 +200,11 @@ Scene* ResourceManager::_LoadScene(const std::string& meshSceneName)
 
 
 
+			meshScene->m_Animation = animScene;
+
 		}
 
+		//	cout << meshScene->m_Animation.mNumAnimations << endl;
 
 		return meshScene;
 	}

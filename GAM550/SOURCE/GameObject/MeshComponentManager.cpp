@@ -18,6 +18,10 @@ void MeshComponentManager::Update(float dt)
 		mComp->m_UpdatedLastFrame = false;
 		if (mComp->IsDirty()) {
 
+			//CALL ANIMATION PART HERE
+			//Scene S;
+			//cout << S.m_Animation.AnimationList[0].Duration << endl;
+
 			mComp->m_IsDirty = false;
 			mComp->m_UpdatedLastFrame = true;
 		}
