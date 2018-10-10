@@ -17,14 +17,17 @@ AI_Combat::~AI_Combat(){
 }
 
 void AI_Combat::OnEnter(){
-
+	// Init
+	m_pBT->Init(*m_pBT->GetRootNode(), nullptr);
 }
 
 void AI_Combat::OnUpdate(float dt) {
+	m_pBT->Tick();
 
 }
 
 void AI_Combat::OnExit(){
+	m_pBT->ClearScheduler();
 
 }
 

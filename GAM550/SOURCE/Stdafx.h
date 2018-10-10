@@ -193,6 +193,7 @@ typedef unsigned int InfectGUID;
 // Action Nodes
 #include <AI\BT\Action.h>
 #include <AI\BT\MoveToRandom.h>
+#include <AI\BT\Attack.h>
 
 #include <AI\BT\BehaviorTree.h>
 #pragma endregion

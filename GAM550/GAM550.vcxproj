@@ -23,6 +23,7 @@
     <ClCompile Include="SOURCE\AI\AI_Factory.cpp" />
     <ClCompile Include="SOURCE\AI\BrainComponent.cpp" />
     <ClCompile Include="SOURCE\AI\BrainComponentManager.cpp" />
+    <ClCompile Include="SOURCE\AI\BT\Attack.cpp" />
     <ClCompile Include="SOURCE\AI\BT\BehaviorTree.cpp" />
     <ClCompile Include="SOURCE\AI\BT\Conditional_Loop.cpp" />
     <ClCompile Include="SOURCE\AI\BT\MoveToRandom.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="SOURCE\AI\BrainComponent.h" />
     <ClInclude Include="SOURCE\AI\BrainComponentManager.h" />
     <ClInclude Include="SOURCE\AI\BT\Action.h" />
+    <ClInclude Include="SOURCE\AI\BT\Attack.h" />
     <ClInclude Include="SOURCE\AI\BT\Behavior.h" />
     <ClInclude Include="SOURCE\AI\BT\BehaviorTree.h" />
     <ClInclude Include="SOURCE\AI\BT\Composite.h" />
@@ -217,7 +219,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{790075A4-280A-45AE-8F51-CA3F8B6A0724}</ProjectGuid>
     <RootNamespace>GAM550</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

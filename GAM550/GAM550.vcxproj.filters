@@ -363,6 +363,9 @@
     <ClCompile Include="SOURCE\GameObject\DirectionalLightComponent.cpp">
       <Filter>Source Files\GameObject\Components\Light</Filter>
     </ClCompile>
+    <ClCompile Include="SOURCE\AI\BT\Attack.cpp">
+      <Filter>Source Files\AI\BehaviorTree\Actions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOURCE\EventManager.h">
@@ -676,6 +679,9 @@
     </ClInclude>
     <ClInclude Include="SOURCE\GameObject\DirectionalLightComponent.h">
       <Filter>Source Files\GameObject\Components\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SOURCE\AI\BT\Attack.h">
+      <Filter>Source Files\AI\BehaviorTree\Actions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
