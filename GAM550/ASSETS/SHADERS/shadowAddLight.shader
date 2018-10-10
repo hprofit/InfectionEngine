@@ -26,7 +26,7 @@ Texture2D WorldPosTexture : register(t0);
 Texture2D NormalTexture : register(t1);
 Texture2D DiffuseTexture : register(t2);
 Texture2D SpecularTexture : register(t3);
-Texture2D ShadowMapTexture : register(t4);
+Texture2D ShadowMapTexture : register(t5);
 SamplerState ss;
 
 
@@ -69,7 +69,7 @@ float4 PShader(PixelInput input) : SV_TARGET
 	shadowMapUV.y = 1.0f - shadowMapUV.y;
 	float shadowDepth = ShadowMapTexture.Sample(ss, shadowMapUV).x;
 	float pointDepth = shadowPos.z / shadowPos.w;
-	shadowMapUV.y = t;
+	//shadowMapUV.y = t;
 	// In Shadow from this light
 	if (shadowDepth < (pointDepth - EPSILON) || shadowPos.w <= 0 || shadowMapUV.x < 0 || shadowMapUV.x > 1 || shadowMapUV.y < 0 || shadowMapUV.y > 1) {
 		return float4(0, 0, 0, 0);
@@ -106,7 +106,7 @@ float4 PShader(PixelInput input) : SV_TARGET
 	float4 diffuse = max(dot(normal, L), 0) * diffuseColor * LColor;
 	float4 specular = pow(max(dot(H, normal), 0), specularCoef) * specularColor * LColor;
 
-	float4 finalColor = (diffuse + specular) * attVal;
+	float4 finalColor = (diffuse + specular);// *attVal;
 	finalColor.a = 1;
 	return finalColor;
 }

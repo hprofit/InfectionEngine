@@ -210,10 +210,6 @@ void BackBufferRenderTarget::Release()
 		mp_RasterState->Release();
 }
 
-void BackBufferRenderTarget::BindToRead() const
-{
-}
-
 void BackBufferRenderTarget::BindRenderTarget(ID3D11DeviceContext* deviceContext) const
 {
 	// Set the depth stencil state.
@@ -221,13 +217,6 @@ void BackBufferRenderTarget::BindRenderTarget(ID3D11DeviceContext* deviceContext
 
 	// Bind the render target view and depth stencil buffer to the output render pipeline.
 	deviceContext->OMSetRenderTargets(1, &mp_BackBuffer, mp_DepthStencilView);
-
-	// Now set the rasterizer state.
-	deviceContext->RSSetState(mp_RasterState);
-}
-
-void BackBufferRenderTarget::UnbindRenderTarget() const
-{
 }
 
 void BackBufferRenderTarget::ClearRenderTarget(ID3D11DeviceContext * deviceContext, const Color & color)

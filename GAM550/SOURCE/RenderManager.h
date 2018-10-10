@@ -68,8 +68,8 @@ public:
 	// Binds the D3DHandler's back buffer for drawing
 	void BindBackBuffer();
 
-	// Binds the D3DHandler's deferred buffer for drawing and binds the deferred first pass shader
-	// Enables depth testing and disables alpha blending
+	// Enables back face culling, binds the D3DHandler's deferred buffer for drawing and binds
+	// the deferred first pass shader, enables depth testing and disables alpha blending
 	void PrepDeferredPass();
 
 	// Binds the D3DHandler's secondary buffer for drawing
@@ -95,7 +95,7 @@ public:
 	// The D3DHandler's secondary buffer texture is bound as the active texture and rendered 
 	void RenderSecondPassBuffer();
 
-	// Binds the shadow casting light shader, enables depth testing, disables alpha blending
+	// Enables front face culling, binds the shadow casting light shader, enables depth testing, disables alpha blending
 	void PrepShadowCastingLightPass();
 
 	// Binds the shadow shader, sets the D3DHandler's deferred buffer as the active textures, 

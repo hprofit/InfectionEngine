@@ -131,6 +131,7 @@ void RenderManager::BindBackBuffer()
 
 void RenderManager::PrepDeferredPass()
 {
+	mp_D3D->EnableBackFaceCulling();
 	mp_D3D->BindDeferredBuffer();
 	mp_ShaderProgramDeferred->BindShader();
 
@@ -271,6 +272,7 @@ void RenderManager::RenderSecondPassBuffer()
 
 void RenderManager::PrepShadowCastingLightPass()
 {
+	mp_D3D->EnableFrontFaceCulling();
 	mp_ShaderProgramShadowCastingLight->BindShader();
 	mp_D3D->EnableDepth();
 	mp_D3D->DisableAlpha();

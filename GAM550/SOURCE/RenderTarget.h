@@ -47,22 +47,12 @@ public:
 
 	void Release();
 
-	// Binds the current FBO to be read from
-	void BindToRead() const;
-
 	/*
 		Binds this RenderTarget, setting it as the current render target. Anything
 		rendered after this method will be rendered to this RenderTarget
 		and not to the screen.
 	*/
 	void BindRenderTarget(ID3D11DeviceContext* deviceContext) const;
-
-	/*
-		Unbinds this RenderTarget, setting the default RenderTarget as the current
-		render target. Anything rendered after this will be rendered to the
-		screen, not this RenderTarget.
-	*/
-	void UnbindRenderTarget() const;
 
 	void ClearRenderTarget(ID3D11DeviceContext* deviceContext, const Color& color = Color(0,0,0,1));
 };

@@ -17,14 +17,18 @@ protected:
 	ID3D11Device *mp_Device;
 	ID3D11DeviceContext *mp_DeviceContext;
 
-	BackBufferRenderTarget* mp_BackBuffer;
-	RenderTarget* mp_DeferredRenderTarget;
-	RenderTarget* mp_SecondPassRenderTarget;
+	BackBufferRenderTarget* mp_BackBuffer;	// <- move these render targets to the RenderManager
+	RenderTarget* mp_DeferredRenderTarget;	// <- move these render targets to the RenderManager
+	RenderTarget* mp_SecondPassRenderTarget;// <- move these render targets to the RenderManager
 	D3D11_VIEWPORT m_viewport;
+
+	ID3D11RasterizerState* mp_RasterStateBackCulling;
+	ID3D11RasterizerState* mp_RasterStateFrontCulling;
 
 	int m_VideoCardMemory;
 	char m_VideoCardDescription[128];
 
+	bool _CreateRasterStates();
 public:
 	friend class RenderManager;
 	D3DHandler();
@@ -66,6 +70,10 @@ public:
 	void EnableDepth();
 
 	void DisableDepth();
+
+	void EnableFrontFaceCulling();
+
+	void EnableBackFaceCulling();
 };
 
 #endif

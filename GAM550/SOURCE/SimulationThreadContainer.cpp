@@ -51,11 +51,17 @@ bool StartSimulationCommand::execute() const
 	if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
 		tcpSun->Move(Infect::GetFrameTime() *-30.f*tcpSun->Forward());
 	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_K)) {
+	if (INFECT_INPUT.IsKeyPressed(DIK_I)) {
 		tcpSun->Move(Infect::GetFrameTime() *30.f * tcpSun->Up());
 	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_M)) {
+	if (INFECT_INPUT.IsKeyPressed(DIK_K)) {
 		tcpSun->Move(Infect::GetFrameTime() *-30.f*tcpSun->Up());
+	}
+	if (INFECT_INPUT.IsKeyPressed(DIK_J)) {
+		tcpSun->RotateY(Infect::GetFrameTime() * 30.f);
+	}
+	if (INFECT_INPUT.IsKeyPressed(DIK_L)) {
+		tcpSun->RotateY(Infect::GetFrameTime() * -30.f);
 	}
 
 

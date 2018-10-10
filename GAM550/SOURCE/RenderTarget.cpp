@@ -215,28 +215,15 @@ void RenderTarget::Release()
 	delete[] m_shaderResourceViews;
 }
 
-void RenderTarget::BindToRead() const
-{
-
-}
-
 void RenderTarget::BindRenderTarget(ID3D11DeviceContext* deviceContext) const
 {
 	// Bind the render target view and depth stencil buffer to the output render pipeline.
 	deviceContext->OMSetRenderTargets(m_NumTargets, m_renderTargetViews, mp_DepthStencilView);
 
-	// Now set the rasterizer state.
-	deviceContext->RSSetState(mp_RasterState);
-
 	// Set the depth stencil state.
 	deviceContext->OMSetDepthStencilState(mp_DepthStencilState, 1);
 
 	deviceContext->RSSetViewports(1, &m_viewport);
-}
-
-void RenderTarget::UnbindRenderTarget() const
-{
-	
 }
 
 void RenderTarget::ClearRenderTarget(ID3D11DeviceContext* deviceContext, const Color& color)

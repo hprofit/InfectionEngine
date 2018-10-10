@@ -7,6 +7,31 @@ Author: <Holden Profit>
 
 #include <Stdafx.h>
 
+bool D3DHandler::_CreateRasterStates()
+{
+	D3D11_RASTERIZER_DESC rasterDesc;
+	// Setup the raster description which will determine how and what polygons will be drawn.
+	rasterDesc.AntialiasedLineEnable = true;
+	rasterDesc.CullMode = D3D11_CULL_BACK;
+	rasterDesc.DepthBias = 0;
+	rasterDesc.DepthBiasClamp = 0.0f;
+	rasterDesc.DepthClipEnable = true;
+	rasterDesc.FillMode = D3D11_FILL_SOLID;
+	rasterDesc.FrontCounterClockwise = true;
+	rasterDesc.MultisampleEnable = true;
+	rasterDesc.ScissorEnable = false;
+	rasterDesc.SlopeScaledDepthBias = 0.0f;
+
+	if (FAILED(mp_Device->CreateRasterizerState(&rasterDesc, &mp_RasterStateBackCulling)))
+		return false;
+
+	rasterDesc.FrontCounterClockwise = false;
+	rasterDesc.CullMode = D3D11_CULL_FRONT;
+	if (FAILED(mp_Device->CreateRasterizerState(&rasterDesc, &mp_RasterStateFrontCulling)))
+		return false;
+	return true;
+}
+
 D3DHandler::D3DHandler()
 {
 }
@@ -269,6 +294,8 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 	mp_DeviceContext->RSSetViewports(1, &m_viewport);
 #pragma endregion
 
+	_CreateRasterStates();
+
 	return true;
 }
 
@@ -294,6 +321,24 @@ void D3DHandler::CleanD3D(void)
 
 	if (mp_SecondPassRenderTarget)
 		mp_SecondPassRenderTarget->Release();
+
+	if (mp_RasterStateFrontCulling)
+		mp_RasterStateFrontCulling->Release();
+
+	if (mp_RasterStateBackCulling)
+		mp_RasterStateBackCulling->Release();
+
+	mp_SwapChain = nullptr;
+	mp_Device = nullptr;
+	mp_DeviceContext = nullptr;
+	delete mp_BackBuffer;
+	mp_BackBuffer = nullptr;
+	delete mp_DeferredRenderTarget;
+	mp_DeferredRenderTarget = nullptr;
+	delete mp_SecondPassRenderTarget;
+	mp_SecondPassRenderTarget = nullptr;
+	mp_RasterStateFrontCulling = nullptr;
+	mp_RasterStateBackCulling = nullptr;
 }
 
 void D3DHandler::BindBackBuffer() const
@@ -364,4 +409,14 @@ void D3DHandler::EnableDepth()
 void D3DHandler::DisableDepth()
 {
 	mp_DeviceContext->OMSetDepthStencilState(mp_BackBuffer->DepthDisabledStencilState(), 1);
+}
+
+void D3DHandler::EnableFrontFaceCulling()
+{
+	mp_DeviceContext->RSSetState(mp_RasterStateFrontCulling);
+}
+
+void D3DHandler::EnableBackFaceCulling()
+{
+	mp_DeviceContext->RSSetState(mp_RasterStateBackCulling);
 }
