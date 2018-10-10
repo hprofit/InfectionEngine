@@ -39,7 +39,7 @@ bool StartRenderCommand::execute() const
 	// END DO NOT USE
 
 	INFECT_RENDERER.PrepShadowCastingLightPass();
-	INFECT_GOM.RenderShadowCastingLights();		// Requires visibility check
+	INFECT_GOM.FillShadowCastingLightsShadowMaps();		// Requires visibility check
 
 	INFECT_RENDERER.PrepDeferredPass();
 	INFECT_GOM.RenderCameras();					// Requires visibility check
@@ -51,10 +51,18 @@ bool StartRenderCommand::execute() const
 	}
 	// Render the whole deferred shading and lighting
 	else {
+		// Render ambient lighting to second buffer
 		INFECT_RENDERER.BindSecondPassBuffer();
 		INFECT_RENDERER.RenderDeferredBufferAmbientOnly();
+
+		INFECT_RENDERER.PrepShadowCastingLightFinal();
+		INFECT_GOM.AddLightFromShadowCastingLights();
+
+		// Render each non-shadow casting light to the second buffer using the deferred second pass
 		INFECT_RENDERER.PrepDeferredFinal();
 		INFECT_GOM.RenderLights();
+
+		// Render the contents of the second buffer to the back buffer
 		INFECT_RENDERER.BindBackBuffer();
 		INFECT_RENDERER.RenderSecondPassBuffer();
 	}

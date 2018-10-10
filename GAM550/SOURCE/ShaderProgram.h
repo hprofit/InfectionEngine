@@ -29,11 +29,14 @@ public:
 	void Initialize(ID3D11Device*, std::string vertexShaderFile, std::string pixelShaderFile);
 	void Initialize(ID3D11Device*, std::string vertexShaderFile, std::string pixelShaderFile, std::string vertexShaderFunc = "VShader", std::string pixelShaderFunc = "PShader");
 
+	// Bind this shader program for use
 	void BindShader();
+	// Releases all shaders and constant buffers before setting pointers to null
 	void Release();
 
 	VertexShader* VS() { return mp_VertexShader; }
 	PixelShader* PS() { return mp_PixelShader; }
+	// Returns a pointer to this ShaderProgram's constant buffer
 	ConstantBufferWrapper<CBufferType>* CB() { return mp_CBuffer; }
 };
 

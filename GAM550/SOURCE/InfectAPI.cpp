@@ -29,6 +29,8 @@ namespace Infect {
 			return 1;
 		if (!INFECT_RENDERER.LoadShader("shadowCastingLight.shader"))  // TODO: MOVE THIS
 			return 1;
+		if (!INFECT_RENDERER.LoadShader("shadowAddLight.shader"))  // TODO: MOVE THIS
+			return 1;
 
 		INFECT_INPUT.Init(hInstance);
 		INFECT_RESOURCES.Init();

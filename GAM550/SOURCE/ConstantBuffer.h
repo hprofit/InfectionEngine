@@ -44,6 +44,15 @@ struct ShadowCB : public ConstantBuffer {
 	Matrix4x4 MatFinal;
 };
 
+struct ShadowAddLightCB : public ConstantBuffer {
+	Matrix4x4 ShadowMatrix;
+	Matrix4x4 ModelMatrix;
+	Vector3D CameraPosition;
+	Vector3D LightPosition;	// x, y, z, A
+	Color LightColor;		// r, g, b, B
+	Vector3D LIDHW;	// Intensity, Distance, Render Target Height, Render Target Width
+};
+
 class CBW {
 protected:
 	ID3D11Buffer* mp_CBuffer;	// Pointer to DirectX Constant Buffer object

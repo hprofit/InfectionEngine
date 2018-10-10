@@ -105,7 +105,7 @@ void GameObjectManager::RenderLights()
 	}
 }
 
-void GameObjectManager::RenderShadowCastingLights()
+void GameObjectManager::FillShadowCastingLightsShadowMaps()
 {
 	for (unsigned int lightIdx = 0; lightIdx < mp_ShadowCastingLights.size(); ++lightIdx) {
 		if (!mp_ShadowCastingLights[lightIdx]->IsActive())	continue;
@@ -120,8 +120,17 @@ void GameObjectManager::RenderShadowCastingLights()
 		// Render all objects to fill out light's depth buffer
 		for (unsigned int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {
 			if (mp_GameObjects[objIdx]->IsActive() && mp_ShadowCastingLights[lightIdx] != mp_GameObjects[objIdx])
-				INFECT_RENDERER.RenderShadowCastingLight((*mp_ShadowCastingLights[lightIdx]), (*mp_GameObjects[objIdx]));
+				INFECT_RENDERER.RenderObjectToLightShadowMap((*mp_ShadowCastingLights[lightIdx]), (*mp_GameObjects[objIdx]));
 		}
+	}
+}
+
+void GameObjectManager::AddLightFromShadowCastingLights()
+{
+	for (unsigned int lightIdx = 0; lightIdx < mp_ShadowCastingLights.size(); ++lightIdx) {
+		if (!mp_ShadowCastingLights[lightIdx]->IsActive())	continue;
+		// TODO: Remove this hard camera setting
+		INFECT_RENDERER.AddSCLInfluenceToScene((*mp_Cameras[0]), (*mp_ShadowCastingLights[lightIdx]));
 	}
 }
 

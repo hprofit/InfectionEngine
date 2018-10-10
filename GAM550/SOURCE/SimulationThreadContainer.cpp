@@ -36,21 +36,22 @@ bool StartSimulationCommand::execute() const
 
 #pragma region TestStuff
 
-	TransformComponent* tcpCamera = INFECT_GOM.GetGameObject(0)->GetComponent<TransformComponent>();  // 2
+	TransformComponent* tcpCamera = INFECT_GOM.GetGameObject(0)->GetComponent<TransformComponent>();
 
-	//TransformComponent* tcpLight = INFECT_GOM.GetGameObject(2)->GetComponent<TransformComponent>();	// 3
-	//if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
-	//	tcpLight->Move(Infect::GetFrameTime() *30.f*tcpLight->Right());
-	//}
-	//if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
-	//	tcpLight->Move(Infect::GetFrameTime() *-30.f*tcpLight->Right());
-	//}
-	//if (INFECT_INPUT.IsKeyPressed(DIK_UP)) {
-	//	tcpLight->Move(Infect::GetFrameTime() *30.f * tcpLight->Up());
-	//}
-	//if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
-	//	tcpLight->Move(Infect::GetFrameTime() *-30.f*tcpLight->Up());
-	//}
+	TransformComponent* tcpSun = INFECT_GOM.GetGameObject(1)->GetComponent<TransformComponent>();	// 3
+	if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
+		tcpSun->Move(Infect::GetFrameTime() *30.f*tcpSun->Right());
+	}
+	if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
+		tcpSun->Move(Infect::GetFrameTime() *-30.f*tcpSun->Right());
+	}
+	if (INFECT_INPUT.IsKeyPressed(DIK_UP)) {
+		tcpSun->Move(Infect::GetFrameTime() *30.f * tcpSun->Forward());
+	}
+	if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
+		tcpSun->Move(Infect::GetFrameTime() *-30.f*tcpSun->Forward());
+	}
+
 
 	if (INFECT_INPUT.IsKeyTriggered(DIK_P) || INFECT_INPUT.IsButtonTriggered(XBOX_BTN_BACK)) {
 		INFECT_RENDERER.NextRenderMode();

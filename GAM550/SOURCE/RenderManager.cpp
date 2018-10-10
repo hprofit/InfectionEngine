@@ -119,6 +119,7 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 		mp_ShaderProgramQuad = new ShaderProgram<QuadCB>();
 		mp_ShaderProgramDeferredFinal = new ShaderProgram<DeferredFinalCB>();
 		mp_ShaderProgramShadowCastingLight = new ShaderProgram<ShadowCB>();
+		mp_ShaderProgramShadowAddLight = new ShaderProgram<ShadowAddLightCB>();
 	}
 	return result;
 }
@@ -158,9 +159,8 @@ void RenderManager::RenderDebugBuffers()
 	mp_ShaderProgramQuad->BindShader();
 	mp_D3D->DisableDepth();
 	mp_D3D->DisableAlpha();
-	Matrix4x4 M = Matrix4x4::Scale(2, 2, 1);
 	QuadCB& cb = mp_ShaderProgramQuad->CB()->BufferData();
-	cb.ModelMatrix = Matrix4x4::Transpose(M);
+	cb.ModelMatrix = Matrix4x4::Scale(2, 2, 1);
 	cb.Ambient = m_Ambient;
 	
 	ID3D11ShaderResourceView* pResource = nullptr;
@@ -276,6 +276,17 @@ void RenderManager::PrepShadowCastingLightPass()
 	mp_D3D->DisableAlpha();
 }
 
+void RenderManager::PrepShadowCastingLightFinal()
+{
+	mp_ShaderProgramShadowAddLight->BindShader();
+
+	ID3D11ShaderResourceView** pTextures = mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews();
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, mp_D3D->GetDeferredRenderTarget()->GetNumViews(), pTextures);
+
+	mp_D3D->DisableDepth();
+	mp_D3D->EnableAlpha();
+}
+
 void RenderManager::ClearScreen(void)
 {
 	mp_D3D->ClearBackBuffer(m_ClearColor);
@@ -357,7 +368,7 @@ void RenderManager::RenderLight(const GameObject & pGOCamera, const GameObject &
 	_RenderScene(pPointLightComp->GetScene());
 }
 
-void RenderManager::RenderShadowCastingLight(const GameObject& goLight, const GameObject& go)
+void RenderManager::RenderObjectToLightShadowMap(const GameObject& goLight, const GameObject& go)
 {
 	if (!_GameObjectHasRenderableComponent(go))
 		return;
@@ -379,6 +390,35 @@ void RenderManager::RenderShadowCastingLight(const GameObject& goLight, const Ga
 	_RenderScene(pMeshComp->GetScene());
 }
 
+void RenderManager::AddSCLInfluenceToScene(const GameObject & pGOCamera, GameObject & goLight)
+{
+	const TransformComponent * pTransComp = goLight.GetComponent<TransformComponent>();
+	DirectionalLightComponent * pLightComp = goLight.GetComponent<DirectionalLightComponent>();
+	ShadowAddLightCB& cb = mp_ShaderProgramShadowAddLight->CB()->BufferData();
+
+	cb.ShadowMatrix = pLightComp->GetShadowMatrix();
+	cb.ModelMatrix = Matrix4x4::Scale(2, 2, 1);
+	cb.CameraPosition = pGOCamera.GetComponent<TransformComponent>()->WorldPosition();
+	cb.LightPosition = pTransComp->WorldPosition();
+	cb.LightPosition.w = pLightComp->LightA();
+	cb.LightColor = pLightComp->GetColor();
+	cb.LightColor.a = pLightComp->LightB();
+	cb.LIDHW.x = pLightComp->Intensity();
+	cb.LIDHW.y = pLightComp->Distance();
+	cb.LIDHW.z = float(m_WindowSettings.Height);
+	cb.LIDHW.w = float(m_WindowSettings.Width);
+
+	mp_ShaderProgramShadowAddLight->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+	// set the new values for the constant buffer
+	mp_ShaderProgramShadowAddLight->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+	ID3D11ShaderResourceView* pShadowMap = pLightComp->GetRenderTarget()->GetShaderResourceViews()[0];
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(mp_D3D->GetDeferredRenderTarget()->GetNumViews(), 1, &pShadowMap);
+
+	// do 3D rendering to the currently bound buffer here
+	_RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+}
+
 bool RenderManager::LoadShader(std::string shaderName)
 {
 	std::string filePath = INFECT_GAME_CONFIG.ShadersDir() + shaderName;
@@ -396,6 +436,9 @@ bool RenderManager::LoadShader(std::string shaderName)
 			break;
 		case 3:
 			mp_ShaderProgramShadowCastingLight->Initialize(mp_D3D->mp_Device, filePath);
+			break;
+		case 4:
+			mp_ShaderProgramShadowAddLight->Initialize(mp_D3D->mp_Device, filePath);
 			break;
 		default:
 			break;

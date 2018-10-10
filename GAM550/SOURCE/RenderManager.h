@@ -34,11 +34,12 @@ private:
 
 	unsigned int mShaderCount = 0;		// Horrible, lame way of knowing which shader we've loaded already, REPLACE THIS
 	//ShaderProgram* mp_ShaderProgramDefault;	// Forward rendering shader, no longer used
-	ShaderProgram<MainCB>* mp_ShaderProgramDeferred;				// First pass deferred shader
-	ShaderProgram<QuadCB>* mp_ShaderProgramQuad;					// Quad rendering shader
-	ShaderProgram<DeferredFinalCB>* mp_ShaderProgramDeferredFinal;	// Second pass deferred shader
-	ShaderProgram<ShadowCB>* mp_ShaderProgramShadowCastingLight;	// Shadow casting light shader
-	ShaderProgram<MainCB>* mp_ShaderProgramParticles;				// 
+	ShaderProgram<MainCB>* mp_ShaderProgramDeferred;					// First pass deferred shader
+	ShaderProgram<QuadCB>* mp_ShaderProgramQuad;						// Quad rendering shader
+	ShaderProgram<DeferredFinalCB>* mp_ShaderProgramDeferredFinal;		// Second pass deferred shader
+	ShaderProgram<ShadowCB>* mp_ShaderProgramShadowCastingLight;		// Shadow casting light shader
+	ShaderProgram<ShadowAddLightCB>* mp_ShaderProgramShadowAddLight;	// Shadow add light shader - determines wither to add a given light's influence to a pixel based on that light's shadowmap
+	ShaderProgram<MainCB>* mp_ShaderProgramParticles;					// 
 
 	RenderMode m_RenderMode;			// DEBUG ONLY - which layer of the deferred buffer to render
 
@@ -97,6 +98,10 @@ public:
 	// Binds the shadow casting light shader, enables depth testing, disables alpha blending
 	void PrepShadowCastingLightPass();
 
+	// Binds the shadow shader, sets the D3DHandler's deferred buffer as the active textures, 
+	// disables depth testing, and enables alpha blending
+	void PrepShadowCastingLightFinal();
+
 	// Clears the back buffer (screen) as well as any other built in buffers the D3DHandler has
 	void ClearScreen(void);
 
@@ -109,8 +114,13 @@ public:
 	// Renders a light given a specific camera
 	void RenderLight(const GameObject& pGOCamera, const GameObject& pGOLight);
 
-	// Renders an object given a specific light
-	void RenderShadowCastingLight(const GameObject& goLight, const GameObject& go);
+	// Given a shadow casting light and a game object, renders the game object
+	// to the shadow casting light's shadow map/depth buffer
+	void RenderObjectToLightShadowMap(const GameObject& goLight, const GameObject& go);
+
+	// Given a shadow casting light, re-renders the scene adding the light's
+	// influence to any affected pixels (post deferred G-Buffer rendering, pre deferred-shading)
+	void AddSCLInfluenceToScene(const GameObject & pGOCamera, GameObject& goLight);
 
 	bool LoadShader(std::string shaderName);
 
