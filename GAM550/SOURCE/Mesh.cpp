@@ -312,6 +312,12 @@ void Mesh::FinishMesh()
 void ReadBoneHeirarchyTransforms(float AnimationTime, const Node Root_Node
 	, Matrix4x4 ParentTransform, Animations Anim);
 
+UINT FindRotation(float AnimationTime, const VQS vqs_node);
+
+UINT FindScale(float AnimationTime, const VQS vqs_node);
+
+UINT FindTranslation(float AnimationTime, const VQS vqs_node);
+
 void BoneTransform(float Time, std::vector<Matrix4x4>& Transforms, Animations Anim,
 	Mesh mesh)
 {
@@ -360,15 +366,100 @@ void ReadBoneHeirarchyTransforms(float AnimationTime, const Node Root_Node
 	//Takes the initial node transformation
 	Matrix4x4 NodeTransform(Root_Node.Transformations);
 
+	//TO DO :CHECK AGAIN
+	const VQS VQS_Node = curr_anim.FindAnimationNode(NodeName);
+
+	//Interpolate the scalling and generate the transformation matrix
+	Vector3D scaling_matrix;
+	
+	//Interpolate the rotation and generate the transformation matrix
+	
+	
+	//Interpolate the translation and generate the transformation matrix
 
 
 
 
 }
 
+//Translation Interpolation
+void TranslationInterpolation(Vector3D& out, float AnimationTime , const VQS VQS_Node)
+{
+	
+}
+
+
 //Rotation Interpolation
 
-//void RotationInterpolation(Quaternion& out, float AnimationTime , const)
-//{
-//
-//}
+void RotationInterpolation(Quaternion& out, float AnimationTime , const VQS VQS_Node)
+{
+	if (VQS_Node.numrotationkeys == 1)
+	{
+		out = VQS_Node.RotationList[0].rotation;
+		return;
+	}
+
+	UINT RotationIndex = FindRotation(AnimationTime, VQS_Node);
+
+
+}
+
+//Scaling Interpolation
+void ScalingInterpolation(Vector3D& out, float AnimationTime , const VQS VQS_Node)
+{
+
+}
+
+
+UINT FindRotation(float AnimationTime, const VQS vqs_node)
+{
+	assert(vqs_node.numrotationkeys > 0);
+
+	for (UINT i = 0; i < vqs_node.numrotationkeys; ++i)
+	{
+		if (AnimationTime < (float)vqs_node.RotationList[i + 1].time)
+		{
+			return i;
+		}
+	}
+
+	assert(0);
+
+	return 0;
+}
+
+
+UINT FindTranslation(float AnimationTime, const VQS vqs_node)
+{
+	assert(vqs_node.numpositionkeys > 0);
+
+	for (UINT i = 0; i < vqs_node.numpositionkeys; ++i)
+	{
+		if (AnimationTime < (float)vqs_node.PositionList[i + 1].time)
+		{
+			return i;
+		}
+	}
+
+	assert(0);
+
+	return 0;
+}
+
+
+UINT FindScale(float AnimationTime, const VQS vqs_node)
+{
+	assert(vqs_node.numscalekeys > 0);
+
+	for (UINT i = 0; i < vqs_node.numscalekeys; ++i)
+	{
+		if (AnimationTime < (float)vqs_node.UniformScaleList[i + 1].time)
+		{
+			return i;
+		}
+	}
+
+	assert(0);
+
+	return 0;
+}

@@ -70,19 +70,42 @@ struct Node		//(aiNode)
 
 };
 
+struct Vector3Position
+{
+	Vector3D Position;
+	double time;
+};
 
-//(aiNodeAnimations)
+struct Vector3Scaling
+{
+	Vector3D Scale;
+	double time;
+};
+
+struct QuaternionRotation
+{
+	Quaternion rotation;
+	double time;
+};
+
+
+//aiNodeAnim
+//(aiNodeAnimations) OR VQS
 struct VQS
 {
 
 	std::string		 Name;		//name of node which is affected by this animation
-	Vector3D		Position;
-	Quaternion		Rotation;
-	Vector3D		Uniform_scale;
+	//Vector3D		Position;
+	//Quaternion		Rotation;
+	//Vector3D		Uniform_scale;
 
-	std::vector<Vector3D>	PositionList;
-	std::vector<Quaternion> RotationList;
-	std::vector<Vector3D>	UniformScaleList;
+	UINT numpositionkeys;
+	UINT numrotationkeys;
+	UINT numscalekeys;
+
+	std::vector<Vector3Position>	PositionList;
+	std::vector<QuaternionRotation> RotationList;
+	std::vector<Vector3Scaling>		UniformScaleList;
 
 };
 
@@ -96,7 +119,17 @@ struct Animation
 	double				TicksPerSecond;
 	std::vector <VQS>   ChannelList;
 
-
+	VQS FindAnimationNode(std::string node_name)
+	{
+		//Animation node = *this;
+		for (int i = 0; i < ChannelList.size(); ++i)
+		{
+			if (ChannelList[i].Name == node_name)
+			{
+				return ChannelList[i];
+			}
+		}
+	}
 	
 };
 
@@ -121,19 +154,7 @@ public:
 	Node	   m_RootNode;
 
 
-	Animation FindAnimationNode(std::string node_name)
-	{
-		Animations node = *this;
-		for (int i = 0; i < AnimationList.size(); ++i)
-		{
-			if (AnimationList[i].Animation_Name == node_name)
-			{
-				return AnimationList[i];
-			}
-		}
-	}
-
-
+	
 };
 
 
