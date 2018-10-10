@@ -21,10 +21,7 @@
       }
     },
 
-    {
-      "Component": "Mesh",
-      "scene": "Plane"
-    },
+
 
     {
       "Component": "RigidBody",
@@ -35,6 +32,12 @@
         "y": 1,
         "z": 0
       }
+    }
+  ],
+  "COMP_OLD": [
+    {
+      "Component": "Mesh",
+      "scene": "Plane"
     }
   ]
 }

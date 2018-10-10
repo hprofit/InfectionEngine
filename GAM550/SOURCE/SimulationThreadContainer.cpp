@@ -51,6 +51,12 @@ bool StartSimulationCommand::execute() const
 	if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
 		tcpSun->Move(Infect::GetFrameTime() *-30.f*tcpSun->Forward());
 	}
+	if (INFECT_INPUT.IsKeyPressed(DIK_K)) {
+		tcpSun->Move(Infect::GetFrameTime() *30.f * tcpSun->Up());
+	}
+	if (INFECT_INPUT.IsKeyPressed(DIK_M)) {
+		tcpSun->Move(Infect::GetFrameTime() *-30.f*tcpSun->Up());
+	}
 
 
 	if (INFECT_INPUT.IsKeyTriggered(DIK_P) || INFECT_INPUT.IsButtonTriggered(XBOX_BTN_BACK)) {

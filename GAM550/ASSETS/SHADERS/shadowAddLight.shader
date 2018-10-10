@@ -20,7 +20,6 @@ struct VertexInput {
 struct PixelInput
 {
 	float4 position : SV_POSITION;
-	float2 texCoords : TEXCOORDS;
 };
 
 Texture2D WorldPosTexture : register(t0);
@@ -37,8 +36,6 @@ PixelInput VShader(VertexInput input)
 	input.position.w = 1;
 
 	output.position = mul(ModelMatrix, input.position);
-	output.texCoords.x = input.texCoords.x;// output.position.x * 0.5 + 0.5;
-	output.texCoords.y = 1.0f-input.texCoords.y;// output.position.y * 0.5 + 0.5;
 
 	return output;
 }
@@ -59,7 +56,7 @@ float4 PShader(PixelInput input) : SV_TARGET
 	const float EPSILON = 0.0001f;
 	float2 texCoords = float2(input.position.x / LIDHW.w, input.position.y / LIDHW.z);
 	float4 worldPos = WorldPosTexture.Sample(ss, texCoords);
-	//worldPos.w = 1;
+	worldPos.w = 1;
 	float a = LightPosition.w;
 	float b = LightColor.w;
 	float lightDistance = LIDHW.y;
@@ -68,10 +65,11 @@ float4 PShader(PixelInput input) : SV_TARGET
 
 	float4 shadowPos = mul(ShadowMatrix, worldPos);
 	float2 shadowMapUV = shadowPos.xy / shadowPos.w;
+	float t = shadowMapUV.y;
 	shadowMapUV.y = 1.0f - shadowMapUV.y;
 	float shadowDepth = ShadowMapTexture.Sample(ss, shadowMapUV).x;
 	float pointDepth = shadowPos.z / shadowPos.w;
-
+	shadowMapUV.y = t;
 	// In Shadow from this light
 	if (shadowDepth < (pointDepth - EPSILON) || shadowPos.w <= 0 || shadowMapUV.x < 0 || shadowMapUV.x > 1 || shadowMapUV.y < 0 || shadowMapUV.y > 1) {
 		return float4(0, 0, 0, 0);
