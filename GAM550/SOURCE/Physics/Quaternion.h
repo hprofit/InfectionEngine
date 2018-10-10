@@ -66,6 +66,8 @@ public:
 
   void QuatNegation();
 
+  Matrix3x3 GetMatrixRepresentation();
+
 
 };
 #endif

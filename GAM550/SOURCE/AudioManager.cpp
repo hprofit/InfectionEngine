@@ -3,6 +3,7 @@
 Implementation *implementation = nullptr;
 AudioManager::AudioManager()
 {
+	m_Channel = NULL;
 }
 
 
@@ -106,7 +107,7 @@ void AudioManager::UnLoadSound(const string & audio_name)
 
 }
 
-int AudioManager::PlaySounds(const string & Sound_name, const Vector3 & Position, float Volume_play)
+int AudioManager::PlaySounds(const string & Sound_name, const Vector3D & Position, float Volume_play)
 {
 
 	float frequency;
@@ -145,10 +146,11 @@ int AudioManager::PlaySounds(const string & Sound_name, const Vector3 & Position
 		implementation->channel_map_[channel_id] = pchannel;
 
 	}
+	m_Channel = pchannel;
 	return channel_id;
 }
 
-FMOD_VECTOR AudioManager::VectorToFmod(const Vector3 position)
+FMOD_VECTOR AudioManager::VectorToFmod(const Vector3D position)
 {
 	FMOD_VECTOR vector;
 	vector.x = position.x;
@@ -168,7 +170,7 @@ float AudioManager::VolumeTodB(float volume)
 	return 20.0f * log10f(volume);
 }
 
-void AudioManager::SetChannel3dPosition(int channel_id, const Vector3 pos)
+void AudioManager::SetChannel3dPosition(int channel_id, const Vector3D pos)
 {
 	auto found_it = implementation->channel_map_.find(channel_id);
 	if (found_it == implementation->channel_map_.end())
@@ -187,5 +189,36 @@ void AudioManager::SetChannelVolume(int channel_id, float volume_db)
 	AudioManager::ErrorCheck(found_it->second->setVolume(dbToVolume(volume_db)));
 }
 
+void AudioManager::PauseAudio(bool is_Enabled)
+{
+	if (is_Enabled)
+	{
+		m_Channel->setPaused(true);
+	}
+	else
+	{
+		m_Channel->setPaused(false);
+	}
+}
+
+void AudioManager::Set3dListener(const Vector3D & pos, const Vector3D & look, const Vector3D & up, const Vector3D & velocity)
+{
+	int listener = 0;
+
+	implementation->system_->set3DListenerAttributes(listener, &VectorToFmod(pos), &VectorToFmod(velocity), &VectorToFmod(look), &VectorToFmod(up));
+}
+
+
+
+void AudioManager::TestingAudio()
+{
+	PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3D(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+	//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/swish.wav)", vector3D(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+	//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/Blackouts.mp3)", vector3D(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+}
+ 
 //Example to call audio 
-//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", vector3D(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+
+//Example to load Audio
+//INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/rosey.wav)", true, false, false);
