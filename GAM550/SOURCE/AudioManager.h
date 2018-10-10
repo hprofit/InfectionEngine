@@ -20,6 +20,15 @@ struct Vector3
 		y = n_Y;
 		z = n_Z;
 	}
+
+	void SetVector3(Vector3D POS)
+	{
+		Vector3 &pos_here = *this;
+		pos_here.x = POS.x;
+		pos_here.y = POS.y;
+		pos_here.z = POS.z;
+
+	}
 };
 
 
@@ -78,6 +87,9 @@ public:
 	
 	//PAUSE AUDIO
 	void PauseAudio(bool is_Enabled);
+
+	//3D AUDIO LISTENER 
+	void Set3dListener(const Vector3D& pos, const Vector3D& look, const Vector3D& up, const Vector3D& velocity);
 
 
 

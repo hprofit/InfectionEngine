@@ -194,6 +194,13 @@ void AudioManager::PauseAudio(bool is_Enabled)
 	m_Channel->setPaused(true);
 }
 
+void AudioManager::Set3dListener(const Vector3D & pos, const Vector3D & look, const Vector3D & up, const Vector3D & velocity)
+{
+	int listener = 0;
+
+	//implementation->system_->set3DListenerAttributes(listener)
+}
+
 //Example to call audio 
 //INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
 
