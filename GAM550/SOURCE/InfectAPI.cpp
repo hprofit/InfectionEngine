@@ -36,6 +36,7 @@ namespace Infect {
 		//Audio INIT and Load Sounds
 		INFECT_AUDIOMANAGER.Init();
 		INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/rosey.wav)", true, false, false);
+		INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/Blackouts.mp3)", true, false, false);
 
 
 		INFECT_CMC.RegisterCompMngr(new TransformComponentManager());

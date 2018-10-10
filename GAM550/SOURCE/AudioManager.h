@@ -8,6 +8,7 @@
 using namespace std;
 class Subscriber;
 
+/*
 struct Vector3
 {
 	float x;
@@ -30,6 +31,8 @@ struct Vector3
 
 	}
 };
+
+*/
 
 
 struct Implementation {
@@ -72,17 +75,17 @@ public:
 	//MANAGING SOUNDS
 	void LoadSound( const string &audio_name, bool is_audio_3D = true, bool is_audio_looping = false, bool is_audio_streaming = false);
 	void UnLoadSound(const string &audio_name);
-	 int PlaySounds(const string& Sound_name, const Vector3& Position, float Volume_play);
+	 int PlaySounds(const string& Sound_name, const Vector3D& Position, float Volume_play);
 
 	//VECTOR CONVERSIONS
-	FMOD_VECTOR VectorToFmod(const Vector3 position);
+	FMOD_VECTOR VectorToFmod(const Vector3D position);
 
 	//CONVERSIONS
 	float dbToVolume(float dB);
 	float VolumeTodB(float volume);
 	
 	//CHANNEL PROPERTIES
-	void SetChannel3dPosition(int channel_id, const Vector3 pos);
+	void SetChannel3dPosition(int channel_id, const Vector3D pos);
 	void SetChannelVolume(int channel_id, float volume_db);
 	
 	//PAUSE AUDIO

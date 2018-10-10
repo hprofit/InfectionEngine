@@ -107,7 +107,7 @@ void AudioManager::UnLoadSound(const string & audio_name)
 
 }
 
-int AudioManager::PlaySounds(const string & Sound_name, const Vector3 & Position, float Volume_play)
+int AudioManager::PlaySounds(const string & Sound_name, const Vector3D & Position, float Volume_play)
 {
 
 	float frequency;
@@ -150,7 +150,7 @@ int AudioManager::PlaySounds(const string & Sound_name, const Vector3 & Position
 	return channel_id;
 }
 
-FMOD_VECTOR AudioManager::VectorToFmod(const Vector3 position)
+FMOD_VECTOR AudioManager::VectorToFmod(const Vector3D position)
 {
 	FMOD_VECTOR vector;
 	vector.x = position.x;
@@ -170,7 +170,7 @@ float AudioManager::VolumeTodB(float volume)
 	return 20.0f * log10f(volume);
 }
 
-void AudioManager::SetChannel3dPosition(int channel_id, const Vector3 pos)
+void AudioManager::SetChannel3dPosition(int channel_id, const Vector3D pos)
 {
 	auto found_it = implementation->channel_map_.find(channel_id);
 	if (found_it == implementation->channel_map_.end())
@@ -212,11 +212,13 @@ void AudioManager::Set3dListener(const Vector3D & pos, const Vector3D & look, co
 
 void AudioManager::TestingAudio()
 {
-	INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+	INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3D(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+	//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/swish.wav)", vector3D(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+	//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/Blackouts.mp3)", vector3D(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
 }
-
+ 
 //Example to call audio 
-//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", vector3D(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
 
 //Example to load Audio
 //INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/rosey.wav)", true, false, false);
