@@ -76,6 +76,13 @@ public:
 	void SetChannel3dPosition(int channel_id, const Vector3 pos);
 	void SetChannelVolume(int channel_id, float volume_db);
 	
+	//PAUSE AUDIO
+	void PauseAudio(bool is_Enabled);
+
+
+
+private:
+	FMOD::Channel* m_Channel;
 
 };
 

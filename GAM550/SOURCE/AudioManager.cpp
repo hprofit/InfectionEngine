@@ -3,6 +3,7 @@
 Implementation *implementation = nullptr;
 AudioManager::AudioManager()
 {
+	m_Channel = NULL;
 }
 
 
@@ -145,6 +146,7 @@ int AudioManager::PlaySounds(const string & Sound_name, const Vector3 & Position
 		implementation->channel_map_[channel_id] = pchannel;
 
 	}
+	m_Channel = pchannel;
 	return channel_id;
 }
 
@@ -185,6 +187,11 @@ void AudioManager::SetChannelVolume(int channel_id, float volume_db)
 		return;
 
 	AudioManager::ErrorCheck(found_it->second->setVolume(dbToVolume(volume_db)));
+}
+
+void AudioManager::PauseAudio(bool is_Enabled)
+{
+	m_Channel->setPaused(true);
 }
 
 //Example to call audio 
