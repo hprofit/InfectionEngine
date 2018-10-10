@@ -56,22 +56,29 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 		v.y = mesh->mVertices[i].y;
 		v.z = mesh->mVertices[i].z;
 		v.w = 1;
+		if (mesh->HasNormals())
+		{
+			v.nX = mesh->mNormals[i].x;
+			v.nY = mesh->mNormals[i].y;
+			v.nZ = mesh->mNormals[i].z;
+		}
 
-		//v.nX = mesh->mNormals[i].x;
-		//v.nY = mesh->mNormals[i].y;
-		//v.nZ = mesh->mNormals[i].z;
+		if (mesh->HasTangentsAndBitangents())
+		{
 
-		//v.tX = mesh->mTangents[i].x;
-		//v.tY = mesh->mTangents[i].y;
-		//v.tZ = mesh->mTangents[i].z;
-		//
-		//v.bX = mesh->mBitangents[i].x;
-		//v.bY = mesh->mBitangents[i].y;
-		//v.bZ = mesh->mBitangents[i].z;
-		//
-		//v.u = mesh->mTextureCoords[0][i].x;
-		//v.v = mesh->mTextureCoords[0][i].y;
-
+			v.tX = mesh->mTangents[i].x;
+			v.tY = mesh->mTangents[i].y;
+			v.tZ = mesh->mTangents[i].z;
+		
+			v.bX = mesh->mBitangents[i].x;
+			v.bY = mesh->mBitangents[i].y;
+			v.bZ = mesh->mBitangents[i].z;
+		
+		}
+		
+		v.u = mesh->mTextureCoords[0][i].x;
+		v.v = mesh->mTextureCoords[0][i].y;
+		
 		if (mesh->mColors && mesh->mColors[0]) {
 			aiColor4D color = mesh->mColors[0][i];
 			v.r = color.r;
@@ -79,22 +86,23 @@ void Mesh::_CreateFromAiMesh(const aiMesh * mesh)
 			v.b = color.b;
 			v.a = color.a;
 		}
-		for (int j = 0; j < 4; ++j)
+		if (mesh->HasBones())
 		{
-			v.BoneID0 = m_BoneVertexDataList[i].BoneID[0];
-			v.BoneID1 = m_BoneVertexDataList[i].BoneID[1];
-			v.BoneID2 = m_BoneVertexDataList[i].BoneID[2];
-			v.BoneID3 = m_BoneVertexDataList[i].BoneID[3];
+			for (int j = 0; j < 4; ++j)
+			{
+				v.BoneID0 = m_BoneVertexDataList[i].BoneID[0];
+				v.BoneID1 = m_BoneVertexDataList[i].BoneID[1];
+				v.BoneID2 = m_BoneVertexDataList[i].BoneID[2];
+				v.BoneID3 = m_BoneVertexDataList[i].BoneID[3];
 
-			v.BoneWeights0 = m_BoneVertexDataList[i].BoneWeights[0];
-			v.BoneWeights1 = m_BoneVertexDataList[i].BoneWeights[1];
-			v.BoneWeights2 = m_BoneVertexDataList[i].BoneWeights[2];
-			v.BoneWeights3 = m_BoneVertexDataList[i].BoneWeights[3];
+				v.BoneWeights0 = m_BoneVertexDataList[i].BoneWeights[0];
+				v.BoneWeights1 = m_BoneVertexDataList[i].BoneWeights[1];
+				v.BoneWeights2 = m_BoneVertexDataList[i].BoneWeights[2];
+				v.BoneWeights3 = m_BoneVertexDataList[i].BoneWeights[3];
 
-			
-
+			}
 		}
-
+		//Push all the vertices data in the list 
 		m_vertices.push_back(v);
 	}
 
@@ -299,3 +307,68 @@ void Mesh::FinishMesh()
 	INFECT_RENDERER.Device()->CreateInputLayout(ied, 6, vs->GetBufferPointer(), vs->GetBufferSize(), &pLayout);
 	INFECT_RENDERER.DeviceContext()->IASetInputLayout(pLayout);
 }
+
+
+void ReadBoneHeirarchyTransforms(float AnimationTime, const Node Root_Node
+	, Matrix4x4 ParentTransform, Animations Anim);
+
+void BoneTransform(float Time, std::vector<Matrix4x4>& Transforms, Animations Anim,
+	Mesh mesh)
+{
+	Matrix4x4 InitialMat;
+	InitialMat.Identity4D();
+	//Search for the required Animation which we want
+	//Here it is temporarily set to AnimationList[0] which points 
+	//to the only animation we have
+	float TicksperSeconds = Anim.AnimationList[0].TicksPerSecond != 0 ?
+		Anim.AnimationList[0].TicksPerSecond : 25.0f;
+	float TimeinTicks = TicksperSeconds * Time;
+	float AnimationTime = Anim.AnimationList[0].Duration * TimeinTicks;
+
+	ReadBoneHeirarchyTransforms(AnimationTime, Anim.m_RootNode, InitialMat, Anim);
+	
+	//==========================================================
+	//send the nunmber of bones 
+	//Here we take 109 for testing
+	// TO DO :CHANGE IT LATER
+	//==========================================================
+	int number_bones = mesh.m_numBones;
+	Transforms.resize(number_bones);
+
+	for (int i = 0; i < number_bones; ++i)
+	{
+		//Might Change to the offset matrix to Transformation matrix
+		Transforms[i] = mesh.m_BoneList[i].OffsetMatrix;
+	}
+
+
+	
+}
+
+void ReadBoneHeirarchyTransforms(float AnimationTime, const Node Root_Node 
+	,Matrix4x4 ParentTransform, Animations Anim)
+{
+
+	//Get the name of the current node
+	string NodeName(Root_Node.NodeName);
+
+	//Find the Animation we want
+	//Or give the default one which is at 
+	//[0] here
+	Animation curr_anim = Anim.AnimationList[0];
+	
+	//Takes the initial node transformation
+	Matrix4x4 NodeTransform(Root_Node.Transformations);
+
+
+
+
+
+}
+
+//Rotation Interpolation
+
+//void RotationInterpolation(Quaternion& out, float AnimationTime , const)
+//{
+//
+//}

@@ -71,6 +71,7 @@ struct Node		//(aiNode)
 };
 
 
+//(aiNodeAnimations)
 struct VQS
 {
 
@@ -85,8 +86,8 @@ struct VQS
 
 };
 
-
-struct Animation	//(aiNodeAnimations)
+//(aiAnimations)
+struct Animation	
 {
 	int m_numChannels;
 
@@ -95,10 +96,12 @@ struct Animation	//(aiNodeAnimations)
 	double				TicksPerSecond;
 	std::vector <VQS>   ChannelList;
 
+
+	
 };
 
 //WORK ON CHANGING TO THE PROTECTED
-class Animations	//(aiAnimations)
+class Animations	
 {
 public:
 	friend class Scene;
@@ -116,6 +119,20 @@ public:
 	//protected:
 	std::vector<Animation> AnimationList;
 	Node	   m_RootNode;
+
+
+	Animation FindAnimationNode(std::string node_name)
+	{
+		Animations node = *this;
+		for (int i = 0; i < AnimationList.size(); ++i)
+		{
+			if (AnimationList[i].Animation_Name == node_name)
+			{
+				return AnimationList[i];
+			}
+		}
+	}
+
 
 };
 
@@ -180,8 +197,6 @@ protected:
 	std::vector<Vertex> m_vertices;
 	std::vector<Face> m_faces;
 
-	unsigned int m_numBones;
-	std::vector<BoneData> m_BoneList;
 
 	ID3D11Buffer *mp_VBuffer;	// Vertex Buffer
 	ID3D11Buffer *mp_IBuffer;	// Index Buffer
@@ -190,7 +205,14 @@ protected:
 
 	void ReadBoneVertexWeight(const aiMesh * mesh); 
 	void _CreateFromAiMesh(const aiMesh* mesh);
+
+
 public:
+
+	unsigned int m_numBones;
+	std::vector<BoneData> m_BoneList;
+	
+
 	Mesh();
 	Mesh(const aiMesh* mesh);
 	virtual ~Mesh();
