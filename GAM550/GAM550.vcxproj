@@ -217,7 +217,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{790075A4-280A-45AE-8F51-CA3F8B6A0724}</ProjectGuid>
     <RootNamespace>GAM550</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
