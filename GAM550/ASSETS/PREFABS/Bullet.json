@@ -54,6 +54,9 @@
 	      },
 	      "linearDamping": 0.95,
 	      "angularDamping": 0.8
-	    }
+	    },
+    {
+      "Component": "Fracture"
+    }
   ]
 }

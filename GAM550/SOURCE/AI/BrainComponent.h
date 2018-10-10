@@ -43,6 +43,9 @@ public:
 	inline float GetDetectionRadius() { return m_detectionRadius; }
 	inline float GetMovementRadius() { return m_movementRadius; }
 
+	inline void SetState(AIStateType statetype) { m_currentState = statetype; }
+	inline AIStateType GetState() { return m_currentState; }
+
 	/* CURRENTLY MOVED TO "AI_Commands.h" */
 	//bool isDestinationReached(const Vector3D& targetPos);	// true if targetPos is reached
 	//void GetRandomPos(Vector3D& targetPos);					// set targetPos to random position within the m_IdleMovementRadius

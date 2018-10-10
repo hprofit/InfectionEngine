@@ -13,14 +13,17 @@ class BrainComponent;
 namespace AI_Commands{
 	// check if agent has reached the targetPos specified
 	bool isDestinationReached(BrainComponent* pAgent, const Vector3D& targetPos);
+	// check if agent detects player within the radius
+	bool isPlayerDetected(BrainComponent* pAgent, const float radius);
 	// get random position within the zone (moveRadius from the initialPos) and set to targetPos
 	void getRandomPos(const Vector3D& initialPos, const float moveRadius, Vector3D& targetPos );
 	// move agent toward the targetPos
 	void moveTo (BrainComponent* pAgent, const Vector3D& targetPos);
-	//// change agent's currentState
-	//void changeState(BrainComponent* pAgent, AIStateType statetype);
-	//// change color of component's mesh
-	//void changeColor(BrainComponent* pAgent, float r, float g, float b, float a);
+	// change agent's currentState
+	void changeState(BrainComponent* pAgent, AIStateType statetype);
+	// change color of component's mesh
+	void changeColor(BrainComponent* pAgent, float r, float g, float b, float a);
+
 }
 
 #endif

@@ -41,14 +41,14 @@ GameObject * GameObjectManager::SpawnGameObject(const std::string prefabName)
 
 	newGO->LateInitialize();
 
-	mp_GameObjects.push_back(newGO); // is this necessary?
+	mp_GameObjects.push_back(newGO);
 	return newGO;
 }
 
 GameObject* GameObjectManager::SpawnGameObject() {
 	GameObject* newGO = INFECT_MEMORY.GetNewGameObject();
 	newGO->LateInitialize();
-	mp_GameObjects.push_back(newGO); // is this necessary?
+	mp_GameObjects.push_back(newGO); 
 	return newGO;
 }
 

@@ -125,6 +125,7 @@ void InputManager::Update() {
 	m_MousePosRelX = m_MousePosX - mouseTempPosX;
 	m_MousePosRelY = m_MousePosY - mouseTempPosY;
 
+
 	// Update current mouse states
 	m_LeftMouse = m_CurrentMouseStates.rgbButtons[(BYTE)MOUSEBTN::MOUSE_BTN_LEFT] & 0x80;
 	m_RightMouse = m_CurrentMouseStates.rgbButtons[(BYTE)MOUSEBTN::MOUSE_BTN_RIGHT] & 0x80;
