@@ -33,6 +33,10 @@ namespace Infect {
 		INFECT_INPUT.Init(hInstance);
 		INFECT_RESOURCES.Init();
 
+		//Audio INIT and Load Sounds
+		INFECT_AUDIOMANAGER.Init();
+		INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/rosey.wav)", true, false, false);
+
 
 		INFECT_CMC.RegisterCompMngr(new TransformComponentManager());
 		INFECT_CMC.RegisterCompMngr(new CameraComponentManager());

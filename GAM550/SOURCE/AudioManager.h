@@ -91,7 +91,8 @@ public:
 	//3D AUDIO LISTENER 
 	void Set3dListener(const Vector3D& pos, const Vector3D& look, const Vector3D& up, const Vector3D& velocity);
 
-
+	//TESTING
+	void TestingAudio();
 
 private:
 	FMOD::Channel* m_Channel;
