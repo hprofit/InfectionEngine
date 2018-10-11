@@ -60,7 +60,9 @@ bool StartSimulationCommand::execute() const
 	int yMove = -INFECT_INPUT.MousePosY() / 4;
 	int xMoveGC = -INFECT_INPUT.GetRightAxisX() / 6500;
 	int yMoveGC = -INFECT_INPUT.GetRightAxisY() / 6500;
-	std::cout << xMove << " " << yMove << std::endl;
+	//if (INFECT_INPUT.IsButtonTriggered(XBOX_BTN_A)) {
+	//	std::cout << "pressed\n";
+	//}
 	if (xMove != 0)
 		tcpCamera->RotateY(float(xMove));
 	if (xMoveGC != 0)
