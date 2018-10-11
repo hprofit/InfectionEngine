@@ -14,6 +14,7 @@
       }
     },
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	{
 		"prefab": "Sun",
@@ -24,6 +25,8 @@
 		}
 	},
 >>>>>>> Shadow maps are sort of working, in the process of debugging.
+=======
+>>>>>>> Shadow work.
 
 
     {

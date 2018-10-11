@@ -28,7 +28,6 @@ Texture2D NormalTexture : register(t1);
 Texture2D DiffuseTexture : register(t2);
 Texture2D SpecularTexture : register(t3);
 Texture2D ShadowMapTexture : register(t5);
->>>>>>> Shadow maps are sort of working, in the process of debugging.
 SamplerState ss;
 
 
@@ -86,7 +85,6 @@ float4 PShader(PixelInput input) : SV_TARGET
 	}
 	// Else, do lighting equation as normal
 
-	
 	float a = LightPosition.w;
 	float b = LightColor.w;
 	float lightDistance = LIDHW.y;
