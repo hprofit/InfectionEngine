@@ -73,7 +73,8 @@
         "x": 0.0,
         "y": -7.0,
         "z": 0.0
-      }
+      },
+      "Plane":  null
     },
     {
       "prefab": "SmallCube",
