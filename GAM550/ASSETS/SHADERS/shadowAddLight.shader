@@ -20,6 +20,7 @@ struct VertexInput {
 struct PixelInput
 {
 	float4 position : SV_POSITION;
+	float2 texCoords : TEXCOORDS;
 };
 
 Texture2D WorldPosTexture : register(t0);
@@ -36,6 +37,8 @@ PixelInput VShader(VertexInput input)
 	input.position.w = 1;
 
 	output.position = mul(ModelMatrix, input.position);
+	output.texCoords.x = input.texCoords.x;
+	output.texCoords.y = 1.0f - input.texCoords.y;
 
 	return output;
 }
@@ -57,30 +60,39 @@ float4 PShader(PixelInput input) : SV_TARGET
 	float2 texCoords = float2(input.position.x / LIDHW.w, input.position.y / LIDHW.z);
 	float4 worldPos = WorldPosTexture.Sample(ss, texCoords);
 	worldPos.w = 1;
+
+
+	float4 shadowPos = mul(ShadowMatrix, worldPos);
+	float3 shadowPosDiv = (shadowPos.xyz / shadowPos.w) * 0.5f + 0.5f;
+	float2 shadowMapUV = shadowPosDiv.xy;
+	shadowMapUV.y = 1.0f - shadowMapUV.y;
+	float shadowDepth = ShadowMapTexture.Sample(ss, shadowMapUV).x;
+	float pointDepth = shadowPosDiv.z;
+
+	//return float4(input.position.xy, 0, 1);
+	//return float4(input.texCoords.x * LIDHW.w, (1.0f - input.texCoords.y) * LIDHW.z, 0, 1);
+	//return float4(shadowPosDiv.z, shadowPosDiv.z, shadowPosDiv.z, 1);
+	//return float4(shadowDepth, shadowDepth, shadowDepth, 1);
+	//return float4(pointDepth, pointDepth, pointDepth, 1);
+
+	//shadowMapUV.y = t;
+	// In Shadow from this light
+	if (shadowDepth < (pointDepth - EPSILON) || shadowPos.w <= 0 || 
+		shadowMapUV.x < 0 || shadowMapUV.x > 1 || 
+		shadowMapUV.y < 0 || shadowMapUV.y > 1) 
+	{
+		return float4(0,0,0,0);
+	}
+	// Else, do lighting equation as normal
+
+
 	float a = LightPosition.w;
 	float b = LightColor.w;
 	float lightDistance = LIDHW.y;
 	float lightIntensity = LIDHW.x;
 	float4 LPos = float4(LightPosition.xyz, 1);
-
-	float4 shadowPos = mul(ShadowMatrix, worldPos);
-	float2 shadowMapUV = shadowPos.xy / shadowPos.w;
-	float t = shadowMapUV.y;
-	shadowMapUV.y = 1.0f - shadowMapUV.y;
-	float shadowDepth = ShadowMapTexture.Sample(ss, shadowMapUV).x;
-	float pointDepth = shadowPos.z / shadowPos.w;
-	//shadowMapUV.y = t;
-	// In Shadow from this light
-	if (shadowDepth < (pointDepth - EPSILON) || shadowPos.w <= 0 || shadowMapUV.x < 0 || shadowMapUV.x > 1 || shadowMapUV.y < 0 || shadowMapUV.y > 1) {
-		return float4(0, 0, 0, 0);
-	}
-	// Else, do lighting equation as normal
-
-
 	float L_Length = length(LPos - worldPos);
-	//if (L_Length > lightDistance) {
-	//	return float4(0, 0, 0, 0);
-	//}
+	//if (L_Length > lightDistance) { return float4(0, 0, 0, 0); }
 	float4 LColor = LightColor * lightIntensity;
 	//LColor *= falloff(L_Length, a, b);
 	LColor.a = 1;

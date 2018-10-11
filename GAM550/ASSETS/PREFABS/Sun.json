@@ -19,23 +19,23 @@
 				"y": 0
 			}
 		},
-		{
-			"Component": "DirectionalLight",
-			"color": {
-				"r": 1,
-				"g": 1,
-				"b": 1,
-				"a": 1
-			},
-			"distance": 1000,
-			"a": -0.3,
-			"b": 0.2,
-			"intensity": 1,
-			"fov": 100,
-			"far": 1000,
-			"width": 2048,
-			"height": 2048
-		}
+    {
+      "Component": "DirectionalLight",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "distance": 1000,
+      "a": -0.3,
+      "b": 0.2,
+      "intensity": 2,
+      "fov": 100,
+      "far": 500,
+      "width": 2048,
+      "height": 2048
+    }
 	],
 	"C": [
 		{

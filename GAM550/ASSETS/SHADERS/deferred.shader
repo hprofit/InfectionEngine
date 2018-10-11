@@ -24,11 +24,11 @@ struct VertexInput {
 struct PixelInput
 {
 	float4 position : SV_POSITION;
-	float4 worldPosition : WORLD_POS;
+	float3 worldPosition : TEXCOORD0;
 	float4 normal : NORMAL;
 	float3x3 tbn : TBN;
 	float4 color : COLOR;
-	float2 texCoords : TEXCOORDS;
+	float2 texCoords : TEXCOORD1;
 	float depth : DEPTH;
 
 	bool hasDiffuseTexture : HAS_DIFFUSE_TEXTURE;
@@ -55,7 +55,8 @@ PixelInput VShader(VertexInput input)
 	float3 B = normalize(mul(NormalMatrix, input.bitangent)).xyz;
 	float3 N = normalize(mul(NormalMatrix, input.normal)).xyz;
 
-	output.worldPosition = mul(ModelMatrix, input.position);
+	float4 worldPosition = mul(ModelMatrix, input.position);
+	output.worldPosition = worldPosition.xyz;
 	output.position = mul(MatFinal, input.position);
 	output.normal = mul(NormalMatrix, input.normal);
 	output.tbn = transpose(float3x3(T, B, N));
@@ -114,9 +115,9 @@ POut PShader(PixelInput input)
 		output.normal.w = 1;
 	}
 
-	output.worldPos = input.worldPosition;
+	output.worldPos = float4(input.worldPosition.xyz, 1);
 	// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
-	output.worldPos.w = 1; // input.depth; <- put this back when done testing
+	//output.worldPos.w = 1; // input.depth; <- put this back when done testing
 	output.depth = float4(input.depth, input.depth, input.depth, 1); // <- Get rid of this when done testing
 
 	output.diffuse = input.hasDiffuseTexture ? DiffuseTexture.Sample(ss, input.texCoords) : (input.hasColorOverride ? OverrideColor : input.color);

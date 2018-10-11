@@ -29,7 +29,7 @@ PixelInput VShader(VertexInput input)
 
 	output.position = mul(ModelMatrix, input.position);
 	output.texCoords.x = input.texCoords.x;
-	output.texCoords.y = 1.0f-input.texCoords.y;
+	output.texCoords.y = 1.0f - input.texCoords.y;
 
 	return output;
 }

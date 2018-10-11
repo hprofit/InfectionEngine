@@ -184,7 +184,7 @@ void RenderTarget::Initialize(ID3D11Device * device)
 	m_viewport.MinDepth = 0.0f;
 	m_viewport.MaxDepth = 1.0f;
 	m_viewport.TopLeftX = 0.0f;
-	m_viewport.TopLeftY = 0.0f;
+	m_viewport.TopLeftY = 1.0f;
 }
 
 void RenderTarget::Release()

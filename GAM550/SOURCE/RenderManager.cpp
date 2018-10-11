@@ -286,6 +286,7 @@ void RenderManager::PrepShadowCastingLightFinal()
 	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, mp_D3D->GetDeferredRenderTarget()->GetNumViews(), pTextures);
 
 	mp_D3D->DisableDepth();
+	//mp_D3D->DisableAlpha();
 	mp_D3D->EnableAlpha();
 }
 

@@ -35,8 +35,6 @@ PixelInput VShader(VertexInput input)
 	PixelInput output;
 	input.position.w = 1;
 
-	float4 P = mul(ModelMatrix, input.position);
-
 	output.position = mul(MatFinal, input.position);
 
 	return output;

@@ -284,7 +284,7 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 
 	// Setup the viewport for rendering.
 	m_viewport.TopLeftX = 0;
-	m_viewport.TopLeftY = 0;
+	m_viewport.TopLeftY = 1;
 	m_viewport.Width = FLOAT(settings.Width);
 	m_viewport.Height = FLOAT(settings.Height);
 	m_viewport.MinDepth = 0.0f;
