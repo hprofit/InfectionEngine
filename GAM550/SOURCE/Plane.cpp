@@ -69,6 +69,42 @@ Plane::~Plane()
 {
 }
 
+void Plane::Scale(const float & amt)
+{
+	Matrix4x4 scale = Matrix4x4::Scale(amt, amt, 0);
+
+	for (int i = 0; i < m_vertices.size(); ++i) {
+		Vertex v = m_vertices[i];
+		Vector3D vert(v.x, v.y, v.z, 1);
+		Vector3D normal(v.nX, v.nY, v.nZ, 0);
+		Vector3D tangent(v.tX, v.tY, v.tZ, 0);
+		Vector3D bitangent(v.bX, v.bY, v.bZ, 0);
+
+		vert = scale * vert;
+		normal = Vector3D::Normalize(scale * normal);
+		tangent = Vector3D::Normalize(scale * tangent);
+		bitangent = Vector3D::Normalize(scale * bitangent);
+
+		v.x = vert.x;
+		v.y = vert.y;
+		v.z = vert.z;
+
+		v.nX = normal.x;
+		v.nY = normal.y;
+		v.nZ = normal.z;
+
+		v.tX = tangent.x;
+		v.tY = tangent.y;
+		v.tZ = tangent.z;
+
+		v.bX = bitangent.x;
+		v.bY = bitangent.y;
+		v.bZ = bitangent.z;
+
+		m_vertices[i] = v;
+	}
+}
+
 void Plane::Rotate(const Vector3D & axis, float degrees)
 {
 	Matrix4x4 r = Matrix4x4::Rotate(degrees, axis);

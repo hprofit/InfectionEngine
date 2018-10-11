@@ -23,6 +23,7 @@ public:
 	Plane(unsigned int size=DEFAULT_PLANE_SIZE);
 	~Plane();
 
+	void Scale(const float& amt);
 	void Rotate(const Vector3D& axis, float degrees);
 	void Translate(const Vector3D& amount);
 };
