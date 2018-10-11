@@ -278,8 +278,8 @@ void RigidBodyComponent::Override(const json& j)
 			direction_.z = ValueExists(j["direction"], "z") ? j["direction"]["z"] : direction_.z;
 		}
 
-		if (ValueExists(j, "offset")) {
-			offset_ = ParseFloat(j, "offset");
+		if (ValueExists(j, "position")) {
+			offset_ = ValueExists(j["position"], "y") ? j["position"]["y"] : offset_;
 		}
 
 		mp_newPlane->setState(direction_, offset_);
