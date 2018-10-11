@@ -56,7 +56,7 @@ void RenderManager::_RenderScene(const Scene * pScene)
 
 RenderManager::RenderManager() :
 	m_ClearColor(Color(0.0f, 0.0f, 0.0f, 1)),
-	m_Ambient(Color(0.3f, 0.3f, 0.3f, 1)),
+	m_Ambient(Color(0.7f, 0.7f, 0.7f, 1)),
 	mp_D3D(new D3DHandler()),
 	m_RenderMode(RenderMode::Final)
 {

@@ -340,14 +340,26 @@ void InputManager::HandleEvent(Event* pEvent) {
 }
 
 SHORT InputManager::GetLeftAxisX() {
+	if (abs(m_StickLeftX) < JoystickDeadZone) {
+		m_StickLeftX = 0;
+	}
 	return m_StickLeftX;
 }
 SHORT InputManager::GetLeftAxisY() {
+	if (abs(m_StickLeftY) < JoystickDeadZone) {
+		m_StickLeftY = 0;
+	}
 	return m_StickLeftY;
 }
 SHORT InputManager::GetRightAxisX() {
+	if (abs(m_StickRightX) < JoystickDeadZone) {
+		m_StickRightX = 0;
+	}
 	return m_StickRightX;
 }
 SHORT InputManager::GetRightAxisY() {
+	if (abs(m_StickRightY) < JoystickDeadZone) {
+		m_StickRightY = 0;
+	}
 	return m_StickRightY;
 }

@@ -17,7 +17,7 @@ void ControllerComponentManager::Update(float dt) {
 
 		// HARD-CODED FOR ENGINE DEMO
 		std::string str = "Bullet";
-		if (INFECT_INPUT.IsKeyTriggered(DIK_SPACE)) {
+		if (INFECT_INPUT.IsKeyTriggered(DIK_SPACE)||INFECT_INPUT.IsButtonTriggered(XBOX_BTN_START)) {
 			GameObject* pCam = INFECT_GOM.GetCamera();
 			GameObject* pGO = INFECT_GOM.SpawnGameObject(str);
 
