@@ -56,7 +56,7 @@ void RenderManager::_RenderScene(const Scene * pScene)
 
 RenderManager::RenderManager() :
 	m_ClearColor(Color(0.0f, 0.0f, 0.0f, 1)),
-	m_Ambient(Color(0.2f, 0.2f, 0.2f, 1)),
+	m_Ambient(Color(0.075f, 0.075f, 0.075f, 1)),
 	mp_D3D(new D3DHandler()),
 	m_RenderMode(RenderMode::Final)
 {
@@ -180,6 +180,7 @@ void RenderManager::RenderDebugBuffers()
 	cb.ModelMatrix = Matrix4x4::Scale(2, 2, 1);
 	cb.Ambient = m_Ambient;
 	
+    float d = 1.f / 1000.f;
 	ID3D11ShaderResourceView* pResource = nullptr;
 	switch (m_RenderMode) {
 		case RenderMode::Final:
@@ -189,15 +190,6 @@ void RenderManager::RenderDebugBuffers()
 				mp_D3D->GetDeferredRenderTarget()->GetNumViews(),
 				mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()
 			);
-			break;
-		}
-		case RenderMode::Light: {
-			ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[0];
-			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1,
-				&pSRV
-			);
-			float d = 1.f / 500.f;
-			cb.Ambient = Color(d, d, d, 1);
 			break;
 		}
 		//case RenderMode::Depth:
@@ -221,10 +213,26 @@ void RenderManager::RenderDebugBuffers()
 			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1,
 				&mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()[m_RenderMode]
 			);
-			float d = 1.f / 500.f;
 			cb.Ambient = Color(d, d, d, 1);
 			break;
 		}
+
+
+		case RenderMode::Light: {
+			ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[0];
+			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pSRV);
+
+			cb.Ambient = Color(d, d, d, 1);
+			break;
+		}
+        case RenderMode::BlurredLight:
+        {
+            ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[1];
+            mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pSRV);
+
+            cb.Ambient = Color(d, d, d, 1);
+            break;
+        }
 		default:
 		{
 			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1,
@@ -486,6 +494,13 @@ void RenderManager::NextRenderMode()
 		m_RenderMode = RenderMode(0);
 }
 
+void RenderManager::PrevRenderMode()
+{
+    m_RenderMode = RenderMode(int(m_RenderMode) - 1);
+    if (m_RenderMode < 0)
+        m_RenderMode = RenderMode(RenderMode::NUM_MODES - 1);
+}
+
 void RenderManager::PrepParticlePass()
 {
 }
@@ -495,10 +510,56 @@ void RenderManager::RenderParticles(const GameObject& pGOCamera, const GameObjec
 
 }
 
-void RenderManager::BlurDepthMap(const GameObject & goLight)
+void RenderManager::BlurDepthMap(GameObject & goLight)
 {
+    enum HoV : UINT {
+        HoV_Horizontal = 0,
+        HoV_Vertical
+    };
+
+    DirectionalLightComponent * pLightComp = goLight.GetComponent<DirectionalLightComponent>();
+    RenderTarget* pRenderTarget = pLightComp->GetRenderTarget();
+    ID3D11ShaderResourceView* pShadowMap = pRenderTarget->GetShaderResourceViews()[0];
+    ID3D11RenderTargetView* pShadowMapBlurred = pRenderTarget->GetRenderTargetViews()[1];
+    
+
 	mp_D3D->EnableBackFaceCulling();
 	mp_ShaderProgramGaussianBlur->BindShader();
 	mp_D3D->DisableDepth();
 	mp_D3D->DisableAlpha();
+
+    // Bind the render target view and depth stencil buffer to the output render pipeline.
+    mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pShadowMapBlurred, pRenderTarget->DepthStencilView());
+
+    // Set the depth stencil state.
+    mp_D3D->mp_DeviceContext->OMSetDepthStencilState(pRenderTarget->DepthStencilState(), 1);
+
+    mp_D3D->mp_DeviceContext->RSSetViewports(1, &pRenderTarget->ViewPort());
+
+
+
+    BlurCB& cb = mp_ShaderProgramGaussianBlur->CB()->BufferData();
+
+    cb.ModelMatrix = Matrix4x4::Scale(2, 2, 1);
+    cb.BlurAmount = 15;
+    cb.HorizontalOrVertical = HoV::HoV_Horizontal;
+
+    mp_ShaderProgramGaussianBlur->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+    mp_ShaderProgramGaussianBlur->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+    mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pShadowMap);
+
+    // do 3D rendering to the currently bound buffer here
+    _RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+
+
+    //cb.HorizontalOrVertical = HoV::HoV_Vertical;
+
+    //mp_ShaderProgramGaussianBlur->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+    //mp_ShaderProgramGaussianBlur->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+    //mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pShadowMap);
+
+    //// do 3D rendering to the currently bound buffer here
+    //_RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
 }

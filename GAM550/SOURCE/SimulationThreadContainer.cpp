@@ -76,9 +76,13 @@ bool StartSimulationCommand::execute() const
 		}
 	}
 
-	if (INFECT_INPUT.IsKeyTriggered(DIK_P) || INFECT_INPUT.IsButtonTriggered(XBOX_BTN_BACK)) {
+	if (INFECT_INPUT.IsKeyTriggered(DIK_P)) {
 		INFECT_RENDERER.NextRenderMode();
 	}
+    if (INFECT_INPUT.IsKeyTriggered(DIK_Y)) {
+        INFECT_RENDERER.PrevRenderMode();
+    }
+
 	{
 		int xMove = -INFECT_INPUT.MousePosX() / 4;
 		int yMove = -INFECT_INPUT.MousePosY() / 4;

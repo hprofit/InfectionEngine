@@ -35,10 +35,12 @@ public:
 	inline ID3D11Texture2D* DepthStencilBuffer() { return mp_DepthStencilBuffer; }
 	inline ID3D11DepthStencilState* DepthStencilState() { return mp_DepthStencilState; }
 	inline ID3D11DepthStencilView* DepthStencilView() { return mp_DepthStencilView; }
+    inline D3D11_VIEWPORT ViewPort() { return m_viewport; }
 
-	unsigned int GetNumViews() const { return m_NumTargets; }
-	ID3D11Texture2D** GetRenderTextures() { return m_renderTargetTextures; }
-	ID3D11ShaderResourceView** GetShaderResourceViews() { return m_shaderResourceViews; }
+	inline unsigned int GetNumViews() const { return m_NumTargets; }
+	inline ID3D11Texture2D** GetRenderTextures() { return m_renderTargetTextures; }
+	inline ID3D11ShaderResourceView** GetShaderResourceViews() { return m_shaderResourceViews; }
+    inline ID3D11RenderTargetView** GetRenderTargetViews() { return m_renderTargetViews; }
 
 	void Initialize(ID3D11Device*);
 

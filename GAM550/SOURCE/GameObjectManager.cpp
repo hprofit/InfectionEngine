@@ -122,6 +122,7 @@ void GameObjectManager::FillShadowCastingLightsShadowMaps()
 			if (mp_GameObjects[objIdx]->IsActive() && mp_ShadowCastingLights[lightIdx] != mp_GameObjects[objIdx])
 				INFECT_RENDERER.RenderObjectToLightShadowMap((*mp_ShadowCastingLights[lightIdx]), (*mp_GameObjects[objIdx]));
 		}
+        INFECT_RENDERER.BlurDepthMap((*mp_ShadowCastingLights[lightIdx]));
 	}
 }
 

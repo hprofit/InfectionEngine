@@ -17,14 +17,25 @@ struct VertexInput
 
 struct PixelInput
 {
-    float4 position :                       SV_POSITION;
-    float2 texCoordsV[BlurAmount * 2 + 1] : TEXCOORDS;
-    float2 texCoordsH[BlurAmount * 2 + 1] : TEXCOORDS;
-    float weights[BlurAmount * 2 + 1] :     WEIGHTS;
+    float4 position : SV_POSITION;
+    float2 centerTexCoords : TEX_COORDS;
 };
 
 Texture2D Texture : register(t0);
 SamplerState ss;
+
+
+PixelInput VShader(VertexInput input)
+{
+    PixelInput output;
+
+    output.position = mul(ModelMatrix, input.position);
+
+    output.centerTexCoords = output.position.xy * 0.5f + 0.5f;
+    output.centerTexCoords.y = 1.0f - output.centerTexCoords.y;
+
+    return output;
+}
 
 float GetWeight(float width, float i)
 {
@@ -35,42 +46,6 @@ float GetWeight(float width, float i)
     return pow(e, power);
 }
 
-PixelInput VShader(VertexInput input)
-{
-    PixelInput output;
-
-    output.position = mul(ModelMatrix, input.position);
-
-    float2 centerTexCoords = output.position.xy * 0.5f + 0.5f;
-    int width, height;
-    Texture.GetDimensions(width, height);
-    // Horizontal
-    if (HorizontalOrVertical == 0)
-    {
-        float pixelSize = 1.f / width;
-	
-        for (int i = -BlurAmount; i <= BlurAmount; ++i)
-        {
-            output.texCoordsH[i + BlurAmount] = centerTexCoords + float2(pixelSize * i, 0);
-            output.weights[i + BlurAmount] = GetWeight(BlurAmount, i);
-        }
-    }
-    // Vertical
-    else
-    {
-        float pixelSize = 1.f / height;
-	
-        for (int i = -BlurAmount; i <= BlurAmount; ++i)
-        {
-            output.texCoordsV[i + BlurAmount] = centerTexCoords + float2(0, 1.0f - (pixelSize * i));
-            output.weights[i + BlurAmount] = GetWeight(BlurAmount, i);
-        }
-    }
-
-    return output;
-}
-
-
 struct PixelOutput
 {
     float4 blurredValue : SV_TARGET0;
@@ -79,12 +54,40 @@ struct PixelOutput
 PixelOutput PShader(PixelInput input)
 {
     PixelOutput output;
+    const int MAX_COORDS = 111;
+    float2 texCoords[MAX_COORDS];
+    float weights[MAX_COORDS];
+    float pixelSize;
+    int width, height;
+
+    Texture.GetDimensions(width, height);
+    // Horizontal
+    if (HorizontalOrVertical == 0)
+    {
+        pixelSize = 1.f / width;
+
+        for (int i = -BlurAmount; i <= BlurAmount; ++i)
+        {
+            texCoords[i + BlurAmount] = input.centerTexCoords + float2(0, pixelSize * i);
+            weights[i + BlurAmount] = GetWeight(BlurAmount, i);
+        }
+    }
+    // Vertical
+    else
+    {
+        pixelSize = 1.f / height;
+
+        for (int i = -BlurAmount; i <= BlurAmount; ++i)
+        {
+            texCoords[i + BlurAmount] = input.centerTexCoords + float2(pixelSize * i, 0);
+            weights[i + BlurAmount] = GetWeight(BlurAmount, i);
+        }
+    }
 
     output.blurredValue = float4(0, 0, 0, 0);
     for (int i = -BlurAmount; i <= BlurAmount; ++i)
     {
-        output.blurredValue += Texture.Sample(ss, input.texCoordsV[i + BlurAmount]) * input.weights[i + BlurAmount];
-        output.blurredValue += Texture.Sample(ss, input.texCoordsH[i + BlurAmount]) * input.weights[i + BlurAmount];
+        output.blurredValue += Texture.Sample(ss, texCoords[i + BlurAmount]) * weights[i + BlurAmount];
     }
 
     return output;

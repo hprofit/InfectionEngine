@@ -11,12 +11,13 @@ Author: <Holden Profit>
 #define RENDER_MANAGER_H
 
 enum RenderMode {
-	WorldPos = 0,
-	Normal,
-	Diffuse,
-	Specular,
-	Depth,
-	Light,
+	WorldPos = 0,   // G-Buffer
+	Normal,         // G-Buffer
+	Diffuse,        // G-Buffer
+	Specular,       // G-Buffer
+	Depth,          // Depth for the camera
+	Light,          // Shadowmap
+    BlurredLight,   // Blurred shadowmap
 	Final,
 
 	NUM_MODES
@@ -129,6 +130,7 @@ public:
 
 	// TODO: Remove this
 	void NextRenderMode();
+    void PrevRenderMode();
 	// TODO: Remove this
 	inline RenderMode CurrentRenderMode() const { return m_RenderMode; }
 
@@ -137,7 +139,7 @@ public:
 	// TODO: GET RID OF THIS
 	void RenderParticles(const GameObject& pGOCamera, const GameObject& pGO);
 
-	void BlurDepthMap(const GameObject& goLight);
+	void BlurDepthMap(GameObject& goLight);
 };
 
 #endif

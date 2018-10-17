@@ -214,7 +214,7 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 
 	// fill the swap chain description struct
 	swapChainDesc.BufferCount = 1;                                  // one back buffer
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;// DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;   // use 32-bit color
+    swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;// DXGI_FORMAT_R8G8B8A8_UNORM;// use 32-bit color
 	swapChainDesc.BufferDesc.Width = settings.Width;		// set the back buffer width
 	swapChainDesc.BufferDesc.Width = settings.Height;		// set the back buffer height
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;    // how swap chain is to be used
