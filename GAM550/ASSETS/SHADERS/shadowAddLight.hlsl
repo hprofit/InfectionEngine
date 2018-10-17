@@ -6,6 +6,8 @@ cbuffer ShadowAddLightCB
 	float4 LightPosition;	// x, y, z, A
 	float4 LightColor;		// r, g, b, B
 	float4 LIDHW;	// Intensity, Distance, Render Target Height, Render Target Width
+    float Alpha;
+    float MaxDepth;
 };
 
 struct VertexInput {
@@ -48,18 +50,24 @@ float falloff(float dist, float a, float b)
 	return 1.f / (1.f + 0.1f * dist + 0.01f * dist * dist);
 }
 
-float attenuation(float dist, float lightRadius)
+float attenuation(float dist, float lightDistance)
 {
-	float val = 1.0f - ((dist*dist) / (lightRadius*lightRadius));
+    float val = 1.0f - ((dist * dist) / (lightDistance * lightDistance));
 	return clamp(val, 0.0f, 1.0f);
 }
 
 float4 PShader(PixelInput input) : SV_TARGET
 {
+    float alpha = 1.f * pow(10.f, -3);
+
+    float halfDepth = MaxDepth / 2.0f;
+    float3 halfVec = float3(halfDepth, halfDepth, halfDepth);
+
+
+
 	const float EPSILON = 0.0001f;
 	float2 texCoords = float2(input.position.x / LIDHW.w, input.position.y / LIDHW.z);
-	float4 worldPos = WorldPosTexture.Sample(ss, texCoords);
-	worldPos.w = 1;
+    float4 worldPos = float4(WorldPosTexture.Sample(ss, texCoords).xyz, 1);
 
 
 	float4 shadowPos = mul(ShadowMatrix, worldPos);
@@ -76,36 +84,24 @@ float4 PShader(PixelInput input) : SV_TARGET
     {
         return float4(0, 0, 0, 0);
     }
-
-
-
-	//if (shadowDepth < (pointDepth - EPSILON) || shadowPos.w <= 0 || 
-	//	shadowMapUV.x < 0 || shadowMapUV.x > 1 || 
-	//	shadowMapUV.y < 0 || shadowMapUV.y > 1) 
-	//{
-	//	return float4(0,0,0,0);
-	//}
-	// Else, do lighting equation as normal
-
-	float a = LightPosition.w;
-	float b = LightColor.w;
-	float lightDistance = LIDHW.y;
-	float lightIntensity = LIDHW.x;
+	
+    // Else, do lighting equation as normal
+    float lightDistance = LIDHW.y;
 	float4 LPos = float4(LightPosition.xyz, 1);
 	float L_Length = length(LPos - worldPos);
 
 	// If the current point is beyond the light's reach, it's not light by this light
-	if (L_Length > lightDistance) { return float4(0, 0, 0, 0); }
+	if (L_Length > lightDistance)
+    { 
+        return float4(0, 0, 0, 0); 
+    }
 	
-	
-	float4 LColor = LightColor * lightIntensity;
-	//LColor *= falloff(L_Length, a, b);
-	LColor.a = 1;
+	float a = LightPosition.w;
+	float b = LightColor.w;
+	float lightIntensity = LIDHW.x;
+    float4 LColor = float4((LightColor * lightIntensity).xyz, 1);
 
-	float4 normal = NormalTexture.Sample(ss, texCoords);
-	// Return the w component to 0
-	normal.w = 0;
-	normal = normalize(normal);
+    float4 normal = normalize(float4(NormalTexture.Sample(ss, texCoords).xyz, 0));
 	float4 diffuseColor = DiffuseTexture.Sample(ss, texCoords);
 	float4 specularInfo = SpecularTexture.Sample(ss, texCoords);
 
@@ -116,14 +112,11 @@ float4 PShader(PixelInput input) : SV_TARGET
 	float4 v = normalize(CameraPosition - worldPos);
 	float4 H = normalize(v + L);
 	float specularCoef = specularInfo.w;
-	float4 specularColor = float4(specularInfo.x, specularInfo.y, specularInfo.z, 1);
+	float4 specularColor = float4(specularInfo.xyz, 1);
 
-	float4 attVal = attenuation(L_Length, lightDistance);
-
+    float4 attVal = 1.0f; //attenuation(L_Length, lightDistance);
 	float4 diffuse = max(dot(normal, L), 0) * diffuseColor * LColor;
 	float4 specular = pow(max(dot(H, normal), 0), specularCoef) * specularColor * LColor;
-
-    float4 finalColor = (diffuse + specular);// * attVal;
-	finalColor.a = 1;
-	return finalColor;
+    
+    return float4(((diffuse + specular) * attVal).xyz, 1);
 }

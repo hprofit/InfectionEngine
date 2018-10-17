@@ -79,6 +79,21 @@ RenderManager::~RenderManager()
 		delete mp_ShaderProgramDeferredFinal;
 		mp_ShaderProgramDeferredFinal = nullptr;
 	}
+	if (mp_ShaderProgramShadowCastingLight) {
+		mp_ShaderProgramShadowCastingLight->Release();
+		delete mp_ShaderProgramShadowCastingLight;
+		mp_ShaderProgramShadowCastingLight = nullptr;
+	}
+	if (mp_ShaderProgramShadowAddLight) {
+		mp_ShaderProgramShadowAddLight->Release();
+		delete mp_ShaderProgramShadowAddLight;
+		mp_ShaderProgramShadowAddLight = nullptr;
+	}
+	if (mp_ShaderProgramGaussianBlur) {
+		mp_ShaderProgramGaussianBlur->Release();
+		delete mp_ShaderProgramGaussianBlur;
+		mp_ShaderProgramGaussianBlur = nullptr;
+	}
 
 	// Show the mouse cursor.
 	ShowCursor(true);
@@ -120,6 +135,7 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 		mp_ShaderProgramDeferredFinal = new ShaderProgram<DeferredFinalCB>();
 		mp_ShaderProgramShadowCastingLight = new ShaderProgram<ShadowCB>();
 		mp_ShaderProgramShadowAddLight = new ShaderProgram<ShadowAddLightCB>();
+		mp_ShaderProgramGaussianBlur = new ShaderProgram<BlurCB>();
 	}
 	return result;
 }
@@ -283,7 +299,6 @@ void RenderManager::RenderSecondPassBuffer()
 void RenderManager::PrepShadowCastingLightPass()
 {
 	mp_D3D->EnableFrontFaceCulling();
-	//mp_D3D->EnableBackFaceCulling();
 	mp_ShaderProgramShadowCastingLight->BindShader();
 	mp_D3D->EnableDepth();
 	mp_D3D->DisableAlpha();
@@ -297,7 +312,6 @@ void RenderManager::PrepShadowCastingLightFinal()
 	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, mp_D3D->GetDeferredRenderTarget()->GetNumViews(), pTextures);
 
 	mp_D3D->DisableDepth();
-	//mp_D3D->DisableAlpha();
 	mp_D3D->EnableAlpha();
 }
 
@@ -454,6 +468,9 @@ bool RenderManager::LoadShader(std::string shaderName)
 		case 4:
 			mp_ShaderProgramShadowAddLight->Initialize(mp_D3D->mp_Device, filePath);
 			break;
+		case 5:
+			mp_ShaderProgramGaussianBlur->Initialize(mp_D3D->mp_Device, filePath);
+			break;
 		default:
 			break;
 	}
@@ -476,4 +493,12 @@ void RenderManager::PrepParticlePass()
 void RenderManager::RenderParticles(const GameObject& pGOCamera, const GameObject& pGO)
 {
 
+}
+
+void RenderManager::BlurDepthMap(const GameObject & goLight)
+{
+	mp_D3D->EnableBackFaceCulling();
+	mp_ShaderProgramGaussianBlur->BindShader();
+	mp_D3D->DisableDepth();
+	mp_D3D->DisableAlpha();
 }

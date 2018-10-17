@@ -39,10 +39,11 @@ struct PixelOutput
 PixelOutput PShader(PixelInput input)
 {
     PixelOutput output;
-    float d2 = input.position.w * input.position.w;
-    float d3 = d2 * input.position.w;
-    float d4 = d3 * input.position.w;
-    //output.depth = float4(input.position.w, d2, d3, d4);
-    output.depth = float4(input.position.w + 0.5f, input.position.w, input.position.w, 1);
+    float depth = input.position.w + 5.0f;
+    float d2 = depth * depth;
+    float d3 = d2 * depth;
+    float d4 = d3 * depth;
+    //output.depth = float4(depth, depth, depth, 1);
+    output.depth = float4(depth, d2, d3, d4);
 	return output;
 }

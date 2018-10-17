@@ -39,7 +39,7 @@ private:
 	ShaderProgram<DeferredFinalCB>* mp_ShaderProgramDeferredFinal;		// Second pass deferred shader
 	ShaderProgram<ShadowCB>* mp_ShaderProgramShadowCastingLight;		// Shadow casting light shader
 	ShaderProgram<ShadowAddLightCB>* mp_ShaderProgramShadowAddLight;	// Shadow add light shader - determines wither to add a given light's influence to a pixel based on that light's shadowmap
-	ShaderProgram<MainCB>* mp_ShaderProgramParticles;					// 
+	ShaderProgram<BlurCB>* mp_ShaderProgramGaussianBlur;				// 
 
 	RenderMode m_RenderMode;			// DEBUG ONLY - which layer of the deferred buffer to render
 
@@ -136,6 +136,8 @@ public:
 	void PrepParticlePass();
 	// TODO: GET RID OF THIS
 	void RenderParticles(const GameObject& pGOCamera, const GameObject& pGO);
+
+	void BlurDepthMap(const GameObject& goLight);
 };
 
 #endif

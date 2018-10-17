@@ -53,6 +53,12 @@ struct ShadowAddLightCB : public ConstantBuffer {
 	Vector3D LIDHW;	// Intensity, Distance, Render Target Height, Render Target Width
 };
 
+struct BlurCB : public ConstantBuffer{
+	Matrix4x4 ModelMatrix;
+	UINT BlurAmount;
+	UINT HorizontalOrVertical; // 0 - Hor, 1 - Vert
+};
+
 class CBW {
 protected:
 	ID3D11Buffer* mp_CBuffer;	// Pointer to DirectX Constant Buffer object
