@@ -14,7 +14,7 @@ bool BackBufferRenderTarget::_CreateRenderViewTarget(ID3D11Device * device, IDXG
 		return false;
 
 	// use the buffer address to create the render target
-	if (FAILED(device->CreateRenderTargetView(pBuffer, NULL, &mp_BackBuffer)))
+	if (FAILED(device->CreateRenderTargetView(pBuffer, nullptr, &mp_BackBuffer)))
 		return false;
 	pBuffer->Release();
 	return true;
@@ -40,7 +40,7 @@ bool BackBufferRenderTarget::_CreateDepthAndStencilBuffer(const WindowSettings& 
 	depthBufferDesc.MiscFlags = 0;
 
 	// Create the texture for the depth buffer using the filled out description.
-	if (FAILED(device->CreateTexture2D(&depthBufferDesc, NULL, &mp_DepthStencilBuffer)))
+	if (FAILED(device->CreateTexture2D(&depthBufferDesc, nullptr, &mp_DepthStencilBuffer)))
 		return false;
 	return true;
 }
@@ -121,27 +121,6 @@ bool BackBufferRenderTarget::_CreateDepthStencilView(ID3D11Device * device)
 	return true;
 }
 
-bool BackBufferRenderTarget::_CreateRasterState(ID3D11Device * device)
-{
-	D3D11_RASTERIZER_DESC rasterDesc;
-	// Setup the raster description which will determine how and what polygons will be drawn.
-	rasterDesc.AntialiasedLineEnable = false;
-	rasterDesc.CullMode = D3D11_CULL_BACK;
-	rasterDesc.DepthBias = 0;
-	rasterDesc.DepthBiasClamp = 0.0f;
-	rasterDesc.DepthClipEnable = true;
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.FrontCounterClockwise = true;
-	rasterDesc.MultisampleEnable = false;
-	rasterDesc.ScissorEnable = false;
-	rasterDesc.SlopeScaledDepthBias = 0.0f;
-
-	// Create the rasterizer state from the description we just filled out.
-	if (FAILED(device->CreateRasterizerState(&rasterDesc, &mp_RasterState)))
-		return false;
-	return true;
-}
-
 bool BackBufferRenderTarget::_CreateBlendStates(ID3D11Device * device)
 {
 	D3D11_BLEND_DESC blendStateDescription;
@@ -177,7 +156,6 @@ BackBufferRenderTarget::BackBufferRenderTarget() :
 	mp_DepthStencilBuffer(nullptr),
 	mp_DepthStencilState(nullptr),
 	mp_DepthStencilView(nullptr),
-	mp_RasterState(nullptr),
 	mp_BackBuffer(nullptr)
 {}
 
@@ -191,7 +169,6 @@ void BackBufferRenderTarget::Initialize(const WindowSettings& settings, ID3D11De
 	_CreateDepthAndStencilBuffer(settings, device);
 	_CreateDepthStencilStates(device);
 	_CreateDepthStencilView(device);
-	_CreateRasterState(device);
 
 	_CreateBlendStates(device);
 }
@@ -206,8 +183,6 @@ void BackBufferRenderTarget::Release()
 		mp_DepthStencilState->Release();
 	if (mp_DepthStencilView)
 		mp_DepthStencilView->Release();
-	if (mp_RasterState)
-		mp_RasterState->Release();
 }
 
 void BackBufferRenderTarget::BindRenderTarget(ID3D11DeviceContext* deviceContext) const

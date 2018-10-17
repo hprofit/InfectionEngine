@@ -53,9 +53,9 @@ public:
 	inline ID3D11Device * const Device() { return mp_D3D->Device(); }
 	inline ID3D11DeviceContext * const DeviceContext() { return mp_D3D->DeviceContext(); }
 
-	inline float AspectRatio() const { return m_WindowSettings.AspectRatio; }
-	inline unsigned int ScreenWidth() const { return m_WindowSettings.Width; }
-	inline unsigned int ScreenHeight() const { return m_WindowSettings.Height; }
+	inline FLOAT AspectRatio() const { return m_WindowSettings.AspectRatio; }
+	inline UINT ScreenWidth() const { return m_WindowSettings.Width; }
+	inline UINT ScreenHeight() const { return m_WindowSettings.Height; }
 	inline HWND GethWnd() { return m_hWnd; }
 
 	// Creates a console for output

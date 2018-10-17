@@ -63,26 +63,28 @@ float4 PShader(PixelInput input) : SV_TARGET
 
 
 	float4 shadowPos = mul(ShadowMatrix, worldPos);
-	float3 shadowPosDiv = (shadowPos.xyz / shadowPos.w) * 0.5f + 0.5f;
-	float2 shadowMapUV = shadowPosDiv.xy;
-	shadowMapUV.y = 1.0f - shadowMapUV.y;
+    float2 shadowMapUV = (shadowPos.xy / shadowPos.w) * 0.5f + 0.5f;
+    shadowMapUV.y = 1.0f - shadowMapUV.y;
+
 	float shadowDepth = ShadowMapTexture.Sample(ss, shadowMapUV).x;
-	float pointDepth = shadowPosDiv.z;
+	float pointDepth = shadowPos.w;
 
-	//return float4(input.position.xy, 0, 1);
-	//return float4(input.texCoords.x * LIDHW.w, (1.0f - input.texCoords.y) * LIDHW.z, 0, 1);
-	//return float4(shadowPosDiv.z, shadowPosDiv.z, shadowPosDiv.z, 1);
-	//return float4(shadowDepth, shadowDepth, shadowDepth, 1);
-	//return float4(pointDepth, pointDepth, pointDepth, 1);
-
-	//shadowMapUV.y = t;
 	// In Shadow from this light
-	if (shadowDepth < (pointDepth - EPSILON) || shadowPos.w <= 0 || 
-		shadowMapUV.x < 0 || shadowMapUV.x > 1 || 
-		shadowMapUV.y < 0 || shadowMapUV.y > 1) 
-	{
-		return float4(0,0,0,0);
-	}
+    if (shadowDepth < (pointDepth - EPSILON) || shadowPos.w <= 0 ||
+		shadowMapUV.x < 0 || shadowMapUV.x > 1 ||
+		shadowMapUV.y < 0 || shadowMapUV.y > 1)
+    {
+        return float4(0, 0, 0, 0);
+    }
+
+
+
+	//if (shadowDepth < (pointDepth - EPSILON) || shadowPos.w <= 0 || 
+	//	shadowMapUV.x < 0 || shadowMapUV.x > 1 || 
+	//	shadowMapUV.y < 0 || shadowMapUV.y > 1) 
+	//{
+	//	return float4(0,0,0,0);
+	//}
 	// Else, do lighting equation as normal
 
 	float a = LightPosition.w;
@@ -91,7 +93,11 @@ float4 PShader(PixelInput input) : SV_TARGET
 	float lightIntensity = LIDHW.x;
 	float4 LPos = float4(LightPosition.xyz, 1);
 	float L_Length = length(LPos - worldPos);
-	//if (L_Length > lightDistance) { return float4(0, 0, 0, 0); }
+
+	// If the current point is beyond the light's reach, it's not light by this light
+	if (L_Length > lightDistance) { return float4(0, 0, 0, 0); }
+	
+	
 	float4 LColor = LightColor * lightIntensity;
 	//LColor *= falloff(L_Length, a, b);
 	LColor.a = 1;
@@ -117,7 +123,7 @@ float4 PShader(PixelInput input) : SV_TARGET
 	float4 diffuse = max(dot(normal, L), 0) * diffuseColor * LColor;
 	float4 specular = pow(max(dot(H, normal), 0), specularCoef) * specularColor * LColor;
 
-	float4 finalColor = (diffuse + specular);// *attVal;
+    float4 finalColor = (diffuse + specular);// * attVal;
 	finalColor.a = 1;
 	return finalColor;
 }

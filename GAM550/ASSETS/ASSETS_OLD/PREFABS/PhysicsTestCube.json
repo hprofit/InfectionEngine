@@ -1,0 +1,48 @@
+{
+  "Tag": "box",
+  "COMPONENTS": [
+    {
+      "Component": "Transform",
+      "position": {
+        "x": 20,
+        "y": 0,
+        "z": -10
+      },
+      "scale": {
+        "x": 5,
+        "y": 5,
+        "z": 5
+      },
+      "pivotOffset": {},
+      "rotation": {}
+    },
+
+    {
+      "Component": "Mesh",
+      "scene": "Cube"
+    },
+
+    {
+      "Component": "RigidBody",
+      "Box": null,
+      "mass": 5.0,
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "acceleration": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "linearDamping": 0.95,
+      "angularDamping": 0.8
+    }
+  ]
+}

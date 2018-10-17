@@ -17,7 +17,6 @@ protected:
 	ID3D11DepthStencilState* mp_DepthStencilState;
 	ID3D11DepthStencilState* mp_DepthDisabledStencilState;
 	ID3D11DepthStencilView* mp_DepthStencilView;
-	ID3D11RasterizerState* mp_RasterState;
 	ID3D11RenderTargetView * mp_BackBuffer;
 	ID3D11BlendState * mp_AlphaEnabledBlendingState;
 	ID3D11BlendState * mp_AlphaDisabledBlendingState;
@@ -26,7 +25,6 @@ protected:
 	virtual bool _CreateDepthAndStencilBuffer(const WindowSettings& settings, ID3D11Device * device);
 	virtual bool _CreateDepthStencilStates(ID3D11Device * device);
 	virtual bool _CreateDepthStencilView(ID3D11Device * device);
-	virtual bool _CreateRasterState(ID3D11Device * device);
 	virtual bool _CreateBlendStates(ID3D11Device * device);
 public:
 	BackBufferRenderTarget();
@@ -36,7 +34,6 @@ public:
 	inline ID3D11DepthStencilState* DepthStencilState() { return mp_DepthStencilState; }
 	inline ID3D11DepthStencilState* DepthDisabledStencilState() { return mp_DepthDisabledStencilState; }
 	inline ID3D11DepthStencilView* DepthStencilView() { return mp_DepthStencilView; }
-	inline ID3D11RasterizerState* RasterState() { return mp_RasterState; }
 	inline ID3D11RenderTargetView* RenderTargetView() { return mp_BackBuffer; }
 	inline ID3D11BlendState* AlphaEnabledBlendingState() { return mp_AlphaEnabledBlendingState; }
 	inline ID3D11BlendState* AlphaDisabledBlendingState() { return mp_AlphaDisabledBlendingState; }

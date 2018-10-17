@@ -9,21 +9,27 @@
 				"z": 0
 		  	},
 		  	"scale": {
-				"x": 20,
-				"y": 20,
-				"z": 20
+				"x": 3,
+				"y": 3,
+				"z": 3
 		  	},
 		  	"pivotOffset": {},
 		  	"rotation": {}
 		},
 		{
 			"Component": "Mesh",
-			"scene": "Sphere",
+			"scene": "Cube",
 			"color": {
-				"r": 255,
+				"r": 0,
 				"g": 255,
-				"b": 255,
+				"b": 0,
 				"a": 255
+			},
+			"specularValues": {
+				"r": 0.9,
+				"g": 0.9,
+				"b": 0.9,
+				"a": 100
 			}
 		}
   ]

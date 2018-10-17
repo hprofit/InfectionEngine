@@ -32,7 +32,7 @@ MSG GameStateManager::Update() {
 		// Game loop
 		// wait for the next message in the queue, store the result in 'msg'
 		while (m_currentState == m_nextState) {
-			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+			if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
 				// translate keystroke messages into the right format
 				TranslateMessage(&msg);
 				// send the message to the WindowProc function

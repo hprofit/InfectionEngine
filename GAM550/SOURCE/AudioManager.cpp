@@ -3,7 +3,7 @@
 Implementation *implementation = nullptr;
 AudioManager::AudioManager()
 {
-	m_Channel = NULL;
+	m_Channel = nullptr;
 }
 
 
@@ -12,13 +12,13 @@ AudioManager::~AudioManager()
 }
 
 Implementation::Implementation() {
-	studio_system_ = NULL;
+	studio_system_ = nullptr;
 
 	int channel_size_ = 512;
 	AudioManager::ErrorCheck(FMOD::Studio::System::create(&studio_system_));
-	AudioManager::ErrorCheck(studio_system_->initialize(channel_size_, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, NULL));
+	AudioManager::ErrorCheck(studio_system_->initialize(channel_size_, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, nullptr));
 
-	system_ = NULL;
+	system_ = nullptr;
 	AudioManager::ErrorCheck(studio_system_->getLowLevelSystem(&system_));
 }
 
@@ -177,7 +177,7 @@ void AudioManager::SetChannel3dPosition(int channel_id, const Vector3D pos)
 		return;
 
 	FMOD_VECTOR position = VectorToFmod(pos);
-	AudioManager::ErrorCheck(found_it->second->set3DAttributes(&position, NULL));
+	AudioManager::ErrorCheck(found_it->second->set3DAttributes(&position, nullptr));
 }
 
 void AudioManager::SetChannelVolume(int channel_id, float volume_db)

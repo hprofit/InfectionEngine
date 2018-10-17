@@ -19,17 +19,17 @@ namespace Infect {
 			INFECT_RENDERER.InitConsole();
 		if (!INFECT_RENDERER.InitWindow(hInstance, nCmdShow, INFECT_GAME_CONFIG.WindowSettings()))
 			std::cout << "DIRECTX DID NOT INITIALIZE PROPERLY." << std::endl;
-		//if (!INFECT_RENDERER.LoadShader("base3D.shader"))  // TODO: MOVE THIS
+		//if (!INFECT_RENDERER.LoadShader("base3D.hlsl"))  // TODO: MOVE THIS
 		//	return 1;
-		if (!INFECT_RENDERER.LoadShader("deferred.shader"))  // TODO: MOVE THIS
+		if (!INFECT_RENDERER.LoadShader("deferred.hlsl"))  // TODO: MOVE THIS
 			return 1;
-		if (!INFECT_RENDERER.LoadShader("quadRender.shader"))  // TODO: MOVE THIS
+		if (!INFECT_RENDERER.LoadShader("quadRender.hlsl"))  // TODO: MOVE THIS
 			return 1;
-		if (!INFECT_RENDERER.LoadShader("deferredFinal.shader"))  // TODO: MOVE THIS
+		if (!INFECT_RENDERER.LoadShader("deferredFinal.hlsl"))  // TODO: MOVE THIS
 			return 1;
-		if (!INFECT_RENDERER.LoadShader("shadowCastingLight.shader"))  // TODO: MOVE THIS
+		if (!INFECT_RENDERER.LoadShader("shadowCastingLight.hlsl"))  // TODO: MOVE THIS
 			return 1;
-		if (!INFECT_RENDERER.LoadShader("shadowAddLight.shader"))  // TODO: MOVE THIS
+		if (!INFECT_RENDERER.LoadShader("shadowAddLight.hlsl"))  // TODO: MOVE THIS
 			return 1;
 
 		INFECT_INPUT.Init(hInstance);

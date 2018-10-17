@@ -28,8 +28,8 @@ void CameraComponentManager::Update(float dt)
 			_CalcViewMatrix(cComp);
 			switch (cComp->m_projectionType) {
 				case ProjectionType::PT_Orthographic: {
-					float width = (float)INFECT_RENDERER.ScreenWidth();
-					float height = (float)INFECT_RENDERER.ScreenHeight();
+					FLOAT width = FLOAT(INFECT_RENDERER.ScreenWidth());
+					FLOAT height = FLOAT(INFECT_RENDERER.ScreenHeight());
 					cComp->m_cameraMatrix = Matrix4x4::Orthographic(width, height, cComp->m_Near, cComp->m_Far);
 					break;
 				}

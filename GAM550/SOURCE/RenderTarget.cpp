@@ -29,7 +29,7 @@ bool RenderTarget::_CreateRenderViewTarget(ID3D11Device * device, unsigned int i
 	textureDesc.MiscFlags = 0;
 
 	// Create the render target textures.
-	if (FAILED( device->CreateTexture2D(&textureDesc, NULL, &m_renderTargetTextures[index])))
+	if (FAILED( device->CreateTexture2D(&textureDesc, nullptr, &m_renderTargetTextures[index])))
 		return false;
 
 	// Setup the description of the render target view.
@@ -72,7 +72,7 @@ bool RenderTarget::_CreateDepthAndStencilBuffer(ID3D11Device * device)
 	depthBufferDesc.MiscFlags = 0;
 	
 	// Create the texture for the depth buffer using the filled out description.
-	if (FAILED(device->CreateTexture2D(&depthBufferDesc, NULL, &mp_DepthStencilBuffer)))
+	if (FAILED(device->CreateTexture2D(&depthBufferDesc, nullptr, &mp_DepthStencilBuffer)))
 		return false;
 	return true;
 }
@@ -128,27 +128,6 @@ bool RenderTarget::_CreateDepthStencilView(ID3D11Device * device)
 	return true;
 }
 
-bool RenderTarget::_CreateRasterState(ID3D11Device * device)
-{
-	D3D11_RASTERIZER_DESC rasterDesc;
-	// Setup the raster description which will determine how and what polygons will be drawn.
-	rasterDesc.AntialiasedLineEnable = false;
-	rasterDesc.CullMode = D3D11_CULL_BACK;
-	rasterDesc.DepthBias = 0;
-	rasterDesc.DepthBiasClamp = 0.0f;
-	rasterDesc.DepthClipEnable = true;
-	rasterDesc.FillMode = D3D11_FILL_SOLID;
-	rasterDesc.FrontCounterClockwise = true;
-	rasterDesc.MultisampleEnable = false;
-	rasterDesc.ScissorEnable = false;
-	rasterDesc.SlopeScaledDepthBias = 0.0f;
-
-	// Create the rasterizer state from the description we just filled out.
-	if (FAILED(device->CreateRasterizerState(&rasterDesc, &mp_RasterState)))
-		return false;
-	return true;
-}
-
 RenderTarget::RenderTarget(unsigned int width, unsigned int height, unsigned int numTargets) :
 	m_TextureWidth(width), m_TextureHeight(height), m_NumTargets(numTargets)
 {
@@ -176,7 +155,6 @@ void RenderTarget::Initialize(ID3D11Device * device)
 	_CreateDepthAndStencilBuffer(device);
 	_CreateDepthStencilState(device);
 	_CreateDepthStencilView(device);
-	_CreateRasterState(device);
 
 	// Setup the viewport for rendering.
 	m_viewport.Width = (float)m_TextureWidth;
@@ -195,8 +173,6 @@ void RenderTarget::Release()
 		mp_DepthStencilState->Release();
 	if (mp_DepthStencilView)
 		mp_DepthStencilView->Release();
-	if (mp_RasterState)
-		mp_RasterState->Release();
 
 
 	for (unsigned int i = 0; i < m_NumTargets; ++i) {

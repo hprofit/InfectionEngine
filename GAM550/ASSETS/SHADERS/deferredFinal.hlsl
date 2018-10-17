@@ -62,12 +62,9 @@ float4 PShader(PixelInput input) : SV_TARGET
 	float4 LPos = float4(LightPosition.xyz, 1);
 
 	float L_Length = length(LPos - worldPos);
-	if (L_Length > lightDistance) {
-		return float4(0, 0, 0, 0);
-	}
+	if (L_Length > lightDistance) { return float4(0, 0, 0, 0); }
 	float4 LColor = LightColor * lightIntensity;
-	LColor *= falloff(L_Length, a, b);
-	LColor.a = 1;
+	//LColor *= falloff(L_Length, a, b);
 
 	float4 normal = NormalTexture.Sample(ss, texCoords);
 	// Return the w component to 0

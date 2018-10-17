@@ -9,9 +9,9 @@ void CreateErrorDialog(ID3DBlob * pErrors, const std::string& msg)
 {
 	if (pErrors) {
 		std::string errorListString = std::string(msg + CreateErrorMessage(pErrors));
-		MessageBox(NULL, errorListString.c_str(), "Error", MB_OK);
+		MessageBox(nullptr, errorListString.c_str(), "Error", MB_OK);
 	}
 	else {
-		MessageBox(NULL, msg.c_str(), "Error", MB_OK);
+		MessageBox(nullptr, msg.c_str(), "Error", MB_OK);
 	}
 }

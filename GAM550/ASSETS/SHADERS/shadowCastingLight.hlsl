@@ -15,8 +15,6 @@ struct VertexInput {
 struct PixelInput
 {
 	float4 position : SV_POSITION;
-	float4 shadowPos : S_POS;
-	float depth : DEPTH;
 };
 
 Texture2D DiffuseTexture : register(t0);
@@ -29,26 +27,22 @@ PixelInput VShader(VertexInput input)
 {
 	PixelInput output;
 	output.position = mul(MatFinal, input.position);
-	output.shadowPos = output.position;
-	output.depth = output.position.z / output.position.w;
 	return output;
 }
 
 
-struct POut
+struct PixelOutput
 {
 	float4 depth : SV_TARGET0;
 };
 
-POut PShader(PixelInput input)
+PixelOutput PShader(PixelInput input)
 {
-	POut output;
-	float depth = input.shadowPos.z / input.shadowPos.w;
-
-	float d2 = depth;// input.depth * input.depth;
-	float d3 = d2 * input.depth;
-	float d4 = d3 * input.depth;
-	output.depth = float4(input.depth, d2, d3, d4); // <- Get rid of this when done testing
-	//output.depth = float4(input.depth, input.depth, input.depth, 1); // <- Get rid of this when done testing
+    PixelOutput output;
+    float d2 = input.position.w * input.position.w;
+    float d3 = d2 * input.position.w;
+    float d4 = d3 * input.position.w;
+    //output.depth = float4(input.position.w, d2, d3, d4);
+    output.depth = float4(input.position.w + 0.5f, input.position.w, input.position.w, 1);
 	return output;
 }

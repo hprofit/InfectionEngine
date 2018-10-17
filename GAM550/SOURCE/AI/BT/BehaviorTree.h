@@ -48,7 +48,7 @@ public:
 	~BehaviorTree();
 
 	// push behavior to scheduler for the next tick()
-	void Init(Behavior& b, BH_Observer* observer = NULL );
+	void Init(Behavior& b, BH_Observer* observer = nullptr );
 	// sets the status of behavior and fires the observer
 	void StopBehavior(Behavior& b, BH_Status res);
 

@@ -36,6 +36,8 @@ void DirectionalLightComponent::Serialize(const json & j)
 	height = ParseInt(j, "height");
 	width = ParseInt(j, "width");
 
+	m_AspectRatio = FLOAT(width) / FLOAT(height);
+
 	mp_LightRenderTarget = new RenderTarget(width, height, 1);
 	mp_LightRenderTarget->Initialize(INFECT_RENDERER.Device());
 
@@ -59,6 +61,8 @@ void DirectionalLightComponent::Override(const json & j)
 		UINT height, width;
 		height = ParseInt(j, "height");
 		width = ParseInt(j, "width");
+
+		m_AspectRatio = FLOAT(width) / FLOAT(height);
 
 		mp_LightRenderTarget = new RenderTarget(width, height, 1);
 		mp_LightRenderTarget->Initialize(INFECT_RENDERER.Device());

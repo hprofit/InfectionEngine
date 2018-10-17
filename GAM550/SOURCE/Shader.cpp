@@ -30,7 +30,7 @@ bool VertexShader::LoadFromFile(std::string shaderFilePath, std::string shaderFu
 	}
 
 	// Encapsulate the shaders into a shader object
-	result = INFECT_RENDERER.Device()->CreateVertexShader(mp_ShaderBlob->GetBufferPointer(), mp_ShaderBlob->GetBufferSize(), NULL, &mp_VS);
+	result = INFECT_RENDERER.Device()->CreateVertexShader(mp_ShaderBlob->GetBufferPointer(), mp_ShaderBlob->GetBufferSize(), nullptr, &mp_VS);
 	if (FAILED(result)) {
 		CreateErrorDialog(nullptr, "The vertex shader failed to be created.");
 		return false;
@@ -80,7 +80,7 @@ bool PixelShader::LoadFromFile(std::string shaderFilePath, std::string shaderFun
 	}
 
 	// Encapsulate the shaders into a shader object
-	result = INFECT_RENDERER.Device()->CreatePixelShader(mp_ShaderBlob->GetBufferPointer(), mp_ShaderBlob->GetBufferSize(), NULL, &mp_PS);
+	result = INFECT_RENDERER.Device()->CreatePixelShader(mp_ShaderBlob->GetBufferPointer(), mp_ShaderBlob->GetBufferSize(), nullptr, &mp_PS);
 	if (FAILED(result)) {
 		CreateErrorDialog(nullptr, "The pixel shader failed to be created.");
 		return false;

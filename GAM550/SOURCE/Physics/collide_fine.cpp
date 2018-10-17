@@ -156,7 +156,7 @@ unsigned CollisionDetector::sphereAndTruePlane(
     contact->contactNormal = normal;
     contact->penetration = penetration;
     contact->contactPoint = position - plane.direction * centreDistance;
-    contact->setBodyData(sphere.body, NULL,
+    contact->setBodyData(sphere.body, nullptr,
         data->friction, data->restitution);
 
     data->addContacts(1);
@@ -187,7 +187,7 @@ unsigned CollisionDetector::sphereAndHalfSpace(
     contact->penetration = -ballDistance;
     contact->contactPoint =
         position - plane.direction * (ballDistance + sphere.radius);
-    contact->setBodyData(sphere.body, NULL,
+    contact->setBodyData(sphere.body, nullptr,
         data->friction, data->restitution);
 
     data->addContacts(1);
@@ -505,7 +505,7 @@ unsigned CollisionDetector::boxAndPoint(
     contact->penetration = min_depth;
 
     // Where this is called this value can be left, or filled in.
-    contact->setBodyData(box.body, NULL,
+    contact->setBodyData(box.body, nullptr,
         data->friction, data->restitution);
 
     data->addContacts(1);
@@ -606,7 +606,7 @@ unsigned CollisionDetector::boxAndHalfSpace(
             contact->penetration = plane.offset - vertexDistance;
 
             // Write the appropriate data
-            contact->setBodyData(box.body, NULL,
+            contact->setBodyData(box.body, nullptr,
                 data->friction, data->restitution);
 
             // Move onto the next contact

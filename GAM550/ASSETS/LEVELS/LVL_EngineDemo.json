@@ -6,27 +6,27 @@
   ],
   "GAME_OBJECTS": [
     {
-      "prefab": "Camera",
-      "position": {
-        "x": 0.0,
-        "y": 50.0,
-        "z": 50.0
-      }
+		"prefab": "Camera",
+		"position": {
+			"x": 0.0,
+			"y": 50.0,
+			"z": 50.0
+		},
+		"rotation": {
+			"x": -45
+		}
     },
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 	{
 		"prefab": "Sun",
 		"position": {
-			"x": 50.0,
+			"x": 0.0,
 			"y": 50.0,
-			"z": 0.0
+			"z": 50.0
+		},
+		"rotation": {
+			"x": -45
 		}
 	},
->>>>>>> Shadow maps are sort of working, in the process of debugging.
-=======
->>>>>>> Shadow work.
 
 
     {
@@ -51,7 +51,7 @@
       "prefab": "Player",
       "position": {
         "x": 0.0,
-        "y": 0.0,
+        "y": 15.0,
         "z": 0.0
       }
     },
@@ -59,7 +59,7 @@
       "prefab": "Ball",
       "position": {
         "x": 50.0,
-        "y": 8.0,
+        "y": 15.0,
         "z": 0.0
       }
     },
@@ -67,7 +67,7 @@
       "prefab": "Player",
       "position": {
         "x": -50.0,
-        "y": 0.0,
+        "y": 15.0,
         "z": 0.0
       }
     },
@@ -75,7 +75,7 @@
       "prefab": "Player",
       "position": {
         "x": 0.0,
-        "y": 0.0,
+        "y": 15.0,
         "z": 50.0
       }
     },
@@ -83,7 +83,7 @@
       "prefab": "Player",
       "position": {
         "x": 0.0,
-        "y": 0.0,
+        "y": 15.0,
         "z": -50.0
       }
     },
@@ -164,8 +164,6 @@
         "z": -25
       }
     },
-
-
 
 
 
@@ -550,7 +548,12 @@
         "y": 0.0,
         "z": -160.0
       }
-    },
+    }
+	
+	
+	],
+	"GO2": [
+	
     {
       "prefab": "AITestAgent",
       "position": {

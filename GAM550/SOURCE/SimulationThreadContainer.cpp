@@ -36,92 +36,102 @@ bool StartSimulationCommand::execute() const
 
 #pragma region TestStuff
 
-	TransformComponent* tcpCamera = INFECT_GOM.GetGameObject(0)->GetComponent<TransformComponent>();
 
-	TransformComponent* tcpSun = INFECT_GOM.GetGameObject(1)->GetComponent<TransformComponent>();	// 3
-	if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
-		tcpSun->Move(Infect::GetFrameTime() *30.f*tcpSun->Right());
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
-		tcpSun->Move(Infect::GetFrameTime() *-30.f*tcpSun->Right());
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_UP)) {
-		tcpSun->Move(Infect::GetFrameTime() *30.f * tcpSun->Forward());
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
-		tcpSun->Move(Infect::GetFrameTime() *-30.f*tcpSun->Forward());
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_I)) {
-		tcpSun->Move(Infect::GetFrameTime() *30.f * tcpSun->Up());
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_K)) {
-		tcpSun->Move(Infect::GetFrameTime() *-30.f*tcpSun->Up());
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_J)) {
-		tcpSun->RotateY(Infect::GetFrameTime() * 30.f);
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_L)) {
-		tcpSun->RotateY(Infect::GetFrameTime() * -30.f);
-	}
 
+	{
+		TransformComponent* tcpSun = INFECT_GOM.GetGameObject(1)->GetComponent<TransformComponent>();	// 3
+		if (INFECT_INPUT.IsKeyPressed(DIK_RIGHT)) {
+			tcpSun->Move(Infect::GetFrameTime() *30.f*tcpSun->Right());
+		}
+		if (INFECT_INPUT.IsKeyPressed(DIK_LEFT)) {
+			tcpSun->Move(Infect::GetFrameTime() *-30.f*tcpSun->Right());
+		}
+
+		if (INFECT_INPUT.IsKeyPressed(DIK_UP)) {
+			tcpSun->Move(Infect::GetFrameTime() *30.f * tcpSun->Forward());
+		}
+		if (INFECT_INPUT.IsKeyPressed(DIK_DOWN)) {
+			tcpSun->Move(Infect::GetFrameTime() *-30.f*tcpSun->Forward());
+		}
+
+		if (INFECT_INPUT.IsKeyPressed(DIK_I)) {
+			tcpSun->Move(Infect::GetFrameTime() *30.f * tcpSun->Up());
+		}
+		if (INFECT_INPUT.IsKeyPressed(DIK_K)) {
+			tcpSun->Move(Infect::GetFrameTime() *-30.f*tcpSun->Up());
+		}
+
+		if (INFECT_INPUT.IsKeyPressed(DIK_J)) {
+			tcpSun->RotateX(Infect::GetFrameTime() * 30.f);
+		}
+		if (INFECT_INPUT.IsKeyPressed(DIK_L)) {
+			tcpSun->RotateX(Infect::GetFrameTime() * -30.f);
+		}
+
+		if (INFECT_INPUT.IsKeyPressed(DIK_U)) {
+			tcpSun->RotateY(Infect::GetFrameTime() * -30.f);
+		}
+		if (INFECT_INPUT.IsKeyPressed(DIK_O)) {
+			tcpSun->RotateY(Infect::GetFrameTime() * 30.f);
+		}
+	}
 
 	if (INFECT_INPUT.IsKeyTriggered(DIK_P) || INFECT_INPUT.IsButtonTriggered(XBOX_BTN_BACK)) {
 		INFECT_RENDERER.NextRenderMode();
 	}
-	
-	int xMove = -INFECT_INPUT.MousePosX() / 4;
-	int yMove = -INFECT_INPUT.MousePosY() / 4;
-	int xMoveGC = -INFECT_INPUT.GetRightAxisX() / 6500;
-	int yMoveGC = -INFECT_INPUT.GetRightAxisY() / 6500;
-	//if (INFECT_INPUT.IsButtonTriggered(XBOX_BTN_A)) {
-	//	std::cout << "pressed\n";
-	//}
-	if (xMove != 0)
-		tcpCamera->RotateY(float(xMove));
-	if (xMoveGC != 0)
-		tcpCamera->RotateY(float(xMoveGC));
-	if (yMove != 0)
-		tcpCamera->RotateX(float(yMove));
-	if (yMoveGC != 0)
-		tcpCamera->RotateX(float(yMoveGC));
-
-	float speed = 60.f;
-	if (INFECT_INPUT.IsKeyPressed(DIK_D) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_RIGHT)) {
-		tcpCamera->Move(Infect::GetFrameTime() *speed*tcpCamera->Right());
-		INFECT_AUDIOMANAGER.Set3dListener(Infect::GetFrameTime() *-30.f*tcpCamera->Right(), Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0));
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_A) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_LEFT)) {
-		tcpCamera->Move(Infect::GetFrameTime() *-speed * tcpCamera->Right());
-		INFECT_AUDIOMANAGER.Set3dListener(Infect::GetFrameTime() *30.f*tcpCamera->Right(), Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0));
-
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_W) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_UP)) {
-		tcpCamera->Move(Infect::GetFrameTime() *speed * tcpCamera->Forward());
-		INFECT_AUDIOMANAGER.Set3dListener(Infect::GetFrameTime() *-30.f * tcpCamera->Forward(), Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0));
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_S) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_DOWN)) {
-		tcpCamera->Move(Infect::GetFrameTime() *-speed * tcpCamera->Forward());
-		INFECT_AUDIOMANAGER.Set3dListener(Infect::GetFrameTime() *30.f*tcpCamera->Forward(), Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0));
-	}
-	if (INFECT_INPUT.IsKeyReleased(DIK_T) ) {
-		INFECT_AUDIOMANAGER.TestingAudio();
-	}
-	if (INFECT_INPUT.IsKeyPressed(DIK_ESCAPE))
 	{
-		INFECT_AUDIOMANAGER.PauseAudio(true);
-	}
-	
-	//Audio Testing
+		int xMove = -INFECT_INPUT.MousePosX() / 4;
+		int yMove = -INFECT_INPUT.MousePosY() / 4;
+		int xMoveGC = -INFECT_INPUT.GetRightAxisX() / 6500;
+		int yMoveGC = -INFECT_INPUT.GetRightAxisY() / 6500;
 
+		TransformComponent* tcpCamera = INFECT_GOM.GetGameObject(0)->GetComponent<TransformComponent>();
+		if (xMove != 0)
+			tcpCamera->RotateY(float(xMove));
+		if (xMoveGC != 0)
+			tcpCamera->RotateY(float(xMoveGC));
+		if (yMove != 0)
+			tcpCamera->RotateX(float(yMove));
+		if (yMoveGC != 0)
+			tcpCamera->RotateX(float(yMoveGC));
+
+		float speed = 120.f;
+		if (INFECT_INPUT.IsKeyPressed(DIK_D) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_RIGHT)) {
+			tcpCamera->Move(Infect::GetFrameTime() *speed*tcpCamera->Right());
+			//INFECT_AUDIOMANAGER.Set3dListener(Infect::GetFrameTime() *-speed *tcpCamera->Right(), Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0));
+		}
+		if (INFECT_INPUT.IsKeyPressed(DIK_A) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_LEFT)) {
+			tcpCamera->Move(Infect::GetFrameTime() *-speed * tcpCamera->Right());
+			//INFECT_AUDIOMANAGER.Set3dListener(Infect::GetFrameTime() *speed*tcpCamera->Right(), Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0));
+
+		}
+		if (INFECT_INPUT.IsKeyPressed(DIK_W) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_UP)) {
+			tcpCamera->Move(Infect::GetFrameTime() *speed * tcpCamera->Forward());
+			//INFECT_AUDIOMANAGER.Set3dListener(Infect::GetFrameTime() *-speed * tcpCamera->Forward(), Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0));
+		}
+		if (INFECT_INPUT.IsKeyPressed(DIK_S) || INFECT_INPUT.IsButtonPressed(XBOX_DPAD_DOWN)) {
+			tcpCamera->Move(Infect::GetFrameTime() *-speed * tcpCamera->Forward());
+			//INFECT_AUDIOMANAGER.Set3dListener(Infect::GetFrameTime() *speed*tcpCamera->Forward(), Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0));
+		}
+	}
+
+	{
+		//if (INFECT_INPUT.IsKeyReleased(DIK_T) ) {
+		//	INFECT_AUDIOMANAGER.TestingAudio();
+		//}
+		//if (INFECT_INPUT.IsKeyPressed(DIK_ESCAPE))
+		//{
+		//	INFECT_AUDIOMANAGER.PauseAudio(true);
+		//}
+
+		//Audio Testing
+	}
 
 	// alt+f4
-	if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {
+	//if (INFECT_INPUT.IsKeyPressed(DIK_LALT) && INFECT_INPUT.IsKeyPressed(DIK_F4)) {
 		//INFECT_GAME_STATE.SetGameState(GameState::QUIT);
 		//INFECT_EVENTS.BroadcastEvent(&Event(EVENT_WINDOW_CLOSED));
-	}
-	//INFECT_GOM.GetGameObject(0)->GetComponent<TransformComponent>()->SetPosition(tcpCamera->WorldPosition());
-	//pGO->GetComponent<TransformComponent>()->RotateY(Infect::GetFrameTime() * 50.0f);
-	//pGO->GetComponent<TransformComponent>()->RotateZ(Infect::GetFrameTime() * 25.0f);
+	//}
 
 #pragma endregion
 

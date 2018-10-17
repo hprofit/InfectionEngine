@@ -67,16 +67,16 @@ namespace physics {
 
 
         BVHNode(BVHNode *parent, const BoundingVolumeClass &volume,
-            RigidBody* body=NULL)
+            RigidBody* body=nullptr)
             : parent(parent), volume(volume), body(body)
         {
-            children[0] = children[1] = NULL;
+            children[0] = children[1] = nullptr;
         }
 
 
         bool isLeaf() const
         {
-            return (body != NULL);
+            return (body != nullptr);
         }
 
         unsigned getPotentialContacts(PotentialContact* contacts,
@@ -126,7 +126,7 @@ namespace physics {
                 this, newVolume, newBody
                 );
 
-            this->body = NULL;
+            this->body = nullptr;
 
 
             recalculateBoundingVolume();
@@ -160,10 +160,10 @@ namespace physics {
             parent->children[0] = sibling->children[0];
             parent->children[1] = sibling->children[1];
 
-            sibling->parent = NULL;
-            sibling->body = NULL;
-            sibling->children[0] = NULL;
-            sibling->children[1] = NULL;
+            sibling->parent = nullptr;
+            sibling->body = nullptr;
+            sibling->children[0] = nullptr;
+            sibling->children[1] = nullptr;
             delete sibling;
 
             parent->recalculateBoundingVolume();
@@ -171,11 +171,11 @@ namespace physics {
 
 
         if (children[0]) {
-            children[0]->parent = NULL;
+            children[0]->parent = nullptr;
             delete children[0];
         }
         if (children[1]) {
-            children[1]->parent = NULL;
+            children[1]->parent = nullptr;
             delete children[1];
         }
     }

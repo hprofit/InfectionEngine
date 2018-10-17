@@ -16,7 +16,7 @@ BehaviorTree::~BehaviorTree() {
 }
 
 void BehaviorTree::Init(Behavior& b, BH_Observer* observer) {
-	if (observer != NULL) {
+	if (observer != nullptr) {
 		b.m_Observer = *observer;
 	}
 	m_Scheduler.ScheduleBehavior(&b);

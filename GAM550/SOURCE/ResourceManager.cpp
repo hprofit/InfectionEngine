@@ -119,7 +119,7 @@ Scene* ResourceManager::_LoadScene(const std::string& meshSceneName)
 			//This is for the first time 
 			//for the root node
 			#pragma region Root Node Data
-			animScene.m_RootNode.ParentNode = NULL;
+			animScene.m_RootNode.ParentNode = nullptr;
 			Matrix4x4 tempIdentityMatrix;
 			animScene.m_RootNode.Transformations = tempIdentityMatrix.Identity4D();
 
@@ -239,10 +239,10 @@ ID3D11ShaderResourceView * ResourceManager::_LoadTexture(const std::string & tex
 	HRESULT result = DirectX::CreateWICTextureFromFile(
 		INFECT_RENDERER.Device(),
 		std::wstring(filePath.begin(), filePath.end()).c_str(),
-		NULL, &pTexture
+		nullptr, &pTexture
 	);
 	if (FAILED(result)) {
-		MessageBox(NULL, (std::string("Failed to load texture: ") + filePath).c_str(), "Error", MB_OK);
+		MessageBox(nullptr, (std::string("Failed to load texture: ") + filePath).c_str(), "Error", MB_OK);
 		return nullptr;
 	}
 

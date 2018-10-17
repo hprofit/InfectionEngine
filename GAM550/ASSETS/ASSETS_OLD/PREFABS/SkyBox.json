@@ -9,22 +9,18 @@
 				"z": 0
 		  	},
 		  	"scale": {
-				"x": 20,
-				"y": 20,
-				"z": 20
+				"x": 500,
+				"y": 500,
+				"z": 500
 		  	},
 		  	"pivotOffset": {},
 		  	"rotation": {}
 		},
 		{
 			"Component": "Mesh",
-			"scene": "Sphere",
-			"color": {
-				"r": 255,
-				"g": 255,
-				"b": 255,
-				"a": 255
-			}
+			"scene": "SkyBox",
+			"texture": "worldTexture2.jpg",
+			"isLit": false
 		}
   ]
 }

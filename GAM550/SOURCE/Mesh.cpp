@@ -260,12 +260,12 @@ void Mesh::FinishMesh()
 	vertexbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;		// use as a vertex buffer
 	vertexbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;	// allow CPU to write in buffer
 
-	INFECT_RENDERER.Device()->CreateBuffer(&vertexbd, NULL, &mp_VBuffer);       // create the buffer
+	INFECT_RENDERER.Device()->CreateBuffer(&vertexbd, nullptr, &mp_VBuffer);       // create the buffer
 
 	D3D11_MAPPED_SUBRESOURCE vMS;
-	INFECT_RENDERER.DeviceContext()->Map(mp_VBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &vMS);	// map the buffer
+	INFECT_RENDERER.DeviceContext()->Map(mp_VBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &vMS);	// map the buffer
 	memcpy(vMS.pData, &(m_vertices[0]), vertSize);													// copy the data
-	INFECT_RENDERER.DeviceContext()->Unmap(mp_VBuffer, NULL);										// unmap the buffer
+	INFECT_RENDERER.DeviceContext()->Unmap(mp_VBuffer, 0);										// unmap the buffer
 
 
 	D3D11_BUFFER_DESC indexbd;
@@ -278,16 +278,13 @@ void Mesh::FinishMesh()
 	indexbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;	// allow CPU to write in buffer
 	indexbd.MiscFlags = 0;
 
-	INFECT_RENDERER.Device()->CreateBuffer(&indexbd, NULL, &mp_IBuffer);	// create the buffer
+	INFECT_RENDERER.Device()->CreateBuffer(&indexbd, nullptr, &mp_IBuffer);	// create the buffer
 
 	D3D11_MAPPED_SUBRESOURCE iMS;
-	INFECT_RENDERER.DeviceContext()->Map(mp_IBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &iMS);   // map the buffer
-	memcpy(iMS.pData, &(m_faces[0]), indexSize);	// copy the data//Example to call audio 
-//INFECT_AUDIOMANAGER.PlaySounds(R"(ASSETS/SOUNDS/rosey.wav)", Vector3(0.0f, 0.0f, 0.0f), INFECT_AUDIOMANAGER.VolumeTodB(0.5f));
+	INFECT_RENDERER.DeviceContext()->Map(mp_IBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &iMS);   // map the buffer
+	memcpy(iMS.pData, &(m_faces[0]), indexSize);	// copy the data
 
-//Example to load Audio
-//INFECT_AUDIOMANAGER.LoadSound(R"(ASSETS/SOUNDS/rosey.wav)", true, false, false);
-	INFECT_RENDERER.DeviceContext()->Unmap(mp_IBuffer, NULL);					// unmap the buffer
+	INFECT_RENDERER.DeviceContext()->Unmap(mp_IBuffer, 0);					// unmap the buffer
 
 
 	ID3D11InputLayout *pLayout;

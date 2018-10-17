@@ -6,19 +6,17 @@
 			"position": {
 				"x": 0.0,
 				"y": 0.0,
-				"z": 0.0
+				"z": 50.0
 			},
 			"scale": {},
 			"pivotOffset": {},
-			"rotation": {}
+			"rotation": {
+				"x": -45
+			}
         },
         {
             "Component": "Camera",
-            "fov": 70.0,
-			"far": 1000
-        },
-		{
-			"Component": "Controller"
-		}
+            "fov": 70.0
+        }
     ]
 }

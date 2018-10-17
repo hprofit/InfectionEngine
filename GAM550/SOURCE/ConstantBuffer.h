@@ -93,7 +93,7 @@ ConstantBufferWrapper<BufferType>::ConstantBufferWrapper(ID3D11Device* device)
 	bd.ByteWidth = sizeof(BufferType) + (16 - (sizeof(BufferType) % 16));
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
-	device->CreateBuffer(&bd, NULL, &mp_CBuffer);
+	device->CreateBuffer(&bd, nullptr, &mp_CBuffer);
 }
 
 template<typename BufferType>

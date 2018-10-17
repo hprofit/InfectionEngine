@@ -63,38 +63,38 @@ void InputManager::FreeDirectInput() {
 void InputManager::Init(HINSTANCE hInstance) {
 	// Connecting DirectInput Interface
 	HRESULT hr;
-	hr = DirectInput8Create(GetModuleHandle(NULL),
+	hr = DirectInput8Create(GetModuleHandle(nullptr),
 		DIRECTINPUT_VERSION,
 		IID_IDirectInput8,
 		(void**)&DIRX_Interface,
-		NULL);
+		nullptr);
 	// DirectInput Connection Failed
-	if (FAILED(hr) || DIRX_Interface == NULL) {
-		MessageBox(NULL, TEXT("DirectInput Interface Connection Failed"),
+	if (FAILED(hr) || DIRX_Interface == nullptr) {
+		MessageBox(nullptr, TEXT("DirectInput Interface Connection Failed"),
 			TEXT("InputManager: Init()"), MB_ICONERROR | MB_OK);
 		return;
 	}
 	// Creating Keyboard Device
-	DIRX_Interface->CreateDevice(GUID_SysKeyboard, &mDIRX_Keyboard, NULL);
+	DIRX_Interface->CreateDevice(GUID_SysKeyboard, &mDIRX_Keyboard, nullptr);
 	if (mDIRX_Keyboard) {
 		mDIRX_Keyboard->SetDataFormat(&c_dfDIKeyboard);
 		mDIRX_Keyboard->SetCooperativeLevel(INFECT_RENDERER.GethWnd(), DISCL_FOREGROUND | DISCL_EXCLUSIVE);
 		mDIRX_Keyboard->Acquire();
 	}
 	else {
-		MessageBox(NULL, TEXT("DirectInput keyboard init failed"),
+		MessageBox(nullptr, TEXT("DirectInput keyboard init failed"),
 			TEXT("InputManager: Init()"), MB_ICONERROR | MB_OK);
 		return;
 	}
 	// Creating Mouse Device
-	DIRX_Interface->CreateDevice(GUID_SysMouse, &mDIRX_Mouse, NULL);
+	DIRX_Interface->CreateDevice(GUID_SysMouse, &mDIRX_Mouse, nullptr);
 	if (mDIRX_Mouse) {
 		mDIRX_Mouse->SetDataFormat(&c_dfDIMouse);
 		mDIRX_Mouse->SetCooperativeLevel(INFECT_RENDERER.GethWnd(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 		mDIRX_Mouse->Acquire();
 	}
 	else {
-		MessageBox(NULL, TEXT("DirectInput mouse init failed"),
+		MessageBox(nullptr, TEXT("DirectInput mouse init failed"),
 			TEXT("InputManager: Init()"), MB_ICONERROR | MB_OK);
 		return;
 	}

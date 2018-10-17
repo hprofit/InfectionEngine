@@ -16,7 +16,6 @@ protected:
 	ID3D11Texture2D * mp_DepthStencilBuffer;
 	ID3D11DepthStencilState* mp_DepthStencilState;
 	ID3D11DepthStencilView* mp_DepthStencilView;
-	ID3D11RasterizerState* mp_RasterState;
 	unsigned int m_TextureWidth, m_TextureHeight, m_NumTargets;
 
 	ID3D11Texture2D** m_renderTargetTextures;
@@ -29,7 +28,6 @@ protected:
 	virtual bool _CreateDepthAndStencilBuffer(ID3D11Device * device);
 	virtual bool _CreateDepthStencilState(ID3D11Device * device);
 	virtual bool _CreateDepthStencilView(ID3D11Device * device);
-	virtual bool _CreateRasterState(ID3D11Device * device);
 public:
 	RenderTarget(unsigned int width, unsigned int height, unsigned int numTargets = 1);
 	virtual ~RenderTarget();
@@ -37,7 +35,6 @@ public:
 	inline ID3D11Texture2D* DepthStencilBuffer() { return mp_DepthStencilBuffer; }
 	inline ID3D11DepthStencilState* DepthStencilState() { return mp_DepthStencilState; }
 	inline ID3D11DepthStencilView* DepthStencilView() { return mp_DepthStencilView; }
-	inline ID3D11RasterizerState* RasterState() { return mp_RasterState; }
 
 	unsigned int GetNumViews() const { return m_NumTargets; }
 	ID3D11Texture2D** GetRenderTextures() { return m_renderTargetTextures; }

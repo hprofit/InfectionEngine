@@ -10,15 +10,17 @@ Author: <Holden Profit>
 bool D3DHandler::_CreateRasterStates()
 {
 	D3D11_RASTERIZER_DESC rasterDesc;
-	// Setup the raster description which will determine how and what polygons will be drawn.
-	rasterDesc.AntialiasedLineEnable = true;
-	rasterDesc.CullMode = D3D11_CULL_BACK;
-	rasterDesc.DepthBias = 0;
-	rasterDesc.DepthBiasClamp = 0.0f;
-	rasterDesc.DepthClipEnable = true;
+	ZeroMemory(&rasterDesc, sizeof(D3D11_RASTERIZER_DESC));
+	// Setup the raster description which will determine how and what polygons will be drawnn
 	rasterDesc.FillMode = D3D11_FILL_SOLID;
+	rasterDesc.CullMode = D3D11_CULL_BACK;
+	rasterDesc.DepthClipEnable = true;
 	rasterDesc.FrontCounterClockwise = true;
-	rasterDesc.MultisampleEnable = true;
+
+	//rasterDesc.DepthBiasClamp = 0.0f;
+	//rasterDesc.MultisampleEnable = true;
+	//rasterDesc.AntialiasedLineEnable = true; 
+	rasterDesc.DepthBias = 0;
 	rasterDesc.ScissorEnable = false;
 	rasterDesc.SlopeScaledDepthBias = 0.0f;
 
@@ -57,7 +59,7 @@ HWND D3DHandler::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings se
 	wc.style = CS_HREDRAW | CS_VREDRAW;
 	wc.lpfnWndProc = WindowProc;
 	wc.hInstance = hInstance;
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	//wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
 	wc.lpszClassName = settings.WindowTitle.c_str();
 
@@ -109,10 +111,10 @@ HWND D3DHandler::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings se
 		posY,							// y-position of the window
 		settings.Width,					// width of the window
 		settings.Height,				// height of the window
-		NULL,							// we have no parent window, NULL
-		NULL,							// we aren't using menus, NULL
+		nullptr,							// we have no parent window, nullptr
+		nullptr,							// we aren't using menus, nullptr
 		hInstance,						// application handle
-		NULL);							// used with multiple windows, NULL
+		nullptr);							// used with multiple windows, nullptr
 
 	// display the window on the screen
 	ShowWindow(hWnd, nCmdShow);
@@ -153,7 +155,7 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 		return false;
 
 	// Get the number of modes that fit the DXGI_FORMAT_R8G8B8A8_UNORM display format for the adapter output (monitor).
-	result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, NULL);
+	result = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, nullptr);
 	if (FAILED(result))
 		return false;
 
@@ -212,13 +214,17 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 
 	// fill the swap chain description struct
 	swapChainDesc.BufferCount = 1;                                  // one back buffer
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;   // use 32-bit color
+	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;// DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;   // use 32-bit color
 	swapChainDesc.BufferDesc.Width = settings.Width;		// set the back buffer width
 	swapChainDesc.BufferDesc.Width = settings.Height;		// set the back buffer height
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;    // how swap chain is to be used
 	swapChainDesc.OutputWindow = hWnd;                              // the window to be used
-	swapChainDesc.SampleDesc.Count = 4;                             // how many multisamples
+	swapChainDesc.SampleDesc.Count = 1;                             // how many multisamples
 	swapChainDesc.Windowed = !settings.FullScreen;                  // windowed/full-screen mode
+	swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+	swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;	// https://docs.microsoft.com/en-us/windows/desktop/api/dxgi/ne-dxgi-dxgi_swap_effect
+	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	// Set the refresh rate of the back buffer.
 	if (settings.VSync)
@@ -252,9 +258,9 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 
 	// create a device, device context and swap chain using the information in the swapChainDesc struct
 	result = D3D11CreateDeviceAndSwapChain(
-		NULL,
+		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
-		NULL,
+		nullptr,
 		0,//D3D11_CREATE_DEVICE_DEBUG, // 0
 		&featureLevel,
 		1,
@@ -262,7 +268,7 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 		&swapChainDesc,
 		&mp_SwapChain,
 		&mp_Device,
-		NULL,
+		nullptr,
 		&mp_DeviceContext);
 	if (FAILED(result))
 		return false;
@@ -303,7 +309,7 @@ void D3DHandler::CleanD3D(void)
 {
 	// switch back to windowed mode, D3D will fail to close if it's still in fullscreen
 	if (mp_SwapChain)
-		mp_SwapChain->SetFullscreenState(FALSE, NULL);
+		mp_SwapChain->SetFullscreenState(FALSE, nullptr);
 
 	// close and release all existing COM objects
 	if (mp_SwapChain)

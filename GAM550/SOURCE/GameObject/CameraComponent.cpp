@@ -9,7 +9,7 @@ Author: <Holden Profit>
 
 CameraComponent::CameraComponent(InfectGUID guid) :
 	Component(guid),
-	m_fov(90.f), 
+	m_fov(70.f), 
 	m_aspectRatio(1.f), 
 	m_Near(0.1f),
 	m_Far(1000.0f),
@@ -29,16 +29,13 @@ void CameraComponent::Deactivate() {
 void CameraComponent::Serialize(const json& j)
 {
 	m_fov = ParseFloat(j, "fov");
+	m_Far = ParseFloat(j, "far");
 }
 
 void Override(const json& j){}
 
 void CameraComponent::HandleEvent(Event * pEvent)
 {
-	//switch (pEvent->Type()) {
-	//default:
-	//	break;
-	//}
 }
 
 bool CameraComponent::LeftDepthGreaterThanRight(GameObject * left, GameObject * right)

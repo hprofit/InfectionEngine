@@ -151,7 +151,7 @@ void Contact::calculateDesiredDeltaVelocity(real duration)
 
 void Contact::calculateInternals(real duration)
 {
-    // Check if the first object is NULL, and swap if it is.
+    // Check if the first object is nullptr, and swap if it is.
     if (!body[0]) swapBodies();
     assert(body[0]);
 

@@ -16,6 +16,7 @@ class DirectionalLightComponent : public LightBaseComponent
 protected:
 	FLOAT m_Far;
 	FLOAT m_FoV;
+	FLOAT m_AspectRatio;
 
 	Matrix4x4 m_ViewPerspMat;
 	Matrix4x4 m_ShadowMat;

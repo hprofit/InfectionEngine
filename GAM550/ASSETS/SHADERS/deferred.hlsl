@@ -79,6 +79,11 @@ PixelInput VShader(VertexInput input)
 	return output;
 }
 
+[maxvertexcount(4)]
+void GeoShader(point PixelInput input[1], inout TriangleStream<PixelInput> SpriteStream)
+{
+	PixelInput output;
+}
 
 struct POut
 {
@@ -118,7 +123,7 @@ POut PShader(PixelInput input)
 	output.worldPos = float4(input.worldPosition.xyz, 1);
 	// Set the alpha channel to 1 so we can see it when GBuffer is rendered 
 	//output.worldPos.w = 1; // input.depth; <- put this back when done testing
-	output.depth = float4(input.depth, input.depth, input.depth, 1); // <- Get rid of this when done testing
+	output.depth = float4(input.position.w, input.position.w, input.position.w, 1); // <- Get rid of this when done testing
 
 	output.diffuse = input.hasDiffuseTexture ? DiffuseTexture.Sample(ss, input.texCoords) : (input.hasColorOverride ? OverrideColor : input.color);
 	//if (input.hasTint)

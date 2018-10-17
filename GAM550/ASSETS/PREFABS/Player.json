@@ -9,16 +9,16 @@
 				"z": 0
 		  	},
 		  	"scale": {
-				"x": 0.11,
-				"y": 0.11,
-				"z": 0.11
+				"x": 10,
+				"y": 10,
+				"z": 10
 		  	},
 		  	"pivotOffset": {},
 		  	"rotation": {}
 		},
 		{
 			"Component": "Mesh",
-			"scene": "soldier.fbx",
+			"scene": "Suzy.obj",
 			"color": {
 				"r": 0,
 				"g": 0,

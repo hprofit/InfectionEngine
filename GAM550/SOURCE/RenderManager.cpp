@@ -56,7 +56,7 @@ void RenderManager::_RenderScene(const Scene * pScene)
 
 RenderManager::RenderManager() :
 	m_ClearColor(Color(0.0f, 0.0f, 0.0f, 1)),
-	m_Ambient(Color(0.7f, 0.7f, 0.7f, 1)),
+	m_Ambient(Color(0.2f, 0.2f, 0.2f, 1)),
 	mp_D3D(new D3DHandler()),
 	m_RenderMode(RenderMode::Final)
 {
@@ -180,25 +180,35 @@ void RenderManager::RenderDebugBuffers()
 			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1,
 				&pSRV
 			);
-			cb.Ambient = Color(1, 1, 1, 1);
+			float d = 1.f / 500.f;
+			cb.Ambient = Color(d, d, d, 1);
 			break;
 		}
 		//case RenderMode::Depth:
 		//{
-		//	// GARBAGE, DIDN'T WORK.
-		//	//D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
-		//	//shaderResourceViewDesc.Format = DXGI_FORMAT_R32_FLOAT;// DXGI_FORMAT_D24_UNORM_S8_UINT;
-		//	//shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-		//	//shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
-		//	//shaderResourceViewDesc.Texture2D.MipLevels = 1;
+		//	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+		//	shaderResourceViewDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+		//	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		//	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+		//	shaderResourceViewDesc.Texture2D.MipLevels = 1;
 		//
-		//	//ID3D11Texture2D* db = mp_D3D->GetDeferredRenderTarget()->DepthStencilBuffer();
+		//	ID3D11Texture2D* db = mp_D3D->GetDeferredRenderTarget()->DepthStencilBuffer();
 		//
-		//	//mp_D3D->mp_Device->CreateShaderResourceView(db, &shaderResourceViewDesc, &pResource);
+		//	mp_D3D->mp_Device->CreateShaderResourceView(db, &shaderResourceViewDesc, &pResource);
 		//
-		//	//mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pResource);
+		//	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pResource);
+		//	cb.Ambient = Color(1, 1, 1, 1);
 		//	break;
 		//}
+		case RenderMode::Depth:
+		{
+			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1,
+				&mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews()[m_RenderMode]
+			);
+			float d = 1.f / 500.f;
+			cb.Ambient = Color(d, d, d, 1);
+			break;
+		}
 		default:
 		{
 			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1,
@@ -273,6 +283,7 @@ void RenderManager::RenderSecondPassBuffer()
 void RenderManager::PrepShadowCastingLightPass()
 {
 	mp_D3D->EnableFrontFaceCulling();
+	//mp_D3D->EnableBackFaceCulling();
 	mp_ShaderProgramShadowCastingLight->BindShader();
 	mp_D3D->EnableDepth();
 	mp_D3D->DisableAlpha();

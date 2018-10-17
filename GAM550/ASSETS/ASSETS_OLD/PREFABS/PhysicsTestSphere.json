@@ -1,0 +1,49 @@
+{
+  "Tag": "None",
+  "COMPONENTS": [
+    {
+      "Component": "Transform",
+      "position": {
+        "x": 26,
+        "y": 50,
+        "z": -9
+      },
+      "scale": {
+        "x": 5,
+        "y": 5,
+        "z": 5
+      },
+      "pivotOffset": {},
+      "rotation": {}
+    },
+
+    {
+      "Component": "Mesh",
+      "scene": "Sphere"
+    },
+
+    {
+      "Component": "RigidBody",
+      "Sphere": null,
+      "mass": 50.0,
+      "radius": 2.5,
+      "velocity": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "rotation": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "acceleration": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "linearDamping": 0.95,
+      "angularDamping": 0.8
+    }
+  ]
+}
