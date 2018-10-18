@@ -226,7 +226,6 @@ void RenderManager::RenderDebugBuffers()
             ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[1];
             mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pSRV);
 
-			d = 1.0f;
             cb.Ambient = Color(d, d, d, 1);
             break;
         }
@@ -235,7 +234,7 @@ void RenderManager::RenderDebugBuffers()
 			ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[2];
 			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pSRV);
 
-			cb.Ambient = Color(64, 64, 64, 1);
+			cb.Ambient = Color(d, d, d, 1);
 			break;
 		}
 		default:
@@ -525,10 +524,39 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 	const DirectionalLightComponent * pLightComp = goLight.GetComponent<DirectionalLightComponent>();
 	RenderTarget* pRenderTarget = pLightComp->GetRenderTarget();
 	ID3D11ShaderResourceView* pShadowMap = pRenderTarget->GetShaderResourceViews()[0];
+
 	ID3D11RenderTargetView* pShadowMapBlurredHRTV = pRenderTarget->GetRenderTargetViews()[1];
 	ID3D11ShaderResourceView* pShadowMapBlurredHSRV = pRenderTarget->GetShaderResourceViews()[1];
+
 	ID3D11RenderTargetView* pShadowMapBlurredVRTV = pRenderTarget->GetRenderTargetViews()[2];
 	BlurCB& cb = mp_ShaderProgramGaussianBlur->CB()->BufferData();
+    std::vector<FLOAT> weights = pLightComp->Weights();
+    std::vector<FLOAT> offsetsX = pLightComp->OffsetsX();
+    std::vector<FLOAT> offsetsY = pLightComp->OffsetsY();
+    UINT curWeightVec = 0;
+    for (UINT i = 0; i < weights.size(); i += 4) {
+        cb.Weights[curWeightVec] = Vector3D(
+            weights[i + 0],
+            weights[i + 1],
+            weights[i + 2],
+            weights[i + 3]
+        );
+        cb.Offsets.X[curWeightVec] = Vector3D(
+            offsetsX[i + 0],
+            offsetsX[i + 1],
+            offsetsX[i + 2],
+            offsetsX[i + 3]
+        );
+        cb.Offsets.Y[curWeightVec] = Vector3D(
+            offsetsY[i + 0],
+            offsetsY[i + 1],
+            offsetsY[i + 2],
+            offsetsY[i + 3]
+        );
+        ++curWeightVec;
+    }
+
+    cb.BlurAmount = pLightComp->BlurAmount();
 
 	mp_D3D->EnableBackFaceCulling();
 	mp_ShaderProgramGaussianBlur->BindShader();
@@ -545,30 +573,8 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 
 		mp_D3D->mp_DeviceContext->RSSetViewports(1, &pRenderTarget->ViewPort());
 
-		std::vector<FLOAT> weights = pLightComp->Weights();
-		std::vector<FLOAT> offsetsX = pLightComp->OffsetsX();
-		std::vector<FLOAT> offsetsY = pLightComp->OffsetsY();
-		UINT curWeightVec = 0;
-		for (UINT i = 0; i < weights.size(); i+=4) {
-			cb.Weights[curWeightVec] = Vector3D(
-				weights[i+0],
-				weights[i+1],
-				weights[i+2],
-				weights[i+3]
-			);
-			++curWeightVec;
-		}
-		//	cb.Weights.WeightsArr[i] = weights[i];
-		for (UINT i = 0; i < offsetsX.size(); ++i) 
-		{
-			cb.Offsets.X[i] = offsetsX[i];
-			cb.Offsets.Y[i] = offsetsY[i];
-		}
-		cb.BlurAmount = pLightComp->BlurAmount();
 		cb.HorizontalOrVertical = HoV::HoV_Horizontal;
-
-
-
+        
 		mp_ShaderProgramGaussianBlur->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 		mp_ShaderProgramGaussianBlur->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
 
@@ -580,18 +586,22 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 
 	// Vertical Blur
 	{
-		//// Bind the Render Target View of the Vertical target
-		//mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pShadowMapBlurredVRTV, pRenderTarget->DepthStencilView());
+		// Bind the Render Target View of the Vertical target
+		mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pRenderTarget->GetRenderTargetViews()[2], pRenderTarget->DepthStencilView());
+        // Set the depth stencil state.
+        mp_D3D->mp_DeviceContext->OMSetDepthStencilState(pRenderTarget->DepthStencilState(), 1);
+        mp_D3D->mp_DeviceContext->RSSetViewports(1, &pRenderTarget->ViewPort());
 
-		//cb.HorizontalOrVertical = HoV::HoV_Vertical;
+		cb.HorizontalOrVertical = HoV::HoV_Vertical;
 
-		//mp_ShaderProgramGaussianBlur->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
-		//mp_ShaderProgramGaussianBlur->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+		mp_ShaderProgramGaussianBlur->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+		mp_ShaderProgramGaussianBlur->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
 
-		//// Bind the Shader Res. View for the Horizontal target
+		// Bind the Shader Res. View for the Horizontal target
+        mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pShadowMap);
 		//mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pShadowMapBlurredHSRV);
 
-		//// do 3D rendering to the currently bound buffer here
-		//_RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
+		// do 3D rendering to the currently bound buffer here
+		_RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
 	}
 }

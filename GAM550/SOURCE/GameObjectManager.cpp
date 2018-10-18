@@ -116,7 +116,20 @@ void GameObjectManager::FillShadowCastingLightsShadowMaps()
 		pDLComp->ClearRenderTarget();
 
 		// Bind this light's render target for rendering to it's depth buffer
-		pDLComp->BindRenderTarget();
+		//pDLComp->BindRenderTarget();
+
+
+
+        RenderTarget* pRenderTarget = pDLComp->GetRenderTarget();
+        // Bind the render target view and depth stencil buffer to the output render pipeline.
+        INFECT_RENDERER.DeviceContext()->OMSetRenderTargets(1, &pRenderTarget->GetRenderTargetViews()[0], pRenderTarget->DepthStencilView());
+
+        // Set the depth stencil state.
+        INFECT_RENDERER.DeviceContext()->OMSetDepthStencilState(pRenderTarget->DepthStencilState(), 1);
+
+        INFECT_RENDERER.DeviceContext()->RSSetViewports(1, &pRenderTarget->ViewPort());
+
+
 
 		// Render all objects to fill out light's depth buffer
 		for (unsigned int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {

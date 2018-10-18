@@ -42,17 +42,18 @@ void DirectionalLightComponent::_GenerateWeights()
 
 void DirectionalLightComponent::_GenerateOffsets(FLOAT width, FLOAT height)
 {
-	m_OffsetsX.resize((m_BlurAmount * 2 + 1));
-	m_OffsetsY.resize((m_BlurAmount * 2 + 1));
+    int size = m_BlurAmount + 1;
+	m_OffsetsX.resize(size + (4 - size % 4));
+	m_OffsetsY.resize(size + (4 - size % 4));
 
 	FLOAT pixelWidth = 1.f / width;
 	FLOAT pixelHeight = 1.f / height;
 
-	for (int i = -m_BlurAmount; i <= m_BlurAmount; ++i)
+	for (int i = -m_BlurAmount; i <= 0; ++i)
 	{
 		int offset = i + m_BlurAmount;
-		m_OffsetsX[offset] = i * pixelWidth;
-		m_OffsetsY[offset] = i * pixelHeight;
+		m_OffsetsX[offset] = -i * pixelWidth;
+		m_OffsetsY[offset] = -i * pixelHeight;
 	}
 }
 
