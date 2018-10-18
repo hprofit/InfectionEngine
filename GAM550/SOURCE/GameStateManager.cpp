@@ -46,6 +46,9 @@ MSG GameStateManager::Update() {
 	Infect::UnloadResources();	// Unloads all resources
 	Infect::Cleanup();
 
+	// Spin until the threads have terminated
+	while (INFECT_THREAD_JOBS.HasRunningThreads()) {}
+
 	return msg;
 }
 

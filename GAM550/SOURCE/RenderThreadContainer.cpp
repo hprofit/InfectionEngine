@@ -38,7 +38,6 @@ bool StartRenderCommand::execute() const
 	//INFECT_GOM.RenderCameras();						// Render all game objects
 	// END DO NOT USE
 
-	INFECT_RENDERER.PrepShadowCastingLightPass();
 	INFECT_GOM.FillShadowCastingLightsShadowMaps();		// Requires visibility check
 
 	INFECT_RENDERER.PrepDeferredPass();
@@ -75,8 +74,8 @@ bool StartRenderCommand::execute() const
 
 bool RenderTerminateTerminate::execute() const
 {
-	if (tCont.IsBusy())
-		return false;
+	//if (tCont.IsBusy())
+	//	return false;
 	tCont.Terminate();
 	return true;
 }

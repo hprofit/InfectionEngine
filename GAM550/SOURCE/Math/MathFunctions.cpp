@@ -181,3 +181,14 @@ float cot(float val)
 {
 	return cos(val) / sin(val);
 }
+
+#define MATH_E 2.71828f
+
+float GetGaussianWeight(float width, float i)
+{
+	float s = width / 2.0f;
+	float iDivS = i / s;
+	float power = -0.5f * (iDivS * iDivS);
+
+	return pow(MATH_E, power);
+}

@@ -1,8 +1,12 @@
 cbuffer BlurBuffer
 {
-    float4x4 ModelMatrix;
+    float4 Weights[4];
     int BlurAmount;
     int HorizontalOrVertical; // 0 - Hor, 1 - Vert
+    struct {
+        float4 X[4];
+        float4 Y[4];
+    } Offsets;
 };
 
 struct VertexInput
@@ -29,21 +33,12 @@ PixelInput VShader(VertexInput input)
 {
     PixelInput output;
 
-    output.position = mul(ModelMatrix, input.position);
+    output.position = float4(mul(input.position, 2.f).xyz, 1);
 
     output.centerTexCoords = output.position.xy * 0.5f + 0.5f;
     output.centerTexCoords.y = 1.0f - output.centerTexCoords.y;
 
     return output;
-}
-
-float GetWeight(float width, float i)
-{
-    float s = width / 2.0f;
-    const float e = 2.71828f;
-    float power = -0.5f * pow(i / s, 2);
-
-    return pow(e, power);
 }
 
 struct PixelOutput
@@ -54,13 +49,12 @@ struct PixelOutput
 PixelOutput PShader(PixelInput input)
 {
     PixelOutput output;
-    const int MAX_COORDS = 111;
+    const uint MAX_COORDS = 111;
     float2 texCoords[MAX_COORDS];
-    float weights[MAX_COORDS];
     float pixelSize;
-    int width, height;
-
+    float width, height;
     Texture.GetDimensions(width, height);
+
     // Horizontal
     if (HorizontalOrVertical == 0)
     {
@@ -68,8 +62,7 @@ PixelOutput PShader(PixelInput input)
 
         for (int i = -BlurAmount; i <= BlurAmount; ++i)
         {
-            texCoords[i + BlurAmount] = input.centerTexCoords + float2(0, pixelSize * i);
-            weights[i + BlurAmount] = GetWeight(BlurAmount, i);
+            texCoords[i + BlurAmount] = input.centerTexCoords + float2(pixelSize * i, 0);
         }
     }
     // Vertical
@@ -79,16 +72,55 @@ PixelOutput PShader(PixelInput input)
 
         for (int i = -BlurAmount; i <= BlurAmount; ++i)
         {
-            texCoords[i + BlurAmount] = input.centerTexCoords + float2(pixelSize * i, 0);
-            weights[i + BlurAmount] = GetWeight(BlurAmount, i);
+            texCoords[i + BlurAmount] = input.centerTexCoords + float2(0, pixelSize * i);
         }
     }
-
+    float2 texOffset = float2(0, 0);
+    bool horizontal = HorizontalOrVertical == 0; // 0 - Horizontal, 1 - Vertical
     output.blurredValue = float4(0, 0, 0, 0);
-    for (int i = -BlurAmount; i <= BlurAmount; ++i)
-    {
-        output.blurredValue += Texture.Sample(ss, texCoords[i + BlurAmount]) * weights[i + BlurAmount];
-    }
 
+    //int curInputVecIdx = 0;
+    //int count = 0;
+    //for (int i = -BlurAmount; i <= BlurAmount; ++i)
+    //{
+    //    //int offset = i <= 0 ? i + BlurAmount : BlurAmount - i;
+    //    //texOffset = float2(Offsets.X[i + BlurAmount], 0) + input.centerTexCoords;
+    //                      //!horizontal ? OffsetsY[i + BlurAmount] : 0.f);
+    //    //texOffset = texCoords[i + BlurAmount] + input.centerTexCoords;
+    //    //output.blurredValue += Texture.Sample(ss, texOffset) * Weights[curInputVecIdx][offset];
+        
+    //    uint offset = i + BlurAmount <= BlurAmount ?
+    //                    uint(i + BlurAmount) % 4 :
+    //                    3 - (uint(i + BlurAmount) % 4);
+        
+
+    //    output.blurredValue.r += Weights[curInputVecIdx][offset];
+
+    //    //output.blurredValue += Texture.Sample(ss, texCoords[i + BlurAmount]) * Weights[offset];
+    //    //output.blurredValue.r += weights[offset];//Weights.WeightsArr[offset];
+    //}
+    //output.blurredValue.r += Weights[0][0]; // -3
+    //output.blurredValue.r += Weights[0][1]; // -2
+    //output.blurredValue.r += Weights[0][2]; // -1
+    //output.blurredValue.r += Weights[0][3]; // 0
+    //output.blurredValue.r += Weights[0][2]; // 1
+    //output.blurredValue.r += Weights[0][1]; // 2
+    //output.blurredValue.r += Weights[0][0]; // 3
+
+    int count = 0, vecIdx = 0;
+    for (int i = BlurAmount; i > 0; --i)
+    {
+        output.blurredValue.r += Weights[vecIdx][count];
+        output.blurredValue.r += Weights[vecIdx][count];
+        ++count;
+        if (count == 4)
+        {
+            count = 0;
+            ++vecIdx;
+        }
+    }
+    output.blurredValue.r += Weights[vecIdx][count];
+
+    output.blurredValue.a = 1;
     return output;
 }

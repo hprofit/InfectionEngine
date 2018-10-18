@@ -17,7 +17,8 @@ enum RenderMode {
 	Specular,       // G-Buffer
 	Depth,          // Depth for the camera
 	Light,          // Shadowmap
-    BlurredLight,   // Blurred shadowmap
+    BlurredLightH,  // Horizontally Blurred shadowmap
+	BlurredLightV,  // Vertically Blurred shadowmap
 	Final,
 
 	NUM_MODES

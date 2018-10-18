@@ -20,7 +20,7 @@ VertexShader::VertexShader(std::string shaderFilePath, std::string shaderFunc)
 bool VertexShader::LoadFromFile(std::string shaderFilePath, std::string shaderFunc)
 {
 	// load and compile the shaders
-	int flag = D3D10_SHADER_WARNINGS_ARE_ERRORS;// | D3D10_SHADER_OPTIMIZATION_LEVEL3;
+	int flag = D3D10_SHADER_WARNINGS_ARE_ERRORS | D3DCOMPILE_DEBUG;// | D3D10_SHADER_OPTIMIZATION_LEVEL3;
 	ID3DBlob * pErrors;
 
 	HRESULT result = D3DCompileFromFile(std::wstring(shaderFilePath.begin(), shaderFilePath.end()).c_str(), 0, 0, shaderFunc.c_str(), "vs_4_0", flag, flag, &mp_ShaderBlob, &pErrors);

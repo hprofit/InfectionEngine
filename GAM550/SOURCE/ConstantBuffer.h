@@ -54,9 +54,13 @@ struct ShadowAddLightCB : public ConstantBuffer {
 };
 
 struct BlurCB : public ConstantBuffer{
-	Matrix4x4 ModelMatrix;
-	UINT BlurAmount;
-	UINT HorizontalOrVertical; // 0 - Hor, 1 - Vert
+	Vector3D Weights[4];
+	int BlurAmount;
+	int HorizontalOrVertical; // 0 - Hor, 1 - Vert
+	struct {
+		float X[12];
+		float Y[12];
+	} Offsets;
 };
 
 class CBW {

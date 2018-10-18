@@ -30,10 +30,13 @@ public:
 
 	ThreadContainer() :
 		mp_Thread(nullptr),
-		m_Terminate(false), m_Busy(false),
+		m_Terminate(false), 
+		m_Busy(false),
 		mp_CurrentCommand(nullptr)
 	{};
 	virtual ~ThreadContainer() {};
+
+	bool IsDone() const { return m_Terminate; }
 
 	// Derived classes are responsible for creating a loop that will process commands
 	// or ask for new ones until the thread is terminated

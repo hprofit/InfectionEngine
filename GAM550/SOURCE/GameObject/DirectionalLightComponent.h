@@ -17,12 +17,18 @@ protected:
 	FLOAT m_Far;
 	FLOAT m_FoV;
 	FLOAT m_AspectRatio;
+	int m_BlurAmount;
+	std::vector<FLOAT> m_Weights;
+	std::vector<FLOAT> m_OffsetsX;	// u offset
+	std::vector<FLOAT> m_OffsetsY;	// v offset
 
 	Matrix4x4 m_ViewPerspMat;
 	Matrix4x4 m_ShadowMat;
 
 	RenderTarget * mp_LightRenderTarget;
 
+	void _GenerateWeights();
+	void _GenerateOffsets(FLOAT width, FLOAT height);
 public:
 	friend DirectionalLightComponentManager;
 
@@ -44,10 +50,16 @@ public:
 	inline FLOAT GetFoV() const { return m_FoV; }
 	void SetFoV(FLOAT _fov);
 
+	inline int BlurAmount() const { return m_BlurAmount; }
+
+	inline std::vector<FLOAT> Weights() const { return m_Weights; }
+	inline std::vector<FLOAT> OffsetsX() const { return m_OffsetsX; }
+	inline std::vector<FLOAT> OffsetsY() const { return m_OffsetsY; }
+
 	inline Matrix4x4 GetViewPerspMatrix() const { return m_ViewPerspMat; }
 	inline Matrix4x4 GetShadowMatrix() const { return m_ShadowMat; }
 
-	inline RenderTarget* GetRenderTarget() { return mp_LightRenderTarget; }
+	inline RenderTarget* GetRenderTarget() const { return mp_LightRenderTarget; }
 	void ClearRenderTarget();
 	void BindRenderTarget();
 };

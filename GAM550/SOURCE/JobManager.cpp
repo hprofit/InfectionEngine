@@ -20,6 +20,17 @@ void JobManager::Init()
 	}
 }
 
+bool JobManager::HasRunningThreads() const
+{
+	for (int i = 0; i < ThreadType::NUMTHREADTYPES - 1; ++i)
+	{
+		if (!m_ThreadContainers[i]->IsDone())
+			return true;
+	}
+
+	return false;
+}
+
 void JobManager::RegisterThreadContainer(ThreadContainer* tjc)
 {
 	m_ThreadContainers[tjc->GetType()] = tjc;

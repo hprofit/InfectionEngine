@@ -29,6 +29,9 @@ public:
 
 	// Initializes both arrays.
 	void Init();
+
+	bool HasRunningThreads() const;
+
 	// Registers a spot in the ThreadContainer array according to what type the ThreadContainer is
 	void RegisterThreadContainer(ThreadContainer* tjc);
 

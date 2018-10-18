@@ -33,5 +33,7 @@ float Rand_Zero_One();
 
 float cot(float val);
 
+float GetGaussianWeight(float width, float i);
+
 
 #endif

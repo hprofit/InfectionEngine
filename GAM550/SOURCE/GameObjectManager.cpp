@@ -109,6 +109,7 @@ void GameObjectManager::FillShadowCastingLightsShadowMaps()
 {
 	for (unsigned int lightIdx = 0; lightIdx < mp_ShadowCastingLights.size(); ++lightIdx) {
 		if (!mp_ShadowCastingLights[lightIdx]->IsActive())	continue;
+		INFECT_RENDERER.PrepShadowCastingLightPass();
 		DirectionalLightComponent* pDLComp = mp_ShadowCastingLights[lightIdx]->GetComponent<DirectionalLightComponent>();
 
 		// Clear this light's render target from previous frame
