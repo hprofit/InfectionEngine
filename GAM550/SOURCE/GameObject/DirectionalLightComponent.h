@@ -25,7 +25,7 @@ protected:
 	Matrix4x4 m_ViewPerspMat;
 	Matrix4x4 m_ShadowMat;
 
-	RenderTarget * mp_LightRenderTarget;
+	//RenderTarget * mp_LightRenderTarget;
 
 	void _GenerateWeights();
 	void _GenerateOffsets(FLOAT width, FLOAT height);
@@ -59,9 +59,9 @@ public:
 	inline Matrix4x4 GetViewPerspMatrix() const { return m_ViewPerspMat; }
 	inline Matrix4x4 GetShadowMatrix() const { return m_ShadowMat; }
 
-	inline RenderTarget* GetRenderTarget() const { return mp_LightRenderTarget; }
-	void ClearRenderTarget();
-	void BindRenderTarget();
+	//inline RenderTarget* GetRenderTarget() const { return mp_LightRenderTarget; }
+	//void ClearRenderTarget();
+	//void BindRenderTarget();
 };
 
 #endif

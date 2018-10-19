@@ -43,7 +43,8 @@ public:
 	void UnregisterShadowCastingLight(GameObject* lightGO);
 	GameObject* GetShadowCastingLight(UINT index) { return mp_ShadowCastingLights[index]; }
 
-	// Cycles through all cameras
+	// Cycles through all cameras and renders all objects in the scene to the currently
+	// bound buffer using the currently selected shader
 	void RenderCameras();
 
 	// Cycles through all non-shadow casting lights and adds their influence to the deferred + ambient
@@ -52,7 +53,7 @@ public:
 
 	// Cycles through all shadow casting lights and binds their render targets for drawing
 	// Each visible object is then drawn to the light's shadpw map/depth buffer
-	void FillShadowCastingLightsShadowMaps();
+	void RenderShadowCastingLights();
 
 	// Cycles through all shadow casting lights and adds their influence to the deferred + ambient
 	// lit scene if an object is in within it's line of sight

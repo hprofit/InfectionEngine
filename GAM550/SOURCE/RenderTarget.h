@@ -53,7 +53,17 @@ public:
 	*/
 	void BindRenderTarget(ID3D11DeviceContext* deviceContext) const;
 
+	// Binds a single RenderTargetView, does NOT do index checking to prevent bad access
+	// Sets the DepthStencilState
+	void BindRT(ID3D11DeviceContext* deviceContext, UINT idx) const;
+
+	void SetViewport(ID3D11DeviceContext* deviceContext) const;
+
+	// Clears all render targets and the depth stencil view
 	void ClearRenderTarget(ID3D11DeviceContext* deviceContext, const Color& color = Color(0,0,0,1));
+
+	// Clears just the depth stencil view
+	void ClearDepthStencilView(ID3D11DeviceContext* deviceContext);
 };
 
 #endif

@@ -20,6 +20,7 @@ protected:
 	BackBufferRenderTarget* mp_BackBuffer;	// <- move these render targets to the RenderManager
 	RenderTarget* mp_DeferredRenderTarget;	// <- move these render targets to the RenderManager
 	RenderTarget* mp_SecondPassRenderTarget;// <- move these render targets to the RenderManager
+	RenderTarget* mp_LightRenderTarget;		// <- move these render targets to the RenderManager
 	D3D11_VIEWPORT m_viewport;
 
 	ID3D11RasterizerState* mp_RasterStateBackCulling;
@@ -47,6 +48,7 @@ public:
 
 	RenderTarget* GetDeferredRenderTarget() { return mp_DeferredRenderTarget; }
 	RenderTarget* GetSecondPassRenderTarget() { return mp_SecondPassRenderTarget; }
+	RenderTarget* GetLightRT() { return mp_LightRenderTarget; }
 
 	void BindBackBuffer() const;
 
@@ -60,6 +62,9 @@ public:
 	void ClearDeferredBuffer(const Color& color);
 
 	void ClearSecondPassBuffer(const Color& color);
+
+	void ClearLightBuffer(const Color& color);
+
 
 	void PresentBuffer(bool vSync);
 

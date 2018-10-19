@@ -285,6 +285,9 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 	mp_SecondPassRenderTarget = new RenderTarget(settings.Width, settings.Height, 1);
 	mp_SecondPassRenderTarget->Initialize(mp_Device);
 
+	mp_LightRenderTarget = new RenderTarget(1024, 1024, 2);
+	mp_LightRenderTarget->Initialize(mp_Device);
+
 #pragma region Viewport
 	ZeroMemory(&m_viewport, sizeof(D3D11_VIEWPORT));
 
@@ -327,6 +330,11 @@ void D3DHandler::CleanD3D(void)
 
 	if (mp_SecondPassRenderTarget)
 		mp_SecondPassRenderTarget->Release();
+
+	if (mp_LightRenderTarget)
+		mp_LightRenderTarget->Release();
+
+
 
 	if (mp_RasterStateFrontCulling)
 		mp_RasterStateFrontCulling->Release();
@@ -376,6 +384,11 @@ void D3DHandler::ClearDeferredBuffer(const Color & color)
 void D3DHandler::ClearSecondPassBuffer(const Color & color)
 {
 	mp_SecondPassRenderTarget->ClearRenderTarget(mp_DeviceContext, color);
+}
+
+void D3DHandler::ClearLightBuffer(const Color & color)
+{
+	mp_LightRenderTarget->ClearRenderTarget(mp_DeviceContext, color);
 }
 
 void D3DHandler::PresentBuffer(bool vSync)

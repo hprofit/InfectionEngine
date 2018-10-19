@@ -18,7 +18,7 @@ enum RenderMode {
 	Depth,          // Depth for the camera
 	Light,          // Shadowmap
     BlurredLightH,  // Horizontally Blurred shadowmap
-	BlurredLightV,  // Vertically Blurred shadowmap
+	//BlurredLightV,  // Vertically Blurred shadowmap
 	Final,
 
 	NUM_MODES
@@ -101,6 +101,7 @@ public:
 	void PrepShadowCastingLightPass();
 
 	// Binds the shadow shader, sets the D3DHandler's deferred buffer as the active textures, 
+	// Sets the Light buffer's first SRV as the final active texture,
 	// disables depth testing, and enables alpha blending
 	void PrepShadowCastingLightFinal();
 

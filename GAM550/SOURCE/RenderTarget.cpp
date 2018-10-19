@@ -202,10 +202,29 @@ void RenderTarget::BindRenderTarget(ID3D11DeviceContext* deviceContext) const
 	deviceContext->RSSetViewports(1, &m_viewport);
 }
 
+void RenderTarget::BindRT(ID3D11DeviceContext * deviceContext, UINT idx) const
+{
+	// Bind the render target view and depth stencil buffer to the output render pipeline.
+	deviceContext->OMSetRenderTargets(1, &m_renderTargetViews[idx], mp_DepthStencilView);
+
+	// Set the depth stencil state.
+	deviceContext->OMSetDepthStencilState(mp_DepthStencilState, 1);
+}
+
+void RenderTarget::SetViewport(ID3D11DeviceContext * deviceContext) const
+{
+	deviceContext->RSSetViewports(1, &m_viewport);
+}
+
 void RenderTarget::ClearRenderTarget(ID3D11DeviceContext* deviceContext, const Color& color)
 {
 	for (unsigned int i = 0; i < m_NumTargets; ++i) {
 		deviceContext->ClearRenderTargetView(m_renderTargetViews[i], color);
 	}
+	ClearDepthStencilView(deviceContext);
+}
+
+void RenderTarget::ClearDepthStencilView(ID3D11DeviceContext * deviceContext)
+{
 	deviceContext->ClearDepthStencilView(mp_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }

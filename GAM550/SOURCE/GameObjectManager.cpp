@@ -105,29 +105,30 @@ void GameObjectManager::RenderLights()
 	}
 }
 
-void GameObjectManager::FillShadowCastingLightsShadowMaps()
+/*
+	For each Shadow Casting Light
+		Ask the Renderer to prep for a SCL pass
+		Render all visible objects to the shadow map
+		Ask the Renderer to blur the moment shadow map
+		Ask the Renderer to prep for a SCL additive influence pass
+		Render the scene with the SCL's influence utilizing the MSM
+*/
+void GameObjectManager::RenderShadowCastingLights()
 {
 	for (unsigned int lightIdx = 0; lightIdx < mp_ShadowCastingLights.size(); ++lightIdx) {
 		if (!mp_ShadowCastingLights[lightIdx]->IsActive())	continue;
 		INFECT_RENDERER.PrepShadowCastingLightPass();
-		DirectionalLightComponent* pDLComp = mp_ShadowCastingLights[lightIdx]->GetComponent<DirectionalLightComponent>();
-
-		// Clear this light's render target from previous frame
-		pDLComp->ClearRenderTarget();
-
-		// Bind this light's render target for rendering to it's depth buffer
-		//pDLComp->BindRenderTarget();
-
-
-
-        RenderTarget* pRenderTarget = pDLComp->GetRenderTarget();
-        // Bind the render target view and depth stencil buffer to the output render pipeline.
-        INFECT_RENDERER.DeviceContext()->OMSetRenderTargets(1, &pRenderTarget->GetRenderTargetViews()[0], pRenderTarget->DepthStencilView());
-
-        // Set the depth stencil state.
-        INFECT_RENDERER.DeviceContext()->OMSetDepthStencilState(pRenderTarget->DepthStencilState(), 1);
-
-        INFECT_RENDERER.DeviceContext()->RSSetViewports(1, &pRenderTarget->ViewPort());
+		//DirectionalLightComponent* pDLComp = mp_ShadowCastingLights[lightIdx]->GetComponent<DirectionalLightComponent>();
+		//// Clear this light's render target from previous frame
+		//pDLComp->ClearRenderTarget();
+		//// Bind this light's render target for rendering to it's depth buffer
+		////pDLComp->BindRenderTarget();
+  //      RenderTarget* pRenderTarget = pDLComp->GetRenderTarget();
+  //      // Bind the render target view and depth stencil buffer to the output render pipeline.
+  //      INFECT_RENDERER.DeviceContext()->OMSetRenderTargets(1, &pRenderTarget->GetRenderTargetViews()[0], pRenderTarget->DepthStencilView());
+  //      // Set the depth stencil state.
+  //      INFECT_RENDERER.DeviceContext()->OMSetDepthStencilState(pRenderTarget->DepthStencilState(), 1);
+  //      INFECT_RENDERER.DeviceContext()->RSSetViewports(1, &pRenderTarget->ViewPort());
 
 
 
@@ -136,7 +137,11 @@ void GameObjectManager::FillShadowCastingLightsShadowMaps()
 			if (mp_GameObjects[objIdx]->IsActive() && mp_ShadowCastingLights[lightIdx] != mp_GameObjects[objIdx])
 				INFECT_RENDERER.RenderObjectToLightShadowMap((*mp_ShadowCastingLights[lightIdx]), (*mp_GameObjects[objIdx]));
 		}
+
         INFECT_RENDERER.BlurDepthMap((*mp_ShadowCastingLights[lightIdx]));
+		INFECT_RENDERER.PrepShadowCastingLightFinal();
+		INFECT_RENDERER.AddSCLInfluenceToScene((*mp_Cameras[0]), (*mp_ShadowCastingLights[lightIdx]));
+		//INFECT_GOM.AddLightFromShadowCastingLights();
 	}
 }
 

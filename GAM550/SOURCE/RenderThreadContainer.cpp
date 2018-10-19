@@ -29,6 +29,23 @@ std::thread & RenderThreadContainer::Spawn()
 	return *mp_Thread;
 }
 
+/*
+	Clear the screen and all Render Targets
+	Ask the Renderer to prep for deferred G-Buffer filling
+	Render all visible objects to camera to the G-Buffer (this current implementation assumes one cameara only)
+
+	If the render mode is not set to 'Final', render the selected Render Target
+	Else
+		Ask the Renderer to bind the second pass Render Target
+		Render the contents of the G-buffer with ambient light
+		Ask the GOM to render all SCL's
+		Ask the Renderer to prep for final deferred pass
+		Ask the GOM to render all non-SCL's
+		Ask the Renderer to bind the back buffer
+		Render the contents of the second pass buffer to the back buffer
+
+	Present the contents of the back buffer to the screw
+*/
 bool StartRenderCommand::execute() const
 {
 	INFECT_RENDERER.ClearScreen();					// Clear the window buffer
@@ -38,7 +55,7 @@ bool StartRenderCommand::execute() const
 	//INFECT_GOM.RenderCameras();						// Render all game objects
 	// END DO NOT USE
 
-	INFECT_GOM.FillShadowCastingLightsShadowMaps();		// Requires visibility check
+	
 
 	INFECT_RENDERER.PrepDeferredPass();
 	INFECT_GOM.RenderCameras();					// Requires visibility check
@@ -50,12 +67,12 @@ bool StartRenderCommand::execute() const
 	}
 	// Render the whole deferred shading and lighting
 	else {
-		// Render ambient lighting to second buffer
-		INFECT_RENDERER.BindSecondPassBuffer();
+		// Render ambient lighting
 		INFECT_RENDERER.RenderDeferredBufferAmbientOnly();
 
-		INFECT_RENDERER.PrepShadowCastingLightFinal();
-		INFECT_GOM.AddLightFromShadowCastingLights();
+		INFECT_GOM.RenderShadowCastingLights();		// Requires visibility check
+		//INFECT_RENDERER.PrepShadowCastingLightFinal();
+		//INFECT_GOM.AddLightFromShadowCastingLights();
 
 		// Render each non-shadow casting light to the second buffer using the deferred second pass
 		INFECT_RENDERER.PrepDeferredFinal();

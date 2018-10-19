@@ -215,26 +215,27 @@ void RenderManager::RenderDebugBuffers()
 
 
 		case RenderMode::Light: {
-			ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[0];
-			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pSRV);
+			//ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[0];
+			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &mp_D3D->GetLightRT()->GetShaderResourceViews()[0]);
 
 			cb.Ambient = Color(d, d, d, 1);
 			break;
 		}
         case RenderMode::BlurredLightH:
         {
-            ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[1];
-            mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pSRV);
+            //ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[1];
+			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &mp_D3D->GetLightRT()->GetShaderResourceViews()[1]);
+            //mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pSRV);
             cb.Ambient = Color(d, d, d, 1);
             break;
         }
-		case RenderMode::BlurredLightV:
-		{
-			ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[2];
-			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pSRV);
-			cb.Ambient = Color(d, d, d, 1);
-			break;
-		}
+		//case RenderMode::BlurredLightV:
+		//{
+		//	ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[2];
+		//	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pSRV);
+		//	cb.Ambient = Color(d, d, d, 1);
+		//	break;
+		//}
 		default:
 		{
 			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1,
@@ -258,6 +259,7 @@ void RenderManager::RenderDebugBuffers()
 
 void RenderManager::RenderDeferredBufferAmbientOnly()
 {
+	mp_D3D->BindSecondPassBuffer();
 	mp_ShaderProgramQuad->BindShader();
 	mp_D3D->DisableDepth();
 	mp_D3D->DisableAlpha();
@@ -308,10 +310,14 @@ void RenderManager::RenderSecondPassBuffer()
 
 void RenderManager::PrepShadowCastingLightPass()
 {
+	mp_D3D->GetLightRT()->ClearRenderTarget(mp_D3D->mp_DeviceContext);
 	mp_D3D->EnableFrontFaceCulling();
 	mp_ShaderProgramShadowCastingLight->BindShader();
 	mp_D3D->EnableDepth();
 	mp_D3D->DisableAlpha();
+	// Bind the first render target of the light RT only
+	mp_D3D->GetLightRT()->BindRT(mp_D3D->mp_DeviceContext, 0);
+	mp_D3D->GetLightRT()->SetViewport(mp_D3D->mp_DeviceContext);
 }
 
 void RenderManager::PrepShadowCastingLightFinal()
@@ -319,7 +325,11 @@ void RenderManager::PrepShadowCastingLightFinal()
 	mp_ShaderProgramShadowAddLight->BindShader();
 
 	ID3D11ShaderResourceView** pTextures = mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews();
-	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, mp_D3D->GetDeferredRenderTarget()->GetNumViews(), pTextures);
+	UINT deferredNumViews = mp_D3D->GetDeferredRenderTarget()->GetNumViews();
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, deferredNumViews, pTextures);
+
+	ID3D11ShaderResourceView* pShadowMap = mp_D3D->mp_LightRenderTarget->GetShaderResourceViews()[0]; // Grab the Light RT's first SRV (blurred shadow map)
+	mp_D3D->mp_DeviceContext->PSSetShaderResources(deferredNumViews, 1, &pShadowMap);
 
 	mp_D3D->DisableDepth();
 	mp_D3D->EnableAlpha();
@@ -330,6 +340,7 @@ void RenderManager::ClearScreen(void)
 	mp_D3D->ClearBackBuffer(m_ClearColor);
 	mp_D3D->ClearDeferredBuffer(m_ClearColor);
 	mp_D3D->ClearSecondPassBuffer(m_ClearColor);
+	//mp_D3D->ClearLightBuffer(m_ClearColor);
 }
 
 void RenderManager::PresentFrameToScreen(void)
@@ -450,9 +461,6 @@ void RenderManager::AddSCLInfluenceToScene(const GameObject & pGOCamera, GameObj
 	// set the new values for the constant buffer
 	mp_ShaderProgramShadowAddLight->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
 
-	ID3D11ShaderResourceView* pShadowMap = pLightComp->GetRenderTarget()->GetShaderResourceViews()[0];
-	mp_D3D->mp_DeviceContext->PSSetShaderResources(mp_D3D->GetDeferredRenderTarget()->GetNumViews(), 1, &pShadowMap);
-
 	// do 3D rendering to the currently bound buffer here
 	_RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
 }
@@ -519,15 +527,19 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 		HoV_Vertical
 	};
 
+	mp_D3D->EnableBackFaceCulling();
+	mp_ShaderProgramGaussianBlur->BindShader();
+	mp_D3D->DisableDepth();
+	mp_D3D->DisableAlpha();
+
 	const DirectionalLightComponent * pLightComp = goLight.GetComponent<DirectionalLightComponent>();
-	RenderTarget* pRenderTarget = pLightComp->GetRenderTarget();
-	ID3D11RenderTargetView* pShadowMapRTV = pRenderTarget->GetRenderTargetViews()[0];
-	ID3D11ShaderResourceView* pShadowMapSRV = pRenderTarget->GetShaderResourceViews()[0];
+	RenderTarget* pRenderTarget = mp_D3D->GetLightRT();
+	//ID3D11RenderTargetView* pShadowMapRTV = pRenderTarget->GetRenderTargetViews()[0];
+	//ID3D11ShaderResourceView* pShadowMapSRV = pRenderTarget->GetShaderResourceViews()[0];
 
-	ID3D11RenderTargetView* pShadowMapBlurredHRTV = pRenderTarget->GetRenderTargetViews()[1];
-	ID3D11ShaderResourceView* pShadowMapBlurredHSRV = pRenderTarget->GetShaderResourceViews()[1];
+	//ID3D11RenderTargetView* pShadowMapBlurredRTV = pRenderTarget->GetRenderTargetViews()[1];
+	//ID3D11ShaderResourceView* pShadowMapBlurredSRV = pRenderTarget->GetShaderResourceViews()[1];
 
-	ID3D11RenderTargetView* pShadowMapBlurredVRTV = pRenderTarget->GetRenderTargetViews()[2];
 	BlurCB& cb = mp_ShaderProgramGaussianBlur->CB()->BufferData();
     std::vector<FLOAT> weights = pLightComp->Weights();
     std::vector<FLOAT> offsetsX = pLightComp->OffsetsX();
@@ -557,28 +569,27 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 
     cb.BlurAmount = pLightComp->BlurAmount();
 
-	mp_D3D->EnableBackFaceCulling();
-	mp_ShaderProgramGaussianBlur->BindShader();
-	mp_D3D->DisableDepth();
-	mp_D3D->DisableAlpha();
 
 	// Horizontal Blur
 	{
-		mp_D3D->mp_DeviceContext->ClearDepthStencilView(pRenderTarget->DepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+		pRenderTarget->SetViewport(mp_D3D->mp_DeviceContext);
+		pRenderTarget->BindRT(mp_D3D->mp_DeviceContext, 1);  // Bind the Light RT's second RTV (the horizontally shadow map) for drawing
+		pRenderTarget->ClearDepthStencilView(mp_D3D->mp_DeviceContext);
+
+		//mp_D3D->mp_DeviceContext->ClearDepthStencilView(pRenderTarget->DepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		// Bind the Render Target View of the Horizontal target
-		mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pShadowMapBlurredHRTV, pRenderTarget->DepthStencilView());
-
+		//mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pShadowMapBlurredHRTV, pRenderTarget->DepthStencilView());
 		// Set the depth stencil state.
-		mp_D3D->mp_DeviceContext->OMSetDepthStencilState(pRenderTarget->DepthStencilState(), 1);
-
-		mp_D3D->mp_DeviceContext->RSSetViewports(1, &pRenderTarget->ViewPort());
+		//mp_D3D->mp_DeviceContext->OMSetDepthStencilState(pRenderTarget->DepthStencilState(), 1);
+		//mp_D3D->mp_DeviceContext->RSSetViewports(1, &pRenderTarget->ViewPort());
 
 		cb.HorizontalOrVertical = HoV::HoV_Horizontal;
         
 		mp_ShaderProgramGaussianBlur->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 		mp_ShaderProgramGaussianBlur->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
 
-		mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pShadowMapSRV);
+		// Bind the Light RT's first SRV (the shadow map) for horizontal blurring to the second RTV
+		mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pRenderTarget->GetShaderResourceViews()[0]);
 
 		// do 3D rendering to the currently bound buffer here
 		_RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
@@ -586,18 +597,19 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 
 	// Vertical Blur
 	{
-		mp_D3D->mp_DeviceContext->ClearDepthStencilView(pRenderTarget->DepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-		// Bind the Render Target View of the Vertical target
-		//mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pShadowMapBlurredVRTV, pRenderTarget->DepthStencilView());
-		mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pShadowMapRTV, pRenderTarget->DepthStencilView());
+		//mp_D3D->mp_DeviceContext->ClearDepthStencilView(pRenderTarget->DepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+		//mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pShadowMapRTV, pRenderTarget->DepthStencilView());
+
+		pRenderTarget->ClearDepthStencilView(mp_D3D->mp_DeviceContext);
+		pRenderTarget->BindRT(mp_D3D->mp_DeviceContext, 0); // Bind the Light RT's first RTV (the shadow map) for drawing
 
 		cb.HorizontalOrVertical = HoV::HoV_Vertical;
 
 		mp_ShaderProgramGaussianBlur->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 		mp_ShaderProgramGaussianBlur->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
 
-		// Bind the Shader Res. View for the Horizontal target
-        mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pShadowMapBlurredHSRV);
+		// Bind the Light RT's second SRV for veritcal blurring to the first RTV
+        mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pRenderTarget->GetShaderResourceViews()[1]);
 
 		// do 3D rendering to the currently bound buffer here
 		_RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));

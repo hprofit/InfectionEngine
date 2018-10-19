@@ -59,9 +59,10 @@ void DirectionalLightComponent::_GenerateOffsets(FLOAT width, FLOAT height)
 
 DirectionalLightComponent::DirectionalLightComponent(InfectGUID guid) :
 	LightBaseComponent(guid, true),
-	m_Far(1000000.f), m_FoV(90.f),
-	m_ViewPerspMat(Matrix4x4()),
-	mp_LightRenderTarget(nullptr)
+	m_Far(1000000.f), 
+	m_FoV(90.f),
+	m_ViewPerspMat(Matrix4x4())
+	//mp_LightRenderTarget(nullptr)
 {
 }
 
@@ -69,10 +70,10 @@ void DirectionalLightComponent::Deactivate()
 {
 	mp_Parent = nullptr;
 	
-	if (mp_LightRenderTarget) {
-		mp_LightRenderTarget->Release();
-		mp_LightRenderTarget = nullptr;
-	}
+	//if (mp_LightRenderTarget) {
+	//	mp_LightRenderTarget->Release();
+	//	mp_LightRenderTarget = nullptr;
+	//}
 }
 
 void DirectionalLightComponent::Serialize(const json & j)
@@ -88,8 +89,8 @@ void DirectionalLightComponent::Serialize(const json & j)
 
 	m_AspectRatio = FLOAT(width) / FLOAT(height);
 
-	mp_LightRenderTarget = new RenderTarget(width, height, 3);
-	mp_LightRenderTarget->Initialize(INFECT_RENDERER.Device());
+	//mp_LightRenderTarget = new RenderTarget(width, height, 2);
+	//mp_LightRenderTarget->Initialize(INFECT_RENDERER.Device());
 
 	m_BlurAmount = ParseInt(j, "blur");
 	_GenerateWeights();
@@ -107,10 +108,10 @@ void DirectionalLightComponent::Override(const json & j)
 		m_Far = ParseFloat(j, "far");
 
 	if (ValueExists(j, "height") || ValueExists(j, "width")) {
-		if (mp_LightRenderTarget) {
-			mp_LightRenderTarget->Release();
-			mp_LightRenderTarget = nullptr;
-		}
+		//if (mp_LightRenderTarget) {
+		//	mp_LightRenderTarget->Release();
+		//	mp_LightRenderTarget = nullptr;
+		//}
 
 		UINT height, width;
 		height = ParseInt(j, "height");
@@ -118,8 +119,8 @@ void DirectionalLightComponent::Override(const json & j)
 
 		m_AspectRatio = FLOAT(width) / FLOAT(height);
 
-		mp_LightRenderTarget = new RenderTarget(width, height, 3);
-		mp_LightRenderTarget->Initialize(INFECT_RENDERER.Device());
+		//mp_LightRenderTarget = new RenderTarget(width, height, 2);
+		//mp_LightRenderTarget->Initialize(INFECT_RENDERER.Device());
 	}
 
 	m_IsDirty = true;
@@ -137,12 +138,12 @@ void DirectionalLightComponent::SetFoV(FLOAT _fov)
 	m_IsDirty = true;
 }
 
-void DirectionalLightComponent::ClearRenderTarget()
-{
-	mp_LightRenderTarget->ClearRenderTarget(INFECT_RENDERER.DeviceContext());
-}
-
-void DirectionalLightComponent::BindRenderTarget()
-{
-	mp_LightRenderTarget->BindRenderTarget(INFECT_RENDERER.DeviceContext());
-}
+//void DirectionalLightComponent::ClearRenderTarget()
+//{
+//	mp_LightRenderTarget->ClearRenderTarget(INFECT_RENDERER.DeviceContext());
+//}
+//
+//void DirectionalLightComponent::BindRenderTarget()
+//{
+//	mp_LightRenderTarget->BindRenderTarget(INFECT_RENDERER.DeviceContext());
+//}
