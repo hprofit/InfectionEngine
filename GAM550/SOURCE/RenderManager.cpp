@@ -322,6 +322,7 @@ void RenderManager::PrepShadowCastingLightPass()
 
 void RenderManager::PrepShadowCastingLightFinal()
 {
+    mp_D3D->BindSecondPassBuffer();
 	mp_ShaderProgramShadowAddLight->BindShader();
 
 	ID3D11ShaderResourceView** pTextures = mp_D3D->GetDeferredRenderTarget()->GetShaderResourceViews();
@@ -340,7 +341,7 @@ void RenderManager::ClearScreen(void)
 	mp_D3D->ClearBackBuffer(m_ClearColor);
 	mp_D3D->ClearDeferredBuffer(m_ClearColor);
 	mp_D3D->ClearSecondPassBuffer(m_ClearColor);
-	//mp_D3D->ClearLightBuffer(m_ClearColor);
+	mp_D3D->ClearLightBuffer(m_ClearColor);
 }
 
 void RenderManager::PresentFrameToScreen(void)
@@ -534,11 +535,6 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 
 	const DirectionalLightComponent * pLightComp = goLight.GetComponent<DirectionalLightComponent>();
 	RenderTarget* pRenderTarget = mp_D3D->GetLightRT();
-	//ID3D11RenderTargetView* pShadowMapRTV = pRenderTarget->GetRenderTargetViews()[0];
-	//ID3D11ShaderResourceView* pShadowMapSRV = pRenderTarget->GetShaderResourceViews()[0];
-
-	//ID3D11RenderTargetView* pShadowMapBlurredRTV = pRenderTarget->GetRenderTargetViews()[1];
-	//ID3D11ShaderResourceView* pShadowMapBlurredSRV = pRenderTarget->GetShaderResourceViews()[1];
 
 	BlurCB& cb = mp_ShaderProgramGaussianBlur->CB()->BufferData();
     std::vector<FLOAT> weights = pLightComp->Weights();
@@ -576,13 +572,6 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 		pRenderTarget->BindRT(mp_D3D->mp_DeviceContext, 1);  // Bind the Light RT's second RTV (the horizontally shadow map) for drawing
 		pRenderTarget->ClearDepthStencilView(mp_D3D->mp_DeviceContext);
 
-		//mp_D3D->mp_DeviceContext->ClearDepthStencilView(pRenderTarget->DepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-		// Bind the Render Target View of the Horizontal target
-		//mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pShadowMapBlurredHRTV, pRenderTarget->DepthStencilView());
-		// Set the depth stencil state.
-		//mp_D3D->mp_DeviceContext->OMSetDepthStencilState(pRenderTarget->DepthStencilState(), 1);
-		//mp_D3D->mp_DeviceContext->RSSetViewports(1, &pRenderTarget->ViewPort());
-
 		cb.HorizontalOrVertical = HoV::HoV_Horizontal;
         
 		mp_ShaderProgramGaussianBlur->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
@@ -597,9 +586,6 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 
 	// Vertical Blur
 	{
-		//mp_D3D->mp_DeviceContext->ClearDepthStencilView(pRenderTarget->DepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-		//mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pShadowMapRTV, pRenderTarget->DepthStencilView());
-
 		pRenderTarget->ClearDepthStencilView(mp_D3D->mp_DeviceContext);
 		pRenderTarget->BindRT(mp_D3D->mp_DeviceContext, 0); // Bind the Light RT's first RTV (the shadow map) for drawing
 

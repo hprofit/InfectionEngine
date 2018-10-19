@@ -82,12 +82,11 @@ float4 PShader(PixelInput input) : SV_TARGET
 	float specularCoef = specularInfo.w;
 	float4 specularColor = float4(specularInfo.x, specularInfo.y, specularInfo.z, 1);
 
-	float4 attVal = attenuation(L_Length, lightDistance);
+	float attVal = attenuation(L_Length, lightDistance);
+    //float attVal = falloff(lightDistance, a, b);
 
 	float4 diffuse = max(dot(normal, L), 0) * diffuseColor * LColor;
 	float4 specular = pow(max(dot(H, normal), 0), specularCoef) * specularColor * LColor;
 	
-	float4 finalColor = (diffuse + specular) * attVal;
-	finalColor.a = 1;
-	return finalColor;
+	return float4(((diffuse + specular) * attVal).xyz, 1);
 }

@@ -62,6 +62,7 @@ bool StartRenderCommand::execute() const
 
 	// Render the G BUffers individually OR first shadow casting light's depth map - DEBUG ONLY
 	if (INFECT_RENDERER.CurrentRenderMode() != RenderMode::Final) {
+        INFECT_GOM.RenderShadowCastingLights();		// Requires visibility check
 		INFECT_RENDERER.BindBackBuffer();
 		INFECT_RENDERER.RenderDebugBuffers();
 	}
@@ -70,12 +71,11 @@ bool StartRenderCommand::execute() const
 		// Render ambient lighting
 		INFECT_RENDERER.RenderDeferredBufferAmbientOnly();
 
-		INFECT_GOM.RenderShadowCastingLights();		// Requires visibility check
-		//INFECT_RENDERER.PrepShadowCastingLightFinal();
-		//INFECT_GOM.AddLightFromShadowCastingLights();
+        INFECT_GOM.RenderShadowCastingLights();		// Requires visibility check
 
-		// Render each non-shadow casting light to the second buffer using the deferred second pass
-		INFECT_RENDERER.PrepDeferredFinal();
+        // Render each non-shadow casting light to the second buffer using the deferred second pass
+        INFECT_RENDERER.PrepDeferredFinal();
+
 		INFECT_GOM.RenderLights();
 
 		// Render the contents of the second buffer to the back buffer

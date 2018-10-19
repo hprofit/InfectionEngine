@@ -135,7 +135,6 @@ float4 PShader(PixelInput input) : SV_TARGET
     float pointDepth = shadowPos.w;
     float2 shadowMapUV = (shadowPos.xy / shadowPos.w) * 0.5f + 0.5f;
     shadowMapUV.y = 1.0f - shadowMapUV.y;
-
     if (shadowPos.w <= 0 ||
 		shadowMapUV.x < 0 || shadowMapUV.x > 1 ||
 		shadowMapUV.y < 0 || shadowMapUV.y > 1)
@@ -143,7 +142,7 @@ float4 PShader(PixelInput input) : SV_TARGET
         return float4(0, 0, 0, 0);
     }
 
-    float G = HamburgerShadowValue(shadowMapUV, pointDepth);
+    float G = clamp(HamburgerShadowValue(shadowMapUV, pointDepth), 0.f, 1.f);
     
     // Old shadow map calculations
 	// In Shadow from this light

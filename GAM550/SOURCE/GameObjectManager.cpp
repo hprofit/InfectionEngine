@@ -118,19 +118,6 @@ void GameObjectManager::RenderShadowCastingLights()
 	for (unsigned int lightIdx = 0; lightIdx < mp_ShadowCastingLights.size(); ++lightIdx) {
 		if (!mp_ShadowCastingLights[lightIdx]->IsActive())	continue;
 		INFECT_RENDERER.PrepShadowCastingLightPass();
-		//DirectionalLightComponent* pDLComp = mp_ShadowCastingLights[lightIdx]->GetComponent<DirectionalLightComponent>();
-		//// Clear this light's render target from previous frame
-		//pDLComp->ClearRenderTarget();
-		//// Bind this light's render target for rendering to it's depth buffer
-		////pDLComp->BindRenderTarget();
-  //      RenderTarget* pRenderTarget = pDLComp->GetRenderTarget();
-  //      // Bind the render target view and depth stencil buffer to the output render pipeline.
-  //      INFECT_RENDERER.DeviceContext()->OMSetRenderTargets(1, &pRenderTarget->GetRenderTargetViews()[0], pRenderTarget->DepthStencilView());
-  //      // Set the depth stencil state.
-  //      INFECT_RENDERER.DeviceContext()->OMSetDepthStencilState(pRenderTarget->DepthStencilState(), 1);
-  //      INFECT_RENDERER.DeviceContext()->RSSetViewports(1, &pRenderTarget->ViewPort());
-
-
 
 		// Render all objects to fill out light's depth buffer
 		for (unsigned int objIdx = 0; objIdx < mp_GameObjects.size(); ++objIdx) {
@@ -139,9 +126,11 @@ void GameObjectManager::RenderShadowCastingLights()
 		}
 
         INFECT_RENDERER.BlurDepthMap((*mp_ShadowCastingLights[lightIdx]));
-		INFECT_RENDERER.PrepShadowCastingLightFinal();
-		INFECT_RENDERER.AddSCLInfluenceToScene((*mp_Cameras[0]), (*mp_ShadowCastingLights[lightIdx]));
-		//INFECT_GOM.AddLightFromShadowCastingLights();
+        if (INFECT_RENDERER.CurrentRenderMode() == RenderMode::Final) {
+            INFECT_RENDERER.PrepDeferredFinal();
+            INFECT_RENDERER.PrepShadowCastingLightFinal();
+            INFECT_RENDERER.AddSCLInfluenceToScene((*mp_Cameras[0]), (*mp_ShadowCastingLights[lightIdx]));
+        }
 	}
 }
 
