@@ -43,7 +43,7 @@ PixelOutput PShader(PixelInput input)
     float d2 = depth * depth;
     float d3 = d2 * depth;
     float d4 = d3 * depth;
-    output.depth = float4(depth, depth, depth, 1);
-    //output.depth = float4(depth, d2, d3, d4);
+    //output.depth = float4(depth, depth, depth, 1);
+    output.depth = float4(depth, d2, d3, d4);
 	return output;
 }

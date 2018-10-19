@@ -45,6 +45,21 @@ struct PixelOutput
     float4 blurredValue : SV_TARGET0;
 };
 
+float2 ClampTexCoords(float2 texCoords)
+{
+    if(texCoords.x < 0.f)
+        texCoords.x = 0.f;
+    else if (texCoords.x > 1.f)
+        texCoords.x = 1.f;
+
+    if (texCoords.y < 0.f)
+        texCoords.y = 0.f;
+    else if (texCoords.y > 1.f)
+        texCoords.y = 1.f;
+
+    return texCoords;
+}
+
 PixelOutput PShader(PixelInput input)
 {
     PixelOutput output;
@@ -52,39 +67,32 @@ PixelOutput PShader(PixelInput input)
     float2 texOffset = float2(0, 0);
     bool horizontal = HorizontalOrVertical == 0; // 0 - Horizontal, 1 - Vertical
     output.blurredValue = float4(0, 0, 0, 0);
-
-    if (horizontal) 
+    
+    int count = 0, vecIdx = 0;
+    for (int i = BlurAmount; i > 0; --i)
     {
-        int count = 0, vecIdx = 0;
-        for (int i = BlurAmount; i > 0; --i)
-        {
-            if (horizontal)
-                texOffset = float2(Offsets.X[vecIdx][count], 0) + input.centerTexCoords;
-            else
-                texOffset = float2(0, Offsets.Y[vecIdx][count]) + input.centerTexCoords;
-            output.blurredValue += Texture.Sample(ss, texOffset) * Weights[vecIdx][count];
-
-            if (horizontal)
-                texOffset = float2(-Offsets.X[vecIdx][count], 0) + input.centerTexCoords;
-            else
-                texOffset = float2(0, -Offsets.Y[vecIdx][count]) + input.centerTexCoords;
-            output.blurredValue += Texture.Sample(ss, texOffset) * Weights[vecIdx][count];
-
-            ++count;
-            if (count == 4)
-            {
-                count = 0;
-                ++vecIdx;
-            }
-        }
-        texOffset = float2(Offsets.X[vecIdx][count], 0) + input.centerTexCoords;
+        if (horizontal)
+            texOffset = ClampTexCoords(float2(Offsets.X[vecIdx][count], 0) + input.centerTexCoords);
+        else
+            texOffset = ClampTexCoords(float2(0, Offsets.Y[vecIdx][count]) + input.centerTexCoords);
         output.blurredValue += Texture.Sample(ss, texOffset) * Weights[vecIdx][count];
 
-        output.blurredValue.a = 1;
-    }
-    else {
-        output.blurredValue = float4(0, 1, 0, 1); // Texture.Sample(ss, input.centerTexCoords);
-    }
 
+        if (horizontal)
+            texOffset = ClampTexCoords(float2(-Offsets.X[vecIdx][count], 0) + input.centerTexCoords);
+        else
+            texOffset = ClampTexCoords(float2(0, -Offsets.Y[vecIdx][count]) + input.centerTexCoords);
+        output.blurredValue += Texture.Sample(ss, texOffset) * Weights[vecIdx][count];
+
+        ++count;
+        if (count == 4)
+        {
+            count = 0;
+            ++vecIdx;
+        }
+    }
+    texOffset = ClampTexCoords(float2(Offsets.X[vecIdx][count], 0) + input.centerTexCoords);
+    output.blurredValue += Texture.Sample(ss, texOffset) * Weights[vecIdx][count];
+    //output.blurredValue.a = 1;
     return output;
 }

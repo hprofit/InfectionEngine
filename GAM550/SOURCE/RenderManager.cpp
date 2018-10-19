@@ -225,7 +225,6 @@ void RenderManager::RenderDebugBuffers()
         {
             ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[1];
             mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pSRV);
-
             cb.Ambient = Color(d, d, d, 1);
             break;
         }
@@ -233,7 +232,6 @@ void RenderManager::RenderDebugBuffers()
 		{
 			ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[2];
 			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pSRV);
-
 			cb.Ambient = Color(d, d, d, 1);
 			break;
 		}
@@ -523,7 +521,8 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 
 	const DirectionalLightComponent * pLightComp = goLight.GetComponent<DirectionalLightComponent>();
 	RenderTarget* pRenderTarget = pLightComp->GetRenderTarget();
-	ID3D11ShaderResourceView* pShadowMap = pRenderTarget->GetShaderResourceViews()[0];
+	ID3D11RenderTargetView* pShadowMapRTV = pRenderTarget->GetRenderTargetViews()[0];
+	ID3D11ShaderResourceView* pShadowMapSRV = pRenderTarget->GetShaderResourceViews()[0];
 
 	ID3D11RenderTargetView* pShadowMapBlurredHRTV = pRenderTarget->GetRenderTargetViews()[1];
 	ID3D11ShaderResourceView* pShadowMapBlurredHSRV = pRenderTarget->GetShaderResourceViews()[1];
@@ -565,6 +564,7 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 
 	// Horizontal Blur
 	{
+		mp_D3D->mp_DeviceContext->ClearDepthStencilView(pRenderTarget->DepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		// Bind the Render Target View of the Horizontal target
 		mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pShadowMapBlurredHRTV, pRenderTarget->DepthStencilView());
 
@@ -578,7 +578,7 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 		mp_ShaderProgramGaussianBlur->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
 		mp_ShaderProgramGaussianBlur->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
 
-		mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pShadowMap);
+		mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pShadowMapSRV);
 
 		// do 3D rendering to the currently bound buffer here
 		_RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
@@ -586,11 +586,10 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 
 	// Vertical Blur
 	{
+		mp_D3D->mp_DeviceContext->ClearDepthStencilView(pRenderTarget->DepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		// Bind the Render Target View of the Vertical target
-		mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pRenderTarget->GetRenderTargetViews()[2], pRenderTarget->DepthStencilView());
-        // Set the depth stencil state.
-        mp_D3D->mp_DeviceContext->OMSetDepthStencilState(pRenderTarget->DepthStencilState(), 1);
-        mp_D3D->mp_DeviceContext->RSSetViewports(1, &pRenderTarget->ViewPort());
+		//mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pShadowMapBlurredVRTV, pRenderTarget->DepthStencilView());
+		mp_D3D->mp_DeviceContext->OMSetRenderTargets(1, &pShadowMapRTV, pRenderTarget->DepthStencilView());
 
 		cb.HorizontalOrVertical = HoV::HoV_Vertical;
 
@@ -598,8 +597,7 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 		mp_ShaderProgramGaussianBlur->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
 
 		// Bind the Shader Res. View for the Horizontal target
-        mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pShadowMap);
-		//mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pShadowMapBlurredHSRV);
+        mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pShadowMapBlurredHSRV);
 
 		// do 3D rendering to the currently bound buffer here
 		_RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
