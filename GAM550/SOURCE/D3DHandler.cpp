@@ -285,7 +285,7 @@ bool D3DHandler::InitD3D(HWND hWnd, WindowSettings settings)
 	mp_SecondPassRenderTarget = new RenderTarget(settings.Width, settings.Height, 1);
 	mp_SecondPassRenderTarget->Initialize(mp_Device);
 
-	mp_LightRenderTarget = new RenderTarget(1024, 1024, 2);
+	mp_LightRenderTarget = new RenderTarget(1024, 1024, 2, true);
 	mp_LightRenderTarget->Initialize(mp_Device);
 
 #pragma region Viewport

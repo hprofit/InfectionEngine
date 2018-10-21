@@ -43,6 +43,9 @@ private:
 	ShaderProgram<ShadowAddLightCB>* mp_ShaderProgramShadowAddLight;	// Shadow add light shader - determines wither to add a given light's influence to a pixel based on that light's shadowmap
 	ShaderProgram<BlurCB>* mp_ShaderProgramGaussianBlur;				// 
 
+    ShaderProgram<Blur2CB>* mp_ShaderProgramShadowMapHBlur;
+    ShaderProgram<Blur2CB>* mp_ShaderProgramShadowMapVBlur;
+
 	RenderMode m_RenderMode;			// DEBUG ONLY - which layer of the deferred buffer to render
 
 	bool _GameObjectHasRenderableComponent(const GameObject& gameObject);
@@ -141,7 +144,9 @@ public:
 	// TODO: GET RID OF THIS
 	void RenderParticles(const GameObject& pGOCamera, const GameObject& pGO);
 
-	void BlurDepthMap(GameObject& goLight);
+	void BlurDepthMap2(GameObject& goLight);
+
+    void BlurDepthMap(GameObject& goLight);
 };
 
 #endif

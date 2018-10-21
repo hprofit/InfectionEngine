@@ -9,35 +9,42 @@ Author: <Holden Profit>
 
 void DirectionalLightComponent::_GenerateWeights()
 {
-	int size = m_BlurAmount + 1;
-	// m_Weights will always be a multiple of 4 in size
-	m_Weights.resize(size + (4 - size % 4));
-	int i;
-	for (i = -m_BlurAmount; i <= 0; ++i)
-	{
-		m_Weights[i + m_BlurAmount] = GetGaussianWeight(FLOAT(m_BlurAmount), i);
-	}
+	//int size = m_BlurAmount + 1;
+	//// m_Weights will always be a multiple of 4 in size
+	//m_Weights.resize(size + (4 - size % 4));
+	//int i;
+	//for (i = -m_BlurAmount; i <= 0; ++i)
+	//{
+	//	m_Weights[i + m_BlurAmount] = GetGaussianWeight(FLOAT(m_BlurAmount), i);
+	//}
 
-	float total = 0;
-	for (i = -m_BlurAmount; i <= m_BlurAmount; ++i)
-	{
-		int offset = i <= 0 ? i + m_BlurAmount : m_BlurAmount - i;
-		total += m_Weights[offset];
-	}
+    int size = m_BlurAmount * 2 + 1;
+    m_Weights.resize(size + (4 - size % 4));
+    int i;
+    for (i = -m_BlurAmount; i <= m_BlurAmount; ++i) 
+        m_Weights[i + m_BlurAmount] = GetGaussianWeight(FLOAT(m_BlurAmount), i);
 
-	for (i = -m_BlurAmount; i <= 0; ++i)
-	{
-		m_Weights[i + m_BlurAmount] = m_Weights[i + m_BlurAmount] / total;
-	}
+    float total = 0;
+    for (i = -m_BlurAmount; i <= m_BlurAmount; ++i)
+    {
+    	//int offset = i <= 0 ? i + m_BlurAmount : m_BlurAmount - i;
+        int offset = i + m_BlurAmount;
+    	total += m_Weights[offset];
+    }
 
-	// Check that the weights sum to 1
-	total = 0;
-	for (i = -m_BlurAmount; i <= m_BlurAmount; ++i)
-	{
-		int offset = i <= 0 ? i + m_BlurAmount : m_BlurAmount - i;
-		total += m_Weights[offset];
-	}
-	cout << "Total: " << total << endl;
+    for (i = -m_BlurAmount; i <= m_BlurAmount; ++i)
+    {
+    	m_Weights[i + m_BlurAmount] = m_Weights[i + m_BlurAmount] / total;
+    }
+
+    // Check that the weights sum to 1
+    total = 0;
+    for (i = -m_BlurAmount; i <= m_BlurAmount; ++i)
+    {
+    	//int offset = i <= 0 ? i + m_BlurAmount : m_BlurAmount - i;
+        int offset = i + m_BlurAmount;
+    	total += m_Weights[offset];
+    }
 }
 
 void DirectionalLightComponent::_GenerateOffsets(FLOAT width, FLOAT height)

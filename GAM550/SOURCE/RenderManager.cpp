@@ -90,6 +90,16 @@ RenderManager::~RenderManager()
 		delete mp_ShaderProgramGaussianBlur;
 		mp_ShaderProgramGaussianBlur = nullptr;
 	}
+    if (mp_ShaderProgramShadowMapHBlur) {
+        mp_ShaderProgramShadowMapHBlur->Release();
+        delete mp_ShaderProgramShadowMapHBlur;
+        mp_ShaderProgramShadowMapHBlur = nullptr;
+    }
+    if (mp_ShaderProgramShadowMapVBlur) {
+        mp_ShaderProgramShadowMapVBlur->Release();
+        delete mp_ShaderProgramShadowMapVBlur;
+        mp_ShaderProgramShadowMapVBlur = nullptr;
+    }
 
 	// Show the mouse cursor.
 	ShowCursor(true);
@@ -132,6 +142,8 @@ bool RenderManager::InitWindow(HINSTANCE hInstance, int nCmdShow, WindowSettings
 		mp_ShaderProgramShadowCastingLight = new ShaderProgram<ShadowCB>();
 		mp_ShaderProgramShadowAddLight = new ShaderProgram<ShadowAddLightCB>();
 		mp_ShaderProgramGaussianBlur = new ShaderProgram<BlurCB>();
+        mp_ShaderProgramShadowMapHBlur = new ShaderProgram<Blur2CB>();
+        mp_ShaderProgramShadowMapVBlur = new ShaderProgram<Blur2CB>();
 	}
 	return result;
 }
@@ -215,27 +227,16 @@ void RenderManager::RenderDebugBuffers()
 
 
 		case RenderMode::Light: {
-			//ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[0];
 			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &mp_D3D->GetLightRT()->GetShaderResourceViews()[0]);
-
 			cb.Ambient = Color(d, d, d, 1);
 			break;
 		}
         case RenderMode::BlurredLightH:
         {
-            //ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[1];
 			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &mp_D3D->GetLightRT()->GetShaderResourceViews()[1]);
-            //mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pSRV);
             cb.Ambient = Color(d, d, d, 1);
             break;
         }
-		//case RenderMode::BlurredLightV:
-		//{
-		//	ID3D11ShaderResourceView * pSRV = INFECT_GOM.GetShadowCastingLight(0)->GetComponent<DirectionalLightComponent>()->GetRenderTarget()->GetShaderResourceViews()[2];
-		//	mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1, &pSRV);
-		//	cb.Ambient = Color(d, d, d, 1);
-		//	break;
-		//}
 		default:
 		{
 			mp_D3D->mp_DeviceContext->PSSetShaderResources(0, 1,
@@ -490,6 +491,18 @@ bool RenderManager::LoadShader(std::string shaderName)
 		case 5:
 			mp_ShaderProgramGaussianBlur->Initialize(mp_D3D->mp_Device, filePath);
 			break;
+        case 6:
+        {
+            std::vector<ShaderProgram<Blur2CB>::ShaderMetaData> smd = { { filePath, "HorizontalBlurCS", Shader::ShaderType::ShaderType_Compute } };
+            mp_ShaderProgramShadowMapHBlur->Initialize(mp_D3D->mp_Device, smd);
+            break;
+        }
+        case 7:
+        {
+            std::vector<ShaderProgram<Blur2CB>::ShaderMetaData> smd = { { filePath, "VerticalBlurCS", Shader::ShaderType::ShaderType_Compute } };
+            mp_ShaderProgramShadowMapVBlur->Initialize(mp_D3D->mp_Device, smd);
+            break;
+        }
 		default:
 			break;
 	}
@@ -521,7 +534,7 @@ void RenderManager::RenderParticles(const GameObject& pGOCamera, const GameObjec
 
 }
 
-void RenderManager::BlurDepthMap(GameObject & goLight)
+void RenderManager::BlurDepthMap2(GameObject & goLight)
 {
 	enum HoV : UINT {
 		HoV_Horizontal = 0,
@@ -600,4 +613,103 @@ void RenderManager::BlurDepthMap(GameObject & goLight)
 		// do 3D rendering to the currently bound buffer here
 		_RenderScene(INFECT_RESOURCES.GetScene(QUAD_PRIMITIVE));
 	}
+}
+
+void RenderManager::BlurDepthMap(GameObject & goLight)
+{
+    mp_D3D->EnableBackFaceCulling();
+    mp_D3D->DisableDepth();
+    mp_D3D->DisableAlpha();
+
+    //D3D10_TECHNIQUE_DESC;
+    const DirectionalLightComponent * pLightComp = goLight.GetComponent<DirectionalLightComponent>();
+    RenderTarget* pRenderTarget = mp_D3D->GetLightRT();
+    std::vector<FLOAT> weights = pLightComp->Weights();
+
+
+
+    UINT negOne = -1,
+        N = 1024 / 256;
+
+    // Horizontal Blur
+    {
+        mp_ShaderProgramShadowMapHBlur->BindShader();
+        Blur2CB& cb = mp_ShaderProgramShadowMapHBlur->CB()->BufferData();
+        
+        UINT curWeightVec = 0;
+        for (UINT i = 0; i < weights.size(); i += 4) {
+            cb.Weights[curWeightVec] = Vector3D(
+                weights[i + 0],
+                weights[i + 1],
+                weights[i + 2],
+                weights[i + 3]
+            );
+            ++curWeightVec;
+        }
+        //for (UINT i = 0; i < weights.size(); ++i) {
+        //    cb.Weights[i] = weights[i];
+        //}
+
+        pRenderTarget->SetViewport(mp_D3D->mp_DeviceContext);
+        pRenderTarget->BindRT(mp_D3D->mp_DeviceContext, 1);  // Bind the Light RT's second RTV (the horizontally shadow map) for drawing
+        pRenderTarget->ClearDepthStencilView(mp_D3D->mp_DeviceContext);
+
+        mp_ShaderProgramShadowMapHBlur->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+        mp_ShaderProgramShadowMapHBlur->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+        mp_D3D->mp_DeviceContext->CSSetUnorderedAccessViews(0, 1, &pRenderTarget->GetUAVs()[1], &negOne);
+        mp_D3D->mp_DeviceContext->CSSetShaderResources(0, 1, &pRenderTarget->GetShaderResourceViews()[0]);
+
+        mp_D3D->mp_DeviceContext->Dispatch(N, 1024, 1);
+    }
+
+    // Clear the input texture from the compute shader
+    ID3D11ShaderResourceView* nullSRV[1] = { 0 };
+    mp_D3D->mp_DeviceContext->CSSetShaderResources(0, 1, nullSRV);
+
+    // Unbind output from compute shader
+    ID3D11UnorderedAccessView* nullUAV[1] = { 0 };
+    mp_D3D->mp_DeviceContext->CSSetUnorderedAccessViews(0, 1, nullUAV, 0);
+
+    // Disable compute shader.
+    mp_D3D->mp_DeviceContext->CSSetShader(0, 0, 0);
+
+    // Vertical Blur
+    {
+        mp_ShaderProgramShadowMapVBlur->BindShader();
+        Blur2CB& cb = mp_ShaderProgramShadowMapVBlur->CB()->BufferData();
+        UINT curWeightVec = 0;
+        for (UINT i = 0; i < weights.size(); i += 4) {
+            cb.Weights[curWeightVec] = Vector3D(
+                weights[i + 0],
+                weights[i + 1],
+                weights[i + 2],
+                weights[i + 3]
+            );
+            ++curWeightVec;
+        }
+        //for (UINT i = 0; i < weights.size(); ++i) {
+        //    cb.Weights[i] = weights[i];
+        //}
+
+        pRenderTarget->ClearDepthStencilView(mp_D3D->mp_DeviceContext);
+        pRenderTarget->BindRT(mp_D3D->mp_DeviceContext, 0); // Bind the Light RT's first RTV (the shadow map) for drawing
+
+        mp_ShaderProgramShadowMapVBlur->CB()->SetConstantBuffer(mp_D3D->mp_DeviceContext);
+        mp_ShaderProgramShadowMapVBlur->CB()->UpdateSubresource(mp_D3D->mp_DeviceContext);
+
+        mp_D3D->mp_DeviceContext->CSSetUnorderedAccessViews(0, 1, &pRenderTarget->GetUAVs()[0], &negOne);
+        mp_D3D->mp_DeviceContext->CSSetShaderResources(0, 1, &pRenderTarget->GetShaderResourceViews()[1]);
+
+        mp_D3D->mp_DeviceContext->Dispatch(1024, N, 1);
+    }
+
+    // Clear the input texture from the compute shader
+    mp_D3D->mp_DeviceContext->CSSetShaderResources(0, 1, nullSRV);
+
+    // Unbind output from compute shader
+    mp_D3D->mp_DeviceContext->CSSetUnorderedAccessViews(0, 1, nullUAV, 0);
+
+    // Disable compute shader.
+    mp_D3D->mp_DeviceContext->CSSetShader(0, 0, 0);
 }

@@ -15,6 +15,7 @@ class ShaderProgram
 {
 protected:
 	VertexShader * mp_VertexShader;
+    ComputeShader * mp_ComputeShader;
 	PixelShader * mp_PixelShader;
 	ConstantBufferWrapper<CBufferType> * mp_CBuffer;
 
@@ -25,6 +26,13 @@ public:
 		Release();
 	};
 
+    struct ShaderMetaData {
+        std::string m_sShaderFile;
+        std::string m_sShaderFunc;
+        Shader::ShaderType m_eShaderType;
+    };
+
+    void Initialize(ID3D11Device*, std::vector<ShaderMetaData> a_shaderMetaData);
 	void Initialize(ID3D11Device*, std::string shaderFile);
 	void Initialize(ID3D11Device*, std::string vertexShaderFile, std::string pixelShaderFile);
 	void Initialize(ID3D11Device*, std::string vertexShaderFile, std::string pixelShaderFile, std::string vertexShaderFunc = "VShader", std::string pixelShaderFunc = "PShader");
@@ -35,11 +43,38 @@ public:
 	void Release();
 
 	VertexShader* VS() { return mp_VertexShader; }
+    ComputeShader* CS() { return mp_ComputeShader; }
 	PixelShader* PS() { return mp_PixelShader; }
 	// Returns a pointer to this ShaderProgram's constant buffer
 	ConstantBufferWrapper<CBufferType>* CB() { return mp_CBuffer; }
 };
 
+
+template<typename CBufferType>
+inline void ShaderProgram<CBufferType>::Initialize(ID3D11Device * device, std::vector<ShaderMetaData> a_shaderMetaData)
+{
+    for (ShaderMetaData data : a_shaderMetaData) 
+    {
+        switch (data.m_eShaderType) {
+            case Shader::ShaderType_Vertex:
+            {
+                mp_VertexShader = new VertexShader(data.m_sShaderFile, data.m_sShaderFunc);
+                break;
+            }
+            case Shader::ShaderType_Compute:
+            {
+                mp_ComputeShader = new ComputeShader(data.m_sShaderFile, data.m_sShaderFunc);
+                break;
+            }
+            case Shader::ShaderType_Pixel:
+            {
+                mp_PixelShader = new PixelShader(data.m_sShaderFile, data.m_sShaderFunc);
+                break;
+            }
+        }
+    }
+    mp_CBuffer = new ConstantBufferWrapper<CBufferType>(device);
+}
 
 template <typename CBufferType>
 void ShaderProgram<CBufferType>::Initialize(ID3D11Device* device, std::string shaderFile)
@@ -68,8 +103,12 @@ void ShaderProgram<CBufferType>::Initialize(ID3D11Device* device, std::string ve
 template <typename CBufferType>
 void ShaderProgram<CBufferType>::BindShader()
 {
-	mp_VertexShader->BindShader();
-	mp_PixelShader->BindShader();
+    if (mp_VertexShader)
+	    mp_VertexShader->BindShader();
+    if (mp_ComputeShader)
+        mp_ComputeShader->BindShader();
+    if (mp_PixelShader)
+	    mp_PixelShader->BindShader();
 }
 
 template <typename CBufferType>

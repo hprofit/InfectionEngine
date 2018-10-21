@@ -18,7 +18,8 @@ CBW::~CBW()
 
 void CBW::SetConstantBuffer(ID3D11DeviceContext * deviceContext)
 {
-	deviceContext->VSSetConstantBuffers(0, 1, &(mp_CBuffer));
+	deviceContext->VSSetConstantBuffers(0, 1, &mp_CBuffer);
+    deviceContext->CSSetConstantBuffers(0, 1, &mp_CBuffer);
 	deviceContext->PSSetConstantBuffers(0, 1, &mp_CBuffer);
 }
 

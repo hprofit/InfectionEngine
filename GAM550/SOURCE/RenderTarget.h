@@ -21,7 +21,9 @@ protected:
 	ID3D11Texture2D** m_renderTargetTextures;
 	ID3D11RenderTargetView** m_renderTargetViews;
 	ID3D11ShaderResourceView** m_shaderResourceViews;
+    ID3D11UnorderedAccessView** m_unorderedAccessViews;
 	D3D11_VIEWPORT m_viewport;
+    bool m_bSupportsUAV;
 
 
 	virtual bool _CreateRenderViewTarget(ID3D11Device * device, unsigned int);
@@ -29,7 +31,7 @@ protected:
 	virtual bool _CreateDepthStencilState(ID3D11Device * device);
 	virtual bool _CreateDepthStencilView(ID3D11Device * device);
 public:
-	RenderTarget(unsigned int width, unsigned int height, unsigned int numTargets = 1);
+	RenderTarget(unsigned int width, unsigned int height, unsigned int numTargets = 1, bool a_SupportsUAV = false);
 	virtual ~RenderTarget();
 
 	inline ID3D11Texture2D* DepthStencilBuffer() { return mp_DepthStencilBuffer; }
@@ -41,6 +43,8 @@ public:
 	inline ID3D11Texture2D** GetRenderTextures() { return m_renderTargetTextures; }
 	inline ID3D11ShaderResourceView** GetShaderResourceViews() { return m_shaderResourceViews; }
     inline ID3D11RenderTargetView** GetRenderTargetViews() { return m_renderTargetViews; }
+    inline ID3D11UnorderedAccessView** GetUAVs() { return m_unorderedAccessViews; }
+    inline bool SupportsUAV() const { return m_bSupportsUAV; }
 
 	void Initialize(ID3D11Device*);
 

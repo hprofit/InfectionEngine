@@ -159,13 +159,11 @@ float4 PShader(PixelInput input) : SV_TARGET
     // Else, do lighting equation as normal
     float lightDistance = LIDHW.y;
 	float4 LPos = float4(LightPosition.xyz, 1);
+    //float4 LDir = float4(0, 0.707107f, 0.707107f, 0);
 	float L_Length = length(LPos - worldPos);
 
 	// If the current point is beyond the light's reach, it's not light by this light
-	if (L_Length > lightDistance)
-    { 
-        return float4(0, 0, 0, 0); 
-    }
+	if (L_Length > lightDistance) { return float4(0, 0, 0, 0); }
 	
 	float a = LightPosition.w;
 	float b = LightColor.w;
@@ -177,7 +175,7 @@ float4 PShader(PixelInput input) : SV_TARGET
 	float4 specularInfo = SpecularTexture.Sample(ss, texCoords);
 
     
-	float4 L = normalize(LPos - worldPos);
+    float4 L = normalize(LPos - worldPos);
 	float4 v = normalize(CameraPosition - worldPos);
 	float4 H = normalize(v + L);
 	float specularCoef = specularInfo.w;

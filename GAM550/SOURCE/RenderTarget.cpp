@@ -9,46 +9,64 @@ Author: <Holden Profit>
 
 bool RenderTarget::_CreateRenderViewTarget(ID3D11Device * device, unsigned int index)
 {
-	D3D11_TEXTURE2D_DESC textureDesc;
-	D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
-	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+    D3D11_TEXTURE2D_DESC textureDesc;
+    D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
+    D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+    DXGI_FORMAT format = DXGI_FORMAT_R32G32B32A32_FLOAT;
 
-	// Initialize the render target texture description.
-	ZeroMemory(&textureDesc, sizeof(textureDesc));
+    // Initialize the render target texture description.
+    ZeroMemory(&textureDesc, sizeof(textureDesc));
 
-	// Setup the render target texture description.
-	textureDesc.Width = m_TextureWidth;
-	textureDesc.Height = m_TextureHeight;
-	textureDesc.MipLevels = 1;
-	textureDesc.ArraySize = 1;
-	textureDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	textureDesc.SampleDesc.Count = 1;
-	textureDesc.Usage = D3D11_USAGE_DEFAULT;
-	textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-	textureDesc.CPUAccessFlags = 0;
-	textureDesc.MiscFlags = 0;
+    // Setup the render target texture description.
+    textureDesc.Width = m_TextureWidth;
+    textureDesc.Height = m_TextureHeight;
+    textureDesc.MipLevels = 1;
+    textureDesc.ArraySize = 1;
+    textureDesc.Format = format;
+    textureDesc.SampleDesc.Count = 1;
+    textureDesc.Usage = D3D11_USAGE_DEFAULT;
+    textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+    textureDesc.CPUAccessFlags = 0;
+    textureDesc.MiscFlags = 0;
 
-	// Create the render target textures.
-	if (FAILED( device->CreateTexture2D(&textureDesc, nullptr, &m_renderTargetTextures[index])))
-		return false;
+    if (m_bSupportsUAV)
+        textureDesc.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
 
-	// Setup the description of the render target view.
-	renderTargetViewDesc.Format = textureDesc.Format;
-	renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-	renderTargetViewDesc.Texture2D.MipSlice = 0;
+    // Create the render target textures.
+    if (FAILED(device->CreateTexture2D(&textureDesc, nullptr, &m_renderTargetTextures[index])))
+        return false;
 
-	if (FAILED(device->CreateRenderTargetView(m_renderTargetTextures[index], &renderTargetViewDesc, &m_renderTargetViews[index])))
-		return false;
+    // Setup the description of the render target view.
+    renderTargetViewDesc.Format = textureDesc.Format;
+    renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+    renderTargetViewDesc.Texture2D.MipSlice = 0;
 
-	// Setup the description of the shader resource view.
-	shaderResourceViewDesc.Format = textureDesc.Format;
-	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
-	shaderResourceViewDesc.Texture2D.MipLevels = 1;
+    if (FAILED(device->CreateRenderTargetView(m_renderTargetTextures[index], &renderTargetViewDesc, &m_renderTargetViews[index])))
+        return false;
 
-	// Create the shader resource views.
-	if (FAILED(device->CreateShaderResourceView(m_renderTargetTextures[index], &shaderResourceViewDesc, &m_shaderResourceViews[index])))
-		return false;
+    // Setup the description of the shader resource view.
+    shaderResourceViewDesc.Format = textureDesc.Format;
+    shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+    shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+    shaderResourceViewDesc.Texture2D.MipLevels = 1;
+
+    // Create the shader resource views.
+    if (FAILED(device->CreateShaderResourceView(m_renderTargetTextures[index], &shaderResourceViewDesc, &m_shaderResourceViews[index])))
+        return false;
+
+    if (m_bSupportsUAV)
+    {
+        D3D11_UNORDERED_ACCESS_VIEW_DESC unorderedAcessViewDesc;
+        // Initialize the render target texture description.
+        ZeroMemory(&unorderedAcessViewDesc, sizeof(unorderedAcessViewDesc));
+        unorderedAcessViewDesc.Format = format;
+        unorderedAcessViewDesc.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2D;
+        unorderedAcessViewDesc.Texture2D.MipSlice = 0;
+
+        if (FAILED(device->CreateUnorderedAccessView(m_renderTargetTextures[index], &unorderedAcessViewDesc, &m_unorderedAccessViews[index])))
+            return false;
+    }
+
 	return true;
 }
 
@@ -128,17 +146,26 @@ bool RenderTarget::_CreateDepthStencilView(ID3D11Device * device)
 	return true;
 }
 
-RenderTarget::RenderTarget(unsigned int width, unsigned int height, unsigned int numTargets) :
-	m_TextureWidth(width), m_TextureHeight(height), m_NumTargets(numTargets)
+RenderTarget::RenderTarget(unsigned int width, unsigned int height, unsigned int numTargets/* = 1*/, bool a_SupportsUAV/* = false*/) :
+	m_TextureWidth(width), 
+    m_TextureHeight(height), 
+    m_NumTargets(numTargets),
+    m_bSupportsUAV(a_SupportsUAV)
 {
 	m_renderTargetTextures = new ID3D11Texture2D*[m_NumTargets];
 	m_renderTargetViews = new ID3D11RenderTargetView*[m_NumTargets];
 	m_shaderResourceViews = new ID3D11ShaderResourceView*[m_NumTargets];
+    if (m_bSupportsUAV)
+        m_unorderedAccessViews = new ID3D11UnorderedAccessView*[m_NumTargets];
+    else
+        m_unorderedAccessViews = nullptr;
 
 	for (unsigned int i = 0; i < m_NumTargets; ++i) {
 		m_renderTargetTextures[i] = nullptr;
 		m_renderTargetViews[i] = nullptr;
 		m_shaderResourceViews[i] = nullptr;
+        if (m_bSupportsUAV)
+            m_unorderedAccessViews[i] = nullptr;
 	}
 }
 
@@ -175,7 +202,8 @@ void RenderTarget::Release()
 		mp_DepthStencilView->Release();
 
 
-	for (unsigned int i = 0; i < m_NumTargets; ++i) {
+	for (unsigned int i = 0; i < m_NumTargets; ++i) 
+    {
 		if (m_renderTargetTextures[i])
 			m_renderTargetTextures[i]->Release();
 		if (m_renderTargetViews[i])
@@ -189,6 +217,17 @@ void RenderTarget::Release()
 	delete[] m_renderTargetTextures;
 	delete[] m_renderTargetViews;
 	delete[] m_shaderResourceViews;
+
+    if (m_bSupportsUAV)
+    {
+        for (unsigned int i = 0; i < m_NumTargets; ++i)
+        {
+            if (m_unorderedAccessViews[i])
+                m_unorderedAccessViews[i]->Release();
+            m_unorderedAccessViews[i] = nullptr;
+        }
+        delete[] m_unorderedAccessViews;
+    }
 }
 
 void RenderTarget::BindRenderTarget(ID3D11DeviceContext* deviceContext) const

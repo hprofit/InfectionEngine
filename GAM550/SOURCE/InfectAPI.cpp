@@ -33,6 +33,10 @@ namespace Infect {
 			return 1;
 		if (!INFECT_RENDERER.LoadShader("GaussianBlur.hlsl"))  // TODO: MOVE THIS
 			return 1;
+        if (!INFECT_RENDERER.LoadShader("ShadowMapBlur.hlsl"))  // TODO: MOVE THIS
+            return 1;
+        if (!INFECT_RENDERER.LoadShader("ShadowMapBlur.hlsl"))  // TODO: MOVE THIS
+            return 1;
 
 		INFECT_INPUT.Init(hInstance);
 		INFECT_RESOURCES.Init();

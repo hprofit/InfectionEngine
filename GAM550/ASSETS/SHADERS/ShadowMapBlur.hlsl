@@ -1,43 +1,141 @@
-cbuffer BlurBuffer
+cbuffer BlurBuffer2
 {
-    int BlurAmount;
+    float4 Weights[32];
+};
+
+cbuffer CBFixed {
+    static const int BlurRadius = 55;
+}
+
+Texture2D gInput;
+RWTexture2D<float4> gOutput;
+
+#define N 256
+#define CacheSize (N + 2 * BlurRadius)
+groupshared float4 gCache[CacheSize];
+
+struct ComputeInput {
+    int3 groupThreadID : SV_GroupThreadID;
+    int3 dispatchThreadID : SV_DispatchThreadID;
 };
 
 [numthreads(N, 1, 1)]
-void CShader( int3 groupThreadID : SV_GroupThreadID, int3 dispatchThreadID : SV_DispatchThreadID)
+void HorizontalBlurCS(ComputeInput input)
 {
-	// fill local thread storage to reduce bandwidth. Blur N N pixels, needs N + 2 * BlurRadius for Blur radius
-	
-	// thread group runs N threads. To get the extra 2*BlurRadius pixels, have 2*BlurRadius threads sample an extra pixel.
-    if (groupThreadID.x < BlurAmount)
+    // Fill locatl thread storage to reduce bandwidth. To blur 
+    // N pixels, we need to load N + 2 * BlurRadius pixels due
+    // to the blur radius
+
+    int2 length;
+    gInput.GetDimensions(length.x, length.y);
+    // This thread group runs N threads. To get the extra 2 * BlurRadius
+    // pixels, have 2 * BlurRadius threads sample extra pixel.
+    if (input.groupThreadID.x < BlurRadius)
     {
-		// clamp out of bound samples that occur at image borders
-        int x = max(dispatchThreadID.x - BlurAmount, 0);
-        gCache[groupThreadID.x] = gInput[int2(x, dispatchThreadID.y)];
+        // Clamp out of bound samples that occur at image borders.
+        int x = max(input.dispatchThreadID.x - BlurRadius, 0);
+        gCache[input.groupThreadID.x] = gInput[int2(x, input.dispatchThreadID.y)];
     }
-    if (groupThreadID.x >= N - BlurAmount)
+    if (input.groupThreadID.x >= N - BlurRadius)
     {
-		// clamp out of bound samples that occur at image borders
-        int x = min(dispatchThreadID.x + BlurAmount, gInput.Length.x - 1);
-        gCache[groupThreadID.x + 2 * BlurAmount] = gInput[int2(x, dispatchThreadID.y)];
+        // Clamp out of bound samples that occur at image borders.
+        int x = min(input.dispatchThreadID.x + BlurRadius, length.x - 1);
+        gCache[input.groupThreadID.x + 2 * BlurRadius] = gInput[int2(x, input.dispatchThreadID.y)];
     }
 
-	// clamp out of bound samples that occur at image borders
-    gCache[groupThreadID.x + BlurAmount] = gInput[min(dispatchThreadID.xy, gInput.Length.xy - 1)];
+    // Clamp out of bound samples that occur at image borders.
+    gCache[input.groupThreadID.x + BlurRadius] = gInput[min(input.dispatchThreadID.xy, length.xy - 1)];
 
-	// wait for all threads to finish.
+    // Wait for all threads to finish
     GroupMemoryBarrierWithGroupSync();
-	
-	// Now blur each pixel.
+
+    // Now blur each pixel
+
     float4 blurColor = float4(0, 0, 0, 0);
-	
-	[unroll]
-    for (int i = -BlurAmount; i <= BlurAmount; ++i)
+
+    int count = 0, vecIdx = 0;
+    [unroll]
+    for (int i = -BlurRadius; i <= BlurRadius; ++i)
     {
-        int k = groupThreadID.x + BlurAmount + i;
-		
-        blurColor += gWeights[i + BlurAmount] * gCache[k];
+        int k = input.groupThreadID.x + BlurRadius + i;
+        blurColor += Weights[vecIdx][count] * gCache[k];
+        if (++count >= 4)
+        {
+            count = 0;
+            ++vecIdx;
+        }
     }
-	
-    gOutput[dispatchThreadID.xy] = blurColor;
+
+    gOutput[input.dispatchThreadID.xy] = blurColor;
+}
+
+
+[numthreads(1, N, 1)]
+void VerticalBlurCS(ComputeInput input)
+{
+    // Fill locatl thread storage to reduce bandwidth. To blur 
+    // N pixels, we need to load N + 2 * BlurRadius pixels due
+    // to the blur radius
+
+    int2 length;
+    gInput.GetDimensions(length.x, length.y);
+    // This thread group runs N threads. To get the extra 2 * BlurRadius
+    // pixels, have 2 * BlurRadius threads sample extra pixel.
+    if (input.groupThreadID.y < BlurRadius)
+    {
+        // Clamp out of bound samples that occur at image borders.
+        int y = max(input.dispatchThreadID.y - BlurRadius, 0);
+        gCache[input.groupThreadID.y] = gInput[int2(input.dispatchThreadID.x, y)];
+    }
+    if (input.groupThreadID.y >= N - BlurRadius)
+    {
+        // Clamp out of bound samples that occur at image borders.
+        int y = min(input.dispatchThreadID.y + BlurRadius, length.y - 1);
+        gCache[input.groupThreadID.y + 2 * BlurRadius] = gInput[int2(input.dispatchThreadID.x, y)];
+    }
+
+    // Clamp out of bound samples that occur at image borders.
+    gCache[input.groupThreadID.y + BlurRadius] = gInput[min(input.dispatchThreadID.xy, length.xy - 1)];
+
+    // Wait for all threads to finish
+    GroupMemoryBarrierWithGroupSync();
+
+    // Now blur each pixel
+
+    float4 blurColor = float4(0, 0, 0, 0);
+
+    int count = 0, vecIdx = 0;
+    [unroll]
+    for (int i = -BlurRadius; i <= BlurRadius; ++i)
+    {
+        int k = input.groupThreadID.y + BlurRadius + i;
+        blurColor += Weights[vecIdx][count] * gCache[k];
+        if (++count >= 4)
+        {
+            count = 0;
+            ++vecIdx;
+        }
+    }
+
+    gOutput[input.dispatchThreadID.xy] = blurColor;
+}
+
+technique11 HorizontalBlur
+{
+    pass P0
+    {
+        SetVertexShader(NULL);
+        SetPixelShader(NULL);
+        SetComputeShader(CompileShader(cs_5_0, HorizontalBlurCS()));
+    }
+}
+
+technique11 VerticalBlur
+{
+    pass P0
+    {
+        SetVertexShader(NULL);
+        SetPixelShader(NULL);
+        SetComputeShader(CompileShader(cs_5_0, VerticalBlurCS()));
+    }
 }

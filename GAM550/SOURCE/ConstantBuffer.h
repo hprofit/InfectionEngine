@@ -63,6 +63,10 @@ struct BlurCB : public ConstantBuffer{
 	int HorizontalOrVertical; // 0 - Hor, 1 - Vert
 };
 
+struct Blur2CB : public ConstantBuffer {
+    Vector3D Weights[32];
+};
+
 class CBW {
 protected:
 	ID3D11Buffer* mp_CBuffer;	// Pointer to DirectX Constant Buffer object

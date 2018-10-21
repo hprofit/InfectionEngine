@@ -11,12 +11,22 @@ Author: <Holden Profit>
 #define SHADER_H
 
 class Shader {
+public:
+    enum ShaderType : UINT {
+        ShaderType_Vertex = 0,
+        ShaderType_Compute,
+        ShaderType_Pixel
+    };
 protected:
 	ID3DBlob * mp_ShaderBlob;
+
+    UINT _GetFlags();
+    LPCSTR _GetTarget(ShaderType a_Type);
 public:
 	Shader() {};
 	virtual ~Shader() {}
-	
+
+    virtual bool LoadFromFile(std::string shaderFilePath, std::string shaderFunc) = 0;
 	virtual void BindShader() const = 0;
 	virtual void Release() = 0;
 	ID3DBlob* Blob() const { return mp_ShaderBlob; }
@@ -41,7 +51,22 @@ public:
 	virtual void Release();
 };
 
+class ComputeShader :
+    public Shader
+{
+protected:
+    ID3D11ComputeShader * mp_CS;    // the compute shader
 
+public:
+    ComputeShader(std::string shaderFilePath);
+    ComputeShader(std::string shaderFilePath, std::string shaderFunc);
+    virtual ~ComputeShader() {};
+
+    bool LoadFromFile(std::string shaderFilePath, std::string shaderFunc = "ComputeShader");
+    ID3D11ComputeShader* CS() const { return mp_CS; }
+    virtual void BindShader() const;
+    virtual void Release();
+};
 
 class PixelShader :
 	public Shader
