@@ -4,7 +4,7 @@ cbuffer BlurBuffer2
 };
 
 cbuffer CBFixed {
-    static const int BlurRadius = 55;
+    static const int BlurRadius = 20;
 }
 
 Texture2D gInput;
@@ -22,7 +22,7 @@ struct ComputeInput {
 [numthreads(N, 1, 1)]
 void HorizontalBlurCS(ComputeInput input)
 {
-    // Fill locatl thread storage to reduce bandwidth. To blur 
+    // Fill local thread storage to reduce bandwidth. To blur 
     // N pixels, we need to load N + 2 * BlurRadius pixels due
     // to the blur radius
 
@@ -42,7 +42,6 @@ void HorizontalBlurCS(ComputeInput input)
         int x = min(input.dispatchThreadID.x + BlurRadius, length.x - 1);
         gCache[input.groupThreadID.x + 2 * BlurRadius] = gInput[int2(x, input.dispatchThreadID.y)];
     }
-
     // Clamp out of bound samples that occur at image borders.
     gCache[input.groupThreadID.x + BlurRadius] = gInput[min(input.dispatchThreadID.xy, length.xy - 1)];
 
@@ -73,7 +72,7 @@ void HorizontalBlurCS(ComputeInput input)
 [numthreads(1, N, 1)]
 void VerticalBlurCS(ComputeInput input)
 {
-    // Fill locatl thread storage to reduce bandwidth. To blur 
+    // Fill local thread storage to reduce bandwidth. To blur 
     // N pixels, we need to load N + 2 * BlurRadius pixels due
     // to the blur radius
 
@@ -93,7 +92,6 @@ void VerticalBlurCS(ComputeInput input)
         int y = min(input.dispatchThreadID.y + BlurRadius, length.y - 1);
         gCache[input.groupThreadID.y + 2 * BlurRadius] = gInput[int2(input.dispatchThreadID.x, y)];
     }
-
     // Clamp out of bound samples that occur at image borders.
     gCache[input.groupThreadID.y + BlurRadius] = gInput[min(input.dispatchThreadID.xy, length.xy - 1)];
 

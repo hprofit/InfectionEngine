@@ -15,7 +15,8 @@ void DirectionalLightComponentManager::_CalcViewPerspMatrix(DLC comp)
 {
 	TransformComponent* tComp = comp->Parent()->GetComponent<TransformComponent>();
 	Matrix4x4 viewMat = tComp->GetRotationMatrix() * Matrix4x4::Translate(-1 * tComp->WorldPosition());
-	comp->m_ViewPerspMat = Matrix4x4::Perspective(comp->m_FoV, comp->m_AspectRatio, 0.1f, comp->m_Far) * viewMat;
+    Matrix4x4 perspMat = Matrix4x4::Perspective(comp->m_FoV, comp->m_AspectRatio, 0.1f, comp->m_Far);
+	comp->m_ViewPerspMat = perspMat * viewMat;
 	comp->m_ShadowMat = comp->m_ViewPerspMat;
 	comp->m_ShadowMat.Transpose();
 }

@@ -9,9 +9,9 @@
 				"z": 0
 			},
 			"scale": {
-				"x": 2,
-				"y": 2,
-				"z": 2
+				"x": 1,
+				"y": 1,
+				"z": 1
 			},
 			"pivotOffset": {},
 			"rotation": {
@@ -29,11 +29,11 @@
 			"a": -0.3,
 			"b": 0.2,
 			"intensity": 1,
-			"fov": 70,
+			"fov": 90,
 			"far": 1000,
-			"width": 1280,
-			"height": 720,
-			"blur": 55
+			"width": 1024,
+			"height": 1024,
+			"blur": 20
 		}
 	],
 	"C": [

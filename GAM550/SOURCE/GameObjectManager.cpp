@@ -126,6 +126,7 @@ void GameObjectManager::RenderShadowCastingLights()
 		}
 
         INFECT_RENDERER.BlurDepthMap((*mp_ShadowCastingLights[lightIdx]));
+        //INFECT_RENDERER.BlurDepthMap2((*mp_ShadowCastingLights[lightIdx]));
         if (INFECT_RENDERER.CurrentRenderMode() == RenderMode::Final) {
             INFECT_RENDERER.PrepDeferredFinal();
             INFECT_RENDERER.PrepShadowCastingLightFinal();

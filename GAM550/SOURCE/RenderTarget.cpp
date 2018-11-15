@@ -20,10 +20,11 @@ bool RenderTarget::_CreateRenderViewTarget(ID3D11Device * device, unsigned int i
     // Setup the render target texture description.
     textureDesc.Width = m_TextureWidth;
     textureDesc.Height = m_TextureHeight;
-    textureDesc.MipLevels = 1;
+    textureDesc.MipLevels = 0;
     textureDesc.ArraySize = 1;
     textureDesc.Format = format;
     textureDesc.SampleDesc.Count = 1;
+    textureDesc.SampleDesc.Quality = 0;
     textureDesc.Usage = D3D11_USAGE_DEFAULT;
     textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
     textureDesc.CPUAccessFlags = 0;

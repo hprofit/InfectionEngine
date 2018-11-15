@@ -54,10 +54,10 @@ struct ShadowAddLightCB : public ConstantBuffer {
 };
 
 struct BlurCB : public ConstantBuffer{
-	Vector3D Weights[12];
+	Vector3D Weights[32];
     struct {
-        Vector3D X[12];
-        Vector3D Y[12];
+        Vector3D X[32];
+        Vector3D Y[32];
     } Offsets;
 	int BlurAmount;
 	int HorizontalOrVertical; // 0 - Hor, 1 - Vert

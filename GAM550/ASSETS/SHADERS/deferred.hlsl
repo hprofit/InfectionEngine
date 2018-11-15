@@ -73,8 +73,8 @@ PixelInput VShader(VertexInput input)
 	output.hasDiffuseTexture = TextureFlags & DIFFUSE_TEXTURE;
 	output.hasNormalMap = (TextureFlags & NORMAL_MAPPED) >> 1;
 	output.hasSpecularMap = (TextureFlags & SPECULAR_MAPPED) >> 2;
-	output.hasColorOverride = (TextureFlags * COLOR_OVERRIDE) >> 3;
-	output.hasTint = (TextureFlags * TINT_COLOR) >> 4;
+	output.hasColorOverride = (TextureFlags & COLOR_OVERRIDE) >> 3;
+	output.hasTint = (TextureFlags & TINT_COLOR) >> 4;
 
 	return output;
 }

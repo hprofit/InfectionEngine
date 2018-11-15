@@ -31,6 +31,9 @@ LPCSTR Shader::_GetTarget(ShaderType a_Type)
     case ShaderType::ShaderType_Pixel:
         return INFECT_RENDERER.Device()->GetFeatureLevel() >= D3D_FEATURE_LEVEL_11_0 ? "ps_5_0" : "ps_4_0";
         break;
+    default:
+        return nullptr;
+        break;
     }
 }
 
